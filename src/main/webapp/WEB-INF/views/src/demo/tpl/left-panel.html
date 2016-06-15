@@ -1,0 +1,61 @@
+<!-- Left panel : Navigation area -->
+<div class="view-pdt-navbar">
+    <div class="product-panel">
+        <div class="product-title">账户管理</div>
+        <div class="product-nav-listbox">
+            <div class="product-nav-list">
+                <ul>
+                    <li>
+                        <a href="setting" class="">
+                            <div class="nav-icon"></div>
+                            <div class="nav-title">安全设置</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="information">
+                            <div class="nav-icon"></div>
+                            <div class="nav-title">基本资料</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="bind_account" class="">
+                            <div class="nav-icon"></div>
+                            <div class="nav-title">账号绑定</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="">
+                            <div class="nav-icon"></div>
+                            <div class="nav-title">会员权益</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end Left panel -->
+<!-- tool show&hide begin -->
+<div class="show-hide show-hide-rt">
+    <div class="show-hone"><i class="fa fa-exchange" aria-hidden="true"></i></div>
+    <div class="hide-hone"></div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".firstpane").click(function(){
+            $(this).siblings("ul").slideToggle(300);
+            $(this).find(".glyphicon").toggleClass("glyphicon-triangle-bottom");
+        });
+
+        $(".show-hide").click(function(){
+            $(this).toggleClass("show-hnav");
+            $(this).next().toggleClass("show-hright");
+            $(this).prev().toggleClass("show-hprevnav")
+        });
+        $(".show-hide").hover(function(){
+            $(this).toggleClass("show-hovernow");
+        });
+    });
+
+
+</script>
