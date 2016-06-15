@@ -16,7 +16,7 @@
 	</context:component-scan>
 
 	<!-- 注册BeanFactory -->
-	<bean id="springUdfexContextUtil" class="com.xmomen.framework.support.SpringContextUtil" primary="true" />
+	<bean id="springContextUtil" class="com.xmomen.framework.support.SpringContextUtil" primary="true" />
 
 	<!-- 引入属性文件 -->
 	<bean id="propertyPlaceholderConfigurer" class="com.xmomen.framework.support.PropertyPlaceholderConfigurerExt">
@@ -24,7 +24,6 @@
 		<property name="locations">
 			<list>
 				<value>classpath:application.properties</value>
-				<value>classpath:sso.properties</value>
 			</list>
 		</property>
 	</bean>
