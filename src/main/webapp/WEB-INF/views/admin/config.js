@@ -11,6 +11,7 @@ require.config({
         ugPagination:"../static/js/ug-ui/ug-pagination",
         ngPermission:"../static/js/components/angular-permission/dist/angular-permission",
         //ngPermission:"js/libs/angular-permission/angular-permission",
+        checklistModel:"../static/js/plugin/checklist-model/checklist-model",
         jqValidate:"../static/js/plugin/jquery-validate/jquery.validate.min",
         messageTip:"../static/js/plugin/jquery-validate/messages_zh",
         ngResource:"../static/js/libs/angular-resource",
@@ -38,7 +39,7 @@ require.config({
             deps:["ngResource"]
         },
         ngApp:{
-            deps:["ugPagination", "EnvModule", "ugValidate", "amsRest", "ugDialog", "select2"]
+            deps:["ugPagination", "EnvModule", "ugValidate", "amsRest", "ugDialog", "select2", "checklistModel"]
         }
     }
 });

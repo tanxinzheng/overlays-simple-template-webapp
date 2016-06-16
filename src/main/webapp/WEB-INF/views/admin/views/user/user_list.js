@@ -60,7 +60,9 @@ define(function () {
                     }
                 },
                 controller: ["$scope", "UserAPI", "CurrentUser", "$modalInstance","UserGroupAPI", function ($scope, UserAPI, CurrentUser, $modalInstance,UserGroupAPI) {
-                    $scope.user = {};
+                    $scope.user = {
+                        sex:0
+                    };
                     if(CurrentUser){
                         $scope.user = CurrentUser;
                     }
@@ -80,7 +82,11 @@ define(function () {
                             $scope.groupList = data.data;
                             $scope.pageInfoSetting = data.pageInfo;
                             $scope.pageInfoSetting.loadData = $scope.getGroupList;
-                            $scope.ugSelect2Config.initSelectData($scope.user.userGorupId);
+                            var d = [];
+                            if($scope.user.userGroupIds){
+                                d = $scope.user.userGroupIds.split(',');
+                            }
+                            $scope.ugSelect2Config.initSelectData(d);
                         });
                     };
                     $scope.getGroupList();

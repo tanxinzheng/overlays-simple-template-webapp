@@ -80,7 +80,7 @@
         <div class="row">
             <div>
                 <div class="well no-padding">
-                    <form  action="" method="post" id="login-form" class="smart-form client-form">
+                    <form method="post" id="login-form" class="smart-form client-form">
                         <header>
                             登录
                         </header>
@@ -107,7 +107,7 @@
 
                             <section>
                                 <label class="checkbox">
-                                    <input type="checkbox" name="rememberMe" checked="true">
+                                    <input type="checkbox" name="rememberMe" value="true">
                                     <i></i>保持登录</label>
                             </section>
                         </fieldset>

@@ -1,18 +1,15 @@
 define([
-    "views/user/user_module",
-    "views/order/order_module",
-    "views/schedule/schedule_module",
     "views/dashboard",
-    "views/base/base_module",
-    "views/templates/template_module",
-    "views/checklist-model/checklist-model",
-    "views/plan/plan_module",
-    "views/package/package_module",
-    "views/pick/pick_module"
-],function (user_module,order_module,schedule_module, dashboard, base_module, template_module,checklist_model,plan_module,package_module) {
+    "views/user/user_module",
+    "views/permission/permission_module",
+    "views/schedule/schedule_module",
+    "views/dictionary/dictionary_module",
+    "views/organization/organization_module"
+],function (dashboard, user_module,permission_module,schedule_module, dictionary_module, organization_module) {
     angular.module('DMS', [
-        "smartApp", "ui.router", "DMS.schedule", "DMS.order", "DMS.tpls", "DMS.user","DMS.base", "ug.pagination", "EnvModule", "permission", "ug.validate","ug.dialog",
-        "DMS.REST","checklist-model","DMS.plan","DMS.package","DMS.pick"
+        "smartApp", "ui.router", "DMS.schedule", "DMS.user","DMS.dictionary",
+        "ug.pagination", "EnvModule", "permission", "ug.validate","ug.dialog",
+        "DMS.REST", "checklist-model","DMS.permission", "DMS.organization"
     ]).factory({
         HttpInterceptor:["$q", function($q){
            return {

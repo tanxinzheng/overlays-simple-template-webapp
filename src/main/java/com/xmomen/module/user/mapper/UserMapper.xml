@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmomen.module.user.mapper.UserMapper" >
+
+    <!--    查询消息    -->
+    <select id="getUsers" resultType="com.xmomen.module.user.model.User" parameterType="java.util.HashMap">
+        SELECT
+        u.id,
+        u.username,
+        u.email,
+        u.locked,
+        u.realname,
+        u.qq,
+        u.phone_number,
+        u.age,
+        u.sex,
+        u.office_tel,
+        so.name as organization,
+        group_concat(sr.DESCRIPTION) as userGroups,
+        so.id as organization_id,
+        group_concat(sr.id) as user_Group_ids
+        FROM
+        sys_users u
+        left join sys_user_organization suo on u.id = suo.user_id
+        left join sys_organization so on suo.organization_id = so.id
+        left join sys_users_roles sur on u.id = sur.user_id
+        left join sys_roles sr on sur.role_id = sr.id
+        <where>
+              <if test="keyword">
+                  AND u.username LIKE CONCAT('%', #{keyword}, '%') or u.email like CONCAT('%', #{keyword}, '%')
+              </if>
+              <if test="id">
+                  AND m.ID = #{id}
+              </if>
+              <if test="organizationId">
+              	suo.organization_id = #{organizationId}
+              </if>
+          </where>
+          GROUP BY u.id
+    </select>
+
+</mapper>

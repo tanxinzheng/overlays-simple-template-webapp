@@ -23,124 +23,23 @@ will not initialize.
 
 <navigation xmlns:nav="http://www.w3.org/2001/XMLSchema">
     <nav:item ui-sref="dashboard" data-icon="fa fa-fw fa-home" title="控制板" />
-    <div permission only="'BASE_MENU'">
-        <nav:group data-icon="fa fa-fw fa-database" title="基础数据">
-            <div permission only="'DICTIONARY_VIEW'">
-                <nav:item ui-sref="dictionary" title="数据字典"/>
-            </div>
-            <div permission only="'COMPANY_VIEW'">
-                <nav:item ui-sref="company_list" title="单位/公司"/>
-            </div>
-            <div permission only="'MEMBER_VIEW'">
-                <nav:item ui-sref="member_list" title="客户信息"/>
-            </div>
-            <div permission only="'PRODUCT_VIEW'">
-                <nav:item ui-sref="item" title="产品信息"/>
-            </div>
-            <div permission only="'PRODUCT_CATEGORY_VIEW'">
-                <nav:item ui-sref="itemCategory" title="产品分类"/>
-            </div>
-            <div permission only="'CONTRACT_VIEW'">
-                <nav:item ui-sref="contract" title="合同管理"/>
-            </div>
-            <div permission only="'ACTIVITY_VIEW'">
-                <nav:item ui-sref="activity" title="活动管理"/>
-            </div>
-        </nav:group>
+    <div permission only="'DICTIONARY_VIEW'">
+        <nav:item ui-sref="dictionary" title="数据字典"/>
     </div>
-    <div permission only="'COUPON_MENU'">
-        <nav:group data-icon="fa fa-fw fa-shopping-cart" title="卡劵管理">
-            <div permission only="'COUPON_CATEGORY_VIEW'">
-                <nav:item ui-sref="couponCategory" title="卡劵类型"/>
-            </div>
-            <div permission only="'COUPON_VIEW'">
-                <nav:item ui-sref="coupon" title="卡券管理"/>
-            </div>
-            <div permission only="'COUPON_ACTIVITY_VIEW'">
-                <nav:item ui-sref="couponActivity" title="预付款卡金额回填"/>
-            </div>
-            <div permission only="'COUPON_AUDIT_VIEW'">
-                <nav:item ui-sref="couponAudit" title="预付款卡金额审核"/>
-            </div>
-        </nav:group>
+    <div permission only="'USER_VIEW'">
+        <nav:item ui-sref="user_list" title="用户管理"/>
     </div>
-    <div permission only="'PLAN_MENU'">
-        <nav:group data-icon="fa fa-fw fa-shopping-cart" title="餐桌计划">
-            <div permission only="'BASE_PLAN'">
-                <nav:item ui-sref="basePlan" title="计划设定" />
-            </div>
-            <div permission only="'TABLE_PLAN'">
-                <nav:item ui-sref="tablePlan" title="餐桌计划查询" />
-            </div>
-        </nav:group>
+    <div permission only="'USER_GROUP_VIEW'">
+        <nav:item ui-sref="group_list" title="用户组管理"/>
     </div>
-    <div permission only="'ORDER_MENU'">
-        <nav:group data-icon="fa fa-fw fa-shopping-cart" title="订单管理">
-            <div permission only="'ORDER_VIEW'">
-                <nav:item ui-sref="order" title="订单列表" />
-            </div>
-            <div permission only="'PURCHASE_VIEW'">
-                <nav:item ui-sref="purchase" title="采购计划" />
-            </div>
-        </nav:group>
+    <div permission only="'USER_GROUP_VIEW'">
+        <nav:item ui-sref="permission_list" title="权限管理" />
     </div>
-    <div permission only="'PACKING_MENU'">
-        <nav:group data-icon="fa fa-fw fa-shopping-cart" title="装箱管理">
-            <div permission only="'PACKING_TASK'">
-                <nav:item ui-sref="packing_task" title="任务分配" />
-            </div>
-            <div permission only="'PACKING_VIEW'">
-                <nav:item ui-sref="order_packing" title="装箱任务" />
-            </div>
-            <div permission only="'PACKING_LIST_VIEW'">
-                <nav:item ui-sref="packing" title="装箱列表" />
-            </div>
-        </nav:group>
+    <div permission only="'ORGANIZATION_VIEW'">
+        <nav:item ui-sref="organization" title="组织管理" />
     </div>
-    <div permission only="'PACKAGE_MENU'">
-        <nav:group data-icon="fa fa-fw fa-shopping-cart" title="包装管理">
-            <div permission only="'PACKAGE_TASK_DOWN'">
-                <nav:item ui-sref="packageTaskDown" title="任务下发" />
-            </div>
-            <div permission only="'PACKAGE_TASK'">
-                <nav:item ui-sref="packageTask" title="包装任务" />
-            </div>
-            <div permission only="'PACKAGE_TASK_VIEW'">
-                <nav:item ui-sref="packageTaskView" title="任务进度看板" />
-            </div>
-        </nav:group>
-    </div>
-    <div permission only="'PICK_MENU'">
-        <nav:group data-icon="fa fa-fw fa-shopping-cart" title="采摘管理">
-            <div permission only="'PICK'">
-                <nav:item ui-sref="pick" title="采摘结算" />
-            </div>
-            <div permission only="'PICK_CARD'">
-                <nav:item ui-sref="pickCard" title="办卡" />
-            </div>
-            <div permission only="'CARD_RECHARGE'">
-                <nav:item ui-sref="cardRecharge" title="充值" />
-            </div>
-        </nav:group>
-    </div>
-    <div  only="'SYSTEM_MENU'">
-        <nav:group data-icon="fa fa-fw fa-pencil" title="系统管理">
-            <div  only="'USER_VIEW'">
-                <nav:item ui-sref="user_list" title="用户管理"/>
-            </div>
-            <div  only="'USER_GROUP_VIEW'">
-                <nav:item ui-sref="group_list" title="用户组管理"/>
-            </div>
-            <div>
-                <nav:item ui-sref="permission_list" title="权限管理" />
-            </div>
-            <div  only="'ORGANIZATION_VIEW'">
-                <nav:item ui-sref="organization" title="组织管理" />
-            </div>
-            <div  only="'SCHEDULE_VIEW'">
-                <nav:item ui-sref="schedule" title="任务调度" />
-            </div>
-        </nav:group>
+    <div permission only="'SCHEDULE_VIEW'">
+        <nav:item ui-sref="schedule" title="任务调度" />
     </div>
 </navigation>
 <span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit"></i> </span>
