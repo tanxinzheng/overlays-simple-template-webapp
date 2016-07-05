@@ -26,9 +26,6 @@ require.config({
         }
     },
     shim:{
-        //jqValidate:{
-        //    deps:["jquery"]
-        //},
         messageTip:{
             deps:["jqValidate"]
         },

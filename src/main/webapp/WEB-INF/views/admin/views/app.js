@@ -153,7 +153,6 @@ define([
                 controller: ["$scope", function ($scope) {
                 }]
             })
-
     }]);
     angular.element(document).ready(function() {
         $.get('/user/permissions', function(data) {
