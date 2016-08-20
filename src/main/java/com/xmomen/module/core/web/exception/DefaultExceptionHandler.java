@@ -34,7 +34,7 @@ public class DefaultExceptionHandler {
      * <p/>
      * 后续根据不同的需求定制即可
      */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView internalServerError500Exception(NativeWebRequest request, UnauthorizedException e) {
         ModelAndView mv = new ModelAndView();
         mv.addObject("exception", e);

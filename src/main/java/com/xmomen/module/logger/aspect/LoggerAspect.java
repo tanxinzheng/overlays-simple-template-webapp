@@ -37,11 +37,11 @@ public class LoggerAspect {
     @Pointcut("@annotation(com.xmomen.module.logger.Log)")
     public void getLogInfo() { }
 
-    /**
-     * 管理员添加操作日志(后置通知)
-     * @param joinPoint
-     * @throws Throwable
-     */
+//    /**
+//     * 管理员添加操作日志(后置通知)
+//     * @param joinPoint
+//     * @throws Throwable
+//     */
 //    @AfterReturning(value = "getLogInfo()")
 //    public void afterReturning(JoinPoint joinPoint) throws Throwable{
 //        //判断参数
@@ -93,7 +93,7 @@ public class LoggerAspect {
             } else {
                 arguments = Arrays.deepToString(args);
             }
-            String userId = getUserId();
+            Integer userId = getUserId();
             returnVal = proceedingJoinPoint.proceed();
             logger.debug("User action record info -> { UserId: {0} , ClientId: {1} , actionName: {2}, actionParameters: {3}, actionResult: {4} ");
             if(loggerService != null){
@@ -136,9 +136,9 @@ public class LoggerAspect {
      * 获取用户ID
      * @return
      */
-    public String getUserId(){
+    public Integer getUserId(){
         Integer user_id =(Integer) SecurityUtils.getSubject().getSession().getAttribute("user_id");
-        return String.valueOf(user_id);
+        return user_id;
     }
 
     /**

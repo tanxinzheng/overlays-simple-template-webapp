@@ -25,6 +25,9 @@
     |--user             //功能模块－用户模块
         |--user.js      //用户列表js
         |--user.html    //用户列表html
+    |--system
+        |--permission.js
+        |--permission.html
     |--...
 |--index.html           //首页html
 ```

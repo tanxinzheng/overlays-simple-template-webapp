@@ -14,7 +14,7 @@
 	<context:annotation-config/>
 	
 	<!-- 扫描所有的controller 但是不扫描service-->
-	<context:component-scan base-package="com">
+	<context:component-scan base-package="com.**">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
 	</context:component-scan>
@@ -35,9 +35,9 @@
 		</property>
 	</bean>
 
-	<mvc:resources mapping="/admin/**" location="/WEB-INF/views/admin/"/>
-	<mvc:resources mapping="/static/**" location="/static/"/>
-	<mvc:resources mapping="/**" location="/WEB-INF/views/" />
+	<!--<mvc:resources mapping="/admin/**" location="/WEB-INF/views/admin/"/>-->
+	<!--<mvc:resources mapping="/static/**" location="/static/"/>-->
+	<!--<mvc:resources mapping="/**" location="/WEB-INF/views/" />-->
 
 	<!-- 以下 validator  ConversionService 在使用 mvc:annotation-driven 会 自动注册-->
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
@@ -51,6 +51,15 @@
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="messages/messages" />
+		<property name="useCodeAsDefaultMessage" value="true"/>
+	</bean>
+	<!-- 获取本地 -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="zh_CN"/>
+	</bean>
 
 	<bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
@@ -82,5 +91,25 @@
 
 	<!-- 异常统一处理 -->
 	<bean id="exceptionHandlerExceptionResolver" class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver"/>
+
+	<bean id="handlerExceptionResolver" class="com.xmomen.module.core.web.exception.GlobalMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Exception">errors/error</prop>
+				<prop key="java.lang.Throwable">errors/err</prop>
+			</props>
+		</property>
+		<property name="statusCodes">
+			<props>
+				<prop key="errors/error">500</prop>
+				<prop key="errors/404">404</prop>
+			</props>
+		</property>
+		<!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->
+		<property name="defaultErrorView" value="errors/error"></property>
+		<!-- 默认HTTP状态码 -->
+		<property name="defaultStatusCode" value="500"></property>
+	</bean>
+	<!-- 全局异常配置 end -->
 
 </beans>

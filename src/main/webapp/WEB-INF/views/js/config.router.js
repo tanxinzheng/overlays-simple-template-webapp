@@ -29,16 +29,6 @@ angular.module(
             abstract: true
         });
         states.push( {
-            name: 'app.documents',
-            url: '/documents',
-            templateUrl: 'modules/system/docs.html',
-            resolve: {
-                deps: ['$ocLazyLoad',function( $ocLazyLoad){
-                    return $ocLazyLoad.load('tpl/tools/directives/ui-scroll.js');
-                }]
-            }
-        });
-        states.push( {
             name: 'app.dashboard',
             url: '/dashboard',
             //templateUrl: 'modules/dashboard.html'
@@ -48,34 +38,6 @@ angular.module(
                 }
             },
             sticky: true
-        });
-        //
-        states.push({
-            name: 'app.user',
-            url: '/user',
-            views: {
-                'user': {
-                    templateUrl: 'modules/system/user.html',
-                    resolve: {
-                        deps: ['$ocLazyLoad',function( $ocLazyLoad){
-                            return $ocLazyLoad.load('modules/system/user.js');
-                        }]
-                    }
-                }
-            },
-            sticky: true
-        });
-
-        states.push({
-            name: 'app.group',
-            url: '/group',
-            templateUrl: 'modules/system/group.html'
-        });
-
-        states.push({
-            name: 'app.permission',
-            url: '/permission',
-            templateUrl: 'modules/system/permission.html'
         });
 
         angular.forEach(states, function(state){

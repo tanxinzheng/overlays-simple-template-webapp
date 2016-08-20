@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class LogModel implements Serializable{
 
-    private String userId;
+    private Integer userId;
     private String actionName;
     private Date actionDate;
     private String clientIp;
@@ -16,11 +16,11 @@ public class LogModel implements Serializable{
     private String actionResult;
     private String remark;
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

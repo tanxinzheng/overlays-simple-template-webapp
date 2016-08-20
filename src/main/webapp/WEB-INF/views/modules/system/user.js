@@ -11,7 +11,7 @@ app.controller("UserController", ["$scope", "$modal", function($scope, $modal){
             controller: ['$scope', '$modalInstance', "$modal", function($scope, $modalInstance, $modal){
                 $scope.cancel = function(){
                     $modalInstance.close();
-                }
+                };
                 $scope.open2 = function(){
                     var modalInstance = $modal.open({
                         templateUrl: 'addUser.html',

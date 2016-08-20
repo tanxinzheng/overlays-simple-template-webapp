@@ -19,7 +19,7 @@ var $ugPagination = function() {
         scope:{
             pageInfo:"="
         },
-        templateUrl : '../static/js/ug-ui/template/pagination-tpl.html',//模板url
+        templateUrl : '../js/core/template/pagination-tpl.html',//模板url
         controller : ['$scope',function($scope){
             $scope.pageConfig = {
                 showSkip:true,
