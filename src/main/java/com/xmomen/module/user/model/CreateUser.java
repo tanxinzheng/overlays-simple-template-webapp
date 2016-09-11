@@ -1,68 +1,36 @@
 package com.xmomen.module.user.model;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
+import com.xmomen.module.user.entity.User;
+import org.springframework.beans.BeanUtils;
 
-import javax.validation.constraints.NotNull;
+    import java.lang.Integer;
+    import java.lang.String;
 import java.io.Serializable;
 
 /**
- * <p>User: Zhang Kaitao
- * <p>Date: 14-1-28
- * <p>Version: 1.0
+ * @author  tanxinzheng
+ * @date    2016-9-11 18:43:01
+ * @version 1.0.0
  */
-public @Data
-class CreateUser implements Serializable {
+public @Data class CreateUser implements Serializable {
 
-    @NotNull
-    @NotBlank
+    private String id;
     private String username;
-    @NotNull
-    private String email;
-    @NotNull
-    @NotBlank
-    private String password;
-    /**
-     * 真实姓名
-     */
     private String realname;
-
-    /**
-     * 年龄
-     */
-    private Integer age;
-    /**
-     * 1-男，2女
-     */
+    private String salt;
+    private String password;
+    private String digestKey;
     private Integer sex;
-
-    /**
-     * QQ
-     */
+    private String email;
     private String qq;
-
-    /**
-     * 手机号
-     */
     private String phoneNumber;
-
-    /**
-     * 办公室电话
-     */
     private String officeTel;
+    private Integer locked;
 
-    private Boolean locked = Boolean.FALSE;
-
-    @NotNull
-    @NotEmpty
-    private Integer[] userGroupIds;
-
-    public CreateUser() {
-    }
-
-    public CreateUser(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public User getEntity(){
+        User user = new User();
+        BeanUtils.copyProperties(this, user);
+        return user;
     }
 }

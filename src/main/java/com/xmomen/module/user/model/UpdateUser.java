@@ -1,32 +1,35 @@
 package com.xmomen.module.user.model;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
+import com.xmomen.module.user.entity.User;
+import org.springframework.beans.BeanUtils;
 
-import javax.validation.constraints.NotNull;
+    import java.lang.Integer;
+    import java.lang.String;
 import java.io.Serializable;
 
 /**
- * Created by Jeng on 2016/1/7.
+ * Created by tanxinzheng on 2016-9-11 18:43:01.
  */
-public @Data
-class UpdateUser implements Serializable {
+public @Data class UpdateUser implements Serializable {
 
-    @NotNull
-    private Integer id;
+    private String id;
     private String username;
-    private String email;
     private String realname;
-    private String phoneNumber;
-    private Integer age;
-    private String qq;
-    private String officeTel;
-    private Boolean locked;
-    /**
-     * 1-男，2女
-     */
+    private String salt;
+    private String password;
+    private String digestKey;
     private Integer sex;
-    
-    private Integer[] userGroupIds;
+    private String email;
+    private String qq;
+    private String phoneNumber;
+    private String officeTel;
+    private Integer locked;
 
+
+    public User getEntity(){
+        User user = new User();
+        BeanUtils.copyProperties(this, user);
+        return user;
+    }
 }

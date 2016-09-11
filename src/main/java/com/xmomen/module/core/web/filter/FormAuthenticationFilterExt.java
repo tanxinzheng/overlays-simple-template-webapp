@@ -1,9 +1,9 @@
 package com.xmomen.module.core.web.filter;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xmomen.module.core.model.AccountModel;
+import com.xmomen.module.core.service.AccountService;
 import com.xmomen.module.core.web.WebCommonUtils;
-import com.xmomen.module.user.entity.SysUsers;
-import com.xmomen.module.user.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.subject.Subject;
@@ -30,8 +30,10 @@ import java.util.Map;
  */
 public class FormAuthenticationFilterExt extends FormAuthenticationFilter {
 
+    private static final String SESSION_MODEL_KEY = "account_session";
+
     @Autowired
-    UserService userService;
+    AccountService accountService;
 
     private static Logger logger = LoggerFactory.getLogger(FormAuthenticationFilterExt.class);
 
@@ -103,14 +105,14 @@ public class FormAuthenticationFilterExt extends FormAuthenticationFilter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         String username = (String) subject.getPrincipal();
-        SysUsers sysUsers = userService.findByUsername(username);
-        subject.getSession().setAttribute("user_id", sysUsers.getId());
+        AccountModel accountModel = accountService.getAccountByUsername(username);
+        subject.getSession().setAttribute(SESSION_MODEL_KEY, accountModel);
         if (!WebCommonUtils.isJSON(request)) {// 不是ajax请求
             issueSuccessRedirect(request, response);
         } else {
             httpServletResponse.setCharacterEncoding("UTF-8");
             PrintWriter out = httpServletResponse.getWriter();
-            //out.println("{success:true,message:'登入成功'}");
+            out.println("{success:true,message:'登入成功'}");
             out.flush();
             out.close();
         }

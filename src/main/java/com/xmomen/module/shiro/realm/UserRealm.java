@@ -1,9 +1,8 @@
 package com.xmomen.module.shiro.realm;
 
+import com.xmomen.module.core.model.AccountModel;
+import com.xmomen.module.core.service.AccountService;
 import com.xmomen.module.permission.service.PermissionService;
-import com.xmomen.module.permission.service.RoleService;
-import com.xmomen.module.user.entity.SysUsers;
-import com.xmomen.module.user.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -17,12 +16,12 @@ import org.apache.shiro.util.ByteSource;
  */
 public class UserRealm extends AuthorizingRealm {
 
-    private UserService userService;
+    private AccountService accountService;
 
     private PermissionService permissionService;
 
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public void setAccountService(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     public void setPermissionService(PermissionService permissionService) {
@@ -43,22 +42,21 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
         String username = (String)token.getPrincipal();
+        AccountModel account = accountService.getAccountByUsername(username);
 
-        SysUsers user = userService.findByUsername(username);
-
-        if(user == null) {
+        if(account == null) {
             throw new UnknownAccountException();//没找到帐号
         }
 
-        if(Boolean.TRUE.equals(user.getLocked())) {
+        if(Boolean.TRUE.equals(account.getLocked())) {
             throw new LockedAccountException(); //帐号锁定
         }
 
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 username, //用户名
-                user.getPassword(), //密码
-                ByteSource.Util.bytes(user.getSalt()),//salt=salt
+                account.getPassword(), //密码
+                ByteSource.Util.bytes(account.getSalt()),//salt=salt
                 getName()  //realm name
         );
         return authenticationInfo;

@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h3 class="modal-title" ng-bind="message.title"></h3>
+</div>
+<div class="modal-body">
+    <div class="widget-body" ng-bind="message.content">
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" data-ng-click="yes()">
+        <i class="fa fa-save"></i>
+        确认
+    </button>
+    <button class="btn btn-warning" ng-click="no()">
+        <i class="icon icon-close"></i>
+        取消</button>
+</div>

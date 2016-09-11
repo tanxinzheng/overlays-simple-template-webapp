@@ -35,9 +35,7 @@
 		</property>
 	</bean>
 
-	<!--<mvc:resources mapping="/admin/**" location="/WEB-INF/views/admin/"/>-->
-	<!--<mvc:resources mapping="/static/**" location="/static/"/>-->
-	<!--<mvc:resources mapping="/**" location="/WEB-INF/views/" />-->
+	<mvc:resources mapping="/momen-website/**" location="/momen-website/"/>
 
 	<!-- 以下 validator  ConversionService 在使用 mvc:annotation-driven 会 自动注册-->
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">

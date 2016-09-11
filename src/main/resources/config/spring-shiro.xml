@@ -66,9 +66,8 @@
 
     <bean id="passwordHelper" class="com.xmomen.module.utils.PasswordHelper" />
 
-    <bean id="userService" class="com.xmomen.module.user.service.UserServiceImpl" >
-        <property name="passwordHelper" ref="passwordHelper"/>
-    </bean>
+    <!--<bean id="userService" class="com.xmomen.module.user.service.impl.UserServiceImpl" />-->
+    <bean id="accountService" class="com.xmomen.module.core.service.AccountService" />
 
     <!-- 安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
@@ -77,7 +76,7 @@
             <util:list>
                 <!-- Realm实现 -->
                 <bean id="userRealm" class="com.xmomen.module.shiro.realm.UserRealm">
-                    <property name="userService" ref="userService"/>
+                    <property name="accountService" ref="accountService"/>
                     <property name="permissionService" ref="permissionService" />
                     <property name="credentialsMatcher" ref="credentialsMatcher"/>
                     <property name="cachingEnabled" value="true"/>

@@ -6,7 +6,6 @@ import com.xmomen.module.permission.entity.*;
 import com.xmomen.module.permission.mapper.PermissionMapper;
 import com.xmomen.module.permission.model.GroupPermissionRelation;
 import com.xmomen.module.permission.model.UserGroupRelation;
-import com.xmomen.module.user.mapper.UserMapper;
 import com.xmomen.module.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
