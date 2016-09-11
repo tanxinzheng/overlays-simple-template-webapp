@@ -1,0 +1,20 @@
+{
+  "name": "base-website",
+  "version": "1.0.0",
+  "description": "xmomen website template",
+  "main": "index.js",
+  "scripts": {
+    "install": "bower install"
+  },
+  "keywords": [
+    "xmomen",
+    "website",
+    "angularjs",
+    "bootstrap"
+  ],
+  "author": "tanxinzheng",
+  "license": "ISC",
+  "dependencies": {
+    "bower": "^1.7.9"
+  }
+}

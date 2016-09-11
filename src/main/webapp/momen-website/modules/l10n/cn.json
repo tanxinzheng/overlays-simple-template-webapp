@@ -1,0 +1,72 @@
+{
+
+"header" : {
+  "navbar" : {
+    "UPLOAD" : "上传",
+    "new" : {
+      "NEW" : "新建",
+      "PROJECT" : "项目",
+      "TASK" : "任务",
+      "USER" : "用户",
+      "EMAIL" : "邮箱"
+    },
+    "NOTIFICATIONS" : "通知"
+  }
+},
+"aside" : {
+  "nav" : {
+    "HEADER" : "导航",
+    "DASHBOARD" : "仪表盘",
+    "CALENDAR" : "日历",
+    "EMAIL" : "邮箱",
+    "WIDGETS" : "窗口部件",
+    "components" : {
+      "COMPONENTS" : "组件",
+      "ui_kits" : {
+        "UI_KITS" : "UI Kits",
+        "BUTTONS" : "按钮",
+        "ICONS" : "Icons",
+        "GRID" : "Grid",
+        "BOOTSTRAP" : "Bootstrap",
+        "SORTABLE" : "Sortable",
+        "PORTLET" : "门户",
+        "TIMELINE" : "时间轴",
+        "VECTOR_MAP" : "Vector Map"
+      },
+      "table" : {
+        "TABLE" : "Table",
+        "TABLE_STATIC" : "Table static",
+        "DATATABLE" : "Datatable",
+        "FOOTABLE" : "Footable"
+      },
+      "form" : {
+        "FORM" : "表单",
+        "FORM_ELEMENTS" : "Form elements",
+        "FORM_VALIDATION" : "Form validation",
+        "FORM_WIZARD" : "Form wizard"
+      },
+      "CHART" : "Chart",
+      "pages" : {
+        "PAGES" : "Pages",
+        "PROFILE" : "Profile",
+        "POST" : "Post",
+        "SEARCH" : "Search",
+        "INVOICE" : "Invoice",
+        "LOCK_SCREEN" : "锁屏",
+        "SIGNIN" : "登入",
+        "SIGNUP" : "注销",
+        "FORGOT_PASSWORD" : "忘记密码",
+        "404" : "404"
+      }
+    },
+    "your_stuff" : {
+      "YOUR_STUFF": "Your Stuff",
+      "PROFILE" : "Profile",
+      "DOCUMENTS" : "文档"
+    }
+  },
+  "MILESTONE" : "里程杯",
+  "RELEASE" : "Release"
+}
+
+}

@@ -1,0 +1,35 @@
+<div>
+    <ul style="float: right; " class="pagination pagination-sm m-t-none m-b-none">
+        <li ng-class="{'disabled': noPrevious()}">
+            <a href ng-click="selectPage(curPage-1)"><i class="fa fa-step-backward"></i></a>
+        </li>
+        <li ng-class="{'disabled': noPrevious()}">
+            <a href ng-click="selectPage(curPage-1)"><i class="fa fa-chevron-left"></i></a>
+        </li>
+        <li ng-repeat="page in pageList"
+            ng-class="{active:curPage==page.num,disabled:page.isOmit}"
+            class="paginate_button" aria-controls="dt_basic" tabindex="0">
+            <a ng-click="selectPage(page.num)"  ng-show="!page.isOmit">{{page.num}}</a>
+            <a href="#" ng-show="page.isOmit">{{page.text}}</a>
+        </li>
+        <li ng-class="{'disabled': noNext()}">
+            <a href ng-click="selectPage(curPage+1)"><i class="fa fa-chevron-right"></i></a>
+        </li>
+        <li ng-class="{'disabled': noNext()}">
+            <a href ng-click="selectPage(curPage+1)"><i class="fa fa-step-forward"></i></a>
+        </li>
+    </ul>
+    <div style="line-height: 30px; float: right; margin-right: 6px;font-size: 13px;">
+        页数：
+        <select name="maxPageSize"
+                class="input-sm"
+                ng-model="maxPageSize"
+                ng-change="changeMaxPageSize()">
+            <option ng-value="10">10</option>
+            <option ng-value="20">20</option>
+            <option ng-value="50">50</option>
+            <option ng-value="100">100</option>
+            <option ng-value="200">200</option>
+        </select>
+        共有 <span class="text-primary">{{total}}</span> 条，当前页 <span class="txt-color-darken">{{curPage}}</span> / <span class="txt-color-darken">{{pages}}</span> 总页数</div>
+</div>
