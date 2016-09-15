@@ -34,7 +34,7 @@ define(function(){
                     num++;
                 }
             }
-            if(num == $scope.userList.length){
+            if($scope.userList && $scope.userList.length > 0 && num == $scope.userList.length){
                 $scope.pageSetting.checkAll = true;
             }else{
                 $scope.pageSetting.checkAll = false;

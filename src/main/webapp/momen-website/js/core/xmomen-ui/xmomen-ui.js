@@ -3,7 +3,17 @@
  */
 angular.module("xmomen.ui",[
     "oc.lazyLoad"
-]).factory("$ocLazyLoadTool",["$ocLazyLoad", function($ocLazyLoad){
+]).factory("$menu", [function(){
+    var menuList = [];
+    return {
+        addToMenu: function(item){
+            menuList.push(item);
+        },
+        getMenu: function(){
+            return menuList;
+        }
+    }
+}]).factory("$ocLazyLoadTool",["$ocLazyLoad", function($ocLazyLoad){
     return {
         loadConfig: function(config){
             var names = [];
@@ -18,13 +28,6 @@ angular.module("xmomen.ui",[
     debug:  false,
     events: true,
     modules: [
-        {
-            name: 'toaster',
-            files: [
-                'js/core/angularjs-toaster/toaster.js',
-                'js/core/angularjs-toaster/toaster.css'
-            ]
-        },
         {
             name: 'xmomen.dialog',
             files: [
@@ -81,9 +84,15 @@ angular.module("xmomen.ui",[
             var thisResource = this;
             $dialog.confirm("是否保存数据？").then(function(){
                 if ( !thisResource.id ) {
-                    return thisResource.$create(success, fail);
+                    return thisResource.$create(function(data,headers){
+                        $dialog.success("新增成功");
+                        success(data, headers);
+                    }, fail);
                 }else {
-                    return thisResource.$update(success, fail);
+                    return thisResource.$update(function(data,headers){
+                        $dialog.success("更新成功");
+                        success(data, headers);
+                    }, fail);
                 }
             })
         };
@@ -91,7 +100,10 @@ angular.module("xmomen.ui",[
         resource.prototype.$delete = function(success, fail) {
             var thisResource = this;
             $dialog.confirm("是否删除数据？").then(function(){
-                return thisResource.$delete(success, fail);
+                return thisResource.$delete(function(data,headers){
+                    $dialog.success("删除成功");
+                    success(data, headers);
+                }, fail);
             })
         };
 

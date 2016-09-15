@@ -1,5 +1,5 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
-    app.settings.asideFolded = false; 
+    app.settings.asideFolded = false;
     app.settings.asideDock = false;
   " >
   <!-- main -->
@@ -22,7 +22,7 @@
         <div class="row wrapper">
           <div class="col-sm-3">
             <div class="input-group">
-              <input type="text" class="input-sm form-control" placeholder="请输入关键字进行模糊查询">
+              <input type="text" ng-model="queryParam.keyword" data-ng-keyup="getUserList()" class="input-sm form-control" placeholder="请输入关键字进行模糊查询">
               <span class="input-group-btn">
                 <button class="btn btn-sm btn-default" data-ng-click="getUserList()" type="button">查询</button>
                 <button class="btn btn-sm btn-default" data-ng-click="add()" type="button">新增</button>
@@ -44,10 +44,10 @@
                          data-ng-false-value="false"><i></i>
                 </label>
               </th>
-              <th class="action">操作</th>
               <th>用户名</th>
               <th>邮箱</th>
-              <th style="width: 40px">禁用</th>
+              <th>禁用</th>
+              <th class="action">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -61,22 +61,6 @@
                            data-ng-false-value="0"><i></i>
                   </label>
                 </td>
-                <td class="action">
-                  <div class="btn-group open" dropdown="">
-                    <button type="button" class="btn btn-sm btn-default">查看</button>
-                    <button type="button" class="btn btn-sm btn-default dropdown-toggle" dropdown-toggle>
-                      <span class="caret"></span>
-                      <span class="sr-only">Split button!</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                      <li><a href="" data-ng-click="view($index)">查看</a></li>
-                      <li><a href="" data-ng-click="update($index)">修改</a></li>
-                      <li class="divider"></li>
-                      <li><a href="" data-ng-click="delete($index)">删除</a></li>
-                      <li><a href="" data-ng-click="remove($index)">作废</a></li>
-                    </ul>
-                  </div>
-                </td>
                 <td>
                   <a ng-bind="item.username" data-ng-click="view($index)"></a>
                 </td>
@@ -85,6 +69,22 @@
                   <label class="i-checks" style="width:50px;">
                     <input type="checkbox" disabled name="locked" ng-model="item.locked" data-ng-true-value="1" data-ng-false-value="0" data-ng-checked="item.locked==1"><i></i>
                   </label>
+                </td>
+                <td class="action">
+                  <div class="btn-group open" dropdown="">
+                    <button type="button" class="btn btn-sm btn-default" data-ng-click="view($index)">查看</button>
+                    <button type="button" class="btn btn-sm btn-default dropdown-toggle" dropdown-toggle>
+                      <span class="caret"></span>
+                      <span class="sr-only">Split button!</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="javascript:void(0)" data-ng-click="view($index)">查看</a></li>
+                      <li><a href="javascript:void(0)" data-ng-click="update($index)">修改</a></li>
+                      <li class="divider"></li>
+                      <li><a href="javascript:void(0)" data-ng-click="delete($index)">删除</a></li>
+                      <li><a href="javascript:void(0)" data-ng-click="remove($index)">作废</a></li>
+                    </ul>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -108,10 +108,10 @@
                   <span class="sr-only">Split button!</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="" data-ng-click="batchExport($index)">批量导出</a></li>
+                  <li><a href="javascript:void(0)" data-ng-click="batchExport($index)"><i class="fa fa-download">&nbsp;&nbsp;批量导出</i></a></li>
                   <li class="divider"></li>
-                  <li><a href="" data-ng-click="batchDelete($index)">批量删除</a></li>
-                  <li><a href="" data-ng-click="batchRemove($index)">批量作废</a></li>
+                  <li><a href="javascript:void(0)" data-ng-click="batchDelete($index)"><i class="fa fa-minus">&nbsp;&nbsp;批量删除</i></a></li>
+                  <li><a href="javascript:void(0)" data-ng-click="batchRemove($index)"><i class="fa fa-trash">&nbsp;&nbsp;批量作废</i></a></li>
                 </ul>
               </div>
             </div>
@@ -132,7 +132,7 @@
   <div class="modal-body">
     <div class="widget-body">
 
-      <form class="form-horizontal" ug-validate="userDetailForm" name="userDetailFormName" novalidate="">
+      <form class="form-horizontal" ug-validate="userDetailForm" name="userDetailFormName">
 
         <fieldset>
 
@@ -209,7 +209,10 @@
             <div class="col-md-10">
               <input class="form-control" required="true"
                      ng-disabled="pageSetting.formDisabled"
-                     data-rule-equalTo="#password" data-rule-minlength="6" data-rule-maxlength="20" ng-model="user.confirmPassword" name="confirmPassword_{{$index}}" placeholder="确认密码" type="password">
+                     data-rule-equalTo="#password"
+                     data-msg-equalTo="两次密码输入的不一致"
+                     data-rule-minlength="6" data-rule-maxlength="20"
+                     ng-model="user.confirmPassword" name="confirmPassword_{{$index}}" placeholder="确认密码" type="password">
             </div>
           </div>
           <div class="form-group">
@@ -234,11 +237,11 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" ng-disabled="pageSetting.formDisabled" type="submit" data-ng-click="saveUser()">
+    <button class="btn btn-primary" ng-disabled="pageSetting.formDisabled" ng-if="!pageSetting.formDisabled" type="submit" data-ng-click="saveUser()">
       <i class="fa fa-save"></i>
       保存
     </button>
-    <button class="btn btn-warning" ng-click="cancel()">
+    <button class="btn btn-default" ng-click="cancel()">
       <i class="icon icon-close"></i>
       关闭</button>
   </div>

@@ -21,11 +21,10 @@ define(["angularAMD"], function(angularAMD){
                     },
                     abstract: true
                 });
+
                 states.push({
                     name: 'app.dashboard',
                     url: '/dashboard',
-                    //templateUrl: 'modules/dashboard.html'
-                    controllerUrl: 'modules/dashboard.js',
                     views: {
                         'dashboard': {
                             controllerUrl: 'modules/dashboard.js',
@@ -33,6 +32,18 @@ define(["angularAMD"], function(angularAMD){
                         }
                     },
                     sticky: true
+                });
+
+                states.push( {
+                    title:"文档",
+                    name: 'app.documents',
+                    url: '/documents',
+                    templateUrl: 'modules/system/docs.html',
+                    resolve: {
+                        deps: ['$ocLazyLoad',function( $ocLazyLoad){
+                            return $ocLazyLoad.load('tpl/tools/directives/ui-scroll.js');
+                        }]
+                    }
                 });
 
                 angular.forEach(states, function(state){

@@ -27,7 +27,7 @@ define([
                 views: {
                     'user': angularAMD.route({
                         controller:user,
-                        controllerUrl: "modules/system/user.js",
+                        //controllerUrl: "modules/system/user.js",
                         templateUrl: 'modules/system/user.html'
                     })
                 },
@@ -36,7 +36,7 @@ define([
 
             angular.forEach(states, function(state){
                 $stateProvider.state(state.name, angularAMD.route(state));
-            })
+            });
         }
     ]);
 });

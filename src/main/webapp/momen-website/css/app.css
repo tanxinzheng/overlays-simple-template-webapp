@@ -5122,4 +5122,5 @@ a.text-#000000:hover {
 /** 错误提示 **/
 .error {
   color: red;
+  font-size: 10px;
 }

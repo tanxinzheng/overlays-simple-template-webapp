@@ -18,10 +18,9 @@ angular.module('xmomen.dialog', ["toaster"])
         return {
             alert : function(option){
                 var defaultConfig = {
+                    type: "info",
                     title : "提示",
-                    color : "#5384AF",
-                    timeout: 3000,
-                    icon : "fa fa-bell"
+                    timeout: 2000
                 };
                 if(!angular.isObject(option)){
                     option = {
@@ -30,14 +29,43 @@ angular.module('xmomen.dialog', ["toaster"])
                 }
                 //type, title, body, timeout, bodyOutputType, clickHandler)
                 angular.extend(defaultConfig, option);
-                toaster.pop("success", defaultConfig.title, defaultConfig.text);
+                toaster.pop(defaultConfig.type, defaultConfig.title, defaultConfig.text);
+            },
+            success : function(option){
+                var defaultConfig = {
+                    type: "success",
+                    title : "提示",
+                    timeout: 2000
+                };
+                if(!angular.isObject(option)){
+                    option = {
+                        text:option
+                    }
+                }
+                //type, title, body, timeout, bodyOutputType, clickHandler)
+                angular.extend(defaultConfig, option);
+                toaster.pop(defaultConfig.type, defaultConfig.title, defaultConfig.text);
+            },
+            error : function(option){
+                var defaultConfig = {
+                    type: "error",
+                    title : "提示",
+                    timeout: 2000
+                };
+                if(!angular.isObject(option)){
+                    option = {
+                        text:option
+                    }
+                }
+                //type, title, body, timeout, bodyOutputType, clickHandler)
+                angular.extend(defaultConfig, option);
+                toaster.pop(defaultConfig.type, defaultConfig.title, defaultConfig.text);
             },
             warn : function(option){
                 var defaultConfig = {
+                    type: "warning",
                     title:"警告",
-                    color : "#C46A69",
-                    icon : "fa fa-warning shake animated",
-                    timeout : 6000
+                    timeout : 2000
                 };
                 if(!angular.isObject(option)){
                     option = {
@@ -45,7 +73,7 @@ angular.module('xmomen.dialog', ["toaster"])
                     }
                 }
                 angular.extend(defaultConfig, option);
-                $.bigBox(defaultConfig);
+                toaster.pop(defaultConfig.type, defaultConfig.title, defaultConfig.text);
             },
             confirm: function (option) {
                 var deferred = $q.defer();

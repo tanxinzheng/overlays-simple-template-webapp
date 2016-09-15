@@ -11,13 +11,14 @@ define(function(){
         'ngResource',
         //'ngSanitize',
         //'ngTouch',
-
+        "toaster",
         'oc.lazyLoad', //懒加载包
         'pascalprecht.translate',
         'xmomen.ui',
         'ui.router',
         'ui.router.extras.tabs',
-        'user.module',
+
+        'config.module',
         "config.router",
         "config",
         "config.i18n"
