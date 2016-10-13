@@ -24,7 +24,7 @@ define(function(){
             });
         };
         // 全选
-        $scope.checkAll = function(){
+        $scope.checkAll = function(a){
             if(!$scope.userList){
                 return;
             }

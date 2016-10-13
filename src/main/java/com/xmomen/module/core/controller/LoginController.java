@@ -2,6 +2,7 @@ package com.xmomen.module.core.controller;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.security.auth.login.AccountLockedException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -34,9 +36,11 @@ public class LoginController {
         String exceptionClassName = (String)request.getAttribute("shiroLoginFailure");
         String error = null;
         if(UnknownAccountException.class.getName().equals(exceptionClassName)) {
-            error = "用户名/密码错误";
+            error = "用户名或密码错误";
+        } else if(LockedAccountException.class.getName().equals(exceptionClassName)) {
+            error = "此账号已被冻结，请联系客服。";
         } else if(IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
-            error = "用户名/密码错误";
+            error = "用户名或密码错误";
         } else if(exceptionClassName != null) {
             error = "其他错误：" + exceptionClassName;
         }

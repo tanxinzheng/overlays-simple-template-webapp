@@ -3,9 +3,9 @@ package com.xmomen.module.user.controller;
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.web.exceptions.ArgumentValidException;
 //import com.xmomen.module.logger.Log;
-import com.xmomen.module.user.model.CreateUser;
-import com.xmomen.module.user.model.QueryUser;
-import com.xmomen.module.user.model.UpdateUser;
+import com.xmomen.module.user.model.UserCreate;
+import com.xmomen.module.user.model.UserQuery;
+import com.xmomen.module.user.model.UserUpdate;
 import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-9-11 18:43:01
+ * @date    2016-10-13 0:13:58
  * @version 1.0.0
  */
 @RestController
@@ -44,12 +44,12 @@ public class UserController {
                                   @RequestParam(value = "ids", required = false) String[] ids,
                                   @RequestParam(value = "excludeIds", required = false) String[] excludeIds,
                                   @RequestParam(value = "keyword", required = false) String keyword){
-        QueryUser queryUser = new QueryUser();
-        queryUser.setId(id);
-        queryUser.setExcludeIds(excludeIds);
-        queryUser.setIds(ids);
-        queryUser.setKeyword(keyword);
-        return userService.getUserModelPage(limit, offset, queryUser);
+        UserQuery userQuery = new UserQuery();
+        userQuery.setId(id);
+        userQuery.setExcludeIds(excludeIds);
+        userQuery.setIds(ids);
+        userQuery.setKeyword(keyword);
+        return userService.getUserModelPage(limit, offset, userQuery);
     }
 
     /**
@@ -71,11 +71,11 @@ public class UserController {
      */
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     //@Log(actionName = "新增用户")
-    public UserModel createUser(@RequestBody @Valid CreateUser createUser, BindingResult bindingResult) throws ArgumentValidException {
+    public UserModel createUser(@RequestBody @Valid UserCreate userCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
             throw new ArgumentValidException(bindingResult);
         }
-        return userService.createUser(createUser);
+        return userService.createUser(userCreate);
     }
 
     /**
@@ -88,11 +88,11 @@ public class UserController {
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     //@Log(actionName = "更新用户")
     public void updateUser(@PathVariable(value = "id") String id,
-                           @RequestBody @Valid UpdateUser updateUser, BindingResult bindingResult) throws ArgumentValidException {
+                           @RequestBody @Valid UserUpdate userUpdate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
             throw new ArgumentValidException(bindingResult);
         }
-        userService.updateUser(updateUser);
+        userService.updateUser(userUpdate);
     }
 
     /**

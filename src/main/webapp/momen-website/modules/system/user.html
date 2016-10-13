@@ -38,10 +38,8 @@
                 <label class="i-checks m-b-none">
                   <input type="checkbox"
                          name="checkAll"
-                         data-ng-checked="checkAll()"
-                         ng-model="pageSetting.checkAll"
-                         data-ng-true-value="true"
-                         data-ng-false-value="false"><i></i>
+                         data-ng-change="checkAll()"
+                         ng-model="pageSetting.checkAll"><i></i>
                 </label>
               </th>
               <th>用户名</th>
@@ -56,9 +54,9 @@
                   <label class="i-checks m-b-none">
                     <input type="checkbox"
                            ng-model="item.checked"
-                           data-ng-checked="item.checked==1"
-                           data-ng-true-value="1"
-                           data-ng-false-value="0"><i></i>
+                           data-ng-checked="item.checked"
+                           data-ng-true-value="true"
+                           data-ng-false-value="false"><i></i>
                   </label>
                 </td>
                 <td>

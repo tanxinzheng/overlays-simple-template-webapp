@@ -1,9 +1,9 @@
 package com.xmomen.module.user.service;
 
 import com.xmomen.framework.mybatis.page.Page;
-import com.xmomen.module.user.model.CreateUser;
-import com.xmomen.module.user.model.QueryUser;
-import com.xmomen.module.user.model.UpdateUser;
+import com.xmomen.module.user.model.UserCreate;
+import com.xmomen.module.user.model.UserQuery;
+import com.xmomen.module.user.model.UserUpdate;
 import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.entity.User;
 import org.apache.ibatis.exceptions.TooManyResultsException;
@@ -13,17 +13,17 @@ import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-9-11 18:43:01
+ * @date    2016-10-13 0:13:58
  * @version 1.0.0
  */
 public interface UserService {
 
     /**
      * 新增用户
-     * @param  createUser   新增用户对象参数
+     * @param  userCreate   新增用户对象参数
      * @return  UserModel    用户领域对象
      */
-    public UserModel createUser(CreateUser createUser);
+    public UserModel createUser(UserCreate userCreate);
 
     /**
      * 新增用户实体对象
@@ -34,9 +34,9 @@ public interface UserService {
 
     /**
      * 更新用户
-     * @param updateUser    更新用户对象参数
+     * @param userUpdate    更新用户对象参数
      */
-    public void updateUser(UpdateUser updateUser);
+    public void updateUser(UserUpdate userUpdate);
 
     /**
      * 更新用户实体对象
@@ -53,12 +53,12 @@ public interface UserService {
 
     /**
      * 查询用户领域分页对象（带参数条件）
-     * @param queryUser 查询参数
+     * @param userQuery 查询参数
      * @param limit     每页最大数
      * @param offset    页码
      * @return Page<UserModel>   用户参数对象
      */
-    public Page<UserModel> getUserModelPage(int limit, int offset, QueryUser queryUser);
+    public Page<UserModel> getUserModelPage(int limit, int offset, UserQuery userQuery);
 
     /**
      * 查询用户领域分页对象（无参数条件）
@@ -70,10 +70,10 @@ public interface UserService {
 
     /**
      * 查询用户领域集合对象（带参数条件）
-     * @param queryUser 查询参数对象
+     * @param userQuery 查询参数对象
      * @return List<UserModel> 用户领域集合对象
      */
-    public List<UserModel> getUserModelList(QueryUser queryUser);
+    public List<UserModel> getUserModelList(UserQuery userQuery);
 
     /**
      * 查询用户领域集合对象（无参数条件）
@@ -97,8 +97,8 @@ public interface UserService {
 
     /**
      * 根据查询参数查询单个对象（此方法只用于提供精确查询单个对象，若结果数超过1，则会报错）
-     * @param queryUser 用户查询参数对象
+     * @param userQuery 用户查询参数对象
      * @return UserModel 用户领域对象
      */
-    public UserModel getOneUserModel(QueryUser queryUser) throws TooManyResultsException;
+    public UserModel getOneUserModel(UserQuery userQuery) throws TooManyResultsException;
 }

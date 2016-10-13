@@ -29,6 +29,8 @@
     "angular-animate": "^1.5.8",
     "angular-cookies": "^1.5.8",
     "requirejs": "^2.2.0",
-    "angularAMD": "^0.2.1"
+    "angularAMD": "^0.2.1",
+    "require-css": "^0.1.8",
+    "jquery-validation": "jquery.validate#^1.13.0"
   }
 }
