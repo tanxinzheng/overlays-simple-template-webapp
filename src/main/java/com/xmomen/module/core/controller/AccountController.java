@@ -1,6 +1,7 @@
 package com.xmomen.module.core.controller;
 
-import com.xmomen.module.core.model.AccountSetting;
+import com.xmomen.module.core.model.AccountModel;
+import com.xmomen.module.core.service.AccountService;
 import com.xmomen.module.permission.service.PermissionService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -21,25 +22,25 @@ public class AccountController {
     @Autowired
     PermissionService permissionService;
 
-    //@Autowired
-    //UserService userService;
+    @Autowired
+    AccountService accountService;
 
     /**
      * 用户设置
      * @return
      */
-//    @RequestMapping(value = "/account/setting", method = RequestMethod.GET)
-//    public AccountSetting accountSetting(){
-//        AccountSetting accountSettingDto = new AccountSetting();
-//        Subject subject = SecurityUtils.getSubject();
-//        if(subject == null){
-//            return null;
-//        }
-//        String username = subject.getPrincipal().toString();
-//        accountSettingDto.setUsername(username);
-//        Set<String> roles = permissionService.findRoles(username);
-//        return accountSettingDto;
-//    }
+    @RequestMapping(value = "/account", method = RequestMethod.GET)
+    public AccountModel accountSetting(){
+        Subject subject = SecurityUtils.getSubject();
+        if(subject == null){
+            return null;
+        }
+        String username = subject.getPrincipal().toString();
+        AccountModel accountModel = accountService.getAccountByUsername(username);
+        //Set<String> roles = permissionService.findRoles(username);
+
+        return accountModel;
+    }
 //
 //    /**
 //     * 用户修改密码

@@ -44,23 +44,48 @@
 
         <javaTypeResolver type="com.xmomen.maven.plugins.mybatis.generator.plugins.types.JavaTypeResolverDefaultImplExt"></javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.xmomen.module.user.entity"
+        <javaModelGenerator targetPackage="com.xmomen.module.system.entity"
                             targetProject="./src/main/java" >
             <property name="rootClass" value="com.xmomen.framework.mybatis.model.BaseMybatisModel" />
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="com.xmomen.module.user.entity.mapper"
+        <sqlMapGenerator targetPackage="com.xmomen.module.system.entity.mapper"
                          targetProject="./src/main/java" />
-        <javaClientGenerator targetPackage="com.xmomen.module.user.entity.mapper"
+        <javaClientGenerator targetPackage="com.xmomen.module.system.entity.mapper"
                              targetProject="./src/main/java" type="XMLMAPPER" >
         </javaClientGenerator>
-        <table tableName="user" domainObjectName="User">
-            <property name="tableComment" value="用户" />
-            <property name="modulePackage" value="com.xmomen.module.user" />
-            <property name="moduleName" value="user" />
+        <table tableName="sys_dictionary" domainObjectName="Dictionary">
+            <property name="tableComment" value="数据字典" />
+            <property name="modulePackage" value="com.xmomen.module.system" />
+            <property name="moduleName" value="system" />
             <property name="targetWebModuleDir" value="./momen-website/modules" />
             <generatedKey column="id" sqlStatement="SELECT replace(UUID(),'-','')" />
         </table>
+        <table tableName="sys_dictionary_group" domainObjectName="DictionaryGroup">
+            <property name="tableComment" value="数据字典组" />
+            <property name="modulePackage" value="com.xmomen.module.system" />
+            <property name="moduleName" value="system" />
+            <property name="targetWebModuleDir" value="./momen-website/modules" />
+            <generatedKey column="id" sqlStatement="SELECT replace(UUID(),'-','')" />
+        </table>
+
+        <!--<javaModelGenerator targetPackage="com.xmomen.module.user.entity"-->
+                            <!--targetProject="./src/main/java" >-->
+            <!--<property name="rootClass" value="com.xmomen.framework.mybatis.model.BaseMybatisModel" />-->
+        <!--</javaModelGenerator>-->
+
+        <!--<sqlMapGenerator targetPackage="com.xmomen.module.user.entity.mapper"-->
+                         <!--targetProject="./src/main/java" />-->
+        <!--<javaClientGenerator targetPackage="com.xmomen.module.user.entity.mapper"-->
+                             <!--targetProject="./src/main/java" type="XMLMAPPER" >-->
+        <!--</javaClientGenerator>-->
+        <!--<table tableName="user" domainObjectName="User">-->
+            <!--<property name="tableComment" value="用户" />-->
+            <!--<property name="modulePackage" value="com.xmomen.module.user" />-->
+            <!--<property name="moduleName" value="user" />-->
+            <!--<property name="targetWebModuleDir" value="./momen-website/modules" />-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(UUID(),'-','')" />-->
+        <!--</table>-->
 
     </context>
 </generatorConfiguration>

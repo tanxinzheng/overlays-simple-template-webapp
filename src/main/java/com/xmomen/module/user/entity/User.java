@@ -47,9 +47,9 @@ public class User extends BaseMybatisModel {
     private String phoneNumber;
 
     /**
-     * 锁定状态
+     * 禁用
      */
-    private Integer isLock;
+    private Boolean isLock;
 
     @Column(name = "ID")
     @Id
@@ -152,11 +152,11 @@ public class User extends BaseMybatisModel {
     }
 
     @Column(name = "IS_LOCK")
-    public Integer getIsLock() {
+    public Boolean getIsLock() {
         return isLock;
     }
 
-    public void setIsLock(Integer isLock) {
+    public void setIsLock(Boolean isLock) {
         this.isLock = isLock;
         if(isLock == null){
               removeValidField("isLock");

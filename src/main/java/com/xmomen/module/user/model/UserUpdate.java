@@ -4,13 +4,13 @@ import lombok.Data;
 import com.xmomen.module.user.entity.User;
 import org.springframework.beans.BeanUtils;
 
-    import java.lang.Integer;
+    import java.lang.Boolean;
     import java.lang.String;
 import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-13 0:13:58
+ * @date    2016-10-15 11:16:29
  * @version 1.0.0
  */
 public @Data class UserUpdate implements Serializable {
@@ -22,7 +22,7 @@ public @Data class UserUpdate implements Serializable {
     private String password;
     private String email;
     private String phoneNumber;
-    private Integer isLock;
+    private Boolean isLock;
 
 
     public User getEntity(){

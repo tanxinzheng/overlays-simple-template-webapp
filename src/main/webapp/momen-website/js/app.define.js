@@ -18,7 +18,7 @@ define(function(){
         'ui.router',
         'ui.router.extras.tabs',
 
-        'config.module',
+        'app.module',
         "config.router",
         "config",
         "config.i18n"

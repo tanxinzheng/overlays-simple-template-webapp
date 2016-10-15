@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-13 0:13:58
+ * @date    2016-10-15 11:16:29
  * @version 1.0.0
  */
 public @Data class UserQuery implements Serializable {

@@ -1,175 +1,114 @@
 /**
- * Created by Jeng on 2016/1/8.
+ * Created by tanxinzheng on 16/7/3.
  */
-define(function () {
-    return ["$scope", "DictionaryGroupAPI", "DictionaryAPI", "$modal", "$dialog", function($scope, DictionaryGroupAPI, DictionaryAPI, $modal, $ugDialog){
-        $scope.dictionaryGroupList = [];
+define(function(){
+    return ["$scope", "$modal", "DictionaryAPI", "$dialog", function($scope, $modal, DictionaryAPI, $dialog){
+        $scope.pageSetting = {
+            checkAll : false
+        };
         $scope.pageInfoSetting = {
             pageSize:10,
             pageNum:1
         };
         $scope.queryParam = {};
-        $scope.currentDictionaryGroup;
-        $scope.choiceGroup = function(index){
-            $scope.currentDictionaryGroup = $scope.dictionaryGroupList[index];
-            $scope.getDictionaryList();
-        };
-        $scope.getDictionaryGroupList = function(){
-            DictionaryGroupAPI.query({
-                limit:$scope.pageInfoSetting.pageSize,
-                offset:$scope.pageInfoSetting.pageNum,
-                keyword:$scope.queryParam.keyword
-            }, function(data){
-                $scope.dictionaryGroupList = data.data;
-                $scope.pageInfoSetting = data.pageInfo;
-                $scope.pageInfoSetting.loadData = $scope.getDictionaryGroupList;
-            });
-        };
-        $scope.removeDictionaryGroup = function(index){
-            $ugDialog.confirm("是否删除此数据字典？").then(function(){
-                DictionaryGroupAPI.delete({
-                    id: $scope.dictionaryGroupList[index].id
-                }, function(){
-                    $scope.getDictionaryGroupList();
-                });
-            })
-        };
-        $scope.updateDictionaryGroup = function(index){
-            $scope.open(angular.copy($scope.dictionaryGroupList[index]));
-        };
-        $scope.open = function (dictionaryGroup) {
-            var modalInstance = $modal.open({
-                templateUrl: 'addDictionaryGroup.html',
-                resolve: {
-                    CurrentDictionaryGroup: function(){
-                        return dictionaryGroup;
-                    }
-                },
-                controller: ["$scope", "DictionaryGroupAPI", "CurrentDictionaryGroup", "$modalInstance", function ($scope, DictionaryGroupAPI, CurrentDictionaryGroup, $modalInstance) {
-                    $scope.dictionaryGroup = {};
-                    if(CurrentDictionaryGroup){
-                        $scope.dictionaryGroup = CurrentDictionaryGroup;
-                    }
-                    $scope.errors = null;
-                    $scope.addDictionaryGroupForm = {};
-                    $scope.saveDictionaryGroup = function(){
-                        $scope.errors = null;
-                        if($scope.addDictionaryGroupForm.validator.form()){
-                            if($scope.dictionaryGroup.id){
-                                DictionaryGroupAPI.update($scope.dictionaryGroup, function(){
-                                    $modalInstance.close();
-                                }, function(data){
-                                    $scope.errors = data.data;
-                                })
-                            }else{
-                                DictionaryGroupAPI.save($scope.dictionaryGroup, function(){
-                                    $modalInstance.close();
-                                }, function(data){
-                                    $scope.errors = data.data;
-                                })
-                            }
-                        }
-                    };
-                    $scope.cancel = function () {
-                        $modalInstance.dismiss('cancel');
-                    };
-                }]
-            });
-            modalInstance.result.then(function () {
-                $scope.getDictionaryGroupList();
-            });
-        };
-
-        $scope.getDictionaryGroupList();
-
-
-        $scope.dictionaryList = [];
-        $scope.childPageInfoSetting = {
-            pageSize:10,
-            pageNum:1
-        };
-        $scope.dictionaryQueryParam = {};
+        // 查询列表
         $scope.getDictionaryList = function(){
             DictionaryAPI.query({
-                group_id:$scope.currentDictionaryGroup.id,
-                limit:$scope.childPageInfoSetting.pageSize,
-                offset:$scope.childPageInfoSetting.pageNum,
-                keyword:$scope.dictionaryQueryParam.keyword
+                keyword: $scope.queryParam.keyword,
+                limit: 10,
+                offset: 1
             }, function(data){
                 $scope.dictionaryList = data.data;
-                $scope.childPageInfoSetting = data.pageInfo;
-                $scope.childPageInfoSetting.loadData = $scope.getDictionaryList;
+                $scope.pageInfoSetting = data.pageInfo;
+                $scope.pageInfoSetting.loadData = $scope.getDictionaryList;
             });
         };
-        $scope.removeDictionary = function(index){
-            $ugDialog.confirm("是否删除此数据字典？").then(function(){
-                DictionaryAPI.delete({
-                    group_id:$scope.currentDictionaryGroup.id,
-                    id: $scope.dictionaryList[index].id
-                }, function(){
-                    $scope.getDictionaryList();
-                });
-            })
-        };
-        $scope.updateDictionary = function(index){
-            $scope.openChild(angular.copy($scope.dictionaryList[index]));
-        };
-        $scope.openChild = function (dictionary) {
-            if(!$scope.currentDictionaryGroup){
-                $ugDialog.alert("请选择一项数据字典组");
+        // 全选
+        $scope.checkAll = function(a){
+            if(!$scope.dictionaryList){
                 return;
             }
-            var modalInstance = $modal.open({
-                templateUrl: 'addDictionary.html',
+            var num = 0;
+            for (var i = 0; i < $scope.dictionaryList.length; i++) {
+                if($scope.dictionaryList[i].checked){
+                    num++;
+                }
+            }
+            if($scope.dictionaryList && $scope.dictionaryList.length > 0 && num == $scope.dictionaryList.length){
+                $scope.pageSetting.checkAll = true;
+            }else{
+                $scope.pageSetting.checkAll = false;
+            }
+        };
+        // 新增
+        $scope.add = function(index){
+            $scope.openModal(index, "ADD");
+        };
+        // 查看
+        $scope.view = function(index){
+            $scope.openModal(index, "VIEW");
+        };
+        // 修改
+        $scope.update = function(index){
+            $scope.openModal(index, "UPDATE");
+        };
+        // 弹出
+        $scope.openModal = function(index, action){
+            $modal.open({
+                templateUrl: 'dictionary_detail.html',
+                modal:true,
                 resolve: {
-                    CurrentDictionary: function(){
-                        if(dictionary){
-                            dictionary.sysDictionaryId = $scope.currentDictionaryGroup.id;
-                            dictionary.groupDesc = $scope.currentDictionaryGroup.dictionaryDesc;
-                        }else{
-                            dictionary = {
-                                sysDictionaryId : $scope.currentDictionaryGroup.id,
-                                groupDesc : $scope.currentDictionaryGroup.dictionaryDesc
-                            };
+                    Params: function () {
+                        var params = {
+                            action: action
+                        };
+                        if($scope.dictionaryList[index] && $scope.dictionaryList[index].id){
+                            params.id = $scope.dictionaryList[index].id;
                         }
-                        return dictionary;
+                        return params;
                     }
                 },
-                controller: ["$scope", "DictionaryAPI", "CurrentDictionary", "$modalInstance", function ($scope, DictionaryAPI, CurrentDictionary, $modalInstance) {
-                    $scope.dictionary = {};
-                    if(CurrentDictionary){
-                        $scope.dictionary = CurrentDictionary;
+                controller: ['$scope', '$modalInstance', "$modal", "DictionaryAPI", "Params", function($scope, $modalInstance, $modal, DictionaryAPI, Params){
+                    //$scope.dictionary = null;
+                    $scope.pageSetting = {
+                        formDisabled : true
+                    };
+                    if(Params.action == "UPDATE" || Params.action == "ADD"){
+                        $scope.pageSetting.formDisabled = false;
                     }
-                    $scope.errors = null;
-                    $scope.addDictionaryForm = {};
+                    if(Params && Params.id){
+                        $scope.dictionary = DictionaryAPI.get({
+                            id: Params.id
+                        });
+                    }else{
+                        $scope.dictionary = new DictionaryAPI();
+                    }
+                    $scope.dictionaryDetailForm = {};
                     $scope.saveDictionary = function(){
-                        $scope.errors = null;
-                        if($scope.addDictionaryForm.validator.form()){
-                            if($scope.dictionary.id){
-                                DictionaryAPI.update($scope.dictionary, function(){
-                                    $modalInstance.close();
-                                }, function(data){
-                                    $scope.errors = data.data;
-                                })
-                            }else{
-                                DictionaryAPI.save($scope.dictionary, function(){
-                                    $modalInstance.close();
-                                }, function(data){
-                                    $scope.errors = data.data;
-                                })
-                            }
+                        if($scope.dictionaryDetailForm.validator.form()){
+                            $scope.dictionary.$save(function(){
+                                $modalInstance.close();
+                            });
                         }
                     };
-                    $scope.cancel = function () {
-                        $modalInstance.dismiss('cancel');
+                    $scope.cancel = function(){
+                        $modalInstance.dismiss();
                     };
                 }]
-            });
-            modalInstance.result.then(function () {
+            }).result.then(function () {
+                $scope.getDictionaryList();
+            }, function () {
                 $scope.getDictionaryList();
             });
         };
-
-
-    }];
+        $scope.delete = function(index){
+            DictionaryAPI.delete({id:$scope.dictionaryList[index].id}, function(){
+                $scope.getDictionaryList();
+            });
+        };
+        var init = function(){
+            $scope.getDictionaryList();
+        };
+        init();
+    }]
 });

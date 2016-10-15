@@ -14,7 +14,7 @@
         <a href class="dropdown-toggle hidden-folded" dropdown-toggle>
           <span class="clear">
             <span class="block m-t-sm">
-              <strong class="font-bold text-lt">John.Smith</strong> 
+              <strong class="font-bold text-lt" ng-bind="Account.nickname"></strong>
               <b class="caret"></b>
             </span>
             <span class="text-muted text-xs block">Art Director</span>
@@ -43,7 +43,7 @@
           </li>
           <li class="divider"></li>
           <li>
-            <a ui-sref="access.signin">Logout</a>
+            <a ng-href="{{app.logout}}">退出</a>
           </li>
         </ul>
         <!-- / dropdown -->

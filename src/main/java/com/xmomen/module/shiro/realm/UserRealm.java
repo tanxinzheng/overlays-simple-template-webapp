@@ -3,6 +3,8 @@ package com.xmomen.module.shiro.realm;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.service.AccountService;
 import com.xmomen.module.permission.service.PermissionService;
+import com.xmomen.module.user.entity.User;
+import com.xmomen.module.user.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -42,21 +44,21 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
         String username = (String)token.getPrincipal();
-        AccountModel account = accountService.getAccountByUsername(username);
+        User user = accountService.getUserByUsername(username);
 
-        if(account == null) {
+        if(user == null) {
             throw new UnknownAccountException();//没找到帐号
         }
 
-        if(Boolean.TRUE.equals(account.getLocked())) {
+        if(user.getIsLock()) {
             throw new LockedAccountException(); //帐号锁定
         }
 
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 username, //用户名
-                account.getPassword(), //密码
-                ByteSource.Util.bytes(account.getSalt()),//salt=salt
+                user.getPassword(), //密码
+                ByteSource.Util.bytes(user.getSalt()),//salt=salt
                 getName()  //realm name
         );
         return authenticationInfo;

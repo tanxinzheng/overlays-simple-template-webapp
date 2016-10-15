@@ -17,7 +17,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-13 0:13:58
+ * @date    2016-10-15 11:16:29
  * @version 1.0.0
  */
 @RestController
@@ -34,7 +34,7 @@ public class UserController {
      * @param   ids             主键数组
      * @param   excludeIds      不包含主键数组
      * @param   keyword         关键字
-     * @return  Page<UserModel>      用户领域分页对象
+     * @return  Page<UserModel> 用户领域分页对象
      */
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     //@Log(actionName = "查询用户列表")
@@ -54,8 +54,8 @@ public class UserController {
 
     /**
      * 查询单个用户
-     * @param   id      主键
-     * @return  UserModel    用户领域对象
+     * @param   id  主键
+     * @return  UserModel   用户领域对象
      */
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     //@Log(actionName = "查询用户")
@@ -65,9 +65,9 @@ public class UserController {
 
     /**
      * 新增用户
-     * @param   createUser          新增对象参数
-     * @param   bindingResult       参数校验结果
-     * @return  UserModel                用户领域对象
+     * @param   UserCreate  新增对象参数
+     * @param   bindingResult   参数校验结果
+     * @return  UserModel   用户领域对象
      */
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     //@Log(actionName = "新增用户")
@@ -81,7 +81,7 @@ public class UserController {
     /**
      * 更新用户
      * @param id                            主键
-     * @param updateUser                    更新对象参数
+     * @param UserUpdate 更新对象参数
      * @param bindingResult                 参数校验结果
      * @throws ArgumentValidException       参数校验异常类
      */
@@ -102,8 +102,7 @@ public class UserController {
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     //@Log(actionName = "删除单个用户")
     public void deleteUser(@PathVariable(value = "id") String id){
-        String[] ids = {id};
-        userService.deleteUser(ids);
+        userService.deleteUser(id);
     }
 
     /**

@@ -4,9 +4,11 @@
  * Config for the router
  */
 define([
-    "modules/system/user_module"
+    "modules/system/dictionary.module",
+    "modules/system/dictionary_group.module"
 ],function(){
     angular.module('system.module',[
-        "user.module"
+        "dictionary.module",
+        "dictionary_group.module"
     ]);
 });

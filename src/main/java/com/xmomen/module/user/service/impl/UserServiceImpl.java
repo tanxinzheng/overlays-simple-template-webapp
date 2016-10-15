@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-13 0:13:58
+ * @date    2016-10-15 11:16:29
  * @version 1.0.0
  */
 @Service
@@ -92,6 +92,17 @@ public class UserServiceImpl implements UserService {
         UserExample userExample = new UserExample();
         userExample.createCriteria().andIdIn(Arrays.asList((String[]) ids));
         mybatisDao.deleteByExample(userExample);
+    }
+
+    /**
+    * 删除用户
+    *
+    * @param id 主键
+    */
+    @Override
+    @Transactional
+    public void deleteUser(String id) {
+        mybatisDao.deleteByPrimaryKey(User.class, id);
     }
 
     /**

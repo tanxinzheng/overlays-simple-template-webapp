@@ -605,52 +605,62 @@ public class UserExample extends BaseMybatisExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsLockEqualTo(Integer value) {
+        public Criteria andIsLockEqualTo(Boolean value) {
             addCriterion("IS_LOCK =", value, "isLock");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockNotEqualTo(Integer value) {
+        public Criteria andIsLockNotEqualTo(Boolean value) {
             addCriterion("IS_LOCK <>", value, "isLock");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockGreaterThan(Integer value) {
+        public Criteria andIsLockGreaterThan(Boolean value) {
             addCriterion("IS_LOCK >", value, "isLock");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockGreaterThanOrEqualTo(Integer value) {
+        public Criteria andIsLockGreaterThanOrEqualTo(Boolean value) {
             addCriterion("IS_LOCK >=", value, "isLock");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockLessThan(Integer value) {
+        public Criteria andIsLockLessThan(Boolean value) {
             addCriterion("IS_LOCK <", value, "isLock");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockLessThanOrEqualTo(Integer value) {
+        public Criteria andIsLockLessThanOrEqualTo(Boolean value) {
             addCriterion("IS_LOCK <=", value, "isLock");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockIn(List<Integer> values) {
+        public Criteria andIsLockLike(Boolean value) {
+            addCriterion("IS_LOCK like", value, "isLock");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsLockNotLike(Boolean value) {
+            addCriterion("IS_LOCK not like", value, "isLock");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsLockIn(List<Boolean> values) {
             addCriterion("IS_LOCK in", values, "isLock");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockNotIn(List<Integer> values) {
+        public Criteria andIsLockNotIn(List<Boolean> values) {
             addCriterion("IS_LOCK not in", values, "isLock");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockBetween(Integer value1, Integer value2) {
+        public Criteria andIsLockBetween(Boolean value1, Boolean value2) {
             addCriterion("IS_LOCK between", value1, value2, "isLock");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockNotBetween(Integer value1, Integer value2) {
+        public Criteria andIsLockNotBetween(Boolean value1, Boolean value2) {
             addCriterion("IS_LOCK not between", value1, value2, "isLock");
             return (Criteria) this;
         }
