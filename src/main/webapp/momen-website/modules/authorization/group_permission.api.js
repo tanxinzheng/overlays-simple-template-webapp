@@ -5,6 +5,13 @@ define(function () {
     return angular.module("GroupPermission.REST",[
         "ngResource"
     ]).factory("GroupPermissionAPI", ["Resource", function(Resource){
-        return Resource("/groupPermission/:id", { id:"@id" });
+        var resource = Resource("/groupPermission/:id", { id:"@id" });
+        resource.export = function(data, success, error){
+            if(!data.url){
+                data.url = "/groupPermission/report";
+            }
+            resource.$export(data, success, error);
+        };
+        return resource;
     }]);
 });

@@ -5,6 +5,13 @@ define(function () {
     return angular.module("UserGroup.REST",[
         "ngResource"
     ]).factory("UserGroupAPI", ["Resource", function(Resource){
-        return Resource("/userGroup/:id", { id:"@id" });
+        var resource = Resource("/userGroup/:id", { id:"@id" });
+        resource.export = function(data, success, error){
+            if(!data.url){
+                data.url = "/userGroup/report";
+            }
+            resource.$export(data, success, error);
+        };
+        return resource;
     }]);
 });

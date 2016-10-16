@@ -8,16 +8,21 @@ import com.xmomen.module.system.model.DictionaryGroupQuery;
 import com.xmomen.module.system.model.DictionaryGroupUpdate;
 import com.xmomen.module.system.model.DictionaryGroupModel;
 import com.xmomen.module.system.service.DictionaryGroupService;
+import org.jeecgframework.poi.excel.entity.ExportParams;
+import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-16 20:34:14
+ * @date    2016-10-17 0:24:57
  * @version 1.0.0
  */
 @RestController
@@ -114,5 +119,35 @@ public class DictionaryGroupController {
     public void deleteDictionaryGroups(@RequestParam(value = "ids") String[] ids){
         dictionaryGroupService.deleteDictionaryGroup(ids);
     }
+
+    /**
+    * 导出
+    * @param id
+    * @param ids
+    * @param excludeIds
+    * @param keyword
+    * @param modelMap
+    * @return
+    */
+    @RequestMapping(value="/dictionaryGroup/report", method = RequestMethod.GET)
+    public ModelAndView exportDictionaryGroup(
+            @RequestParam(value = "id", required = false) String id,
+            @RequestParam(value = "ids", required = false) String[] ids,
+            @RequestParam(value = "excludeIds", required = false) String[] excludeIds,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            ModelMap modelMap) {
+        DictionaryGroupQuery dictionaryGroupQuery = new DictionaryGroupQuery();
+        dictionaryGroupQuery.setId(id);
+        dictionaryGroupQuery.setExcludeIds(excludeIds);
+        dictionaryGroupQuery.setIds(ids);
+        dictionaryGroupQuery.setKeyword(keyword);
+        List<DictionaryGroupModel> dictionaryGroupList = dictionaryGroupService.getDictionaryGroupModelList(dictionaryGroupQuery);
+        modelMap.put(NormalExcelConstants.FILE_NAME, "数据字典组信息");
+        modelMap.put(NormalExcelConstants.PARAMS, new ExportParams());
+        modelMap.put(NormalExcelConstants.CLASS, DictionaryGroupModel.class);
+        modelMap.put(NormalExcelConstants.DATA_LIST, dictionaryGroupList);
+        return new ModelAndView(NormalExcelConstants.JEECG_EXCEL_VIEW);
+    }
+
 
 }

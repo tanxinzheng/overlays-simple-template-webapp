@@ -2,11 +2,11 @@ package com.xmomen.module.system.mapper;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-16 20:34:14
+ * @date    2016-10-17 0:24:57
  * @version 1.0.0
  */
 public interface DictionaryMapperExt {
 
-    String DictionaryMapperNameSpace = "com.xmomen.module.system.mapper.DictionaryMapperExt.";
+    public static final String DictionaryMapperNameSpace = "com.xmomen.module.system.mapper.DictionaryMapperExt.";
 
 }

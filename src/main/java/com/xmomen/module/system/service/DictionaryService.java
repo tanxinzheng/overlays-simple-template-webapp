@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-16 20:34:14
+ * @date    2016-10-17 0:24:57
  * @version 1.0.0
  */
 public interface DictionaryService {
@@ -23,39 +23,39 @@ public interface DictionaryService {
      * @param  dictionaryCreate   新增数据字典对象参数
      * @return  DictionaryModel    数据字典领域对象
      */
-    DictionaryModel createDictionary(DictionaryCreate dictionaryCreate);
+    public DictionaryModel createDictionary(DictionaryCreate dictionaryCreate);
 
     /**
      * 新增数据字典实体对象
      * @param   dictionary 新增数据字典实体对象参数
      * @return  Dictionary 数据字典实体对象
      */
-    Dictionary createDictionary(Dictionary dictionary);
+    public Dictionary createDictionary(Dictionary dictionary);
 
     /**
      * 更新数据字典
      * @param dictionaryUpdate    更新数据字典对象参数
      */
-    void updateDictionary(DictionaryUpdate dictionaryUpdate);
+    public void updateDictionary(DictionaryUpdate dictionaryUpdate);
 
     /**
      * 更新数据字典实体对象
      * @param   dictionary 新增数据字典实体对象参数
      * @return  Dictionary 数据字典实体对象
      */
-    void updateDictionary(Dictionary dictionary);
+    public void updateDictionary(Dictionary dictionary);
 
     /**
      * 批量删除数据字典
      * @param ids   主键数组
      */
-    void deleteDictionary(String[] ids);
+    public void deleteDictionary(String[] ids);
 
     /**
      * 删除数据字典
      * @param id   主键
      */
-    void deleteDictionary(String id);
+    public void deleteDictionary(String id);
 
     /**
      * 查询数据字典领域分页对象（带参数条件）
@@ -64,7 +64,7 @@ public interface DictionaryService {
      * @param offset    页码
      * @return Page<DictionaryModel>   数据字典参数对象
      */
-    Page<DictionaryModel> getDictionaryModelPage(int limit, int offset, DictionaryQuery dictionaryQuery);
+    public Page<DictionaryModel> getDictionaryModelPage(int limit, int offset, DictionaryQuery dictionaryQuery);
 
     /**
      * 查询数据字典领域分页对象（无参数条件）
@@ -72,39 +72,39 @@ public interface DictionaryService {
      * @param offset 页码
      * @return Page<DictionaryModel> 数据字典领域对象
      */
-    Page<DictionaryModel> getDictionaryModelPage(int limit, int offset);
+    public Page<DictionaryModel> getDictionaryModelPage(int limit, int offset);
 
     /**
      * 查询数据字典领域集合对象（带参数条件）
      * @param dictionaryQuery 查询参数对象
      * @return List<DictionaryModel> 数据字典领域集合对象
      */
-    List<DictionaryModel> getDictionaryModelList(DictionaryQuery dictionaryQuery);
+    public List<DictionaryModel> getDictionaryModelList(DictionaryQuery dictionaryQuery);
 
     /**
      * 查询数据字典领域集合对象（无参数条件）
      * @return List<DictionaryModel> 数据字典领域集合对象
      */
-    List<DictionaryModel> getDictionaryModelList();
+    public List<DictionaryModel> getDictionaryModelList();
 
     /**
      * 查询数据字典实体对象
      * @param id 主键
      * @return Dictionary 数据字典实体对象
      */
-    Dictionary getOneDictionary(String id);
+    public Dictionary getOneDictionary(String id);
 
     /**
      * 根据主键查询单个对象
      * @param id 主键
      * @return DictionaryModel 数据字典领域对象
      */
-    DictionaryModel getOneDictionaryModel(String id);
+    public DictionaryModel getOneDictionaryModel(String id);
 
     /**
      * 根据查询参数查询单个对象（此方法只用于提供精确查询单个对象，若结果数超过1，则会报错）
      * @param dictionaryQuery 数据字典查询参数对象
      * @return DictionaryModel 数据字典领域对象
      */
-    DictionaryModel getOneDictionaryModel(DictionaryQuery dictionaryQuery) throws TooManyResultsException;
+    public DictionaryModel getOneDictionaryModel(DictionaryQuery dictionaryQuery) throws TooManyResultsException;
 }

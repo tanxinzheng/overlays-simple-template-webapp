@@ -2,7 +2,7 @@
  * Created by tanxinzheng on 16/7/3.
  */
 define(function(){
-    return ["$scope", "$modal", "GroupPermissionAPI", "$dialog", function($scope, $modal, GroupPermissionAPI, $dialog){
+    return ["$scope", "$modal", "${domainObjectClassName}API", "$dialog", function($scope, $modal, ${domainObjectClassName}API, $dialog){
         $scope.pageSetting = {
             checkAll : false
         };
@@ -12,39 +12,39 @@ define(function(){
         };
         $scope.queryParam = {};
         // 查询列表
-        $scope.getGroupPermissionList = function(){
-            GroupPermissionAPI.query({
+        $scope.get${domainObjectClassName}List = function(){
+            ${domainObjectClassName}API.query({
                 keyword: $scope.queryParam.keyword,
                 limit: $scope.pageInfoSetting.pageSize,
                 offset: $scope.pageInfoSetting.pageNum
             }, function(data){
-                $scope.groupPermissionList = data.data;
+                $scope.${domainObjectName}List = data.data;
                 $scope.pageInfoSetting = data.pageInfo;
-                $scope.pageInfoSetting.loadData = $scope.getGroupPermissionList;
+                $scope.pageInfoSetting.loadData = $scope.get${domainObjectClassName}List;
             });
         };
         // 全选
         $scope.checkAll = function(){
-            if(!$scope.groupPermissionList){
+            if(!$scope.${domainObjectName}List){
                 return;
             }
-            for (var i = 0; i < $scope.groupPermissionList.length; i++) {
-                $scope.groupPermissionList[i].checked = $scope.pageSetting.checkAll;
+            for (var i = 0; i < $scope.${domainObjectName}List.length; i++) {
+                $scope.${domainObjectName}List[i].checked = $scope.pageSetting.checkAll;
             }
         };
         // 子集控制全选
         $scope.changeItemChecked = function(){
-            if(!$scope.groupPermissionList){
+            if(!$scope.${domainObjectName}List){
                 return;
             }
             var num = 0;
-            for (var i = 0; i < $scope.groupPermissionList.length; i++) {
-                if($scope.groupPermissionList[i].checked){
+            for (var i = 0; i < $scope.${domainObjectName}List.length; i++) {
+                if($scope.${domainObjectName}List[i].checked){
                     num++;
                 }
             }
             // 子集勾选数量等于集合总数则勾选全选，否则取消全选
-            if(num == $scope.groupPermissionList.length){
+            if(num == $scope.${domainObjectName}List.length){
                 $scope.pageSetting.checkAll = true;
             }else{
                 $scope.pageSetting.checkAll = false;
@@ -65,21 +65,21 @@ define(function(){
         // 弹出
         $scope.openModal = function(index, action){
             $modal.open({
-                templateUrl: 'groupPermission_detail.html',
+                templateUrl: '${domainObjectName}_detail.html',
                 modal:true,
                 resolve: {
                     Params: function () {
                         var params = {
                             action: action
                         };
-                        if($scope.groupPermissionList[index] && $scope.groupPermissionList[index].id){
-                            params.id = $scope.groupPermissionList[index].id;
+                        if($scope.${domainObjectName}List[index] && $scope.${domainObjectName}List[index].id){
+                            params.id = $scope.${domainObjectName}List[index].id;
                         }
                         return params;
                     }
                 },
-                controller: ['$scope', '$modalInstance', "$modal", "GroupPermissionAPI", "Params", function($scope, $modalInstance, $modal, GroupPermissionAPI, Params){
-                    //$scope.groupPermission = null;
+                controller: ['$scope', '$modalInstance', "$modal", "${domainObjectClassName}API", "Params", function($scope, $modalInstance, $modal, ${domainObjectClassName}API, Params){
+                    //$scope.${domainObjectName} = null;
                     $scope.pageSetting = {
                         formDisabled : true
                     };
@@ -87,16 +87,16 @@ define(function(){
                         $scope.pageSetting.formDisabled = false;
                     }
                     if(Params && Params.id){
-                        $scope.groupPermission = GroupPermissionAPI.get({
+                        $scope.${domainObjectName} = ${domainObjectClassName}API.get({
                             id: Params.id
                         });
                     }else{
-                        $scope.groupPermission = new GroupPermissionAPI();
+                        $scope.${domainObjectName} = new ${domainObjectClassName}API();
                     }
-                    $scope.groupPermissionDetailForm = {};
-                    $scope.saveGroupPermission = function(){
-                        if($scope.groupPermissionDetailForm.validator.form()){
-                            $scope.groupPermission.$save(function(){
+                    $scope.${domainObjectName}DetailForm = {};
+                    $scope.save${domainObjectClassName} = function(){
+                        if($scope.${domainObjectName}DetailForm.validator.form()){
+                            $scope.${domainObjectName}.$save(function(){
                                 $modalInstance.close();
                             });
                         }
@@ -106,25 +106,25 @@ define(function(){
                     };
                 }]
             }).result.then(function () {
-                $scope.getGroupPermissionList();
+                $scope.get${domainObjectClassName}List();
             }, function () {
-                $scope.getGroupPermissionList();
+                $scope.get${domainObjectClassName}List();
             });
         };
         // 删除
         $scope.delete = function(index){
-            GroupPermissionAPI.delete({id:$scope.groupPermissionList[index].id}, function(){
-                $scope.getGroupPermissionList();
+            ${domainObjectClassName}API.delete({id:$scope.${domainObjectName}List[index].id}, function(){
+                $scope.get${domainObjectClassName}List();
             });
         };
         // 导出
         $scope.batchExport = function(){
-            GroupPermissionAPI.export({
+            ${domainObjectClassName}API.export({
                 data:{keyword: $scope.queryParam.keyword}
             });
         };
         var init = function(){
-            $scope.getGroupPermissionList();
+            $scope.get${domainObjectClassName}List();
         };
         init();
     }]

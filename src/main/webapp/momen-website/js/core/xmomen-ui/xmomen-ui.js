@@ -112,6 +112,26 @@ define([
                 })
             };
 
+            resource.$export = function(option, success, fail) {
+                $dialog.confirm("是否导出数据？").then(function(){
+                    var params = "";
+                    if(option && option.data){
+                        for(var p in option.data){
+                            if(option.data[p]){
+                                params += p + "=" + data[p] + "&";
+                            }
+                        }
+                        params = "?"+params;
+                    }
+                    var anchor = angular.element('<a/>');
+                    anchor.attr({
+                        href: option.url + params,
+                        target: '_blank'
+                    })[0].click();
+                    $dialog.success("已成功导出");
+                })
+            };
+
             return resource;
         };
     }]).config(["$ocLazyLoadProvider", "$xmomenUILazyLoadConfig", "$httpProvider", function($ocLazyLoadProvider,$xmomenUILazyLoadConfig, $httpProvider){

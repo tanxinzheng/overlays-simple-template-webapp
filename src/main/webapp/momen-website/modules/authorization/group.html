@@ -37,7 +37,7 @@
                                 <label class="i-checks m-b-none">
                                     <input type="checkbox"
                                            name="checkAll"
-                                           data-ng-change="checkAll()"
+                                           data-ng-click="checkAll()"
                                            ng-model="pageSetting.checkAll"><i></i>
                                 </label>
                             </th>
@@ -54,6 +54,7 @@
                                 <label class="i-checks m-b-none">
                                     <input type="checkbox"
                                            ng-model="item.checked"
+                                           data-ng-click="changeItemChecked()"
                                            data-ng-checked="item.checked"
                                            data-ng-true-value="true"
                                            data-ng-false-value="false"><i></i>
@@ -90,7 +91,6 @@
                                         <li><a href="javascript:void(0)" data-ng-click="update($index)">修改</a></li>
                                         <li class="divider"></li>
                                         <li><a href="javascript:void(0)" data-ng-click="delete($index)">删除</a></li>
-                                        <li><a href="javascript:void(0)" data-ng-click="remove($index)">作废</a></li>
                                     </ul>
                                 </div>
                             </td>
@@ -111,7 +111,7 @@
                             <label class="i-checks m-b-none">
                                 <input type="checkbox"
                                        name="checkAll"
-                                       data-ng-checked="checkAll()"
+                                       data-ng-click="checkAll()"
                                        ng-model="pageSetting.checkAll"
                                        data-ng-true-value="true"
                                        data-ng-false-value="false"><i></i>
@@ -126,7 +126,6 @@
                                     <li><a href="javascript:void(0)" data-ng-click="batchExport($index)"><i class="fa fa-download">&nbsp;&nbsp;批量导出</i></a></li>
                                     <li class="divider"></li>
                                     <li><a href="javascript:void(0)" data-ng-click="batchDelete($index)"><i class="fa fa-minus">&nbsp;&nbsp;批量删除</i></a></li>
-                                    <li><a href="javascript:void(0)" data-ng-click="batchRemove($index)"><i class="fa fa-trash">&nbsp;&nbsp;批量作废</i></a></li>
                                 </ul>
                             </div>
                         </div>

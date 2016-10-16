@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-16 20:34:14
+ * @date    2016-10-17 0:24:57
  * @version 1.0.0
  */
 @Service
@@ -90,7 +90,7 @@ public class DictionaryGroupServiceImpl implements DictionaryGroupService {
     @Transactional
     public void deleteDictionaryGroup(String[] ids) {
         DictionaryGroupExample dictionaryGroupExample = new DictionaryGroupExample();
-        dictionaryGroupExample.createCriteria().andIdIn(Arrays.asList((String[]) ids));
+        dictionaryGroupExample.createCriteria().andIdIn(Arrays.<String>asList((String[]) ids));
         mybatisDao.deleteByExample(dictionaryGroupExample);
     }
 

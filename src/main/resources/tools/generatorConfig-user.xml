@@ -13,18 +13,26 @@
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorUpdateModelPlugin" />
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorServicePlugin" />
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorServiceImplPlugin" />
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorControllerPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorControllerPlugin" >
+            <property name="template" value="./src/main/resources/template/controller.ftl" />
+        </plugin>
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorMapperJavaPlugin" />
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorMapperXmlPlugin" />
 
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorJsApiPlugin" />
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorListJsPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorJsApiPlugin" >
+            <property name="template" value="./src/main/resources/template/js-api.ftl" />
+        </plugin>
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorListJsPlugin" >
+            <property name="template" value="./src/main/resources/template/list-js.ftl" />
+        </plugin>
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorListHtmlPlugin" >
             <property name="template" value="./src/main/resources/template/list-html.ftl" />
         </plugin>
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorJsNgModulePlugin" />
 
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorModelPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorModelPlugin" >
+            <property name="template" value="./src/main/resources/template/model.ftl" />
+        </plugin>
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.ModelCommentPlugin" />
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.ModelAnnotationPlugin" />
 

@@ -5,6 +5,13 @@ define(function () {
     return angular.module("Permission.REST",[
         "ngResource"
     ]).factory("PermissionAPI", ["Resource", function(Resource){
-        return Resource("/permission/:id", { id:"@id" });
+        var resource = Resource("/permission/:id", { id:"@id" });
+        resource.export = function(data, success, error){
+            if(!data.url){
+                data.url = "/permission/report";
+            }
+            resource.$export(data, success, error);
+        };
+        return resource;
     }]);
 });

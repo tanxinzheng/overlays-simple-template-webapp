@@ -2,13 +2,13 @@
  * Created by Jeng on 2016/1/28.
  */
 define(function () {
-    return angular.module("Dictionary.REST",[
+    return angular.module("${domainObjectClassName}.REST",[
         "ngResource"
-    ]).factory("DictionaryAPI", ["Resource", function(Resource){
-        var resource = Resource("/dictionary/:id", { id:"@id" });
+    ]).factory("${domainObjectClassName}API", ["Resource", function(Resource){
+        var resource = Resource("/${restMapping}/:id", { id:"@id" });
         resource.export = function(data, success, error){
             if(!data.url){
-                data.url = "/dictionary/report";
+                data.url = "/${restMapping}/report";
             }
             resource.$export(data, success, error);
         };

@@ -8,16 +8,21 @@ import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.model.DictionaryUpdate;
 import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.service.DictionaryService;
+import org.jeecgframework.poi.excel.entity.ExportParams;
+import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-16 20:34:14
+ * @date    2016-10-17 0:24:57
  * @version 1.0.0
  */
 @RestController
@@ -114,5 +119,35 @@ public class DictionaryController {
     public void deleteDictionarys(@RequestParam(value = "ids") String[] ids){
         dictionaryService.deleteDictionary(ids);
     }
+
+    /**
+    * 导出
+    * @param id
+    * @param ids
+    * @param excludeIds
+    * @param keyword
+    * @param modelMap
+    * @return
+    */
+    @RequestMapping(value="/dictionary/report", method = RequestMethod.GET)
+    public ModelAndView exportDictionary(
+            @RequestParam(value = "id", required = false) String id,
+            @RequestParam(value = "ids", required = false) String[] ids,
+            @RequestParam(value = "excludeIds", required = false) String[] excludeIds,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            ModelMap modelMap) {
+        DictionaryQuery dictionaryQuery = new DictionaryQuery();
+        dictionaryQuery.setId(id);
+        dictionaryQuery.setExcludeIds(excludeIds);
+        dictionaryQuery.setIds(ids);
+        dictionaryQuery.setKeyword(keyword);
+        List<DictionaryModel> dictionaryList = dictionaryService.getDictionaryModelList(dictionaryQuery);
+        modelMap.put(NormalExcelConstants.FILE_NAME, "数据字典信息");
+        modelMap.put(NormalExcelConstants.PARAMS, new ExportParams());
+        modelMap.put(NormalExcelConstants.CLASS, DictionaryModel.class);
+        modelMap.put(NormalExcelConstants.DATA_LIST, dictionaryList);
+        return new ModelAndView(NormalExcelConstants.JEECG_EXCEL_VIEW);
+    }
+
 
 }

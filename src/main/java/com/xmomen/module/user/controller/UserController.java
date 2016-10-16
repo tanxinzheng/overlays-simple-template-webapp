@@ -8,16 +8,21 @@ import com.xmomen.module.user.model.UserQuery;
 import com.xmomen.module.user.model.UserUpdate;
 import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.service.UserService;
+import org.jeecgframework.poi.excel.entity.ExportParams;
+import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-16 20:34:14
+ * @date    2016-10-17 0:24:57
  * @version 1.0.0
  */
 @RestController
@@ -114,5 +119,35 @@ public class UserController {
     public void deleteUsers(@RequestParam(value = "ids") String[] ids){
         userService.deleteUser(ids);
     }
+
+    /**
+    * 导出
+    * @param id
+    * @param ids
+    * @param excludeIds
+    * @param keyword
+    * @param modelMap
+    * @return
+    */
+    @RequestMapping(value="/user/report", method = RequestMethod.GET)
+    public ModelAndView exportUser(
+            @RequestParam(value = "id", required = false) String id,
+            @RequestParam(value = "ids", required = false) String[] ids,
+            @RequestParam(value = "excludeIds", required = false) String[] excludeIds,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            ModelMap modelMap) {
+        UserQuery userQuery = new UserQuery();
+        userQuery.setId(id);
+        userQuery.setExcludeIds(excludeIds);
+        userQuery.setIds(ids);
+        userQuery.setKeyword(keyword);
+        List<UserModel> userList = userService.getUserModelList(userQuery);
+        modelMap.put(NormalExcelConstants.FILE_NAME, "用户信息");
+        modelMap.put(NormalExcelConstants.PARAMS, new ExportParams());
+        modelMap.put(NormalExcelConstants.CLASS, UserModel.class);
+        modelMap.put(NormalExcelConstants.DATA_LIST, userList);
+        return new ModelAndView(NormalExcelConstants.JEECG_EXCEL_VIEW);
+    }
+
 
 }

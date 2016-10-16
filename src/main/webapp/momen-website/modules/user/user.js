@@ -24,7 +24,16 @@ define(function(){
             });
         };
         // 全选
-        $scope.checkAll = function(a){
+        $scope.checkAll = function(){
+            if(!$scope.userList){
+                return;
+            }
+            for (var i = 0; i < $scope.userList.length; i++) {
+                $scope.userList[i].checked = $scope.pageSetting.checkAll;
+            }
+        };
+        // 子集控制全选
+        $scope.changeItemChecked = function(){
             if(!$scope.userList){
                 return;
             }
@@ -34,7 +43,8 @@ define(function(){
                     num++;
                 }
             }
-            if($scope.userList && $scope.userList.length > 0 && num == $scope.userList.length){
+            // 子集勾选数量等于集合总数则勾选全选，否则取消全选
+            if(num == $scope.userList.length){
                 $scope.pageSetting.checkAll = true;
             }else{
                 $scope.pageSetting.checkAll = false;
@@ -101,9 +111,16 @@ define(function(){
                 $scope.getUserList();
             });
         };
+        // 删除
         $scope.delete = function(index){
             UserAPI.delete({id:$scope.userList[index].id}, function(){
                 $scope.getUserList();
+            });
+        };
+        // 导出
+        $scope.batchExport = function(){
+            UserAPI.export({
+                data:{keyword: $scope.queryParam.keyword}
             });
         };
         var init = function(){

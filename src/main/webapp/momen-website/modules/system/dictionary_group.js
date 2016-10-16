@@ -24,7 +24,16 @@ define(function(){
             });
         };
         // 全选
-        $scope.checkAll = function(a){
+        $scope.checkAll = function(){
+            if(!$scope.dictionaryGroupList){
+                return;
+            }
+            for (var i = 0; i < $scope.dictionaryGroupList.length; i++) {
+                $scope.dictionaryGroupList[i].checked = $scope.pageSetting.checkAll;
+            }
+        };
+        // 子集控制全选
+        $scope.changeItemChecked = function(){
             if(!$scope.dictionaryGroupList){
                 return;
             }
@@ -34,7 +43,8 @@ define(function(){
                     num++;
                 }
             }
-            if($scope.dictionaryGroupList && $scope.dictionaryGroupList.length > 0 && num == $scope.dictionaryGroupList.length){
+            // 子集勾选数量等于集合总数则勾选全选，否则取消全选
+            if(num == $scope.dictionaryGroupList.length){
                 $scope.pageSetting.checkAll = true;
             }else{
                 $scope.pageSetting.checkAll = false;
@@ -101,9 +111,16 @@ define(function(){
                 $scope.getDictionaryGroupList();
             });
         };
+        // 删除
         $scope.delete = function(index){
             DictionaryGroupAPI.delete({id:$scope.dictionaryGroupList[index].id}, function(){
                 $scope.getDictionaryGroupList();
+            });
+        };
+        // 导出
+        $scope.batchExport = function(){
+            DictionaryGroupAPI.export({
+                data:{keyword: $scope.queryParam.keyword}
             });
         };
         var init = function(){
