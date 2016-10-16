@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "sys_dictionary_group")
+@Table(name = "xmo_dictionary_group")
 public class DictionaryGroup extends BaseMybatisModel {
     /**
      * 

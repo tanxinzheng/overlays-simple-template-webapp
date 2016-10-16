@@ -20,6 +20,7 @@ define(function(){
 
         'app.module',
         "config.router",
+        "config.lazyload",
         "config",
         "config.i18n"
     ]);

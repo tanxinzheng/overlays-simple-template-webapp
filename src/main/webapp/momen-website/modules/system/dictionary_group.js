@@ -15,8 +15,8 @@ define(function(){
         $scope.getDictionaryGroupList = function(){
             DictionaryGroupAPI.query({
                 keyword: $scope.queryParam.keyword,
-                limit: 10,
-                offset: 1
+                limit: $scope.pageInfoSetting.pageSize,
+                offset: $scope.pageInfoSetting.pageNum
             }, function(data){
                 $scope.dictionaryGroupList = data.data;
                 $scope.pageInfoSetting = data.pageInfo;

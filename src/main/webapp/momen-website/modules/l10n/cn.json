@@ -45,13 +45,13 @@
         "FORM_VALIDATION" : "Form validation",
         "FORM_WIZARD" : "Form wizard"
       },
-      "CHART" : "Chart",
+      "CHART" : "图表",
       "pages" : {
-        "PAGES" : "Pages",
-        "PROFILE" : "Profile",
+        "PAGES" : "页面",
+        "PROFILE" : "简介",
         "POST" : "Post",
-        "SEARCH" : "Search",
-        "INVOICE" : "Invoice",
+        "SEARCH" : "搜索",
+        "INVOICE" : "发票",
         "LOCK_SCREEN" : "锁屏",
         "SIGNIN" : "登入",
         "SIGNUP" : "注销",
@@ -60,9 +60,10 @@
       }
     },
     "your_stuff" : {
-      "YOUR_STUFF": "Your Stuff",
-      "PROFILE" : "Profile",
-      "DOCUMENTS" : "文档"
+      "YOUR_STUFF": "我的资料",
+      "PROFILE" : "简介",
+      "DOCUMENTS" : "文档",
+      "MEDIA_HUB" : "媒体库"
     }
   },
   "MILESTONE" : "里程杯",

@@ -1,10 +1,7 @@
 package com.xmomen.module.shiro.realm;
 
-import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.service.AccountService;
-import com.xmomen.module.permission.service.PermissionService;
 import com.xmomen.module.user.entity.User;
-import com.xmomen.module.user.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -20,14 +17,8 @@ public class UserRealm extends AuthorizingRealm {
 
     private AccountService accountService;
 
-    private PermissionService permissionService;
-
     public void setAccountService(AccountService accountService) {
         this.accountService = accountService;
-    }
-
-    public void setPermissionService(PermissionService permissionService) {
-        this.permissionService = permissionService;
     }
 
     @Override
@@ -35,8 +26,8 @@ public class UserRealm extends AuthorizingRealm {
         String username = (String)principals.getPrimaryPrincipal();
 
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        authorizationInfo.setRoles(permissionService.findRoles(username));
-        authorizationInfo.setStringPermissions(permissionService.findPermissions(username));
+        authorizationInfo.setRoles(accountService.findRoles(username));
+        authorizationInfo.setStringPermissions(accountService.findPermissions(username));
         return authorizationInfo;
     }
 

@@ -6,7 +6,7 @@
     <select id="getUserModel"
             resultType="com.xmomen.module.user.model.UserModel"
             parameterType="com.xmomen.module.user.model.UserQuery">
-        SELECT * FROM user t
+        SELECT * FROM xmo_user t
         <where>
             <if test="keyword">
                 AND t.ID LIKE CONCAT('%', #{keyword}, '%')

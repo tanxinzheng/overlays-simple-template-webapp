@@ -1,20 +1,12 @@
+'use strict';
 /**
- * Created by Jeng on 2015/12/17.
+ * dialog框架
  */
-/*jshint globalstrict:true*/
-/*global angular:false*/
-(function(){
-    // Create global xmg obj and its namespaces
-    // build processes may have already created an xmg obj
-    window.ug = window.ug || {};
-    window.ug.version = '1.0.0';
-(function(angular){
-    'use strict';
-    /**
-     * dialog框架
-     */
-angular.module('xmomen.dialog', ["toaster"])
-    .factory("$dialog", ["$q","toaster","$modal", function ($q, toaster, $modal) {
+define(["toaster","ui-bootstrap-tpls"], function(toaster){
+    return angular.module('xmomen.dialog', [
+        "toaster",
+        "ui.bootstrap"
+    ]).factory("$dialog", ["$q","toaster","$modal", function ($q, toaster, $modal) {
         return {
             alert : function(option){
                 var defaultConfig = {
@@ -115,5 +107,4 @@ angular.module('xmomen.dialog', ["toaster"])
             }
         }
     }])
-}(angular));
-})();
+});

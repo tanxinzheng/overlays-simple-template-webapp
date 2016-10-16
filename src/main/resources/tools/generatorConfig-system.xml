@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+    <context id="context1"
+             targetRuntime="com.xmomen.maven.plugins.mybatis.generator.context.IntrospectedTableMyBatis3ImplExt">
+
+        <property name="targetWebDir" value="./src/main/webapp" />
+        <property name="targetWebModuleDir" value="./momen-website/modules" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorQueryModelPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorCreateModelPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorUpdateModelPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorServicePlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorServiceImplPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorControllerPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorMapperJavaPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorMapperXmlPlugin" />
+
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorJsApiPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorListJsPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorListHtmlPlugin" >
+            <property name="template" value="./src/main/resources/template/list-html.ftl" />
+        </plugin>
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorJsNgModulePlugin" />
+
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorModelPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.ModelCommentPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.ModelAnnotationPlugin" />
+
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.MapperGeneratorPlugin">
+            <property name="rootInterface" value="com.xmomen.framework.mybatis.mapper.MybatisMapper"/>
+        </plugin>
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.ModelExamplePlugin" >
+            <property name="rootClass" value="com.xmomen.framework.mybatis.model.BaseMybatisExample" />
+        </plugin>
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.MapperSqlMapGeneratorPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.PrimaryKeyGeneratorPlugin" />
+        <commentGenerator>
+            <property name="suppressAllComments" value="true" />
+            <property name="suppressDate" value="true" />
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.99.100:3306/xmomen_dev?useUnicode=true&amp;characterEncoding=UTF-8"
+                        userId="admin" password="admin" />
+
+        <javaTypeResolver type="com.xmomen.maven.plugins.mybatis.generator.plugins.types.JavaTypeResolverDefaultImplExt"></javaTypeResolver>
+
+        <!-- #########  自定义配置   #########-->
+
+        <javaModelGenerator targetPackage="com.xmomen.module.system.entity"
+                            targetProject="./src/main/java" >
+            <property name="rootClass" value="com.xmomen.framework.mybatis.model.BaseMybatisModel" />
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="com.xmomen.module.system.entity.mapper"
+                         targetProject="./src/main/java" />
+
+        <javaClientGenerator targetPackage="com.xmomen.module.system.entity.mapper"
+                             targetProject="./src/main/java" type="XMLMAPPER" >
+        </javaClientGenerator>
+
+        <table tableName="xmo_dictionary" domainObjectName="Dictionary">
+            <property name="tableComment" value="数据字典" />
+            <property name="modulePackage" value="com.xmomen.module.system" />
+            <property name="moduleName" value="system" />
+            <property name="targetWebModuleDir" value="./momen-website/modules" />
+            <generatedKey column="id" sqlStatement="SELECT replace(UUID(),'-','')" />
+        </table>
+        <table tableName="xmo_dictionary_group" domainObjectName="DictionaryGroup">
+            <property name="tableComment" value="数据字典组" />
+            <property name="modulePackage" value="com.xmomen.module.system" />
+            <property name="moduleName" value="system" />
+            <generatedKey column="id" sqlStatement="SELECT replace(UUID(),'-','')" />
+        </table>
+
+
+    </context>
+</generatorConfiguration>

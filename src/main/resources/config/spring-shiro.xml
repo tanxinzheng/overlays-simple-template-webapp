@@ -64,8 +64,6 @@
         <property name="cookie" ref="rememberMeCookie"/>
     </bean>
 
-    <bean id="permissionService" class="com.xmomen.module.permission.service.PermissionServiceImpl" />
-
     <bean id="accountService" class="com.xmomen.module.core.service.AccountService" />
 
     <!-- 安全管理器 -->
@@ -76,7 +74,6 @@
                 <!-- Realm实现 -->
                 <bean id="userRealm" class="com.xmomen.module.shiro.realm.UserRealm">
                     <property name="accountService" ref="accountService"/>
-                    <property name="permissionService" ref="permissionService" />
                     <property name="credentialsMatcher" ref="credentialsMatcher"/>
                     <property name="cachingEnabled" value="true"/>
                     <property name="authenticationCachingEnabled" value="true"/>

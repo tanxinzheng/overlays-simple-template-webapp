@@ -78,7 +78,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from user
+    from xmo_user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -87,7 +87,7 @@
     </if>
   </select>
   <delete id="deleteByExample" parameterType="com.xmomen.module.user.entity.UserExample" >
-    delete from user
+    delete from xmo_user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -96,7 +96,7 @@
     <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
       SELECT replace(UUID(),'-','')
     </selectKey>
-    insert into user
+    insert into xmo_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       ID,
       <if test="username != null" >
@@ -147,13 +147,13 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.xmomen.module.user.entity.UserExample" resultType="java.lang.Integer" >
-    select count(*) from user
+    select count(*) from xmo_user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update user
+    update xmo_user
     <set >
       <if test="record.id != null" >
         ID = #{record.id,jdbcType=VARCHAR},

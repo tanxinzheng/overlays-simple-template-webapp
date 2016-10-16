@@ -6,7 +6,7 @@
     <select id="getDictionaryGroupModel"
             resultType="com.xmomen.module.system.model.DictionaryGroupModel"
             parameterType="com.xmomen.module.system.model.DictionaryGroupQuery">
-        SELECT * FROM sys_dictionary_group t
+        SELECT * FROM xmo_dictionary_group t
         <where>
             <if test="keyword">
                 AND t.ID LIKE CONCAT('%', #{keyword}, '%')

@@ -3,10 +3,14 @@
  */
 define([
     "modules/app.api",
+    "modules/basic/basic.module",
     "modules/system/system.module",
-    "modules/user/user.module"
+    "modules/user/user.module",
+    "modules/authorization/authorization.module"
 ],function () {
     return angular.module("app.module", [
+        "basic.module",
+        "authorization.module",
         "system.module",
         "user.module",
         "App.REST"

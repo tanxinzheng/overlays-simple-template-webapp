@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "sys_dictionary")
+@Table(name = "xmo_dictionary")
 public class Dictionary extends BaseMybatisModel {
     /**
      * 主键

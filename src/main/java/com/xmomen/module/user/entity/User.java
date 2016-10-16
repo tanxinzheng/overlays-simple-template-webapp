@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "user")
+@Table(name = "xmo_user")
 public class User extends BaseMybatisModel {
     /**
      * 
@@ -42,7 +42,7 @@ public class User extends BaseMybatisModel {
     private String email;
 
     /**
-     * 手机号
+     * 手机号码
      */
     private String phoneNumber;
 

@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-15 14:41:37
+ * @date    2016-10-16 20:34:14
  * @version 1.0.0
  */
 public interface DictionaryGroupService {

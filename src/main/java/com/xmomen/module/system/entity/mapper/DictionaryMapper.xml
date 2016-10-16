@@ -78,7 +78,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from sys_dictionary
+    from xmo_dictionary
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -87,7 +87,7 @@
     </if>
   </select>
   <delete id="deleteByExample" parameterType="com.xmomen.module.system.entity.DictionaryExample" >
-    delete from sys_dictionary
+    delete from xmo_dictionary
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -96,7 +96,7 @@
     <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
       SELECT replace(UUID(),'-','')
     </selectKey>
-    insert into sys_dictionary
+    insert into xmo_dictionary
     <trim prefix="(" suffix=")" suffixOverrides="," >
       ID,
       <if test="dictionaryType != null" >
@@ -147,13 +147,13 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.xmomen.module.system.entity.DictionaryExample" resultType="java.lang.Integer" >
-    select count(*) from sys_dictionary
+    select count(*) from xmo_dictionary
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update sys_dictionary
+    update xmo_dictionary
     <set >
       <if test="record.id != null" >
         ID = #{record.id,jdbcType=VARCHAR},
