@@ -1,0 +1,110 @@
+package com.xmomen.module.authorization.entity;
+
+import com.xmomen.framework.mybatis.model.BaseMybatisModel;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+@Entity
+@Table(name = "xmo_permission")
+public class Permission extends BaseMybatisModel {
+    /**
+     * 主键
+     */
+    private String id;
+
+    /**
+     * 权限代码
+     */
+    private String permissionCode;
+
+    /**
+     * 权限名称
+     */
+    private String permissionName;
+
+    /**
+     * 权限描述
+     */
+    private String description;
+
+    /**
+     * 激活
+     */
+    private Boolean active;
+
+    @Column(name = "ID")
+    @Id
+    @GeneratedValue(generator = "UUIDGenerator")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+        if(id == null){
+              removeValidField("id");
+              return;
+        }
+        addValidField("id");
+    }
+
+    @Column(name = "PERMISSION_CODE")
+    public String getPermissionCode() {
+        return permissionCode;
+    }
+
+    public void setPermissionCode(String permissionCode) {
+        this.permissionCode = permissionCode;
+        if(permissionCode == null){
+              removeValidField("permissionCode");
+              return;
+        }
+        addValidField("permissionCode");
+    }
+
+    @Column(name = "PERMISSION_NAME")
+    public String getPermissionName() {
+        return permissionName;
+    }
+
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
+        if(permissionName == null){
+              removeValidField("permissionName");
+              return;
+        }
+        addValidField("permissionName");
+    }
+
+    @Column(name = "DESCRIPTION")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+        if(description == null){
+              removeValidField("description");
+              return;
+        }
+        addValidField("description");
+    }
+
+    @Column(name = "ACTIVE")
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+        if(active == null){
+              removeValidField("active");
+              return;
+        }
+        addValidField("active");
+    }
+}

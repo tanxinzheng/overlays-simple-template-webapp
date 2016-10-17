@@ -16,6 +16,7 @@ public @Data class ${domainObjectClassName}Create implements Serializable {
 
 <#if fieldList?exists>
     <#list fieldList as field>
+    /** ${field['fieldComment']} */
     private ${field['fieldType']} ${field['fieldName']};
     </#list>
 </#if>

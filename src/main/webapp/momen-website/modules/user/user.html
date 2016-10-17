@@ -43,8 +43,6 @@
                             </th>
                             <th>用户名</th>
                             <th>真实姓名</th>
-                            <th>密码盐值</th>
-                            <th>密码</th>
                             <th>邮箱</th>
                             <th>手机号码</th>
                             <th>禁用</th>
@@ -68,12 +66,6 @@
                             </td>
                             <td>
                                 <a ng-bind="item.nickname"></a>
-                            </td>
-                            <td>
-                                <a ng-bind="item.salt"></a>
-                            </td>
-                            <td>
-                                <a ng-bind="item.password"></a>
                             </td>
                             <td>
                                 <a ng-bind="item.email"></a>
@@ -183,34 +175,6 @@
                                                ng-disabled="pageSetting.formDisabled"
                                                data-rule-maxlength="20"
                                                ng-model="user.nickname">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">
-                                    密码盐值
-                                    <span class="vaild">*</span>
-                                </label>
-                                <div class="col-md-9">
-                                        <input class="form-control" type="text" name="salt" placeholder="请输入密码盐值"
-                                               ng-disabled="pageSetting.formDisabled"
-                                               data-msg-required="密码盐值必填"
-                                               required="true"
-                                               data-rule-maxlength="50"
-                                               ng-model="user.salt">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">
-                                    密码
-                                    <span class="vaild">*</span>
-                                </label>
-                                <div class="col-md-9">
-                                        <input class="form-control" type="text" name="password" placeholder="请输入密码"
-                                               ng-disabled="pageSetting.formDisabled"
-                                               data-msg-required="密码必填"
-                                               required="true"
-                                               data-rule-maxlength="50"
-                                               ng-model="user.password">
                                 </div>
                             </div>
                             <div class="form-group">

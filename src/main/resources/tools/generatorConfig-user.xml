@@ -71,6 +71,7 @@
             <property name="tableComment" value="用户" />
             <property name="modulePackage" value="com.xmomen.module.user" />
             <property name="moduleName" value="user" />
+            <property name="hideColumns" value="salt,password" />
             <generatedKey column="id" sqlStatement="SELECT replace(UUID(),'-','')" />
         </table>
 

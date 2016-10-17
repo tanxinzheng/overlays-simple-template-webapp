@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-17 0:24:57
+ * @date    2016-10-17 0:59:11
  * @version 1.0.0
  */
 @ExcelTarget(value = "UserModel")
@@ -27,10 +27,8 @@ public @Data class UserModel implements Serializable {
     @Excel(name = "真实姓名")
     private String nickname;
     /** 密码盐值 */
-    @Excel(name = "密码盐值")
     private String salt;
     /** 密码 */
-    @Excel(name = "密码")
     private String password;
     /** 邮箱 */
     @Excel(name = "邮箱")

@@ -20,7 +20,7 @@ public @Data class ${domainObjectClassName}Model implements Serializable {
 <#if fieldList?exists>
     <#list fieldList as field>
     /** ${field['fieldComment']} */
-    <#if !field.primaryKey>
+    <#if !field.primaryKey && !field.hide>
     @Excel(name = "${field['fieldComment']}")
     </#if>
     private ${field['fieldType']} ${field['fieldName']};

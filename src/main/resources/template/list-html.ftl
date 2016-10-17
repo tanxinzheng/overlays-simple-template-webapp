@@ -43,7 +43,7 @@
                             </th>
                         <#if fieldList?exists>
                             <#list fieldList as field>
-                                <#if !field.primaryKey>
+                                <#if !field.primaryKey && !field.hide>
                             <th>${field['fieldComment']}</th>
                                 </#if>
                             </#list>
@@ -65,7 +65,7 @@
                             </td>
                     <#if fieldList?exists>
                         <#list fieldList as field>
-                            <#if !field.primaryKey>
+                            <#if !field.primaryKey && !field.hide>
                             <td>
                             <#if field['fieldType'] = 'Boolean'>
                                 <label class="i-switch bg-primary m-t-xs m-r">
@@ -154,7 +154,7 @@
                 <fieldset>
                 <#if fieldList?exists>
                     <#list fieldList as field>
-                        <#if !field.primaryKey>
+                        <#if !field.primaryKey && !field.hide>
                             <div class="form-group">
                                 <label class="col-md-3 control-label">
                                     ${field['fieldComment']}
