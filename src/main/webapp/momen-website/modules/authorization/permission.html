@@ -21,7 +21,9 @@
                 <div class="row wrapper">
                     <div class="col-sm-3">
                         <div class="input-group">
-                            <input type="text" ng-model="queryParam.keyword" data-ng-keyup="getPermissionList()" class="input-sm form-control" placeholder="请输入关键字进行模糊查询">
+                            <input type="text" ng-model="queryParam.keyword"
+                                   data-ng-keyup="getPermissionList()"
+                                   class="input-sm form-control" placeholder="请输入关键字进行模糊查询">
               <span class="input-group-btn">
                 <button class="btn btn-sm btn-default" data-ng-click="getPermissionList()" type="button">查询</button>
                 <button class="btn btn-sm btn-default" data-ng-click="add()" type="button">新增</button>

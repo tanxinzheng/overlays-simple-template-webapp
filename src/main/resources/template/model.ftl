@@ -1,5 +1,6 @@
 package ${targetPackage};
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ${modulePackage}.entity.${domainObjectClassName};
 import lombok.Data;
 import org.jeecgframework.poi.excel.annotation.Excel;
@@ -26,7 +27,7 @@ public @Data class ${domainObjectClassName}Model implements Serializable {
     private ${field['fieldType']} ${field['fieldName']};
     </#list>
 </#if>
-
+    @JsonIgnore
     public ${domainObjectClassName} getEntity(){
         ${domainObjectClassName} ${domainObjectName} = new ${domainObjectClassName}();
         BeanUtils.copyProperties(this, ${domainObjectName});

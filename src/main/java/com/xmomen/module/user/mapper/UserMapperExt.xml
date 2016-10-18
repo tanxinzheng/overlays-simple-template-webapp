@@ -9,7 +9,10 @@
         SELECT * FROM xmo_user t
         <where>
             <if test="keyword">
-                AND t.ID LIKE CONCAT('%', #{keyword}, '%')
+                    AND (t.USERNAME LIKE CONCAT('%', #{keyword}, '%')
+                    OR t.NICKNAME LIKE CONCAT('%', #{keyword}, '%')
+                    OR t.EMAIL LIKE CONCAT('%', #{keyword}, '%')
+                    OR t.PHONE_NUMBER LIKE CONCAT('%', #{keyword}, '%'))
             </if>
             <if test="id">
                 AND t.ID = #{id}

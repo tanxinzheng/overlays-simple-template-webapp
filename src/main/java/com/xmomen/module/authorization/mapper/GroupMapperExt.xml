@@ -9,7 +9,9 @@
         SELECT * FROM xmo_group t
         <where>
             <if test="keyword">
-                AND t.ID LIKE CONCAT('%', #{keyword}, '%')
+                    AND (t.GROUP_CODE LIKE CONCAT('%', #{keyword}, '%')
+                    OR t.GROUP_NAME LIKE CONCAT('%', #{keyword}, '%')
+                    OR t.DESCRIPTION LIKE CONCAT('%', #{keyword}, '%'))
             </if>
             <if test="id">
                 AND t.ID = #{id}

@@ -5,10 +5,10 @@ define(function () {
     return angular.module("GroupPermission.REST",[
         "ngResource"
     ]).factory("GroupPermissionAPI", ["Resource", function(Resource){
-        var resource = Resource("/groupPermission/:id", { id:"@id" });
+        var resource = Resource("/group/permission/:id", { id:"@id" });
         resource.export = function(data, success, error){
             if(!data.url){
-                data.url = "/groupPermission/report";
+                data.url = "/group/permission/export";
             }
             resource.$export(data, success, error);
         };

@@ -5,10 +5,10 @@ define(function () {
     return angular.module("${domainObjectClassName}.REST",[
         "ngResource"
     ]).factory("${domainObjectClassName}API", ["Resource", function(Resource){
-        var resource = Resource("/${restMapping}/:id", { id:"@id" });
+        var resource = Resource("${restMapping}/:id", { id:"@id" });
         resource.export = function(data, success, error){
             if(!data.url){
-                data.url = "/${restMapping}/report";
+                data.url = "${restMapping}/export";
             }
             resource.$export(data, success, error);
         };

@@ -8,9 +8,26 @@
             parameterType="${modulePackage}.model.${domainObjectClassName}Query">
         SELECT * FROM ${tableName} t
         <where>
+        <#if keywordColumns?exists>
             <if test="keyword">
-                AND t.ID LIKE CONCAT('%', ${r"#{keyword}"}, '%')
+        <#list keywordColumns as keywordColumn>
+            <#if (keywordColumns?size=1) >
+                AND (t.${keywordColumn.actualColumnName} LIKE CONCAT('%', ${r"#{keyword}"}, '%'))
+            </#if>
+            <#if (keywordColumns?size>1) >
+                <#if keywordColumn_index = 0>
+                    AND (t.${keywordColumn.actualColumnName} LIKE CONCAT('%', ${r"#{keyword}"}, '%')
+                </#if>
+                <#if keywordColumn_index != 0 && keywordColumn_has_next>
+                    OR t.${keywordColumn.actualColumnName} LIKE CONCAT('%', ${r"#{keyword}"}, '%')
+                </#if>
+                <#if !keywordColumn_has_next>
+                    OR t.${keywordColumn.actualColumnName} LIKE CONCAT('%', ${r"#{keyword}"}, '%'))
+                </#if>
+            </#if>
+        </#list>
             </if>
+        </#if>
             <if test="id">
                 AND t.ID = ${r"#{id}"}
             </if>

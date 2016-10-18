@@ -8,16 +8,30 @@
 
         <property name="targetWebDir" value="./src/main/webapp" />
         <property name="targetWebModuleDir" value="./momen-website/modules" />
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorQueryModelPlugin" />
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorCreateModelPlugin" />
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorUpdateModelPlugin" />
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorServicePlugin" />
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorServiceImplPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorQueryModelPlugin"  >
+            <property name="template" value="./src/main/resources/template/queryModel.ftl" />
+        </plugin>
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorCreateModelPlugin"  >
+            <property name="template" value="./src/main/resources/template/createModel.ftl" />
+        </plugin>
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorUpdateModelPlugin"  >
+            <property name="template" value="./src/main/resources/template/updateModel.ftl" />
+        </plugin>
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorServicePlugin"  >
+            <property name="template" value="./src/main/resources/template/service.ftl" />
+        </plugin>
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorServiceImplPlugin"  >
+            <property name="template" value="./src/main/resources/template/serviceImpl.ftl" />
+        </plugin>
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorControllerPlugin" >
             <property name="template" value="./src/main/resources/template/controller.ftl" />
         </plugin>
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorMapperJavaPlugin" />
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorMapperXmlPlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorMapperJavaPlugin"  >
+            <property name="template" value="./src/main/resources/template/mapper.ftl" />
+        </plugin>
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorMapperXmlPlugin" >
+            <property name="template" value="./src/main/resources/template/mapper-xml.ftl" />
+        </plugin>
 
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorJsApiPlugin" >
             <property name="template" value="./src/main/resources/template/js-api.ftl" />
@@ -28,11 +42,14 @@
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorListHtmlPlugin" >
             <property name="template" value="./src/main/resources/template/list-html.ftl" />
         </plugin>
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorJsNgModulePlugin" />
+        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorJsNgModulePlugin"  >
+            <property name="template" value="./src/main/resources/template/js-module.ftl" />
+        </plugin>
 
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorModelPlugin" >
             <property name="template" value="./src/main/resources/template/model.ftl" />
         </plugin>
+
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.ModelCommentPlugin" />
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.ModelAnnotationPlugin" />
 
@@ -72,30 +89,35 @@
             <property name="tableComment" value="组" />
             <property name="modulePackage" value="com.xmomen.module.authorization" />
             <property name="moduleName" value="authorization" />
+            <property name="keywordColumns" value="GROUP_CODE,GROUP_NAME,DESCRIPTION" />
             <generatedKey column="id" sqlStatement="SELECT replace(UUID(),'-','')" />
         </table>
         <table tableName="xmo_user_group" domainObjectName="UserGroup">
             <property name="tableComment" value="用户组" />
             <property name="modulePackage" value="com.xmomen.module.authorization" />
             <property name="moduleName" value="authorization" />
+            <property name="restMapping" value="/user/group"/>
             <generatedKey column="id" sqlStatement="SELECT replace(UUID(),'-','')" />
         </table>
         <table tableName="xmo_group_permission" domainObjectName="GroupPermission">
             <property name="tableComment" value="组权限" />
             <property name="modulePackage" value="com.xmomen.module.authorization" />
             <property name="moduleName" value="authorization" />
+            <property name="restMapping" value="/group/permission"/>
             <generatedKey column="id" sqlStatement="SELECT replace(UUID(),'-','')" />
         </table>
         <table tableName="xmo_permission" domainObjectName="Permission">
             <property name="tableComment" value="权限" />
             <property name="modulePackage" value="com.xmomen.module.authorization" />
             <property name="moduleName" value="authorization" />
+            <property name="keywordColumns" value="PERMISSION_CODE,PERMISSION_NAME,DESCRIPTION" />
             <generatedKey column="id" sqlStatement="SELECT replace(UUID(),'-','')" />
         </table>
         <table tableName="xmo_user_permission" domainObjectName="UserPermission">
             <property name="tableComment" value="用户权限" />
             <property name="modulePackage" value="com.xmomen.module.authorization" />
             <property name="moduleName" value="authorization" />
+            <property name="restMapping" value="/user/permission"/>
             <generatedKey column="id" sqlStatement="SELECT replace(UUID(),'-','')" />
         </table>
 

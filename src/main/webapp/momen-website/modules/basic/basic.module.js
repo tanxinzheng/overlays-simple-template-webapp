@@ -31,7 +31,16 @@ define([
                             //    }
                             //);
                         }]
-                }
+                },
+                sticky: true
+            });
+            states.push({
+                title: "帐号",
+                //sticky: true,
+                name:"app.profile",
+                url: '/account/profile',
+                templateUrl: 'modules/basic/account_profile.html'
+                //controllerUrl: "modules/basic/file-upload.js",
             });
 
             angular.forEach(states, function(state){

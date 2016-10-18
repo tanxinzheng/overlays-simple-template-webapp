@@ -1,5 +1,6 @@
 package com.xmomen.module.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xmomen.module.user.entity.User;
 import lombok.Data;
 import org.jeecgframework.poi.excel.annotation.Excel;
@@ -12,7 +13,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-17 0:59:11
+ * @date    2016-10-18 23:09:38
  * @version 1.0.0
  */
 @ExcelTarget(value = "UserModel")
@@ -39,7 +40,7 @@ public @Data class UserModel implements Serializable {
     /** 禁用 */
     @Excel(name = "禁用")
     private Boolean isLock;
-
+    @JsonIgnore
     public User getEntity(){
         User user = new User();
         BeanUtils.copyProperties(this, user);

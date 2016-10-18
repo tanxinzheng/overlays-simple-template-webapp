@@ -2,7 +2,7 @@
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-17 0:59:11
+ * @date    2016-10-18 23:09:39
  * @version 1.0.0
  */
 define([
@@ -20,7 +20,7 @@ define([
             states.push({
                 title: "用户权限",
                 name: 'app.userPermission',
-                url: '/userPermission',
+                url: '//user/permission',
                 views: {
                     'userPermission': angularAMD.route({
                         controller: userPermission,

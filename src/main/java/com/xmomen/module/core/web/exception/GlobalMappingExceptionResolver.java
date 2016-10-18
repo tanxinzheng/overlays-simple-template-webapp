@@ -2,9 +2,7 @@ package com.xmomen.module.core.web.exception;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xmomen.framework.web.rest.RestError;
-import com.xmomen.module.core.web.WebCommonUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
+import com.xmomen.framework.web.rest.WebCommonUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.ModelAndView;

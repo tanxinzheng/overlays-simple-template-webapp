@@ -22,10 +22,11 @@ import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-17 0:59:11
+ * @date    2016-10-18 23:09:38
  * @version 1.0.0
  */
 @RestController
+@RequestMapping(value = "/user")
 public class UserController {
 
     @Autowired
@@ -35,20 +36,20 @@ public class UserController {
      * 用户列表
      * @param   limit           每页结果数
      * @param   offset          页码
+     * @param   keyword         关键字
      * @param   id              主键
      * @param   ids             主键数组
      * @param   excludeIds      不包含主键数组
-     * @param   keyword         关键字
      * @return  Page<UserModel> 用户领域分页对象
      */
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     //@Log(actionName = "查询用户列表")
     public Page<UserModel> getUserList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
+                                  @RequestParam(value = "keyword", required = false) String keyword,
                                   @RequestParam(value = "id", required = false) String id,
                                   @RequestParam(value = "ids", required = false) String[] ids,
-                                  @RequestParam(value = "excludeIds", required = false) String[] excludeIds,
-                                  @RequestParam(value = "keyword", required = false) String keyword){
+                                  @RequestParam(value = "excludeIds", required = false) String[] excludeIds){
         UserQuery userQuery = new UserQuery();
         userQuery.setId(id);
         userQuery.setExcludeIds(excludeIds);
@@ -62,7 +63,7 @@ public class UserController {
      * @param   id  主键
      * @return  UserModel   用户领域对象
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     //@Log(actionName = "查询用户")
     public UserModel getUserById(@PathVariable(value = "id") String id){
         return userService.getOneUserModel(id);
@@ -70,11 +71,11 @@ public class UserController {
 
     /**
      * 新增用户
-     * @param   UserCreate  新增对象参数
+     * @param   userCreate  新增对象参数
      * @param   bindingResult   参数校验结果
      * @return  UserModel   用户领域对象
      */
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     //@Log(actionName = "新增用户")
     public UserModel createUser(@RequestBody @Valid UserCreate userCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -86,11 +87,11 @@ public class UserController {
     /**
      * 更新用户
      * @param id                            主键
-     * @param UserUpdate 更新对象参数
+     * @param userUpdate 更新对象参数
      * @param bindingResult                 参数校验结果
      * @throws ArgumentValidException       参数校验异常类
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     //@Log(actionName = "更新用户")
     public void updateUser(@PathVariable(value = "id") String id,
                            @RequestBody @Valid UserUpdate userUpdate, BindingResult bindingResult) throws ArgumentValidException {
@@ -104,7 +105,7 @@ public class UserController {
      *  删除用户
      * @param id    主键
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     //@Log(actionName = "删除单个用户")
     public void deleteUser(@PathVariable(value = "id") String id){
         userService.deleteUser(id);
@@ -114,7 +115,7 @@ public class UserController {
      *  删除用户
      * @param ids    主键
      */
-    @RequestMapping(value = "/user", method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE)
     //@Log(actionName = "批量删除用户")
     public void deleteUsers(@RequestParam(value = "ids") String[] ids){
         userService.deleteUser(ids);
@@ -122,14 +123,14 @@ public class UserController {
 
     /**
     * 导出
-    * @param id
-    * @param ids
-    * @param excludeIds
-    * @param keyword
-    * @param modelMap
-    * @return
+    * @param id     主键
+    * @param ids    包含的主键数组
+    * @param excludeIds     排除的主键数组
+    * @param keyword    关键字
+    * @param modelMap   modelMap对象
+    * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
     */
-    @RequestMapping(value="/user/report", method = RequestMethod.GET)
+    @RequestMapping(value="/export", method = RequestMethod.GET)
     public ModelAndView exportUser(
             @RequestParam(value = "id", required = false) String id,
             @RequestParam(value = "ids", required = false) String[] ids,

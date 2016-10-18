@@ -1,9 +1,9 @@
 package com.xmomen.module.core.web.filter;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xmomen.framework.web.rest.WebCommonUtils;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.service.AccountService;
-import com.xmomen.module.core.web.WebCommonUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.subject.Subject;

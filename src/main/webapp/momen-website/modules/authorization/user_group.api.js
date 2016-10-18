@@ -5,10 +5,10 @@ define(function () {
     return angular.module("UserGroup.REST",[
         "ngResource"
     ]).factory("UserGroupAPI", ["Resource", function(Resource){
-        var resource = Resource("/userGroup/:id", { id:"@id" });
+        var resource = Resource("/user/group/:id", { id:"@id" });
         resource.export = function(data, success, error){
             if(!data.url){
-                data.url = "/userGroup/report";
+                data.url = "/user/group/export";
             }
             resource.$export(data, success, error);
         };

@@ -117,6 +117,25 @@ define(function(){
                 $scope.getPermissionList();
             });
         };
+        // 批量删除
+        $scope.batchDelete = function(){
+            var choiceItems = [];
+            for (var i = 0; i < $scope.permissionList.length; i++) {
+                var obj = $scope.permissionList[i];
+                if(obj.checked){
+                    choiceItems.push(obj.id);
+                }
+            }
+            if(choiceItems && choiceItems.length > 0){
+                $dialog.confirm("已勾选记录数：" + choiceItems.length + "，请确认是否删除已勾选数据").then(function(){
+                    PermissionAPI.delete({ids:choiceItems}, function(){
+                        $scope.getPermissionList();
+                    });
+                })
+            }else{
+                $dialog.alert("请勾选需要删除的数据");
+            }
+        };
         // 导出
         $scope.batchExport = function(){
             PermissionAPI.export({

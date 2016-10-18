@@ -22,10 +22,11 @@ import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-17 0:59:11
+ * @date    2016-10-18 23:09:39
  * @version 1.0.0
  */
 @RestController
+@RequestMapping(value = "/permission")
 public class PermissionController {
 
     @Autowired
@@ -35,20 +36,20 @@ public class PermissionController {
      * 权限列表
      * @param   limit           每页结果数
      * @param   offset          页码
+     * @param   keyword         关键字
      * @param   id              主键
      * @param   ids             主键数组
      * @param   excludeIds      不包含主键数组
-     * @param   keyword         关键字
      * @return  Page<PermissionModel> 权限领域分页对象
      */
-    @RequestMapping(value = "/permission", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     //@Log(actionName = "查询权限列表")
     public Page<PermissionModel> getPermissionList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
+                                  @RequestParam(value = "keyword", required = false) String keyword,
                                   @RequestParam(value = "id", required = false) String id,
                                   @RequestParam(value = "ids", required = false) String[] ids,
-                                  @RequestParam(value = "excludeIds", required = false) String[] excludeIds,
-                                  @RequestParam(value = "keyword", required = false) String keyword){
+                                  @RequestParam(value = "excludeIds", required = false) String[] excludeIds){
         PermissionQuery permissionQuery = new PermissionQuery();
         permissionQuery.setId(id);
         permissionQuery.setExcludeIds(excludeIds);
@@ -62,7 +63,7 @@ public class PermissionController {
      * @param   id  主键
      * @return  PermissionModel   权限领域对象
      */
-    @RequestMapping(value = "/permission/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     //@Log(actionName = "查询权限")
     public PermissionModel getPermissionById(@PathVariable(value = "id") String id){
         return permissionService.getOnePermissionModel(id);
@@ -70,11 +71,11 @@ public class PermissionController {
 
     /**
      * 新增权限
-     * @param   PermissionCreate  新增对象参数
+     * @param   permissionCreate  新增对象参数
      * @param   bindingResult   参数校验结果
      * @return  PermissionModel   权限领域对象
      */
-    @RequestMapping(value = "/permission", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     //@Log(actionName = "新增权限")
     public PermissionModel createPermission(@RequestBody @Valid PermissionCreate permissionCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -86,11 +87,11 @@ public class PermissionController {
     /**
      * 更新权限
      * @param id                            主键
-     * @param PermissionUpdate 更新对象参数
+     * @param permissionUpdate 更新对象参数
      * @param bindingResult                 参数校验结果
      * @throws ArgumentValidException       参数校验异常类
      */
-    @RequestMapping(value = "/permission/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     //@Log(actionName = "更新权限")
     public void updatePermission(@PathVariable(value = "id") String id,
                            @RequestBody @Valid PermissionUpdate permissionUpdate, BindingResult bindingResult) throws ArgumentValidException {
@@ -104,7 +105,7 @@ public class PermissionController {
      *  删除权限
      * @param id    主键
      */
-    @RequestMapping(value = "/permission/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     //@Log(actionName = "删除单个权限")
     public void deletePermission(@PathVariable(value = "id") String id){
         permissionService.deletePermission(id);
@@ -114,7 +115,7 @@ public class PermissionController {
      *  删除权限
      * @param ids    主键
      */
-    @RequestMapping(value = "/permission", method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE)
     //@Log(actionName = "批量删除权限")
     public void deletePermissions(@RequestParam(value = "ids") String[] ids){
         permissionService.deletePermission(ids);
@@ -122,14 +123,14 @@ public class PermissionController {
 
     /**
     * 导出
-    * @param id
-    * @param ids
-    * @param excludeIds
-    * @param keyword
-    * @param modelMap
-    * @return
+    * @param id     主键
+    * @param ids    包含的主键数组
+    * @param excludeIds     排除的主键数组
+    * @param keyword    关键字
+    * @param modelMap   modelMap对象
+    * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
     */
-    @RequestMapping(value="/permission/report", method = RequestMethod.GET)
+    @RequestMapping(value="/export", method = RequestMethod.GET)
     public ModelAndView exportPermission(
             @RequestParam(value = "id", required = false) String id,
             @RequestParam(value = "ids", required = false) String[] ids,

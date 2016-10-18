@@ -1,5 +1,6 @@
 package com.xmomen.module.system.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xmomen.module.system.entity.Dictionary;
 import lombok.Data;
 import org.jeecgframework.poi.excel.annotation.Excel;
@@ -13,7 +14,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-17 0:59:11
+ * @date    2016-10-18 23:09:38
  * @version 1.0.0
  */
 @ExcelTarget(value = "DictionaryModel")
@@ -42,7 +43,7 @@ public @Data class DictionaryModel implements Serializable {
     /** 显示 */
     @Excel(name = "显示")
     private Boolean show;
-
+    @JsonIgnore
     public Dictionary getEntity(){
         Dictionary dictionary = new Dictionary();
         BeanUtils.copyProperties(this, dictionary);

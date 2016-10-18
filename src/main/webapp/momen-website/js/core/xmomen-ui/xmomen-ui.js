@@ -9,7 +9,7 @@ define([
 ){
     return angular.module("xmomen.ui",[
       //  pagination.name,
-      //  uiDirective.name,
+        uiDirective.name,
         dialog.name,
         modal_draggable.name
       //  validate.name

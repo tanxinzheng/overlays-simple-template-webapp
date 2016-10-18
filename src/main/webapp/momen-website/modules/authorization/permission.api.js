@@ -8,7 +8,7 @@ define(function () {
         var resource = Resource("/permission/:id", { id:"@id" });
         resource.export = function(data, success, error){
             if(!data.url){
-                data.url = "/permission/report";
+                data.url = "/permission/export";
             }
             resource.$export(data, success, error);
         };

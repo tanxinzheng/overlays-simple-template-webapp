@@ -9,7 +9,9 @@
         SELECT * FROM xmo_permission t
         <where>
             <if test="keyword">
-                AND t.ID LIKE CONCAT('%', #{keyword}, '%')
+                    AND (t.PERMISSION_CODE LIKE CONCAT('%', #{keyword}, '%')
+                    OR t.PERMISSION_NAME LIKE CONCAT('%', #{keyword}, '%')
+                    OR t.DESCRIPTION LIKE CONCAT('%', #{keyword}, '%'))
             </if>
             <if test="id">
                 AND t.ID = #{id}

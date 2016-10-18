@@ -8,9 +8,6 @@
             parameterType="com.xmomen.module.authorization.model.UserGroupQuery">
         SELECT * FROM xmo_user_group t
         <where>
-            <if test="keyword">
-                AND t.ID LIKE CONCAT('%', #{keyword}, '%')
-            </if>
             <if test="id">
                 AND t.ID = #{id}
             </if>

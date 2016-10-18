@@ -10,14 +10,18 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-17 0:59:11
+ * @date    2016-10-18 23:09:38
  * @version 1.0.0
  */
 public @Data class DictionaryGroupCreate implements Serializable {
 
+    /**  */
     private String id;
+    /** 字典编号 */
     private String dictionaryType;
+    /** 字典描述 */
     private String dictionaryDesc;
+    /** 激活 */
     private Boolean active;
 
     public DictionaryGroup getEntity(){

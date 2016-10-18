@@ -1,5 +1,6 @@
 package com.xmomen.module.authorization.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xmomen.module.authorization.entity.Permission;
 import lombok.Data;
 import org.jeecgframework.poi.excel.annotation.Excel;
@@ -12,7 +13,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-17 0:59:11
+ * @date    2016-10-18 23:09:39
  * @version 1.0.0
  */
 @ExcelTarget(value = "PermissionModel")
@@ -32,7 +33,7 @@ public @Data class PermissionModel implements Serializable {
     /** 激活 */
     @Excel(name = "激活")
     private Boolean active;
-
+    @JsonIgnore
     public Permission getEntity(){
         Permission permission = new Permission();
         BeanUtils.copyProperties(this, permission);

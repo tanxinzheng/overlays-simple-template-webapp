@@ -117,6 +117,25 @@ define(function(){
                 $scope.getUserGroupList();
             });
         };
+        // 批量删除
+        $scope.batchDelete = function(){
+            var choiceItems = [];
+            for (var i = 0; i < $scope.userGroupList.length; i++) {
+                var obj = $scope.userGroupList[i];
+                if(obj.checked){
+                    choiceItems.push(obj.id);
+                }
+            }
+            if(choiceItems && choiceItems.length > 0){
+                $dialog.confirm("已勾选记录数：" + choiceItems.length + "，请确认是否删除已勾选数据").then(function(){
+                    UserGroupAPI.delete({ids:choiceItems}, function(){
+                        $scope.getUserGroupList();
+                    });
+                })
+            }else{
+                $dialog.alert("请勾选需要删除的数据");
+            }
+        };
         // 导出
         $scope.batchExport = function(){
             UserGroupAPI.export({

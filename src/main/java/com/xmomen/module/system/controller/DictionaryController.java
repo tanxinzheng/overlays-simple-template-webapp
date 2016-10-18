@@ -22,10 +22,11 @@ import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-17 0:59:11
+ * @date    2016-10-18 23:09:38
  * @version 1.0.0
  */
 @RestController
+@RequestMapping(value = "/dictionary")
 public class DictionaryController {
 
     @Autowired
@@ -35,20 +36,20 @@ public class DictionaryController {
      * 数据字典列表
      * @param   limit           每页结果数
      * @param   offset          页码
+     * @param   keyword         关键字
      * @param   id              主键
      * @param   ids             主键数组
      * @param   excludeIds      不包含主键数组
-     * @param   keyword         关键字
      * @return  Page<DictionaryModel> 数据字典领域分页对象
      */
-    @RequestMapping(value = "/dictionary", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     //@Log(actionName = "查询数据字典列表")
     public Page<DictionaryModel> getDictionaryList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
+                                  @RequestParam(value = "keyword", required = false) String keyword,
                                   @RequestParam(value = "id", required = false) String id,
                                   @RequestParam(value = "ids", required = false) String[] ids,
-                                  @RequestParam(value = "excludeIds", required = false) String[] excludeIds,
-                                  @RequestParam(value = "keyword", required = false) String keyword){
+                                  @RequestParam(value = "excludeIds", required = false) String[] excludeIds){
         DictionaryQuery dictionaryQuery = new DictionaryQuery();
         dictionaryQuery.setId(id);
         dictionaryQuery.setExcludeIds(excludeIds);
@@ -62,7 +63,7 @@ public class DictionaryController {
      * @param   id  主键
      * @return  DictionaryModel   数据字典领域对象
      */
-    @RequestMapping(value = "/dictionary/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     //@Log(actionName = "查询数据字典")
     public DictionaryModel getDictionaryById(@PathVariable(value = "id") String id){
         return dictionaryService.getOneDictionaryModel(id);
@@ -70,11 +71,11 @@ public class DictionaryController {
 
     /**
      * 新增数据字典
-     * @param   DictionaryCreate  新增对象参数
+     * @param   dictionaryCreate  新增对象参数
      * @param   bindingResult   参数校验结果
      * @return  DictionaryModel   数据字典领域对象
      */
-    @RequestMapping(value = "/dictionary", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     //@Log(actionName = "新增数据字典")
     public DictionaryModel createDictionary(@RequestBody @Valid DictionaryCreate dictionaryCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -86,11 +87,11 @@ public class DictionaryController {
     /**
      * 更新数据字典
      * @param id                            主键
-     * @param DictionaryUpdate 更新对象参数
+     * @param dictionaryUpdate 更新对象参数
      * @param bindingResult                 参数校验结果
      * @throws ArgumentValidException       参数校验异常类
      */
-    @RequestMapping(value = "/dictionary/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     //@Log(actionName = "更新数据字典")
     public void updateDictionary(@PathVariable(value = "id") String id,
                            @RequestBody @Valid DictionaryUpdate dictionaryUpdate, BindingResult bindingResult) throws ArgumentValidException {
@@ -104,7 +105,7 @@ public class DictionaryController {
      *  删除数据字典
      * @param id    主键
      */
-    @RequestMapping(value = "/dictionary/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     //@Log(actionName = "删除单个数据字典")
     public void deleteDictionary(@PathVariable(value = "id") String id){
         dictionaryService.deleteDictionary(id);
@@ -114,7 +115,7 @@ public class DictionaryController {
      *  删除数据字典
      * @param ids    主键
      */
-    @RequestMapping(value = "/dictionary", method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE)
     //@Log(actionName = "批量删除数据字典")
     public void deleteDictionarys(@RequestParam(value = "ids") String[] ids){
         dictionaryService.deleteDictionary(ids);
@@ -122,14 +123,14 @@ public class DictionaryController {
 
     /**
     * 导出
-    * @param id
-    * @param ids
-    * @param excludeIds
-    * @param keyword
-    * @param modelMap
-    * @return
+    * @param id     主键
+    * @param ids    包含的主键数组
+    * @param excludeIds     排除的主键数组
+    * @param keyword    关键字
+    * @param modelMap   modelMap对象
+    * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
     */
-    @RequestMapping(value="/dictionary/report", method = RequestMethod.GET)
+    @RequestMapping(value="/export", method = RequestMethod.GET)
     public ModelAndView exportDictionary(
             @RequestParam(value = "id", required = false) String id,
             @RequestParam(value = "ids", required = false) String[] ids,

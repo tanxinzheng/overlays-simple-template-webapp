@@ -11,18 +11,26 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-17 0:59:11
+ * @date    2016-10-18 23:09:38
  * @version 1.0.0
  */
 public @Data class DictionaryCreate implements Serializable {
 
+    /** 主键 */
     private String id;
+    /** 字典类型 */
     private String dictionaryType;
+    /** 显示值 */
     private String showValue;
+    /** 实际值 */
     private String codeValue;
+    /** 排序 */
     private Integer sortValue;
+    /** 激活 */
     private Boolean active;
+    /** 父节点 */
     private String parentId;
+    /** 显示 */
     private Boolean show;
 
     public Dictionary getEntity(){

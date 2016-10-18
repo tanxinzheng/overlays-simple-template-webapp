@@ -22,10 +22,11 @@ import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-17 0:59:11
+ * @date    2016-10-18 23:09:38
  * @version 1.0.0
  */
 @RestController
+@RequestMapping(value = "/group/permission")
 public class GroupPermissionController {
 
     @Autowired
@@ -38,22 +39,19 @@ public class GroupPermissionController {
      * @param   id              主键
      * @param   ids             主键数组
      * @param   excludeIds      不包含主键数组
-     * @param   keyword         关键字
      * @return  Page<GroupPermissionModel> 组权限领域分页对象
      */
-    @RequestMapping(value = "/groupPermission", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     //@Log(actionName = "查询组权限列表")
     public Page<GroupPermissionModel> getGroupPermissionList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
                                   @RequestParam(value = "id", required = false) String id,
                                   @RequestParam(value = "ids", required = false) String[] ids,
-                                  @RequestParam(value = "excludeIds", required = false) String[] excludeIds,
-                                  @RequestParam(value = "keyword", required = false) String keyword){
+                                  @RequestParam(value = "excludeIds", required = false) String[] excludeIds){
         GroupPermissionQuery groupPermissionQuery = new GroupPermissionQuery();
         groupPermissionQuery.setId(id);
         groupPermissionQuery.setExcludeIds(excludeIds);
         groupPermissionQuery.setIds(ids);
-        groupPermissionQuery.setKeyword(keyword);
         return groupPermissionService.getGroupPermissionModelPage(limit, offset, groupPermissionQuery);
     }
 
@@ -62,7 +60,7 @@ public class GroupPermissionController {
      * @param   id  主键
      * @return  GroupPermissionModel   组权限领域对象
      */
-    @RequestMapping(value = "/groupPermission/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     //@Log(actionName = "查询组权限")
     public GroupPermissionModel getGroupPermissionById(@PathVariable(value = "id") String id){
         return groupPermissionService.getOneGroupPermissionModel(id);
@@ -70,11 +68,11 @@ public class GroupPermissionController {
 
     /**
      * 新增组权限
-     * @param   GroupPermissionCreate  新增对象参数
+     * @param   groupPermissionCreate  新增对象参数
      * @param   bindingResult   参数校验结果
      * @return  GroupPermissionModel   组权限领域对象
      */
-    @RequestMapping(value = "/groupPermission", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     //@Log(actionName = "新增组权限")
     public GroupPermissionModel createGroupPermission(@RequestBody @Valid GroupPermissionCreate groupPermissionCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -86,11 +84,11 @@ public class GroupPermissionController {
     /**
      * 更新组权限
      * @param id                            主键
-     * @param GroupPermissionUpdate 更新对象参数
+     * @param groupPermissionUpdate 更新对象参数
      * @param bindingResult                 参数校验结果
      * @throws ArgumentValidException       参数校验异常类
      */
-    @RequestMapping(value = "/groupPermission/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     //@Log(actionName = "更新组权限")
     public void updateGroupPermission(@PathVariable(value = "id") String id,
                            @RequestBody @Valid GroupPermissionUpdate groupPermissionUpdate, BindingResult bindingResult) throws ArgumentValidException {
@@ -104,7 +102,7 @@ public class GroupPermissionController {
      *  删除组权限
      * @param id    主键
      */
-    @RequestMapping(value = "/groupPermission/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     //@Log(actionName = "删除单个组权限")
     public void deleteGroupPermission(@PathVariable(value = "id") String id){
         groupPermissionService.deleteGroupPermission(id);
@@ -114,7 +112,7 @@ public class GroupPermissionController {
      *  删除组权限
      * @param ids    主键
      */
-    @RequestMapping(value = "/groupPermission", method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE)
     //@Log(actionName = "批量删除组权限")
     public void deleteGroupPermissions(@RequestParam(value = "ids") String[] ids){
         groupPermissionService.deleteGroupPermission(ids);
@@ -122,25 +120,22 @@ public class GroupPermissionController {
 
     /**
     * 导出
-    * @param id
-    * @param ids
-    * @param excludeIds
-    * @param keyword
-    * @param modelMap
-    * @return
+    * @param id     主键
+    * @param ids    包含的主键数组
+    * @param excludeIds     排除的主键数组
+    * @param modelMap   modelMap对象
+    * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
     */
-    @RequestMapping(value="/groupPermission/report", method = RequestMethod.GET)
+    @RequestMapping(value="/export", method = RequestMethod.GET)
     public ModelAndView exportGroupPermission(
             @RequestParam(value = "id", required = false) String id,
             @RequestParam(value = "ids", required = false) String[] ids,
             @RequestParam(value = "excludeIds", required = false) String[] excludeIds,
-            @RequestParam(value = "keyword", required = false) String keyword,
             ModelMap modelMap) {
         GroupPermissionQuery groupPermissionQuery = new GroupPermissionQuery();
         groupPermissionQuery.setId(id);
         groupPermissionQuery.setExcludeIds(excludeIds);
         groupPermissionQuery.setIds(ids);
-        groupPermissionQuery.setKeyword(keyword);
         List<GroupPermissionModel> groupPermissionList = groupPermissionService.getGroupPermissionModelList(groupPermissionQuery);
         modelMap.put(NormalExcelConstants.FILE_NAME, "组权限信息");
         modelMap.put(NormalExcelConstants.PARAMS, new ExportParams());

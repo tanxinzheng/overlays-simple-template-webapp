@@ -22,10 +22,11 @@ import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-17 0:59:11
+ * @date    2016-10-18 23:09:38
  * @version 1.0.0
  */
 @RestController
+@RequestMapping(value = "/group")
 public class GroupController {
 
     @Autowired
@@ -35,20 +36,20 @@ public class GroupController {
      * 组列表
      * @param   limit           每页结果数
      * @param   offset          页码
+     * @param   keyword         关键字
      * @param   id              主键
      * @param   ids             主键数组
      * @param   excludeIds      不包含主键数组
-     * @param   keyword         关键字
      * @return  Page<GroupModel> 组领域分页对象
      */
-    @RequestMapping(value = "/group", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     //@Log(actionName = "查询组列表")
     public Page<GroupModel> getGroupList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
+                                  @RequestParam(value = "keyword", required = false) String keyword,
                                   @RequestParam(value = "id", required = false) String id,
                                   @RequestParam(value = "ids", required = false) String[] ids,
-                                  @RequestParam(value = "excludeIds", required = false) String[] excludeIds,
-                                  @RequestParam(value = "keyword", required = false) String keyword){
+                                  @RequestParam(value = "excludeIds", required = false) String[] excludeIds){
         GroupQuery groupQuery = new GroupQuery();
         groupQuery.setId(id);
         groupQuery.setExcludeIds(excludeIds);
@@ -62,7 +63,7 @@ public class GroupController {
      * @param   id  主键
      * @return  GroupModel   组领域对象
      */
-    @RequestMapping(value = "/group/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     //@Log(actionName = "查询组")
     public GroupModel getGroupById(@PathVariable(value = "id") String id){
         return groupService.getOneGroupModel(id);
@@ -70,11 +71,11 @@ public class GroupController {
 
     /**
      * 新增组
-     * @param   GroupCreate  新增对象参数
+     * @param   groupCreate  新增对象参数
      * @param   bindingResult   参数校验结果
      * @return  GroupModel   组领域对象
      */
-    @RequestMapping(value = "/group", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     //@Log(actionName = "新增组")
     public GroupModel createGroup(@RequestBody @Valid GroupCreate groupCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -86,11 +87,11 @@ public class GroupController {
     /**
      * 更新组
      * @param id                            主键
-     * @param GroupUpdate 更新对象参数
+     * @param groupUpdate 更新对象参数
      * @param bindingResult                 参数校验结果
      * @throws ArgumentValidException       参数校验异常类
      */
-    @RequestMapping(value = "/group/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     //@Log(actionName = "更新组")
     public void updateGroup(@PathVariable(value = "id") String id,
                            @RequestBody @Valid GroupUpdate groupUpdate, BindingResult bindingResult) throws ArgumentValidException {
@@ -104,7 +105,7 @@ public class GroupController {
      *  删除组
      * @param id    主键
      */
-    @RequestMapping(value = "/group/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     //@Log(actionName = "删除单个组")
     public void deleteGroup(@PathVariable(value = "id") String id){
         groupService.deleteGroup(id);
@@ -114,7 +115,7 @@ public class GroupController {
      *  删除组
      * @param ids    主键
      */
-    @RequestMapping(value = "/group", method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE)
     //@Log(actionName = "批量删除组")
     public void deleteGroups(@RequestParam(value = "ids") String[] ids){
         groupService.deleteGroup(ids);
@@ -122,14 +123,14 @@ public class GroupController {
 
     /**
     * 导出
-    * @param id
-    * @param ids
-    * @param excludeIds
-    * @param keyword
-    * @param modelMap
-    * @return
+    * @param id     主键
+    * @param ids    包含的主键数组
+    * @param excludeIds     排除的主键数组
+    * @param keyword    关键字
+    * @param modelMap   modelMap对象
+    * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
     */
-    @RequestMapping(value="/group/report", method = RequestMethod.GET)
+    @RequestMapping(value="/export", method = RequestMethod.GET)
     public ModelAndView exportGroup(
             @RequestParam(value = "id", required = false) String id,
             @RequestParam(value = "ids", required = false) String[] ids,

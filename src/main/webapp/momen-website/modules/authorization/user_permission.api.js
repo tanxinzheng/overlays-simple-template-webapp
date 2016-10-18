@@ -5,10 +5,10 @@ define(function () {
     return angular.module("UserPermission.REST",[
         "ngResource"
     ]).factory("UserPermissionAPI", ["Resource", function(Resource){
-        var resource = Resource("/userPermission/:id", { id:"@id" });
+        var resource = Resource("/user/permission/:id", { id:"@id" });
         resource.export = function(data, success, error){
             if(!data.url){
-                data.url = "/userPermission/report";
+                data.url = "/user/permission/export";
             }
             resource.$export(data, success, error);
         };
