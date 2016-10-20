@@ -1,180 +1,66 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
-<html lang="en-us" id="extr-page" data-ng-app="smartApp">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
-    <title> 模板管理系统 </title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <!-- Basic Styles -->
-    <link rel="stylesheet" type="text/css" media="screen" href="./static/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="./static/css/font-awesome.min.css">
-
-    <!-- SmartAdmin Styles : Please note (smartadmin-production.css) was created using LESS variables -->
-    <link rel="stylesheet" type="text/css" media="screen" href="./static/css/smartadmin-production.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="./static/css/smartadmin-skins.min.css">
-
-    <!-- SmartAdmin RTL Support is under construction
-         This RTL CSS will be released in version 1.5
-    <link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-rtl.min.css"> -->
-
-    <!-- We recommend you use "your_style.css" to override SmartAdmin
-         specific styles this will also ensure you retrain your customization with each SmartAdmin update.
-    <link rel="stylesheet" type="text/css" media="screen" href="css/your_style.css"> -->
-
-    <!-- Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp -->
-    <link rel="stylesheet" type="text/css" media="screen" href="./static/css/demo.min.css">
-
-    <!-- Angular Related CSS -->
-    <link rel="stylesheet" type="text/css" media="screen" href="./static/css/ng.min.css">
-
-    <!-- FAVICONS -->
-    <link rel="shortcut icon" href="./static/images/favicon/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="./static/images/favicon/favicon.ico" type="image/x-icon">
-
-    <!-- GOOGLE FONT -->
-    <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">-->
-
-    <!-- Specifying a Webpage Icon for Web Clip
-         Ref: https://developer.apple.com/library/ios/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html -->
-    <link rel="apple-touch-icon" href="./static/images/splash/sptouch-icon-iphone.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="./static/images/splash/touch-icon-ipad.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="./static/images/splash/touch-icon-iphone-retina.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="./static/images/splash/touch-icon-ipad-retina.png">
-
-    <!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-    <!-- Startup image for web apps -->
-    <link rel="apple-touch-startup-image" href="./static/images/splash/ipad-landscape.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
-    <link rel="apple-touch-startup-image" href="./static/images/splash/ipad-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
-    <link rel="apple-touch-startup-image" href="./static/images/splash/iphone.png" media="screen and (max-device-width: 320px)">
-
+    <meta charset="utf-8" />
+    <title>Be Angular | Bootstrap Admin Web App with AngularJS</title>
+    <meta name="description" content="app, web app, responsive, responsive layout, admin, admin panel, admin dashboard, flat, flat ui, ui kit, AngularJS, ui route, charts, widgets, components" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="/momen-website/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="/momen-website/css/animate.css" type="text/css" />
+    <link rel="stylesheet" href="/momen-website/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="/momen-website/css/simple-line-icons.css" type="text/css" />
+    <link rel="stylesheet" href="/momen-website/css/font.css" type="text/css" />
+    <link rel="stylesheet" href="/momen-website/css/app.css" type="text/css" />
+    <link rel="stylesheet" href="/momen-website/css/xmomen.css" type="text/css" />
 </head>
-<body class="animated fadeInDown">
-<!-- possible classes: minified, no-right-panel, fixed-ribbon, fixed-header, fixed-width-->
-<header id="header">
-    <!--<span id="logo"></span>-->
-
-    <div id="logo-group">
-        <span id="logo"> <images src="./static/images/logo.png" alt="订单管理系统"> </span>
-
-        <!-- END AJAX-DROPDOWN -->
-    </div>
-
-    <%--<span id="extr-page-header-space"> <span class="hidden-mobile">需要新账户?</span> <a href="${pageContext.request.contextPath}/register" class="btn btn-danger">注册</a> </span>--%>
-
-</header>
-
-<div id="main" role="main" style="margin-left: 0;">
-
-    <!-- MAIN CONTENT -->
-    <div id="content" class="container" style="margin:0 auto;width:457px">
-        <div class="row">
-            <div>
-                <div class="well no-padding">
-                    <form method="post" id="login-form" class="smart-form client-form">
-                        <header>
-                            登录
-                        </header>
-                        <fieldset>
-                            <div class="error">
-                                ${error}
-                            </div>
-                            <section>
-                                <label class="label">用户名</label>
-                                <label class="input"> <i class="icon-append fa fa-user"></i>
-                                    <input type="text" name="username">
-                                    <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> 请输入用户名</b></label>
-                            </section>
-
-                            <section>
-                                <label class="label">密码</label>
-                                <label class="input"> <i class="icon-append fa fa-lock"></i>
-                                    <input type="password" name="password">
-                                    <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> 请输入密码</b> </label>
-                                <div class="note">
-                                    <a href="forgotpassword.html">忘记密码?</a>
-                                </div>
-                            </section>
-
-                            <section>
-                                <label class="checkbox">
-                                    <input type="checkbox" name="rememberMe" value="true">
-                                    <i></i>保持登录</label>
-                            </section>
-                        </fieldset>
-                        <footer>
-                            <button type="submit" class="btn btn-primary">
-                                登录
-                            </button>
-                        </footer>
-                    </form>
-
-                </div>
-
-                <%--<h5 class="text-center"> - Or sign in using -</h5>--%>
-
-                <%--<ul class="list-inline text-center">--%>
-                    <%--<li>--%>
-                        <%--<a href="javascript:void(0);" class="btn btn-primary btn-circle"><i class="fa fa-facebook"></i></a>--%>
-                    <%--</li>--%>
-                    <%--<li>--%>
-                        <%--<a href="javascript:void(0);" class="btn btn-info btn-circle"><i class="fa fa-twitter"></i></a>--%>
-                    <%--</li>--%>
-                    <%--<li>--%>
-                        <%--<a href="javascript:void(0);" class="btn btn-warning btn-circle"><i class="fa fa-linkedin"></i></a>--%>
-                    <%--</li>--%>
-                <%--</ul>--%>
-
+<body>
+<div class="app">
+    <div class="smooth">
+        <div class="container w-xxl w-auto-xs">
+            <a href class="navbar-brand block m-t">智能开发平台</a>
+            <div class="m-b-lg">
+                <form name="form" method="post" id="login-form" class="form-validation" novalidate>
+                    <div class="text-danger wrapper text-center">
+                        ${error}
+                    </div>
+                    <%--<div class="error">--%>
+                        <%--${error}--%>
+                    <%--</div>--%>
+                    <div class="list-group list-group-sm">
+                        <div class="list-group-item">
+                            <input type="text" name="username" placeholder="请输入用户名／邮箱／手机" class="form-control no-border" ng-model="user.email" required>
+                        </div>
+                        <div class="list-group-item">
+                            <input type="password" name="password" placeholder="请输入密码" class="form-control no-border" ng-model="user.password" required>
+                        </div>
+                        <div class="list-group-item">
+                            <label class="i-checks m-b-none">
+                                <input type="checkbox"
+                                       name="rememberMe"
+                                       value="true"><i></i>保持登录
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-lg btn-primary btn-block">登录</button>
+                    <div class="text-center m-t m-b"><a href="./forgot_pwd.html">找回密码</a></div>
+                    <div class="line line-dashed"></div>
+                    <a href="./register" class="btn btn-lg btn-default btn-block">我要注册</a>
+                </form>
             </div>
+            <div class="text-center" ng-include="'tpl/blocks/page_footer.html'"></div>
         </div>
-    </div>
 
+    </div>
 </div>
 
-<!--================================================== -->
 
-<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
-<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
+<!-- jQuery -->
+<script src="/momen-website/js/core/jquery.min.js"></script>
+<script src="/momen-website/js/vendor/jquery/jquery-validate/jquery.validate.min.js"></script>
 
-<!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
-<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>-->
 <script>
-    if (!window.jQuery) {
-        document.write('<script src="./static/js/libs/jquery-2.0.2.min.js"><\/script>');
-    }
-</script>
-
-<!--<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>-->
-<script>
-    if (!window.jQuery.ui) {
-        document.write('<script src="./static/js/libs/jquery-ui-1.10.3.min.js"><\/script>');
-    }
-</script>
-
-<!-- BOOTSTRAP JS -->
-<script src="./static/js/bootstrap/bootstrap.min.js"></script>
-
-<!-- JQUERY VALIDATE -->
-<script src="./static/js/plugin/jquery-validate/jquery.validate.min.js"></script>
-
-<!--[if IE 8]>
-
-<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
-
-<![endif]-->
-
-<script type="text/javascript">
-
-
     $(function() {
         // Validation
         $("#login-form").validate({
@@ -184,12 +70,9 @@
                     required : true
                 },
                 password : {
-                    required : true,
-                    minlength : 3,
-                    maxlength : 20
+                    required : true
                 }
             },
-
             // Messages for form validation
             messages : {
                 username : {
@@ -207,6 +90,4 @@
         });
     });
 </script>
-
 </body>
-</html>

@@ -2,7 +2,7 @@
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-18 23:09:38
+ * @date    2016-10-18 23:46:57
  * @version 1.0.0
  */
 define([
@@ -20,7 +20,7 @@ define([
             states.push({
                 title: "数据字典组",
                 name: 'app.dictionaryGroup',
-                url: '//dictionary/group',
+                url: '/dictionary/group',
                 views: {
                     'dictionaryGroup': angularAMD.route({
                         controller: dictionaryGroup,

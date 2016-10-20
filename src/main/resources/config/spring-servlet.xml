@@ -14,7 +14,7 @@
 	<context:annotation-config/>
 	
 	<!-- 扫描所有的controller 但是不扫描service-->
-	<context:component-scan base-package="com.**">
+	<context:component-scan base-package="com.xmomen">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
 	</context:component-scan>
@@ -28,8 +28,17 @@
 	<aop:aspectj-autoproxy />
 
 	<bean  class="com.xmomen.module.logger.aspect.LoggerAspect" />
+	<!-- ###########	数据字典翻译器  Start	###############	-->
+	<bean id="dictionaryAnnotationIntrospector" class="com.xmomen.framework.web.json.DictionaryAnnotationIntrospector">
+		<property name="dictionaryInterpreterService" ref="dictionaryInterpreterService" />
+	</bean>
+	<bean id="dictionaryInterpreterService" class="com.xmomen.framework.web.json.DefaultDictionaryInterpreterService" />
+	<!-- ###########	数据字典翻译器  End	###############	-->
 
-	<bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
+	<bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" >
+		<!--	添加字典描述注解翻译器		-->
+		<property name="annotationIntrospector" ref="dictionaryAnnotationIntrospector" />
+	</bean>
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject" ref="jacksonObjectMapper" />
 		<property name="targetMethod" value="configure" />
@@ -56,14 +65,25 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
+	<!-- ###########	信息国际化相关配置  Start	###############	-->
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="messages/messages" />
 		<property name="useCodeAsDefaultMessage" value="true"/>
+		<property name="defaultEncoding" value="UTF-8"/>
 	</bean>
 	<!-- 获取本地 -->
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
 		<property name="defaultLocale" value="zh_CN"/>
 	</bean>
+	<!--国际化资源切换（根据请求参数中的locale参数自动切换）-->
+	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<ref bean="localeChangeInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<!-- ###########	信息国际化相关配置  End	###############	-->
 
 	<bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>

@@ -1,19 +1,21 @@
 package com.xmomen.module.shiro.realm;
 
 import com.xmomen.module.core.service.AccountService;
-import com.xmomen.module.user.entity.User;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * 用户授权领域对象
  */
 public class UserRealm extends AuthorizingRealm {
+
+    private static Logger logger = LoggerFactory.getLogger(UserRealm.class);
 
     private AccountService accountService;
 
@@ -33,26 +35,24 @@ public class UserRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-
         String username = (String)token.getPrincipal();
-        User user = accountService.getUserByUsername(username);
+        SimpleAccount account;
+        try {
+            account = accountService.getUserByUsername(username);
+        }catch (Exception ex){
+            logger.error(ex.getMessage(), ex);
+            ex.printStackTrace();
+            throw new AuthenticationException(ex);
+        }
 
-        if(user == null) {
+        if(account == null) {
             throw new UnknownAccountException();//没找到帐号
         }
 
-        if(user.getIsLock()) {
+        if(account.isLocked()) {
             throw new LockedAccountException(); //帐号锁定
         }
-
-        //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                username, //用户名
-                user.getPassword(), //密码
-                ByteSource.Util.bytes(user.getSalt()),//salt=salt
-                getName()  //realm name
-        );
-        return authenticationInfo;
+        return account;
     }
 
     @Override

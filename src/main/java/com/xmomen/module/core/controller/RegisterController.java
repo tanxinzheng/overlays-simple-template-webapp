@@ -1,8 +1,17 @@
 package com.xmomen.module.core.controller;
 
+import com.xmomen.module.core.model.AccountModel;
+import com.xmomen.module.core.model.Register;
+import com.xmomen.module.core.service.AccountService;
+import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -15,8 +24,8 @@ public class RegisterController {
 
     private static Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
-    //@Autowired
-    //UserService userService;
+    @Autowired
+    AccountService accountService;
 
     /**
      * 用户注册
@@ -26,30 +35,26 @@ public class RegisterController {
      * @param model             领域对象
      * @return                  页面跳转地址
      */
-//    @RequestMapping(value = "/register")
-//    public String register(@ModelAttribute @Valid Register register,
-//                           BindingResult bindingResult,
-//                           HttpServletRequest request,
-//                           Model model) {
-//        if (!WebUtils.toHttp(request).getMethod().equalsIgnoreCase("POST")){
-//            return "register";
-//        }
-//        if(!bindingResult.hasErrors()){
-////            CreateUser user = new CreateUser();
-////            user.setUsername(register.getUsername());
-////            user.setPassword(register.getPassword());
-////            SysUsers sysUsers = userService.createUser(user);
-////            if(sysUsers.getId() != null && sysUsers.getId() > 0 ){
-//                return "login";
-//            }else{
-//                logger.error("注册成功后返回的主键为空（或主键等于或小于0）");
-//                model.addAttribute("error", "注册用户失败");
-//                return "register";
-//            }
-//        }else{
-//            model.addAttribute("error", bindingResult.getFieldError().getDefaultMessage());
-//            return "register";
-//        }
-//    }
+    @RequestMapping(value = "/register")
+    public String register(@ModelAttribute @Valid Register register,
+                           BindingResult bindingResult,
+                           HttpServletRequest request,
+                           Model model) {
+        if (!WebUtils.toHttp(request).getMethod().equalsIgnoreCase("POST")){
+            return "register";
+        }
+        if(!bindingResult.hasErrors()){
+            AccountModel accountModel = accountService.register(register);
+            if(accountModel != null){
+                return "login";
+            }else{
+                model.addAttribute("error", "注册用户失败");
+                return "register";
+            }
+        }else{
+            model.addAttribute("error", bindingResult.getFieldError().getDefaultMessage());
+            return "register";
+        }
+    }
 
 }

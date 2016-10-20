@@ -1,6 +1,7 @@
 package com.xmomen.module.user.entity;
 
 import com.xmomen.framework.mybatis.model.BaseMybatisModel;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +13,7 @@ import javax.persistence.Version;
 @Table(name = "xmo_user")
 public class User extends BaseMybatisModel {
     /**
-     * 
+     * 主键
      */
     private String id;
 
@@ -47,9 +48,19 @@ public class User extends BaseMybatisModel {
     private String phoneNumber;
 
     /**
-     * 禁用
+     * 锁定
      */
-    private Boolean isLock;
+    private Boolean locked;
+
+    /**
+     * 注册时间
+     */
+    private Date createDate;
+
+    /**
+     * 激活
+     */
+    private Boolean active;
 
     @Column(name = "ID")
     @Id
@@ -151,17 +162,45 @@ public class User extends BaseMybatisModel {
         addValidField("phoneNumber");
     }
 
-    @Column(name = "IS_LOCK")
-    public Boolean getIsLock() {
-        return isLock;
+    @Column(name = "LOCKED")
+    public Boolean getLocked() {
+        return locked;
     }
 
-    public void setIsLock(Boolean isLock) {
-        this.isLock = isLock;
-        if(isLock == null){
-              removeValidField("isLock");
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
+        if(locked == null){
+              removeValidField("locked");
               return;
         }
-        addValidField("isLock");
+        addValidField("locked");
+    }
+
+    @Column(name = "CREATE_DATE")
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+        if(createDate == null){
+              removeValidField("createDate");
+              return;
+        }
+        addValidField("createDate");
+    }
+
+    @Column(name = "ACTIVE")
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+        if(active == null){
+              removeValidField("active");
+              return;
+        }
+        addValidField("active");
     }
 }

@@ -2,7 +2,7 @@
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-18 23:09:38
+ * @date    2016-10-18 23:46:57
  * @version 1.0.0
  */
 define([
@@ -20,7 +20,7 @@ define([
             states.push({
                 title: "组",
                 name: 'app.group',
-                url: '//group',
+                url: '/group',
                 views: {
                     'group': angularAMD.route({
                         controller: group,

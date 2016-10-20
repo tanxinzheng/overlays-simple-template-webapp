@@ -47,7 +47,9 @@
                             <th>真实姓名</th>
                             <th>邮箱</th>
                             <th>手机号码</th>
-                            <th>禁用</th>
+                            <th>锁定</th>
+                            <th>注册时间</th>
+                            <th>激活</th>
                             <th class="action">操作</th>
                         </tr>
                         </thead>
@@ -77,11 +79,24 @@
                             </td>
                             <td>
                                 <label class="i-switch bg-primary m-t-xs m-r">
-                                    <input type="checkbox" name="isLock"
+                                    <input type="checkbox" name="locked"
                                            data-ng-true-value="true"
                                            data-ng-false-value="false"
                                            disabled
-                                           ng-model="item.isLock">
+                                           ng-model="item.locked">
+                                    <i></i>
+                                </label>
+                            </td>
+                            <td>
+                                <a ng-bind="item.createDate"></a>
+                            </td>
+                            <td>
+                                <label class="i-switch bg-primary m-t-xs m-r">
+                                    <input type="checkbox" name="active"
+                                           data-ng-true-value="true"
+                                           data-ng-false-value="false"
+                                           disabled
+                                           ng-model="item.active">
                                     <i></i>
                                 </label>
                             </td>
@@ -203,15 +218,44 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-md-3 control-label">
-                                    禁用
+                                    锁定
                                 </label>
                                 <div class="col-md-9">
                                         <label class="i-switch bg-primary m-t-xs m-r">
-                                            <input type="checkbox" name="isLock"
+                                            <input type="checkbox" name="locked"
                                                    data-ng-true-value="true"
                                                    data-ng-false-value="false"
                                                    ng-disabled="pageSetting.formDisabled"
-                                                   ng-model="user.isLock">
+                                                   ng-model="user.locked">
+                                            <i></i>
+                                        </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    注册时间
+                                    <span class="vaild">*</span>
+                                </label>
+                                <div class="col-md-9">
+                                        <input class="form-control" type="text" name="createDate" placeholder="请输入注册时间"
+                                               ng-disabled="pageSetting.formDisabled"
+                                               data-msg-required="注册时间必填"
+                                               required="true"
+                                               data-rule-maxlength="19"
+                                               ng-model="user.createDate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    激活
+                                </label>
+                                <div class="col-md-9">
+                                        <label class="i-switch bg-primary m-t-xs m-r">
+                                            <input type="checkbox" name="active"
+                                                   data-ng-true-value="true"
+                                                   data-ng-false-value="false"
+                                                   ng-disabled="pageSetting.formDisabled"
+                                                   ng-model="user.active">
                                             <i></i>
                                         </label>
                                 </div>

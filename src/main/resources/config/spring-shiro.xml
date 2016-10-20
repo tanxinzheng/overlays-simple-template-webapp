@@ -124,9 +124,13 @@
                 /errors/** = anon
                 /unauthorized = anon
                 /register = anon
+                /find_password = anon
                 /logout = logout
                 /login = authc
-                /static/**  =  anon
+                /momen-website/css/**  =  anon
+                /momen-website/js/**  =  anon
+                /momen-website/fonts/**  =  anon
+                /momen-website/img/**  =  anon
                 /admin/** = user
                 /** = user
             </value>

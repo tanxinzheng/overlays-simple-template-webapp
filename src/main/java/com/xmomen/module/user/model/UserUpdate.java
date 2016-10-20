@@ -6,16 +6,17 @@ import org.springframework.beans.BeanUtils;
 
     import java.lang.Boolean;
     import java.lang.String;
+    import java.util.Date;
 import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-18 23:09:38
+ * @date    2016-10-20 1:05:48
  * @version 1.0.0
  */
 public @Data class UserUpdate implements Serializable {
 
-    /**  */
+    /** 主键 */
     private String id;
     /** 用户名 */
     private String username;
@@ -29,8 +30,12 @@ public @Data class UserUpdate implements Serializable {
     private String email;
     /** 手机号码 */
     private String phoneNumber;
-    /** 禁用 */
-    private Boolean isLock;
+    /** 锁定 */
+    private Boolean locked;
+    /** 注册时间 */
+    private Date createDate;
+    /** 激活 */
+    private Boolean active;
 
 
     public User getEntity(){

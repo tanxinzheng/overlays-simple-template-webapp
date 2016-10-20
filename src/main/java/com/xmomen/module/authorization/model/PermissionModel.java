@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-18 23:09:39
+ * @date    2016-10-18 23:46:57
  * @version 1.0.0
  */
 @ExcelTarget(value = "PermissionModel")
@@ -33,6 +33,11 @@ public @Data class PermissionModel implements Serializable {
     /** 激活 */
     @Excel(name = "激活")
     private Boolean active;
+
+    /**
+     * 获取Permission实体类对象
+     * @return Permission
+     */
     @JsonIgnore
     public Permission getEntity(){
         Permission permission = new Permission();

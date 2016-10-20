@@ -2,6 +2,7 @@ package com.xmomen.module.user.entity;
 
 import com.xmomen.framework.mybatis.model.BaseMybatisExample;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserExample extends BaseMybatisExample {
@@ -595,73 +596,203 @@ public class UserExample extends BaseMybatisExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsLockIsNull() {
-            addCriterion("IS_LOCK is null");
+        public Criteria andLockedIsNull() {
+            addCriterion("LOCKED is null");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockIsNotNull() {
-            addCriterion("IS_LOCK is not null");
+        public Criteria andLockedIsNotNull() {
+            addCriterion("LOCKED is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockEqualTo(Boolean value) {
-            addCriterion("IS_LOCK =", value, "isLock");
+        public Criteria andLockedEqualTo(Boolean value) {
+            addCriterion("LOCKED =", value, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockNotEqualTo(Boolean value) {
-            addCriterion("IS_LOCK <>", value, "isLock");
+        public Criteria andLockedNotEqualTo(Boolean value) {
+            addCriterion("LOCKED <>", value, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockGreaterThan(Boolean value) {
-            addCriterion("IS_LOCK >", value, "isLock");
+        public Criteria andLockedGreaterThan(Boolean value) {
+            addCriterion("LOCKED >", value, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("IS_LOCK >=", value, "isLock");
+        public Criteria andLockedGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("LOCKED >=", value, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockLessThan(Boolean value) {
-            addCriterion("IS_LOCK <", value, "isLock");
+        public Criteria andLockedLessThan(Boolean value) {
+            addCriterion("LOCKED <", value, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockLessThanOrEqualTo(Boolean value) {
-            addCriterion("IS_LOCK <=", value, "isLock");
+        public Criteria andLockedLessThanOrEqualTo(Boolean value) {
+            addCriterion("LOCKED <=", value, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockLike(Boolean value) {
-            addCriterion("IS_LOCK like", value, "isLock");
+        public Criteria andLockedLike(Boolean value) {
+            addCriterion("LOCKED like", value, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockNotLike(Boolean value) {
-            addCriterion("IS_LOCK not like", value, "isLock");
+        public Criteria andLockedNotLike(Boolean value) {
+            addCriterion("LOCKED not like", value, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockIn(List<Boolean> values) {
-            addCriterion("IS_LOCK in", values, "isLock");
+        public Criteria andLockedIn(List<Boolean> values) {
+            addCriterion("LOCKED in", values, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockNotIn(List<Boolean> values) {
-            addCriterion("IS_LOCK not in", values, "isLock");
+        public Criteria andLockedNotIn(List<Boolean> values) {
+            addCriterion("LOCKED not in", values, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockBetween(Boolean value1, Boolean value2) {
-            addCriterion("IS_LOCK between", value1, value2, "isLock");
+        public Criteria andLockedBetween(Boolean value1, Boolean value2) {
+            addCriterion("LOCKED between", value1, value2, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andIsLockNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("IS_LOCK not between", value1, value2, "isLock");
+        public Criteria andLockedNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("LOCKED not between", value1, value2, "locked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateDateIsNull() {
+            addCriterion("CREATE_DATE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateDateIsNotNull() {
+            addCriterion("CREATE_DATE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateDateEqualTo(Date value) {
+            addCriterion("CREATE_DATE =", value, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateDateNotEqualTo(Date value) {
+            addCriterion("CREATE_DATE <>", value, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateDateGreaterThan(Date value) {
+            addCriterion("CREATE_DATE >", value, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("CREATE_DATE >=", value, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateDateLessThan(Date value) {
+            addCriterion("CREATE_DATE <", value, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateDateLessThanOrEqualTo(Date value) {
+            addCriterion("CREATE_DATE <=", value, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateDateIn(List<Date> values) {
+            addCriterion("CREATE_DATE in", values, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateDateNotIn(List<Date> values) {
+            addCriterion("CREATE_DATE not in", values, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateDateBetween(Date value1, Date value2) {
+            addCriterion("CREATE_DATE between", value1, value2, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateDateNotBetween(Date value1, Date value2) {
+            addCriterion("CREATE_DATE not between", value1, value2, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveIsNull() {
+            addCriterion("ACTIVE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveIsNotNull() {
+            addCriterion("ACTIVE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveEqualTo(Boolean value) {
+            addCriterion("ACTIVE =", value, "active");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveNotEqualTo(Boolean value) {
+            addCriterion("ACTIVE <>", value, "active");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveGreaterThan(Boolean value) {
+            addCriterion("ACTIVE >", value, "active");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("ACTIVE >=", value, "active");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveLessThan(Boolean value) {
+            addCriterion("ACTIVE <", value, "active");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveLessThanOrEqualTo(Boolean value) {
+            addCriterion("ACTIVE <=", value, "active");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveLike(Boolean value) {
+            addCriterion("ACTIVE like", value, "active");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveNotLike(Boolean value) {
+            addCriterion("ACTIVE not like", value, "active");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveIn(List<Boolean> values) {
+            addCriterion("ACTIVE in", values, "active");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveNotIn(List<Boolean> values) {
+            addCriterion("ACTIVE not in", values, "active");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveBetween(Boolean value1, Boolean value2) {
+            addCriterion("ACTIVE between", value1, value2, "active");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("ACTIVE not between", value1, value2, "active");
             return (Criteria) this;
         }
     }

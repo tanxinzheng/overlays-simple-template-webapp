@@ -2,7 +2,7 @@
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-18 23:09:38
+ * @date    2016-10-20 1:05:48
  * @version 1.0.0
  */
 define([
@@ -20,7 +20,7 @@ define([
             states.push({
                 title: "用户",
                 name: 'app.user',
-                url: '//user',
+                url: '/user',
                 views: {
                     'user': angularAMD.route({
                         controller: user,

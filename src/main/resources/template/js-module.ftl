@@ -16,7 +16,7 @@ define([
             states.push({
                 title: "${tableComment}",
                 name: 'app.${domainObjectName}',
-                url: '/${restMapping}',
+                url: '${restMapping}',
                 views: {
                     '${domainObjectName}': angularAMD.route({
                         controller: ${domainObjectName},

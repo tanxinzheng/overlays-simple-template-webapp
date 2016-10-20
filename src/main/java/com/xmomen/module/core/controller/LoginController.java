@@ -1,6 +1,7 @@
 package com.xmomen.module.core.controller;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -36,12 +37,14 @@ public class LoginController {
         String exceptionClassName = (String)request.getAttribute("shiroLoginFailure");
         String error = null;
         if(UnknownAccountException.class.getName().equals(exceptionClassName)) {
-            error = "用户名或密码错误";
+            error = "此帐号未注册。";
         } else if(LockedAccountException.class.getName().equals(exceptionClassName)) {
-            error = "此账号已被冻结，请联系客服。";
+            error = "此帐号已被冻结，请联系客服。";
         } else if(IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
-            error = "用户名或密码错误";
-        } else if(exceptionClassName != null) {
+            error = "用户名或密码错误。";
+        } else if(ExcessiveAttemptsException.class.getName().equals(exceptionClassName)){
+            error = "已超过重试次数，请10分钟后重新操作。";
+        }else if(exceptionClassName != null) {
             error = "其他错误：" + exceptionClassName;
         }
         model.addAttribute("error", error);
