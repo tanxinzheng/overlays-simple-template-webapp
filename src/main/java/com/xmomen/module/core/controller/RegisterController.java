@@ -3,6 +3,8 @@ package com.xmomen.module.core.controller;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.model.Register;
 import com.xmomen.module.core.service.AccountService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,15 +42,30 @@ public class RegisterController {
                            BindingResult bindingResult,
                            HttpServletRequest request,
                            Model model) {
+        // 已登录则直接跳入首页
+        if(SecurityUtils.getSubject().isAuthenticated()){
+            return "redirect:/";
+        }
         if (!WebUtils.toHttp(request).getMethod().equalsIgnoreCase("POST")){
             return "register";
         }
         if(!bindingResult.hasErrors()){
-            AccountModel accountModel = accountService.register(register);
-            if(accountModel != null){
-                return "login";
-            }else{
-                model.addAttribute("error", "注册用户失败");
+            AccountModel accountModel = null;
+            try {
+                accountModel = accountService.register(register);
+                if(accountModel != null){
+                    return "redirect:/register/message";
+                }
+                logger.error("调用注册接口返回空对象");
+                model.addAttribute("error", "注册失败，请联系客服");
+                return "register";
+            }catch (AccountException e){
+                logger.error(e.getMessage(), e);
+                model.addAttribute("error", e.getMessage());
+                return "register";
+            }catch (Exception e){
+                logger.error(e.getMessage(), e);
+                model.addAttribute("error", "注册失败，请联系客服");
                 return "register";
             }
         }else{

@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-20 1:05:48
+ * @date    2016-10-22 21:53:46
  * @version 1.0.0
  */
 public @Data class UserCreate implements Serializable {
@@ -34,8 +34,8 @@ public @Data class UserCreate implements Serializable {
     private Boolean locked;
     /** 注册时间 */
     private Date createDate;
-    /** 激活 */
-    private Boolean active;
+    /** 最后登录时间 */
+    private Date lastLoginTime;
 
     public User getEntity(){
         User user = new User();

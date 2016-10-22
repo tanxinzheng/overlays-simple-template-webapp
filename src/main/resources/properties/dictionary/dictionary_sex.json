@@ -1,0 +1,14 @@
+{
+  "ACTIVE":[
+    {
+      "code": "true",
+      "label": "激活",
+      "sort": 0
+    },
+    {
+      "code": "false",
+      "label": "未激活",
+      "sort": 1
+    }
+  ]
+}

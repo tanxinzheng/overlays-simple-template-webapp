@@ -4,13 +4,16 @@ import lombok.Data;
 import com.xmomen.module.authorization.entity.Permission;
 import org.springframework.beans.BeanUtils;
 
+    import java.math.BigDecimal;
     import java.lang.Boolean;
     import java.lang.String;
+    import java.lang.Integer;
+    import java.util.Date;
 import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-18 23:46:57
+ * @date    2016-10-20 23:14:13
  * @version 1.0.0
  */
 public @Data class PermissionUpdate implements Serializable {
@@ -25,6 +28,12 @@ public @Data class PermissionUpdate implements Serializable {
     private String description;
     /** 激活 */
     private Boolean active;
+    /** 创建时间 */
+    private Date createDate;
+    /** 金额 */
+    private BigDecimal amount;
+    /** 年龄 */
+    private Integer age;
 
 
     public Permission getEntity(){

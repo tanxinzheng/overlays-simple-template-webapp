@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-18 23:46:57
+ * @date    2016-10-20 23:14:13
  * @version 1.0.0
  */
 public interface UserPermissionService {

@@ -4,15 +4,22 @@
 define(function(){
     return ["$scope", "$modal", "${domainObjectClassName}API", "$dialog", function($scope, $modal, ${domainObjectClassName}API, $dialog){
         $scope.pageSetting = {
-            checkAll : false
+            checkAll : false,
+            queryBtnLoading : false
         };
         $scope.pageInfoSetting = {
             pageSize:10,
             pageNum:1
         };
+        // 重置
+        $scope.reset = function(){
+            $scope.queryParam={};
+            $scope.get${domainObjectClassName}List();
+        };
         $scope.queryParam = {};
         // 查询列表
         $scope.get${domainObjectClassName}List = function(){
+            $scope.pageSetting.queryBtnLoading = true;
             ${domainObjectClassName}API.query({
                 keyword: $scope.queryParam.keyword,
                 limit: $scope.pageInfoSetting.pageSize,
@@ -21,7 +28,9 @@ define(function(){
                 $scope.${domainObjectName}List = data.data;
                 $scope.pageInfoSetting = data.pageInfo;
                 $scope.pageInfoSetting.loadData = $scope.get${domainObjectClassName}List;
-            });
+            }).$promise.finally(function(){
+                $scope.pageSetting.queryBtnLoading = false;
+            });;
         };
         // 全选
         $scope.checkAll = function(){
@@ -78,10 +87,11 @@ define(function(){
                         return params;
                     }
                 },
-                controller: ['$scope', '$modalInstance', "$modal", "${domainObjectClassName}API", "Params", function($scope, $modalInstance, $modal, ${domainObjectClassName}API, Params){
+                controller: ['$scope', '$modalInstance', "$modal", "${domainObjectClassName}API", "Params", "$dialog", function($scope, $modalInstance, $modal, ${domainObjectClassName}API, Params, $dialog){
                     //$scope.${domainObjectName} = null;
                     $scope.pageSetting = {
-                        formDisabled : true
+                        formDisabled : true,
+                        saveBtnLoading : false
                     };
                     if(Params.action == "UPDATE" || Params.action == "ADD"){
                         $scope.pageSetting.formDisabled = false;
@@ -90,15 +100,30 @@ define(function(){
                         $scope.${domainObjectName} = ${domainObjectClassName}API.get({
                             id: Params.id
                         });
-                    }else{
-                        $scope.${domainObjectName} = new ${domainObjectClassName}API();
                     }
                     $scope.${domainObjectName}DetailForm = {};
                     $scope.save${domainObjectClassName} = function(){
                         if($scope.${domainObjectName}DetailForm.validator.form()){
-                            $scope.${domainObjectName}.$save(function(){
-                                $modalInstance.close();
-                            });
+                            if($scope.${domainObjectName}DetailForm.validator.form()){
+                                $dialog.confirm("是否保存数据？").then(function(){
+                                    $scope.pageSetting.saveBtnLoading = true;
+                                    if ( !$scope.${domainObjectName}.id ) {
+                                        ${domainObjectClassName}API.create($scope.${domainObjectName}, function(data,headers){
+                                            $dialog.success("新增成功");
+                                            $modalInstance.close();
+                                        }).$promise.finally(function(){
+                                            $scope.pageSetting.saveBtnLoading = false;
+                                        });
+                                    }else {
+                                        ${domainObjectClassName}API.update($scope.${domainObjectName}, function(data,headers){
+                                            $dialog.success("更新成功");
+                                            $modalInstance.close();
+                                        }).$promise.finally(function(){
+                                            $scope.pageSetting.saveBtnLoading = false;
+                                        });
+                                    }
+                                });
+                            }
                         }
                     };
                     $scope.cancel = function(){
@@ -107,14 +132,14 @@ define(function(){
                 }]
             }).result.then(function () {
                 $scope.get${domainObjectClassName}List();
-            }, function () {
-                $scope.get${domainObjectClassName}List();
             });
         };
         // 删除
         $scope.delete = function(index){
-            ${domainObjectClassName}API.delete({id:$scope.${domainObjectName}List[index].id}, function(){
-                $scope.get${domainObjectClassName}List();
+            $dialog.confirm("请确认是否删除").then(function(){
+                ${domainObjectClassName}API.delete({id:$scope.${domainObjectName}List[index].id}, function(){
+                    $scope.get${domainObjectClassName}List();
+                });
             });
         };
         // 批量删除

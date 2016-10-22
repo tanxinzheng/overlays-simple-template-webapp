@@ -11,9 +11,9 @@ import com.xmomen.module.user.entity.UserExample;
 import com.xmomen.module.user.model.UserCreate;
 import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.service.UserService;
-import org.apache.shiro.authc.Account;
+import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.SimpleAccount;
-import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class AccountService {
      * @param username
      * @return
      */
-    public AccountModel getAccountByUsername(String username) {
+    public AccountModel getAccountModelByUsername(String username) {
         UserExample userExample = new UserExample();
         userExample.createCriteria().andUsernameEqualTo(username);
         userExample.or().andEmailEqualTo(username);
@@ -52,6 +52,7 @@ public class AccountService {
             accountModel.setEmail(user.getEmail());
             accountModel.setNickname(user.getNickname());
             accountModel.setPhoneNumber(user.getPhoneNumber());
+            accountModel.setUserId(user.getId());
             return accountModel;
         }
         return null;
@@ -62,13 +63,25 @@ public class AccountService {
      * @param register
      * @return
      */
-    public AccountModel register(Register register){
-        String salt = StringUtilsExt.getUUID(12);
+    public AccountModel register(Register register) throws AccountException {
+        SimpleAccount simpleAccount = getAccountByUsername(register.getUsername());
+        if(simpleAccount != null){
+            throw new AccountException("此用户名已被注册");
+        }
+        SimpleAccount emailAccount = getAccountByUsername(register.getEmail());
+        if(emailAccount != null){
+            throw new AccountException("此邮箱已被注册");
+        }
+        String salt = StringUtilsExt.getUUID(32);
         String encryptPassword = PasswordHelper.encryptPassword(register.getPassword(), salt);
         UserCreate userCreate = new UserCreate();
         userCreate.setEmail(register.getEmail());
         userCreate.setPhoneNumber(register.getPhoneNumber());
-        userCreate.setNickname(register.getNickname());
+        if(StringUtils.trimToNull(register.getNickname()) == null){
+            userCreate.setNickname(register.getUsername());
+        }else{
+            userCreate.setNickname(register.getNickname());
+        }
         userCreate.setUsername(register.getUsername());
         userCreate.setSalt(salt);
         userCreate.setPassword(encryptPassword);
@@ -84,7 +97,7 @@ public class AccountService {
      * @param username
      * @return
      */
-    public SimpleAccount getUserByUsername(String username) {
+    public SimpleAccount getAccountByUsername(String username) {
         UserExample userExample = new UserExample();
         userExample.createCriteria().andUsernameEqualTo(username);
         userExample.or().andEmailEqualTo(username);
@@ -92,10 +105,20 @@ public class AccountService {
         User user = mybatisDao.selectOneByExample(userExample);
         if(user != null){
             SimpleAccount account = new SimpleAccount(user.getUsername(), user.getPassword(), ByteSource.Util.bytes(user.getSalt()), UserRealm.class.getName());
-            account.setLocked(user.getLocked());
+            if(user.getLocked() != null){
+                account.setLocked(user.getLocked());
+            }
             return account;
         }
         return null;
+    }
+
+    public void resetPassword(String email){
+
+    }
+
+    public void validResetPassword(String email, String token, String mail){
+
     }
 
     /**

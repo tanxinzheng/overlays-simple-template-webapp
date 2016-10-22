@@ -1,7 +1,6 @@
 package com.xmomen.module.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.xmomen.framework.web.json.DictionaryInterpreter;
 import com.xmomen.module.user.entity.User;
 import lombok.Data;
 import org.jeecgframework.poi.excel.annotation.Excel;
@@ -15,7 +14,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-20 1:05:48
+ * @date    2016-10-22 21:53:46
  * @version 1.0.0
  */
 @ExcelTarget(value = "UserModel")
@@ -45,10 +44,9 @@ public @Data class UserModel implements Serializable {
     /** 注册时间 */
     @Excel(name = "注册时间")
     private Date createDate;
-    /** 激活 */
-    @Excel(name = "激活")
-    @DictionaryInterpreter(type = "active", fieldName = "activeLabel")
-    private Boolean active;
+    /** 最后登录时间 */
+    @Excel(name = "最后登录时间")
+    private Date lastLoginTime;
     @JsonIgnore
     public User getEntity(){
         User user = new User();

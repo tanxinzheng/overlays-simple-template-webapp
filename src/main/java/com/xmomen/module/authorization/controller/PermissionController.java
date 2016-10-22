@@ -12,7 +12,6 @@ import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,7 +22,7 @@ import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-18 23:46:57
+ * @date    2016-10-20 23:14:13
  * @version 1.0.0
  */
 @RestController
@@ -78,9 +77,9 @@ public class PermissionController {
      */
     @RequestMapping(method = RequestMethod.POST)
     //@Log(actionName = "新增权限")
-    public PermissionModel createPermission(@RequestBody @Valid PermissionCreate permissionCreate, BindingResult bindingResult) throws BindException {
+    public PermissionModel createPermission(@RequestBody @Valid PermissionCreate permissionCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
-            throw new BindException(bindingResult);
+            throw new ArgumentValidException(bindingResult);
         }
         return permissionService.createPermission(permissionCreate);
     }
@@ -95,9 +94,9 @@ public class PermissionController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     //@Log(actionName = "更新权限")
     public void updatePermission(@PathVariable(value = "id") String id,
-                           @RequestBody @Valid PermissionUpdate permissionUpdate, BindingResult bindingResult) throws BindException {
+                           @RequestBody @Valid PermissionUpdate permissionUpdate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
-            throw new BindException(bindingResult);
+            throw new ArgumentValidException(bindingResult);
         }
         permissionService.updatePermission(permissionUpdate);
     }

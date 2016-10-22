@@ -4,9 +4,9 @@
   <resultMap id="BaseResultMap" type="com.xmomen.module.system.entity.Dictionary" >
     <id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="DICTIONARY_TYPE" property="dictionaryType" jdbcType="VARCHAR" />
-    <result column="SHOW_VALUE" property="showValue" jdbcType="VARCHAR" />
-    <result column="CODE_VALUE" property="codeValue" jdbcType="VARCHAR" />
-    <result column="SORT_VALUE" property="sortValue" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="SORT" property="sort" jdbcType="INTEGER" />
     <result column="ACTIVE" property="active" jdbcType="BIT" />
     <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
     <result column="SHOW" property="show" jdbcType="BIT" />
@@ -70,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    ID, DICTIONARY_TYPE, SHOW_VALUE, CODE_VALUE, SORT_VALUE, ACTIVE, PARENT_ID, SHOW
+    ID, DICTIONARY_TYPE, NAME, CODE, SORT, ACTIVE, PARENT_ID, SHOW
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xmomen.module.system.entity.DictionaryExample" >
     select
@@ -102,14 +102,14 @@
       <if test="dictionaryType != null" >
         DICTIONARY_TYPE,
       </if>
-      <if test="showValue != null" >
-        SHOW_VALUE,
+      <if test="name != null" >
+        NAME,
       </if>
-      <if test="codeValue != null" >
-        CODE_VALUE,
+      <if test="code != null" >
+        CODE,
       </if>
-      <if test="sortValue != null" >
-        SORT_VALUE,
+      <if test="sort != null" >
+        SORT,
       </if>
       <if test="active != null" >
         ACTIVE,
@@ -126,14 +126,14 @@
       <if test="dictionaryType != null" >
         #{dictionaryType,jdbcType=VARCHAR},
       </if>
-      <if test="showValue != null" >
-        #{showValue,jdbcType=VARCHAR},
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="codeValue != null" >
-        #{codeValue,jdbcType=VARCHAR},
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
       </if>
-      <if test="sortValue != null" >
-        #{sortValue,jdbcType=INTEGER},
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
       </if>
       <if test="active != null" >
         #{active,jdbcType=BIT},
@@ -161,14 +161,14 @@
       <if test="record.dictionaryType != null" >
         DICTIONARY_TYPE = #{record.dictionaryType,jdbcType=VARCHAR},
       </if>
-      <if test="record.showValue != null" >
-        SHOW_VALUE = #{record.showValue,jdbcType=VARCHAR},
+      <if test="record.name != null" >
+        NAME = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.codeValue != null" >
-        CODE_VALUE = #{record.codeValue,jdbcType=VARCHAR},
+      <if test="record.code != null" >
+        CODE = #{record.code,jdbcType=VARCHAR},
       </if>
-      <if test="record.sortValue != null" >
-        SORT_VALUE = #{record.sortValue,jdbcType=INTEGER},
+      <if test="record.sort != null" >
+        SORT = #{record.sort,jdbcType=INTEGER},
       </if>
       <if test="record.active != null" >
         ACTIVE = #{record.active,jdbcType=BIT},

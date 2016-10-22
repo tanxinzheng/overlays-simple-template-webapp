@@ -3,6 +3,7 @@ package com.xmomen.module.user.entity;
 import com.xmomen.framework.mybatis.model.BaseMybatisExample;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class UserExample extends BaseMybatisExample {
@@ -104,6 +105,32 @@ public class UserExample extends BaseMybatisExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value.getTime()), property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                dateList.add(new java.sql.Date(iter.next().getTime()));
+            }
+            addCriterion(condition, dateList, property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andIdIsNull() {
@@ -677,122 +704,112 @@ public class UserExample extends BaseMybatisExample {
         }
 
         public Criteria andCreateDateEqualTo(Date value) {
-            addCriterion("CREATE_DATE =", value, "createDate");
+            addCriterionForJDBCDate("CREATE_DATE =", value, "createDate");
             return (Criteria) this;
         }
 
         public Criteria andCreateDateNotEqualTo(Date value) {
-            addCriterion("CREATE_DATE <>", value, "createDate");
+            addCriterionForJDBCDate("CREATE_DATE <>", value, "createDate");
             return (Criteria) this;
         }
 
         public Criteria andCreateDateGreaterThan(Date value) {
-            addCriterion("CREATE_DATE >", value, "createDate");
+            addCriterionForJDBCDate("CREATE_DATE >", value, "createDate");
             return (Criteria) this;
         }
 
         public Criteria andCreateDateGreaterThanOrEqualTo(Date value) {
-            addCriterion("CREATE_DATE >=", value, "createDate");
+            addCriterionForJDBCDate("CREATE_DATE >=", value, "createDate");
             return (Criteria) this;
         }
 
         public Criteria andCreateDateLessThan(Date value) {
-            addCriterion("CREATE_DATE <", value, "createDate");
+            addCriterionForJDBCDate("CREATE_DATE <", value, "createDate");
             return (Criteria) this;
         }
 
         public Criteria andCreateDateLessThanOrEqualTo(Date value) {
-            addCriterion("CREATE_DATE <=", value, "createDate");
+            addCriterionForJDBCDate("CREATE_DATE <=", value, "createDate");
             return (Criteria) this;
         }
 
         public Criteria andCreateDateIn(List<Date> values) {
-            addCriterion("CREATE_DATE in", values, "createDate");
+            addCriterionForJDBCDate("CREATE_DATE in", values, "createDate");
             return (Criteria) this;
         }
 
         public Criteria andCreateDateNotIn(List<Date> values) {
-            addCriterion("CREATE_DATE not in", values, "createDate");
+            addCriterionForJDBCDate("CREATE_DATE not in", values, "createDate");
             return (Criteria) this;
         }
 
         public Criteria andCreateDateBetween(Date value1, Date value2) {
-            addCriterion("CREATE_DATE between", value1, value2, "createDate");
+            addCriterionForJDBCDate("CREATE_DATE between", value1, value2, "createDate");
             return (Criteria) this;
         }
 
         public Criteria andCreateDateNotBetween(Date value1, Date value2) {
-            addCriterion("CREATE_DATE not between", value1, value2, "createDate");
+            addCriterionForJDBCDate("CREATE_DATE not between", value1, value2, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andActiveIsNull() {
-            addCriterion("ACTIVE is null");
+        public Criteria andLastLoginTimeIsNull() {
+            addCriterion("LAST_LOGIN_TIME is null");
             return (Criteria) this;
         }
 
-        public Criteria andActiveIsNotNull() {
-            addCriterion("ACTIVE is not null");
+        public Criteria andLastLoginTimeIsNotNull() {
+            addCriterion("LAST_LOGIN_TIME is not null");
             return (Criteria) this;
         }
 
-        public Criteria andActiveEqualTo(Boolean value) {
-            addCriterion("ACTIVE =", value, "active");
+        public Criteria andLastLoginTimeEqualTo(Date value) {
+            addCriterion("LAST_LOGIN_TIME =", value, "lastLoginTime");
             return (Criteria) this;
         }
 
-        public Criteria andActiveNotEqualTo(Boolean value) {
-            addCriterion("ACTIVE <>", value, "active");
+        public Criteria andLastLoginTimeNotEqualTo(Date value) {
+            addCriterion("LAST_LOGIN_TIME <>", value, "lastLoginTime");
             return (Criteria) this;
         }
 
-        public Criteria andActiveGreaterThan(Boolean value) {
-            addCriterion("ACTIVE >", value, "active");
+        public Criteria andLastLoginTimeGreaterThan(Date value) {
+            addCriterion("LAST_LOGIN_TIME >", value, "lastLoginTime");
             return (Criteria) this;
         }
 
-        public Criteria andActiveGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("ACTIVE >=", value, "active");
+        public Criteria andLastLoginTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("LAST_LOGIN_TIME >=", value, "lastLoginTime");
             return (Criteria) this;
         }
 
-        public Criteria andActiveLessThan(Boolean value) {
-            addCriterion("ACTIVE <", value, "active");
+        public Criteria andLastLoginTimeLessThan(Date value) {
+            addCriterion("LAST_LOGIN_TIME <", value, "lastLoginTime");
             return (Criteria) this;
         }
 
-        public Criteria andActiveLessThanOrEqualTo(Boolean value) {
-            addCriterion("ACTIVE <=", value, "active");
+        public Criteria andLastLoginTimeLessThanOrEqualTo(Date value) {
+            addCriterion("LAST_LOGIN_TIME <=", value, "lastLoginTime");
             return (Criteria) this;
         }
 
-        public Criteria andActiveLike(Boolean value) {
-            addCriterion("ACTIVE like", value, "active");
+        public Criteria andLastLoginTimeIn(List<Date> values) {
+            addCriterion("LAST_LOGIN_TIME in", values, "lastLoginTime");
             return (Criteria) this;
         }
 
-        public Criteria andActiveNotLike(Boolean value) {
-            addCriterion("ACTIVE not like", value, "active");
+        public Criteria andLastLoginTimeNotIn(List<Date> values) {
+            addCriterion("LAST_LOGIN_TIME not in", values, "lastLoginTime");
             return (Criteria) this;
         }
 
-        public Criteria andActiveIn(List<Boolean> values) {
-            addCriterion("ACTIVE in", values, "active");
+        public Criteria andLastLoginTimeBetween(Date value1, Date value2) {
+            addCriterion("LAST_LOGIN_TIME between", value1, value2, "lastLoginTime");
             return (Criteria) this;
         }
 
-        public Criteria andActiveNotIn(List<Boolean> values) {
-            addCriterion("ACTIVE not in", values, "active");
-            return (Criteria) this;
-        }
-
-        public Criteria andActiveBetween(Boolean value1, Boolean value2) {
-            addCriterion("ACTIVE between", value1, value2, "active");
-            return (Criteria) this;
-        }
-
-        public Criteria andActiveNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("ACTIVE not between", value1, value2, "active");
+        public Criteria andLastLoginTimeNotBetween(Date value1, Date value2) {
+            addCriterion("LAST_LOGIN_TIME not between", value1, value2, "lastLoginTime");
             return (Criteria) this;
         }
     }

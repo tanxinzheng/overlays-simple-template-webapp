@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-18 23:46:57
+ * @date    2016-10-20 23:14:12
  * @version 1.0.0
  */
 @ExcelTarget(value = "DictionaryModel")
@@ -25,15 +25,15 @@ public @Data class DictionaryModel implements Serializable {
     /** 字典类型 */
     @Excel(name = "字典类型")
     private String dictionaryType;
-    /** 显示值 */
-    @Excel(name = "显示值")
-    private String showValue;
-    /** 实际值 */
-    @Excel(name = "实际值")
-    private String codeValue;
+    /** 名称 */
+    @Excel(name = "名称")
+    private String name;
+    /** 代码 */
+    @Excel(name = "代码")
+    private String code;
     /** 排序 */
     @Excel(name = "排序")
-    private Integer sortValue;
+    private Integer sort;
     /** 激活 */
     @Excel(name = "激活")
     private Boolean active;

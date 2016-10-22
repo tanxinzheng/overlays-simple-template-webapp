@@ -10,8 +10,8 @@
     <result column="EMAIL" property="email" jdbcType="VARCHAR" />
     <result column="PHONE_NUMBER" property="phoneNumber" jdbcType="VARCHAR" />
     <result column="LOCKED" property="locked" jdbcType="CHAR" />
-    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
-    <result column="ACTIVE" property="active" jdbcType="CHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+    <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,7 +73,7 @@
   </sql>
   <sql id="Base_Column_List" >
     ID, USERNAME, NICKNAME, SALT, PASSWORD, EMAIL, PHONE_NUMBER, LOCKED, CREATE_DATE, 
-    ACTIVE
+    LAST_LOGIN_TIME
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xmomen.module.user.entity.UserExample" >
     select
@@ -126,8 +126,8 @@
       <if test="createDate != null" >
         CREATE_DATE,
       </if>
-      <if test="active != null" >
-        ACTIVE,
+      <if test="lastLoginTime != null" >
+        LAST_LOGIN_TIME,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -154,10 +154,10 @@
         #{locked,jdbcType=CHAR},
       </if>
       <if test="createDate != null" >
-        #{createDate,jdbcType=TIMESTAMP},
+        #{createDate,jdbcType=DATE},
       </if>
-      <if test="active != null" >
-        #{active,jdbcType=CHAR},
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -195,10 +195,10 @@
         LOCKED = #{record.locked,jdbcType=CHAR},
       </if>
       <if test="record.createDate != null" >
-        CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP},
+        CREATE_DATE = #{record.createDate,jdbcType=DATE},
       </if>
-      <if test="record.active != null" >
-        ACTIVE = #{record.active,jdbcType=CHAR},
+      <if test="record.lastLoginTime != null" >
+        LAST_LOGIN_TIME = #{record.lastLoginTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >

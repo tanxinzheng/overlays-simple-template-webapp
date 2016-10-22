@@ -21,6 +21,7 @@ require.config({
         "config-lazyload": "js/config.lazyload",
         "config-i18n": "js/config.i18n",
         "config-router": "js/config.router",
+        "datetimepicker": "js/vendor/bootstrap/bootstrap-datetimepicker/js/bootstrap-datetimepicker",
         "App":"js/app.define"
     },
     map: {
@@ -30,6 +31,7 @@ require.config({
     },
     shim: {
         "jquery" : { exports : "jquery" },
+        "datetimepicker" : ["jquery","css!js/vendor/bootstrap/bootstrap-datetimepicker/css/bootstrap-datetimepicker"],
         //"angularAMD" : { exports : "angularAMD"},
         // angular
         "angular": { exports: "angular" },

@@ -2,16 +2,21 @@
 define([
     "./dialog",
     "./modal-draggable",
-    "./pagination",
     "./ui-directive",
-    "./validate"
-],function(dialog, modal_draggable, pagination, uiDirective, validate
+    "./validate",
+    "./pagination",
+    "./datetimepicker",
+    "./grid"
+],function(dialog, modal_draggable, uiDirective, validate, pagination, datetimepicker,
+           grid
 ){
     return angular.module("xmomen.ui",[
-      //  pagination.name,
+        pagination.name,
         uiDirective.name,
         dialog.name,
-        modal_draggable.name
+        modal_draggable.name,
+        datetimepicker.name,
+        grid.name
       //  validate.name
     ]).factory("$menu", [function(){
         var menuList = [];
@@ -39,11 +44,6 @@ define([
         events: true,
         modules: [
             {
-                name: 'xmomen.pagination',
-                files: [
-                    "js/core/xmomen-ui/" + 'pagination.js'
-                ]
-            },{
                 name: 'xmomen.validate',
                 files: [
                     "js/vendor/jquery/jquery-validate/jquery.validate.js",
@@ -87,19 +87,31 @@ define([
 
             resource.prototype.$save = function(success, fail) {
                 var thisResource = this;
-                $dialog.confirm("是否保存数据？").then(function(){
+                return $dialog.confirm("是否保存数据？").then(function(){
                     if ( !thisResource.id ) {
-                        return thisResource.$create(function(data,headers){
+                        var call = thisResource.$create(function(data,headers){
                             $dialog.success("新增成功");
                             success(data, headers);
                         }, fail);
+                        console.log(call);
+                        return call;
                     }else {
-                        return thisResource.$update(function(data,headers){
+                        var call = thisResource.$update(function(data,headers){
                             $dialog.success("更新成功");
                             success(data, headers);
                         }, fail);
+                        console.log(call);
+                        return call;
                     }
-                })
+                });
+                //thisResource.$promise.then(function(){
+                //
+                //}, function(){
+                //
+                //}).finally(function(){
+                //
+                //});
+                //return thisResource;
             };
 
             resource.prototype.$delete = function(success, fail) {

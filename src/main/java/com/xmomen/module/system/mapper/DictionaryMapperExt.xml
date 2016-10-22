@@ -9,9 +9,7 @@
         SELECT * FROM xmo_dictionary t
         <where>
             <if test="keyword">
-                    AND (t.DICTIONARY_TYPE LIKE CONCAT('%', #{keyword}, '%')
-                    OR t.SHOW_VALUE LIKE CONCAT('%', #{keyword}, '%')
-                    OR t.CODE_VALUE LIKE CONCAT('%', #{keyword}, '%'))
+                AND (t.DICTIONARY_TYPE LIKE CONCAT('%', #{keyword}, '%'))
             </if>
             <if test="id">
                 AND t.ID = #{id}

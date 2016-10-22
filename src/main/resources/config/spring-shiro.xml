@@ -123,7 +123,7 @@
             <value>
                 /errors/** = anon
                 /unauthorized = anon
-                /register = anon
+                /register/** = anon
                 /find_password = anon
                 /logout = logout
                 /login = authc

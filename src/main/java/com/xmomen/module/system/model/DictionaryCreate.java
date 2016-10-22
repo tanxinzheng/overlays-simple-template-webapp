@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-18 23:46:56
+ * @date    2016-10-20 23:14:12
  * @version 1.0.0
  */
 public @Data class DictionaryCreate implements Serializable {
@@ -20,12 +20,12 @@ public @Data class DictionaryCreate implements Serializable {
     private String id;
     /** 字典类型 */
     private String dictionaryType;
-    /** 显示值 */
-    private String showValue;
-    /** 实际值 */
-    private String codeValue;
+    /** 名称 */
+    private String name;
+    /** 代码 */
+    private String code;
     /** 排序 */
-    private Integer sortValue;
+    private Integer sort;
     /** 激活 */
     private Boolean active;
     /** 父节点 */

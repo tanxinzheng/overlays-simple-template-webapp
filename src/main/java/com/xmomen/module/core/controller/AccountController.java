@@ -32,7 +32,7 @@ public class AccountController {
             return null;
         }
         String username = subject.getPrincipal().toString();
-        AccountModel accountModel = accountService.getAccountByUsername(username);
+        AccountModel accountModel = accountService.getAccountModelByUsername(username);
         //Set<String> roles = permissionService.findRoles(username);
 
         return accountModel;

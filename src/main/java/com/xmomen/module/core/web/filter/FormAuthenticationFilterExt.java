@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.xmomen.framework.web.rest.WebCommonUtils;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.service.AccountService;
+import com.xmomen.module.user.entity.User;
+import com.xmomen.module.user.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.subject.Subject;
@@ -34,6 +36,9 @@ public class FormAuthenticationFilterExt extends FormAuthenticationFilter {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    UserService userService;
 
     private static Logger logger = LoggerFactory.getLogger(FormAuthenticationFilterExt.class);
 
@@ -105,7 +110,13 @@ public class FormAuthenticationFilterExt extends FormAuthenticationFilter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         String username = (String) subject.getPrincipal();
-        AccountModel accountModel = accountService.getAccountByUsername(username);
+        AccountModel accountModel = accountService.getAccountModelByUsername(username);
+        if(accountModel != null){
+            User user = new User();
+            user.setId(accountModel.getUserId());
+            user.setLastLoginTime(new Date());
+            userService.updateUser(user);
+        }
         subject.getSession().setAttribute(SESSION_MODEL_KEY, accountModel);
         if (!WebCommonUtils.isJSON(request)) {// 不是ajax请求
             issueSuccessRedirect(request, response);

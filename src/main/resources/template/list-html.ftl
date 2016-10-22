@@ -5,7 +5,7 @@
     <!-- main -->
     <div class="col">
         <!-- main header -->
-        <div class="bg-light lter b-b wrapper-md">
+        <div class="bg-light lter b-b wrapper-sm">
             <div class="row">
                 <div class="col-sm-6 col-xs-12">
                     <h1 class="m-n font-thin h3 text-black">${tableComment}</h1>
@@ -13,21 +13,32 @@
             </div>
         </div>
         <!-- / main header -->
-        <div class="wrapper-md">
+        <div class="wrapper-sm">
             <div class="panel panel-default">
                 <div class="panel-heading">
                 ${tableComment}
                 </div>
                 <div class="row wrapper">
-                    <div class="col-sm-3">
+                    <div class="col-sm-12">
                         <div class="input-group">
                             <input type="text" ng-model="queryParam.keyword"
                                    data-ng-keyup="get${domainObjectClassName}List()"
                                    class="input-sm form-control" placeholder="请输入关键字进行模糊查询">
-              <span class="input-group-btn">
-                <button class="btn btn-sm btn-default" data-ng-click="get${domainObjectClassName}List()" type="button">查询</button>
-                <button class="btn btn-sm btn-default" data-ng-click="add()" type="button">新增</button>
-              </span>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-sm btn-default"
+                                            btn-loading="pageSetting.queryBtnLoading"
+                                            data-ng-click="get${domainObjectClassName}List()" type="button">
+                                        <i class="icon icon-magnifier"></i>&nbsp;&nbsp;查询
+                                    </button>
+                                    <button class="btn btn-sm btn-default"
+                                            data-ng-click="reset()" type="button">
+                                        <i class="icon icon-action-redo"></i>&nbsp;&nbsp;重置
+                                    </button>
+                                    <button class="btn btn-sm btn-default"
+                                            data-ng-click="add()" type="button">
+                                        <i class="icon icon-plus"></i>&nbsp;&nbsp;新增
+                                    </button>
+                                </span>
                         </div>
                     </div>
                 </div>
@@ -54,7 +65,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr data-ng-repeat="item in ${domainObjectName}List">
+                        <tr data-ng-repeat="item in ${domainObjectName}List"
+                            ng-if="(${domainObjectName}List && ${domainObjectName}List.length > 0) && !pageSetting.queryBtnLoading"
+                            data-ng-mouseenter="item.showAction=true"
+                            data-ng-mouseleave="item.showAction=false">
                             <td>
                                 <label class="i-checks m-b-none">
                                     <input type="checkbox"
@@ -70,7 +84,7 @@
                             <#if !field.primaryKey && !field.hide>
                             <td>
                             <#if field['fieldType'] = 'Boolean'>
-                                <label class="i-switch bg-primary m-t-xs m-r">
+                                <label class="i-switch bg-primary m-r">
                                     <input type="checkbox" name="${field['fieldName']}"
                                            data-ng-true-value="true"
                                            data-ng-false-value="false"
@@ -78,6 +92,8 @@
                                            ng-model="item.${field['fieldName']}">
                                     <i></i>
                                 </label>
+                            <#elseif field['fieldType'] = 'Date'>
+                                <a ng-bind="item.${field['fieldName']} | date:'yyyy-HH-mm hh:MM:ss'"></a>
                             <#else>
                                 <a ng-bind="item.${field['fieldName']}"></a>
                             </#if>
@@ -86,17 +102,13 @@
                         </#list>
                     </#if>
                             <td class="action">
-                                <div class="btn-group open" dropdown="">
-                                    <button type="button" class="btn btn-sm btn-default" data-ng-click="view($index)">查看</button>
-                                    <button type="button" class="btn btn-sm btn-default dropdown-toggle" dropdown-toggle>
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Split button!</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="javascript:void(0)" data-ng-click="view($index)">查看</a></li>
-                                        <li><a href="javascript:void(0)" data-ng-click="update($index)">修改</a></li>
+                                <div ng-show="item.showAction" class="dropdown dropdown-right-action" dropdown="">
+                                    <i class="icon icon-settings" dropdown-toggle="" aria-haspopup="true" aria-expanded="false"></i>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="javascript:void(0)" data-ng-click="view($index)"><i class="icon icon-info"></i>&nbsp;&nbsp;查看</a></li>
+                                        <li><a href="javascript:void(0)" data-ng-click="update($index)"><i class="fa fa-edit"></i>&nbsp;&nbsp;修改</a></li>
                                         <li class="divider"></li>
-                                        <li><a href="javascript:void(0)" data-ng-click="delete($index)">删除</a></li>
+                                        <li><a href="javascript:void(0)" data-ng-click="delete($index)"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;删除</a></li>
                                     </ul>
                                 </div>
                             </td>
@@ -104,14 +116,9 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-footer table-data-empty" ng-if="!${domainObjectName}List || ${domainObjectName}List.length == 0">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <span><i class="icon icon-info">&nbsp;&nbsp;没有查询到符合条件的数据</i></span>
-                        </div>
-                    </div>
-                </div>
-                <footer class="panel-footer" ng-if="${domainObjectName}List && ${domainObjectName}List.length > 0">
+                <div ug-empty-data-msg ng-if="(!${domainObjectName}List || ${domainObjectName}List.length == 0) && !pageSetting.queryBtnLoading"></div>
+                <div ug-loading-msg ng-if="pageSetting.queryBtnLoading"></div>
+                <footer class="panel-footer" ng-if="${domainObjectName}List && ${domainObjectName}List.length > 0 && !pageSetting.queryBtnLoading">
                     <div class="row">
                         <div class="col-sm-6">
                             <label class="i-checks m-b-none">
@@ -124,14 +131,14 @@
                             </label>
                             <div class="btn-group open" dropdown="">
                                 <button type="button" class="btn btn-sm btn-default dropdown-toggle" dropdown-toggle>
-                                    批量操作
+                                    批量操作&nbsp;&nbsp;
                                     <span class="caret"></span>
                                     <span class="sr-only">Split button!</span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="javascript:void(0)" data-ng-click="batchExport($index)"><i class="fa fa-download">&nbsp;&nbsp;批量导出</i></a></li>
                                     <li class="divider"></li>
-                                    <li><a href="javascript:void(0)" data-ng-click="batchDelete($index)"><i class="fa fa-minus">&nbsp;&nbsp;批量删除</i></a></li>
+                                    <li><a href="javascript:void(0)" data-ng-click="batchDelete($index)"><i class="fa fa-trash">&nbsp;&nbsp;批量删除</i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -157,35 +164,50 @@
                 <#if fieldList?exists>
                     <#list fieldList as field>
                         <#if !field.primaryKey && !field.hide>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">
-                                    ${field['fieldComment']}
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            ${field['fieldComment']}
+                            <#if !field.nullable>
+                            <span class="vaild">*</span>
+                            </#if>
+                        </label>
+                        <div class="col-md-9">
+                            <#if field['fieldType'] = 'Boolean'>
+                            <label class="i-switch bg-primary m-r">
+                                <input type="checkbox" name="${field['fieldName']}"
+                                       data-ng-true-value="true"
+                                       data-ng-false-value="false"
+                                       ng-disabled="pageSetting.formDisabled"
+                                       ng-model="${domainObjectName}.${field['fieldName']}">
+                                <i></i>
+                            </label>
+                            <#elseif field['fieldType'] = 'Date'>
+                            <div class="input-group">
+                                <input class="form-control" type="text" name="${field['fieldName']}" placeholder="请输入${field['fieldComment']}"
+                                       ng-disabled="pageSetting.formDisabled"
                                     <#if !field.nullable>
-                                    <span class="vaild">*</span>
+                                       data-msg-required="${field['fieldComment']}必填"
+                                       required="true"
                                     </#if>
-                                </label>
-                                <div class="col-md-9">
-                                    <#if field['fieldType'] = 'Boolean'>
-                                        <label class="i-switch bg-primary m-t-xs m-r">
-                                            <input type="checkbox" name="${field['fieldName']}"
-                                                   data-ng-true-value="true"
-                                                   data-ng-false-value="false"
-                                                   ng-disabled="pageSetting.formDisabled"
-                                                   ng-model="${domainObjectName}.${field['fieldName']}">
-                                            <i></i>
-                                        </label>
-                                    <#else>
-                                        <input class="form-control" type="text" name="${field['fieldName']}" placeholder="请输入${field['fieldComment']}"
-                                               ng-disabled="pageSetting.formDisabled"
-                                            <#if !field.nullable>
-                                               data-msg-required="${field['fieldComment']}必填"
-                                               required="true"
-                                            </#if>
-                                               data-rule-maxlength="${field.maxLength}"
-                                               ng-model="${domainObjectName}.${field['fieldName']}">
-                                    </#if>
-                                </div>
+                                       ug-datetimepicker
+                                       ng-model="${domainObjectName}.${field['fieldName']}">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
                             </div>
+                            <#else>
+                            <input class="form-control" type="text" name="${field['fieldName']}" placeholder="请输入${field['fieldComment']}"
+                                   ng-disabled="pageSetting.formDisabled"
+                                <#if !field.nullable>
+                                   data-msg-required="${field['fieldComment']}必填"
+                                   required="true"
+                                </#if>
+                                   data-rule-maxlength="${field.maxLength}"
+                                   data-msg-maxlength="${field['fieldComment']}字符长度限制[0,${field.maxLength}]"
+                                   ng-model="${domainObjectName}.${field['fieldName']}">
+                            </#if>
+                        </div>
+                    </div>
                         </#if>
                     </#list>
                 </#if>

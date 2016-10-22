@@ -1,6 +1,6 @@
 package com.xmomen.module.shiro;
 
-import com.xmomen.framework.utils.StringUtilsExt;
+import com.xmomen.commons.StringUtilsExt;
 import com.xmomen.module.shiro.credentials.RetryLimitHashedCredentialsMatcher;
 import org.junit.Test;
 
@@ -13,8 +13,8 @@ public class PasswordHelperTest {
 
     @Test
     public void testEncryptPassword() throws Exception {
-        String salt= "abdc2a9939ef4a00";
-        System.out.println(salt);
-        System.out.println(PasswordHelper.encryptPassword("111111", salt));
+        String salt2= StringUtilsExt.getUUID(32);
+        System.out.println(salt2);
+        System.out.println(PasswordHelper.encryptPassword("111111", salt2));
     }
 }

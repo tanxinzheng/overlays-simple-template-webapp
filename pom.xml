@@ -112,7 +112,8 @@
                 </dependencies>
                 <configuration>
                     <configurationFiles>
-                        <configurationFile>src/main/resources/tools/generatorConfig-user.xml</configurationFile>
+                        <!--<configurationFile>src/main/resources/tools/generatorConfig-user.xml</configurationFile>-->
+                        <configurationFile>src/main/resources/tools/generatorConfig-notification.xml</configurationFile>
                         <!--<configurationFile>src/main/resources/tools/generatorConfig-system.xml</configurationFile>-->
                         <!--<configurationFile>src/main/resources/tools/generatorConfig-authorization.xml</configurationFile>-->
                     </configurationFiles>
@@ -289,6 +290,13 @@
             <groupId>org.jeecg</groupId>
             <artifactId>easypoi-annotation</artifactId>
             <version>2.3.1</version>
+        </dependency>
+
+        <!-- Javamail API -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.4</version>
         </dependency>
 
         <dependency>

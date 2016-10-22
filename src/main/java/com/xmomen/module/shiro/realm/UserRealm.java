@@ -38,7 +38,7 @@ public class UserRealm extends AuthorizingRealm {
         String username = (String)token.getPrincipal();
         SimpleAccount account;
         try {
-            account = accountService.getUserByUsername(username);
+            account = accountService.getAccountByUsername(username);
         }catch (Exception ex){
             logger.error(ex.getMessage(), ex);
             ex.printStackTrace();

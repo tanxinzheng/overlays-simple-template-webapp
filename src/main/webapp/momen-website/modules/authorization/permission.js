@@ -4,16 +4,23 @@
 define(function(){
     return ["$scope", "$modal", "PermissionAPI", "$dialog", function($scope, $modal, PermissionAPI, $dialog){
         $scope.pageSetting = {
-            checkAll : false
+            checkAll : false,
+            queryBtnLoading:false
         };
         $scope.pageInfoSetting = {
             pageSize:10,
             pageNum:1
         };
+        // 重置
+        $scope.reset = function(){
+            $scope.queryParam={};
+            $scope.getPermissionList();
+        };
         $scope.queryParam = {};
         // 查询列表
         $scope.getPermissionList = function(){
-            PermissionAPI.query({
+            $scope.pageSetting.queryBtnLoading = true;
+            var call = PermissionAPI.query({
                 keyword: $scope.queryParam.keyword,
                 limit: $scope.pageInfoSetting.pageSize,
                 offset: $scope.pageInfoSetting.pageNum
@@ -21,6 +28,8 @@ define(function(){
                 $scope.permissionList = data.data;
                 $scope.pageInfoSetting = data.pageInfo;
                 $scope.pageInfoSetting.loadData = $scope.getPermissionList;
+            }).$promise.finally(function(){
+                $scope.pageSetting.queryBtnLoading = false;
             });
         };
         // 全选
@@ -96,8 +105,23 @@ define(function(){
                     $scope.permissionDetailForm = {};
                     $scope.savePermission = function(){
                         if($scope.permissionDetailForm.validator.form()){
-                            $scope.permission.$save(function(){
-                                $modalInstance.close();
+                            $dialog.confirm("是否保存数据？").then(function(){
+                                $scope.pageSetting.saveBtnLoading = true;
+                                if ( !$scope.permission.id ) {
+                                    PermissionAPI.create($scope.permission, function(data,headers){
+                                        $dialog.success("新增成功");
+                                        $modalInstance.close();
+                                    }).$promise.finally(function(){
+                                        $scope.pageSetting.saveBtnLoading = false;
+                                    });
+                                }else {
+                                    PermissionAPI.update($scope.formData, function(data,headers){
+                                        $dialog.success("更新成功");
+                                        $modalInstance.close();
+                                    }).$promise.finally(function(){
+                                        $scope.pageSetting.saveBtnLoading = false;
+                                    });
+                                }
                             });
                         }
                     };
@@ -107,15 +131,16 @@ define(function(){
                 }]
             }).result.then(function () {
                 $scope.getPermissionList();
-            }, function () {
-                $scope.getPermissionList();
             });
         };
         // 删除
         $scope.delete = function(index){
-            PermissionAPI.delete({id:$scope.permissionList[index].id}, function(){
-                $scope.getPermissionList();
-            });
+            $dialog.confirm("请确认是否删除").then(function(){
+                PermissionAPI.delete({id:$scope.permissionList[index].id}, function(){
+                    $scope.getPermissionList();
+                });
+            })
+
         };
         // 批量删除
         $scope.batchDelete = function(){

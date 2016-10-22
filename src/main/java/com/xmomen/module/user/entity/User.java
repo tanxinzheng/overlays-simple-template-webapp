@@ -58,9 +58,9 @@ public class User extends BaseMybatisModel {
     private Date createDate;
 
     /**
-     * 激活
+     * 最后登录时间
      */
-    private Boolean active;
+    private Date lastLoginTime;
 
     @Column(name = "ID")
     @Id
@@ -190,17 +190,17 @@ public class User extends BaseMybatisModel {
         addValidField("createDate");
     }
 
-    @Column(name = "ACTIVE")
-    public Boolean getActive() {
-        return active;
+    @Column(name = "LAST_LOGIN_TIME")
+    public Date getLastLoginTime() {
+        return lastLoginTime;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
-        if(active == null){
-              removeValidField("active");
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+        if(lastLoginTime == null){
+              removeValidField("lastLoginTime");
               return;
         }
-        addValidField("active");
+        addValidField("lastLoginTime");
     }
 }

@@ -22,19 +22,19 @@ public class Dictionary extends BaseMybatisModel {
     private String dictionaryType;
 
     /**
-     * 显示值
+     * 名称
      */
-    private String showValue;
+    private String name;
 
     /**
-     * 实际值
+     * 代码
      */
-    private String codeValue;
+    private String code;
 
     /**
      * 排序
      */
-    private Integer sortValue;
+    private Integer sort;
 
     /**
      * 激活
@@ -81,46 +81,46 @@ public class Dictionary extends BaseMybatisModel {
         addValidField("dictionaryType");
     }
 
-    @Column(name = "SHOW_VALUE")
-    public String getShowValue() {
-        return showValue;
+    @Column(name = "NAME")
+    public String getName() {
+        return name;
     }
 
-    public void setShowValue(String showValue) {
-        this.showValue = showValue;
-        if(showValue == null){
-              removeValidField("showValue");
+    public void setName(String name) {
+        this.name = name;
+        if(name == null){
+              removeValidField("name");
               return;
         }
-        addValidField("showValue");
+        addValidField("name");
     }
 
-    @Column(name = "CODE_VALUE")
-    public String getCodeValue() {
-        return codeValue;
+    @Column(name = "CODE")
+    public String getCode() {
+        return code;
     }
 
-    public void setCodeValue(String codeValue) {
-        this.codeValue = codeValue;
-        if(codeValue == null){
-              removeValidField("codeValue");
+    public void setCode(String code) {
+        this.code = code;
+        if(code == null){
+              removeValidField("code");
               return;
         }
-        addValidField("codeValue");
+        addValidField("code");
     }
 
-    @Column(name = "SORT_VALUE")
-    public Integer getSortValue() {
-        return sortValue;
+    @Column(name = "SORT")
+    public Integer getSort() {
+        return sort;
     }
 
-    public void setSortValue(Integer sortValue) {
-        this.sortValue = sortValue;
-        if(sortValue == null){
-              removeValidField("sortValue");
+    public void setSort(Integer sort) {
+        this.sort = sort;
+        if(sort == null){
+              removeValidField("sort");
               return;
         }
-        addValidField("sortValue");
+        addValidField("sort");
     }
 
     @Column(name = "ACTIVE")
