@@ -8,7 +8,7 @@ define(function(){
             queryBtnLoading:false
         };
         $scope.pageInfoSetting = {
-            pageSize:10,
+            pageSize:5,
             pageNum:1
         };
         // 重置
@@ -20,14 +20,13 @@ define(function(){
         // 查询列表
         $scope.getPermissionList = function(){
             $scope.pageSetting.queryBtnLoading = true;
-            var call = PermissionAPI.query({
+            PermissionAPI.query({
                 keyword: $scope.queryParam.keyword,
                 limit: $scope.pageInfoSetting.pageSize,
                 offset: $scope.pageInfoSetting.pageNum
             }, function(data){
                 $scope.permissionList = data.data;
                 $scope.pageInfoSetting = data.pageInfo;
-                $scope.pageInfoSetting.loadData = $scope.getPermissionList;
             }).$promise.finally(function(){
                 $scope.pageSetting.queryBtnLoading = false;
             });

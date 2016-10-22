@@ -11,7 +11,8 @@ define(function(){
             transclude : true, //嵌入
             scope:{
                 pageInfo:"=",
-                loadData:"="
+                loadData:"=",
+                loadParameter:"="
             },
             templateUrl : 'js/core/xmomen-ui/template/pagination-tpl.html',//模板url
             controller : ['$scope',function($scope){
@@ -24,7 +25,7 @@ define(function(){
                     pageNum:1,
                     styleCss:1
                 };
-                $scope.pageInfo = $scope.pageInfo||{};
+                //$scope.pageInfo = $scope.pageInfo||{};
                 $scope.pageConfig = angular.extend($scope.pageConfig,$scope.pageInfo.pageConfig);
                 $scope.$watch('pageInfo',function(newVal,oldVal){
                     if(newVal && newVal !== oldVal){
@@ -34,8 +35,8 @@ define(function(){
                 $scope.maxPageSize = $scope.pageConfig.pageSize + "";
                 $scope.changeMaxPageSize = function(){
                     $scope.pageInfo.pageSize = parseInt($scope.maxPageSize);
-                    if($scope.pageInfo.loadData){
-                        $scope.pageInfo.loadData();
+                    if($scope.loadData){
+                        $scope.loadData();
                     }
                 };
                 $scope.load = function(){
@@ -121,11 +122,16 @@ define(function(){
                         //ngModelCtrl.$setViewValue(page);
                         //ngModelCtrl.$render();
                         $scope.pageInfo.pageNum = num;
-                        if($scope.pageInfo.loadData){
-                            $scope.pageInfo.loadData();
+                        if($scope.loadData){
+                            $scope.loadData();
                         }
                     }
                 };
+                $scope.$watch("loadParameter", function(newVal, olaVal){
+                    if(newVal != olaVal){
+                        $scope.pageInfo.pageNum = 1;
+                    }
+                }, true);
                 $scope.load();
             }]
         };

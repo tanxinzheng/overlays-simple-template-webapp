@@ -27,7 +27,6 @@ define(function(){
             }, function(data){
                 $scope.${domainObjectName}List = data.data;
                 $scope.pageInfoSetting = data.pageInfo;
-                $scope.pageInfoSetting.loadData = $scope.get${domainObjectClassName}List;
             }).$promise.finally(function(){
                 $scope.pageSetting.queryBtnLoading = false;
             });;
