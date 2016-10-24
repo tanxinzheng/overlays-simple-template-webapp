@@ -1,19 +1,18 @@
 package com.xmomen.module.authorization.service;
 
 import com.xmomen.framework.mybatis.page.Page;
+import com.xmomen.module.authorization.entity.Group;
 import com.xmomen.module.authorization.model.GroupCreate;
+import com.xmomen.module.authorization.model.GroupModel;
 import com.xmomen.module.authorization.model.GroupQuery;
 import com.xmomen.module.authorization.model.GroupUpdate;
-import com.xmomen.module.authorization.model.GroupModel;
-import com.xmomen.module.authorization.entity.Group;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-20 23:14:12
+ * @date    2016-10-23 12:15:20
  * @version 1.0.0
  */
 public interface GroupService {

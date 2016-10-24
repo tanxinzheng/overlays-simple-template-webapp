@@ -1,17 +1,14 @@
 package com.xmomen.module.system.model;
 
-import lombok.Data;
 import com.xmomen.module.system.entity.Dictionary;
+import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
-    import java.lang.Boolean;
-    import java.lang.String;
-    import java.lang.Integer;
 import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-20 23:14:12
+ * @date    2016-10-23 12:15:19
  * @version 1.0.0
  */
 public @Data class DictionaryCreate implements Serializable {

@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-20 23:14:13
+ * @date    2016-10-23 12:15:20
  * @version 1.0.0
  */
 public @Data class GroupPermissionQuery implements Serializable {
@@ -16,5 +16,11 @@ public @Data class GroupPermissionQuery implements Serializable {
     private String[] ids;
     /** 排除主键集 */
     private String[] excludeIds;
+
+    private String groupId;
+
+    private String permissionId;
+
+    private String[] permissionIds;
 
 }

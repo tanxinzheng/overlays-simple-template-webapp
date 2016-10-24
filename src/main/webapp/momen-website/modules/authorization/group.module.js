@@ -2,16 +2,17 @@
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-20 23:14:13
+ * @date    2016-10-23 12:15:20
  * @version 1.0.0
  */
 define([
     "angularAMD",
     "./group.api",
-    "./group"
-],function(angularAMD, GroupRest, group){
+    "./group",
+    "./group_permission.api"
+],function(angularAMD, GroupRest, group, GroupPermissionRest){
     angular.module('group.module',[
-        "Group.REST"
+        "Group.REST", "GroupPermission.REST"
     ]).config(['$stateProvider', '$urlRouterProvider',
         function ($stateProvider,   $urlRouterProvider) {
 

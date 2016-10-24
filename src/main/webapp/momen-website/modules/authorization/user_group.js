@@ -4,15 +4,22 @@
 define(function(){
     return ["$scope", "$modal", "UserGroupAPI", "$dialog", function($scope, $modal, UserGroupAPI, $dialog){
         $scope.pageSetting = {
-            checkAll : false
+            checkAll : false,
+            queryBtnLoading : false
         };
         $scope.pageInfoSetting = {
             pageSize:10,
             pageNum:1
         };
+        // 重置
+        $scope.reset = function(){
+            $scope.queryParam={};
+            $scope.getUserGroupList();
+        };
         $scope.queryParam = {};
         // 查询列表
         $scope.getUserGroupList = function(){
+            $scope.pageSetting.queryBtnLoading = true;
             UserGroupAPI.query({
                 keyword: $scope.queryParam.keyword,
                 limit: $scope.pageInfoSetting.pageSize,
@@ -20,8 +27,9 @@ define(function(){
             }, function(data){
                 $scope.userGroupList = data.data;
                 $scope.pageInfoSetting = data.pageInfo;
-                $scope.pageInfoSetting.loadData = $scope.getUserGroupList;
-            });
+            }).$promise.finally(function(){
+                $scope.pageSetting.queryBtnLoading = false;
+                });
         };
         // 全选
         $scope.checkAll = function(){
@@ -78,10 +86,11 @@ define(function(){
                         return params;
                     }
                 },
-                controller: ['$scope', '$modalInstance', "$modal", "UserGroupAPI", "Params", function($scope, $modalInstance, $modal, UserGroupAPI, Params){
+                controller: ['$scope', '$modalInstance', "$modal", "UserGroupAPI", "Params", "$dialog", function($scope, $modalInstance, $modal, UserGroupAPI, Params, $dialog){
                     //$scope.userGroup = null;
                     $scope.pageSetting = {
-                        formDisabled : true
+                        formDisabled : true,
+                        saveBtnLoading : false
                     };
                     if(Params.action == "UPDATE" || Params.action == "ADD"){
                         $scope.pageSetting.formDisabled = false;
@@ -90,15 +99,30 @@ define(function(){
                         $scope.userGroup = UserGroupAPI.get({
                             id: Params.id
                         });
-                    }else{
-                        $scope.userGroup = new UserGroupAPI();
                     }
                     $scope.userGroupDetailForm = {};
                     $scope.saveUserGroup = function(){
                         if($scope.userGroupDetailForm.validator.form()){
-                            $scope.userGroup.$save(function(){
-                                $modalInstance.close();
-                            });
+                            if($scope.userGroupDetailForm.validator.form()){
+                                $dialog.confirm("是否保存数据？").then(function(){
+                                    $scope.pageSetting.saveBtnLoading = true;
+                                    if ( !$scope.userGroup.id ) {
+                                        UserGroupAPI.create($scope.userGroup, function(data,headers){
+                                            $dialog.success("新增成功");
+                                            $modalInstance.close();
+                                        }).$promise.finally(function(){
+                                            $scope.pageSetting.saveBtnLoading = false;
+                                        });
+                                    }else {
+                                        UserGroupAPI.update($scope.userGroup, function(data,headers){
+                                            $dialog.success("更新成功");
+                                            $modalInstance.close();
+                                        }).$promise.finally(function(){
+                                            $scope.pageSetting.saveBtnLoading = false;
+                                        });
+                                    }
+                                });
+                            }
                         }
                     };
                     $scope.cancel = function(){
@@ -107,14 +131,14 @@ define(function(){
                 }]
             }).result.then(function () {
                 $scope.getUserGroupList();
-            }, function () {
-                $scope.getUserGroupList();
             });
         };
         // 删除
         $scope.delete = function(index){
-            UserGroupAPI.delete({id:$scope.userGroupList[index].id}, function(){
-                $scope.getUserGroupList();
+            $dialog.confirm("请确认是否删除").then(function(){
+                UserGroupAPI.delete({id:$scope.userGroupList[index].id}, function(){
+                    $scope.getUserGroupList();
+                });
             });
         };
         // 批量删除

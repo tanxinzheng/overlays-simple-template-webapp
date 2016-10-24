@@ -1,19 +1,18 @@
 package com.xmomen.module.authorization.service;
 
 import com.xmomen.framework.mybatis.page.Page;
+import com.xmomen.module.authorization.entity.Permission;
 import com.xmomen.module.authorization.model.PermissionCreate;
+import com.xmomen.module.authorization.model.PermissionModel;
 import com.xmomen.module.authorization.model.PermissionQuery;
 import com.xmomen.module.authorization.model.PermissionUpdate;
-import com.xmomen.module.authorization.model.PermissionModel;
-import com.xmomen.module.authorization.entity.Permission;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-20 23:14:13
+ * @date    2016-10-23 12:15:20
  * @version 1.0.0
  */
 public interface PermissionService {

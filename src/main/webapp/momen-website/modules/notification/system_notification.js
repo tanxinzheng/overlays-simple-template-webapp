@@ -27,7 +27,6 @@ define(function(){
             }, function(data){
                 $scope.systemNotificationList = data.data;
                 $scope.pageInfoSetting = data.pageInfo;
-                $scope.pageInfoSetting.loadData = $scope.getSystemNotificationList;
             }).$promise.finally(function(){
                 $scope.pageSetting.queryBtnLoading = false;
                 });

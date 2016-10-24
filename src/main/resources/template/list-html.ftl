@@ -223,7 +223,10 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-disabled="pageSetting.formDisabled" ng-if="!pageSetting.formDisabled" type="submit" data-ng-click="save${domainObjectClassName}()">
+        <button class="btn btn-primary" type="submit"
+                btn-loading="pageSetting.saveBtnLoading"
+                ng-disabled="pageSetting.formDisabled"
+                ng-if="!pageSetting.formDisabled" data-ng-click="save${domainObjectClassName}()">
             <i class="fa fa-save"></i>
             保存
         </button>

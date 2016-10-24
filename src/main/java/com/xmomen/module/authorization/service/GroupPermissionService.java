@@ -1,19 +1,18 @@
 package com.xmomen.module.authorization.service;
 
 import com.xmomen.framework.mybatis.page.Page;
+import com.xmomen.module.authorization.entity.GroupPermission;
 import com.xmomen.module.authorization.model.GroupPermissionCreate;
+import com.xmomen.module.authorization.model.GroupPermissionModel;
 import com.xmomen.module.authorization.model.GroupPermissionQuery;
 import com.xmomen.module.authorization.model.GroupPermissionUpdate;
-import com.xmomen.module.authorization.model.GroupPermissionModel;
-import com.xmomen.module.authorization.entity.GroupPermission;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-20 23:14:13
+ * @date    2016-10-23 12:15:20
  * @version 1.0.0
  */
 public interface GroupPermissionService {
@@ -31,6 +30,14 @@ public interface GroupPermissionService {
      * @return  GroupPermission 组权限实体对象
      */
     GroupPermission createGroupPermission(GroupPermission groupPermission);
+
+    /**
+     * 批量新增组权限实体对象
+     * @param groupId   组主键
+     * @param permissionIds 权限主键集
+     * @return List<GroupPermission> 组权限实体对象集
+     */
+    List<GroupPermission> createGroupPermissions(String groupId, String[] permissionIds);
 
     /**
      * 更新组权限

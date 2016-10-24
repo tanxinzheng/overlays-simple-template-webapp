@@ -2,12 +2,11 @@ package com.xmomen.module.authorization.controller;
 
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.web.exceptions.ArgumentValidException;
-//import com.xmomen.module.logger.Log;
-import com.xmomen.module.authorization.model.GroupCreate;
-import com.xmomen.module.authorization.model.GroupQuery;
-import com.xmomen.module.authorization.model.GroupUpdate;
-import com.xmomen.module.authorization.model.GroupModel;
+import com.xmomen.module.authorization.entity.GroupPermission;
+import com.xmomen.module.authorization.model.*;
+import com.xmomen.module.authorization.service.GroupPermissionService;
 import com.xmomen.module.authorization.service.GroupService;
+import com.xmomen.module.authorization.service.PermissionService;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.io.Serializable;
 import java.util.List;
+
+//import com.xmomen.module.logger.Log;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-20 23:14:12
+ * @date    2016-10-23 12:15:20
  * @version 1.0.0
  */
 @RestController
@@ -31,6 +31,12 @@ public class GroupController {
 
     @Autowired
     GroupService groupService;
+
+    @Autowired
+    GroupPermissionService groupPermissionService;
+
+    @Autowired
+    PermissionService permissionService;
 
     /**
      * 组列表
@@ -148,6 +154,41 @@ public class GroupController {
         modelMap.put(NormalExcelConstants.CLASS, GroupModel.class);
         modelMap.put(NormalExcelConstants.DATA_LIST, groupList);
         return new ModelAndView(NormalExcelConstants.JEECG_EXCEL_VIEW);
+    }
+
+    /**
+     * 查询用户组权限
+     * @param groupId
+     * @param limit
+     * @param offset
+     * @return
+     */
+//    @Log(actionName = "查询用户组所属权限")
+    @RequestMapping(value = "/{groupId}/permission", method = RequestMethod.GET)
+    public Page<PermissionModel> findPermissionByGroup(
+            @PathVariable(value = "groupId") String groupId,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "hasPermission", required = false) Boolean hasPermission,
+            @RequestParam(value = "limit") Integer limit,
+            @RequestParam(value = "offset") Integer offset){
+        PermissionQuery permissionQuery = new PermissionQuery();
+        permissionQuery.setGroupId(groupId);
+        permissionQuery.setKeyword(keyword);
+        permissionQuery.setHasPermission(hasPermission);
+        return permissionService.getPermissionModelPage(limit, offset, permissionQuery);
+    }
+
+    /**
+     * 批量新增组权限
+     * @param groupId   组主键
+     * @param permissionIds     权限主键集
+     * @return List<GroupPermission>    组权限对象集
+     */
+    @RequestMapping(value = "/{groupId}/permission", method = RequestMethod.POST)
+    public List<GroupPermission> createGroupPermission(
+            @PathVariable(value = "groupId") String groupId,
+            @RequestParam(value = "permissionIds") String[] permissionIds){
+        return groupPermissionService.createGroupPermissions(groupId, permissionIds);
     }
 
 

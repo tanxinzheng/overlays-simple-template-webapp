@@ -27,7 +27,6 @@ define(function(){
             }, function(data){
                 $scope.userList = data.data;
                 $scope.pageInfoSetting = data.pageInfo;
-                $scope.pageInfoSetting.loadData = $scope.getUserList;
             }).$promise.finally(function(){
                 $scope.pageSetting.queryBtnLoading = false;
                 });
@@ -91,10 +90,12 @@ define(function(){
                     //$scope.user = null;
                     $scope.pageSetting = {
                         formDisabled : true,
-                        saveBtnLoading : false
+                        saveBtnLoading : false,
+                        editing:false
                     };
                     if(Params.action == "UPDATE" || Params.action == "ADD"){
                         $scope.pageSetting.formDisabled = false;
+                        $scope.pageSetting.editing = false;
                     }
                     if(Params && Params.id){
                         $scope.user = UserAPI.get({

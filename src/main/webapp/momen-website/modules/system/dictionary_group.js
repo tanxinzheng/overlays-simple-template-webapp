@@ -4,15 +4,22 @@
 define(function(){
     return ["$scope", "$modal", "DictionaryGroupAPI", "$dialog", function($scope, $modal, DictionaryGroupAPI, $dialog){
         $scope.pageSetting = {
-            checkAll : false
+            checkAll : false,
+            queryBtnLoading : false
         };
         $scope.pageInfoSetting = {
             pageSize:10,
             pageNum:1
         };
+        // 重置
+        $scope.reset = function(){
+            $scope.queryParam={};
+            $scope.getDictionaryGroupList();
+        };
         $scope.queryParam = {};
         // 查询列表
         $scope.getDictionaryGroupList = function(){
+            $scope.pageSetting.queryBtnLoading = true;
             DictionaryGroupAPI.query({
                 keyword: $scope.queryParam.keyword,
                 limit: $scope.pageInfoSetting.pageSize,
@@ -20,8 +27,9 @@ define(function(){
             }, function(data){
                 $scope.dictionaryGroupList = data.data;
                 $scope.pageInfoSetting = data.pageInfo;
-                $scope.pageInfoSetting.loadData = $scope.getDictionaryGroupList;
-            });
+            }).$promise.finally(function(){
+                $scope.pageSetting.queryBtnLoading = false;
+                });
         };
         // 全选
         $scope.checkAll = function(){
@@ -78,10 +86,11 @@ define(function(){
                         return params;
                     }
                 },
-                controller: ['$scope', '$modalInstance', "$modal", "DictionaryGroupAPI", "Params", function($scope, $modalInstance, $modal, DictionaryGroupAPI, Params){
+                controller: ['$scope', '$modalInstance', "$modal", "DictionaryGroupAPI", "Params", "$dialog", function($scope, $modalInstance, $modal, DictionaryGroupAPI, Params, $dialog){
                     //$scope.dictionaryGroup = null;
                     $scope.pageSetting = {
-                        formDisabled : true
+                        formDisabled : true,
+                        saveBtnLoading : false
                     };
                     if(Params.action == "UPDATE" || Params.action == "ADD"){
                         $scope.pageSetting.formDisabled = false;
@@ -90,15 +99,30 @@ define(function(){
                         $scope.dictionaryGroup = DictionaryGroupAPI.get({
                             id: Params.id
                         });
-                    }else{
-                        $scope.dictionaryGroup = new DictionaryGroupAPI();
                     }
                     $scope.dictionaryGroupDetailForm = {};
                     $scope.saveDictionaryGroup = function(){
                         if($scope.dictionaryGroupDetailForm.validator.form()){
-                            $scope.dictionaryGroup.$save(function(){
-                                $modalInstance.close();
-                            });
+                            if($scope.dictionaryGroupDetailForm.validator.form()){
+                                $dialog.confirm("是否保存数据？").then(function(){
+                                    $scope.pageSetting.saveBtnLoading = true;
+                                    if ( !$scope.dictionaryGroup.id ) {
+                                        DictionaryGroupAPI.create($scope.dictionaryGroup, function(data,headers){
+                                            $dialog.success("新增成功");
+                                            $modalInstance.close();
+                                        }).$promise.finally(function(){
+                                            $scope.pageSetting.saveBtnLoading = false;
+                                        });
+                                    }else {
+                                        DictionaryGroupAPI.update($scope.dictionaryGroup, function(data,headers){
+                                            $dialog.success("更新成功");
+                                            $modalInstance.close();
+                                        }).$promise.finally(function(){
+                                            $scope.pageSetting.saveBtnLoading = false;
+                                        });
+                                    }
+                                });
+                            }
                         }
                     };
                     $scope.cancel = function(){
@@ -107,14 +131,14 @@ define(function(){
                 }]
             }).result.then(function () {
                 $scope.getDictionaryGroupList();
-            }, function () {
-                $scope.getDictionaryGroupList();
             });
         };
         // 删除
         $scope.delete = function(index){
-            DictionaryGroupAPI.delete({id:$scope.dictionaryGroupList[index].id}, function(){
-                $scope.getDictionaryGroupList();
+            $dialog.confirm("请确认是否删除").then(function(){
+                DictionaryGroupAPI.delete({id:$scope.dictionaryGroupList[index].id}, function(){
+                    $scope.getDictionaryGroupList();
+                });
             });
         };
         // 批量删除

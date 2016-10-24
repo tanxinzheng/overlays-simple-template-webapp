@@ -6,7 +6,9 @@
     <select id="getPermissionModel"
             resultType="com.xmomen.module.authorization.model.PermissionModel"
             parameterType="com.xmomen.module.authorization.model.PermissionQuery">
-        SELECT * FROM xmo_permission t
+        SELECT t.* FROM xmo_permission t
+        LEFT JOIN xmo_group_permission gp
+        ON gp.PERMISSION_ID=t.ID
         <where>
             <if test="keyword">
                     AND (t.PERMISSION_CODE LIKE CONCAT('%', #{keyword}, '%')
@@ -27,6 +29,19 @@
                 <foreach collection="excludeIds" item="item" separator="," open="(" close=")">
                     #{item}
                 </foreach>
+            </if>
+            <if test="groupId and hasPermission">
+                AND gp.GROUP_ID = #{groupId}
+            </if>
+            <if test="groupId and !hasPermission">
+                AND t.ID NOT IN
+                (SELECT
+                p.ID AS permission_id
+                FROM
+                  xmo_permission p
+                LEFT JOIN xmo_group_permission gp
+                  ON p.ID = gp.PERMISSION_ID
+                  WHERE gp.GROUP_ID = #{groupId})
             </if>
           </where>
           ORDER BY t.id

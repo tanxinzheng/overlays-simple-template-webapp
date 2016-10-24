@@ -5,10 +5,10 @@ define(function(){
     return ["$scope", "$modal", "PermissionAPI", "$dialog", function($scope, $modal, PermissionAPI, $dialog){
         $scope.pageSetting = {
             checkAll : false,
-            queryBtnLoading:false
+            queryBtnLoading : false
         };
         $scope.pageInfoSetting = {
-            pageSize:5,
+            pageSize:10,
             pageNum:1
         };
         // 重置
@@ -29,7 +29,7 @@ define(function(){
                 $scope.pageInfoSetting = data.pageInfo;
             }).$promise.finally(function(){
                 $scope.pageSetting.queryBtnLoading = false;
-            });
+                });
         };
         // 全选
         $scope.checkAll = function(){
@@ -86,10 +86,11 @@ define(function(){
                         return params;
                     }
                 },
-                controller: ['$scope', '$modalInstance', "$modal", "PermissionAPI", "Params", function($scope, $modalInstance, $modal, PermissionAPI, Params){
+                controller: ['$scope', '$modalInstance', "$modal", "PermissionAPI", "Params", "$dialog", function($scope, $modalInstance, $modal, PermissionAPI, Params, $dialog){
                     //$scope.permission = null;
                     $scope.pageSetting = {
-                        formDisabled : true
+                        formDisabled : true,
+                        saveBtnLoading : false
                     };
                     if(Params.action == "UPDATE" || Params.action == "ADD"){
                         $scope.pageSetting.formDisabled = false;
@@ -98,30 +99,30 @@ define(function(){
                         $scope.permission = PermissionAPI.get({
                             id: Params.id
                         });
-                    }else{
-                        $scope.permission = new PermissionAPI();
                     }
                     $scope.permissionDetailForm = {};
                     $scope.savePermission = function(){
                         if($scope.permissionDetailForm.validator.form()){
-                            $dialog.confirm("是否保存数据？").then(function(){
-                                $scope.pageSetting.saveBtnLoading = true;
-                                if ( !$scope.permission.id ) {
-                                    PermissionAPI.create($scope.permission, function(data,headers){
-                                        $dialog.success("新增成功");
-                                        $modalInstance.close();
-                                    }).$promise.finally(function(){
-                                        $scope.pageSetting.saveBtnLoading = false;
-                                    });
-                                }else {
-                                    PermissionAPI.update($scope.formData, function(data,headers){
-                                        $dialog.success("更新成功");
-                                        $modalInstance.close();
-                                    }).$promise.finally(function(){
-                                        $scope.pageSetting.saveBtnLoading = false;
-                                    });
-                                }
-                            });
+                            if($scope.permissionDetailForm.validator.form()){
+                                $dialog.confirm("是否保存数据？").then(function(){
+                                    $scope.pageSetting.saveBtnLoading = true;
+                                    if ( !$scope.permission.id ) {
+                                        PermissionAPI.create($scope.permission, function(data,headers){
+                                            $dialog.success("新增成功");
+                                            $modalInstance.close();
+                                        }).$promise.finally(function(){
+                                            $scope.pageSetting.saveBtnLoading = false;
+                                        });
+                                    }else {
+                                        PermissionAPI.update($scope.permission, function(data,headers){
+                                            $dialog.success("更新成功");
+                                            $modalInstance.close();
+                                        }).$promise.finally(function(){
+                                            $scope.pageSetting.saveBtnLoading = false;
+                                        });
+                                    }
+                                });
+                            }
                         }
                     };
                     $scope.cancel = function(){
@@ -138,8 +139,7 @@ define(function(){
                 PermissionAPI.delete({id:$scope.permissionList[index].id}, function(){
                     $scope.getPermissionList();
                 });
-            })
-
+            });
         };
         // 批量删除
         $scope.batchDelete = function(){

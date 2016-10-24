@@ -1,19 +1,18 @@
 package com.xmomen.module.system.service;
 
 import com.xmomen.framework.mybatis.page.Page;
+import com.xmomen.module.system.entity.DictionaryGroup;
 import com.xmomen.module.system.model.DictionaryGroupCreate;
+import com.xmomen.module.system.model.DictionaryGroupModel;
 import com.xmomen.module.system.model.DictionaryGroupQuery;
 import com.xmomen.module.system.model.DictionaryGroupUpdate;
-import com.xmomen.module.system.model.DictionaryGroupModel;
-import com.xmomen.module.system.entity.DictionaryGroup;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-20 23:14:12
+ * @date    2016-10-23 12:15:19
  * @version 1.0.0
  */
 public interface DictionaryGroupService {

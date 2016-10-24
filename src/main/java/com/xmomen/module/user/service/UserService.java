@@ -1,19 +1,18 @@
 package com.xmomen.module.user.service;
 
 import com.xmomen.framework.mybatis.page.Page;
+import com.xmomen.module.user.entity.User;
 import com.xmomen.module.user.model.UserCreate;
+import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.model.UserQuery;
 import com.xmomen.module.user.model.UserUpdate;
-import com.xmomen.module.user.model.UserModel;
-import com.xmomen.module.user.entity.User;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-22 21:53:46
+ * @date    2016-10-23 12:15:19
  * @version 1.0.0
  */
 public interface UserService {

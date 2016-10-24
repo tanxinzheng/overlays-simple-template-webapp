@@ -1,27 +1,26 @@
 package com.xmomen.module.authorization.service.impl;
 
+import com.xmomen.framework.mybatis.dao.MybatisDao;
+import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.module.authorization.entity.Group;
 import com.xmomen.module.authorization.entity.GroupExample;
 import com.xmomen.module.authorization.mapper.GroupMapperExt;
 import com.xmomen.module.authorization.model.GroupCreate;
+import com.xmomen.module.authorization.model.GroupModel;
 import com.xmomen.module.authorization.model.GroupQuery;
 import com.xmomen.module.authorization.model.GroupUpdate;
-import com.xmomen.module.authorization.model.GroupModel;
 import com.xmomen.module.authorization.service.GroupService;
-import com.xmomen.framework.mybatis.dao.MybatisDao;
-import com.xmomen.framework.mybatis.page.Page;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-20 23:14:12
+ * @date    2016-10-23 12:15:20
  * @version 1.0.0
  */
 @Service

@@ -6,15 +6,28 @@
     <select id="getGroupPermissionModel"
             resultType="com.xmomen.module.authorization.model.GroupPermissionModel"
             parameterType="com.xmomen.module.authorization.model.GroupPermissionQuery">
-        SELECT * FROM xmo_group_permission t
+        SELECT
+            t.* FROM xmo_group_permission t
         <where>
             <if test="id">
                 AND t.ID = #{id}
+            </if>
+            <if test="groupId">
+                AND t.GROUP_ID = #{groupId}
+            </if>
+            <if test="permissionId">
+                AND t.PERMISSION_ID = #{permissionId}
             </if>
             <if test="ids">
                 AND t.ID IN
                 <foreach collection="ids" item="item" separator="," open="(" close=")">
                 #{item}
+                </foreach>
+            </if>
+            <if test="permissionIds">
+                AND t.PERMISSION_ID IN
+                <foreach collection="permissionIds" item="item" separator="," open="(" close=")">
+                    #{item}
                 </foreach>
             </if>
             <if test="excludeIds">

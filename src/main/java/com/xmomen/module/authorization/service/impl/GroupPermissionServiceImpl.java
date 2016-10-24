@@ -1,27 +1,27 @@
 package com.xmomen.module.authorization.service.impl;
 
+import com.xmomen.framework.mybatis.dao.MybatisDao;
+import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.module.authorization.entity.GroupPermission;
 import com.xmomen.module.authorization.entity.GroupPermissionExample;
 import com.xmomen.module.authorization.mapper.GroupPermissionMapperExt;
 import com.xmomen.module.authorization.model.GroupPermissionCreate;
+import com.xmomen.module.authorization.model.GroupPermissionModel;
 import com.xmomen.module.authorization.model.GroupPermissionQuery;
 import com.xmomen.module.authorization.model.GroupPermissionUpdate;
-import com.xmomen.module.authorization.model.GroupPermissionModel;
 import com.xmomen.module.authorization.service.GroupPermissionService;
-import com.xmomen.framework.mybatis.dao.MybatisDao;
-import com.xmomen.framework.mybatis.page.Page;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-20 23:14:13
+ * @date    2016-10-23 12:15:20
  * @version 1.0.0
  */
 @Service
@@ -59,6 +59,28 @@ public class GroupPermissionServiceImpl implements GroupPermissionService {
     }
 
     /**
+     * 批量新增组权限实体对象
+     *
+     * @param groupId       组主键
+     * @param permissionIds 权限主键集
+     * @return List<GroupPermission> 组权限实体对象集
+     */
+    @Override
+    public List<GroupPermission> createGroupPermissions(String groupId, String[] permissionIds) {
+        List<GroupPermission> groupPermissionList = new ArrayList<>();
+        for (String permissionId : permissionIds) {
+            GroupPermission groupPermission = new GroupPermission();
+            groupPermission.setGroupId(groupId);
+            groupPermission.setPermissionId(permissionId);
+            groupPermission = createGroupPermission(groupPermission);
+            if(groupPermission != null){
+                groupPermissionList.add(groupPermission);
+            }
+        }
+        return groupPermissionList;
+    }
+
+    /**
      * 更新组权限
      *
      * @param groupPermissionUpdate 更新组权限对象参数
@@ -93,6 +115,8 @@ public class GroupPermissionServiceImpl implements GroupPermissionService {
         groupPermissionExample.createCriteria().andIdIn(Arrays.asList((String[]) ids));
         mybatisDao.deleteByExample(groupPermissionExample);
     }
+
+
 
     /**
     * 删除组权限

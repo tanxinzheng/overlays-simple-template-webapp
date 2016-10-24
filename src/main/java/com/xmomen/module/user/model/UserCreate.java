@@ -1,17 +1,15 @@
 package com.xmomen.module.user.model;
 
-import lombok.Data;
 import com.xmomen.module.user.entity.User;
+import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
-    import java.lang.Boolean;
-    import java.lang.String;
-    import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-22 21:53:46
+ * @date    2016-10-23 12:15:19
  * @version 1.0.0
  */
 public @Data class UserCreate implements Serializable {

@@ -1,27 +1,26 @@
 package com.xmomen.module.user.service.impl;
 
+import com.xmomen.framework.mybatis.dao.MybatisDao;
+import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.module.user.entity.User;
 import com.xmomen.module.user.entity.UserExample;
 import com.xmomen.module.user.mapper.UserMapperExt;
 import com.xmomen.module.user.model.UserCreate;
+import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.model.UserQuery;
 import com.xmomen.module.user.model.UserUpdate;
-import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.service.UserService;
-import com.xmomen.framework.mybatis.dao.MybatisDao;
-import com.xmomen.framework.mybatis.page.Page;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-22 21:53:46
+ * @date    2016-10-23 12:15:19
  * @version 1.0.0
  */
 @Service
@@ -78,9 +77,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUser(User user) {
-        UserExample userExample = new UserExample();
-        userExample.createCriteria().andIdEqualTo(user.getId());
-        mybatisDao.updateOneByExampleSelective(user, userExample);
+        mybatisDao.update(user);
     }
 
     /**

@@ -2,11 +2,10 @@ package com.xmomen.module.authorization.controller;
 
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.web.exceptions.ArgumentValidException;
-//import com.xmomen.module.logger.Log;
 import com.xmomen.module.authorization.model.GroupPermissionCreate;
+import com.xmomen.module.authorization.model.GroupPermissionModel;
 import com.xmomen.module.authorization.model.GroupPermissionQuery;
 import com.xmomen.module.authorization.model.GroupPermissionUpdate;
-import com.xmomen.module.authorization.model.GroupPermissionModel;
 import com.xmomen.module.authorization.service.GroupPermissionService;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
@@ -17,12 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.io.Serializable;
 import java.util.List;
+
+//import com.xmomen.module.logger.Log;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-20 23:14:13
+ * @date    2016-10-23 12:15:20
  * @version 1.0.0
  */
 @RestController
@@ -45,6 +45,9 @@ public class GroupPermissionController {
     //@Log(actionName = "查询组权限列表")
     public Page<GroupPermissionModel> getGroupPermissionList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
+                                  @RequestParam(value = "groupId", required = false) String groupId,
+                                  @RequestParam(value = "permissionId", required = false) String permissionId,
+                                  @RequestParam(value = "permissionIds", required = false) String[] permissionIds,
                                   @RequestParam(value = "id", required = false) String id,
                                   @RequestParam(value = "ids", required = false) String[] ids,
                                   @RequestParam(value = "excludeIds", required = false) String[] excludeIds){
@@ -52,6 +55,9 @@ public class GroupPermissionController {
         groupPermissionQuery.setId(id);
         groupPermissionQuery.setExcludeIds(excludeIds);
         groupPermissionQuery.setIds(ids);
+        groupPermissionQuery.setGroupId(groupId);
+        groupPermissionQuery.setPermissionId(permissionId);
+        groupPermissionQuery.setPermissionIds(permissionIds);
         return groupPermissionService.getGroupPermissionModelPage(limit, offset, groupPermissionQuery);
     }
 

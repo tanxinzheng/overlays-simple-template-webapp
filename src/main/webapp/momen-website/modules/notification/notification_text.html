@@ -130,7 +130,7 @@
                             </div>
                         </div>
                         <div class="col-sm-6 text-right text-center-xs">
-                            <ug-pagination page-info="pageInfoSetting"></ug-pagination>
+                            <ug-pagination page-info="pageInfoSetting" load-parameter="queryParam" load-data="getNotificationTextList"></ug-pagination>
                         </div>
                     </div>
                 </footer>
@@ -224,7 +224,10 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-disabled="pageSetting.formDisabled" ng-if="!pageSetting.formDisabled" type="submit" data-ng-click="saveNotificationText()">
+        <button class="btn btn-primary" type="submit"
+                btn-loading="pageSetting.saveBtnLoading"
+                ng-disabled="pageSetting.formDisabled"
+                ng-if="!pageSetting.formDisabled" data-ng-click="saveNotificationText()">
             <i class="fa fa-save"></i>
             保存
         </button>

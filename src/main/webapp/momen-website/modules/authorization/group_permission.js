@@ -4,15 +4,22 @@
 define(function(){
     return ["$scope", "$modal", "GroupPermissionAPI", "$dialog", function($scope, $modal, GroupPermissionAPI, $dialog){
         $scope.pageSetting = {
-            checkAll : false
+            checkAll : false,
+            queryBtnLoading : false
         };
         $scope.pageInfoSetting = {
             pageSize:10,
             pageNum:1
         };
+        // 重置
+        $scope.reset = function(){
+            $scope.queryParam={};
+            $scope.getGroupPermissionList();
+        };
         $scope.queryParam = {};
         // 查询列表
         $scope.getGroupPermissionList = function(){
+            $scope.pageSetting.queryBtnLoading = true;
             GroupPermissionAPI.query({
                 keyword: $scope.queryParam.keyword,
                 limit: $scope.pageInfoSetting.pageSize,
@@ -20,8 +27,9 @@ define(function(){
             }, function(data){
                 $scope.groupPermissionList = data.data;
                 $scope.pageInfoSetting = data.pageInfo;
-                $scope.pageInfoSetting.loadData = $scope.getGroupPermissionList;
-            });
+            }).$promise.finally(function(){
+                $scope.pageSetting.queryBtnLoading = false;
+                });
         };
         // 全选
         $scope.checkAll = function(){
@@ -78,10 +86,11 @@ define(function(){
                         return params;
                     }
                 },
-                controller: ['$scope', '$modalInstance', "$modal", "GroupPermissionAPI", "Params", function($scope, $modalInstance, $modal, GroupPermissionAPI, Params){
+                controller: ['$scope', '$modalInstance', "$modal", "GroupPermissionAPI", "Params", "$dialog", function($scope, $modalInstance, $modal, GroupPermissionAPI, Params, $dialog){
                     //$scope.groupPermission = null;
                     $scope.pageSetting = {
-                        formDisabled : true
+                        formDisabled : true,
+                        saveBtnLoading : false
                     };
                     if(Params.action == "UPDATE" || Params.action == "ADD"){
                         $scope.pageSetting.formDisabled = false;
@@ -90,15 +99,30 @@ define(function(){
                         $scope.groupPermission = GroupPermissionAPI.get({
                             id: Params.id
                         });
-                    }else{
-                        $scope.groupPermission = new GroupPermissionAPI();
                     }
                     $scope.groupPermissionDetailForm = {};
                     $scope.saveGroupPermission = function(){
                         if($scope.groupPermissionDetailForm.validator.form()){
-                            $scope.groupPermission.$save(function(){
-                                $modalInstance.close();
-                            });
+                            if($scope.groupPermissionDetailForm.validator.form()){
+                                $dialog.confirm("是否保存数据？").then(function(){
+                                    $scope.pageSetting.saveBtnLoading = true;
+                                    if ( !$scope.groupPermission.id ) {
+                                        GroupPermissionAPI.create($scope.groupPermission, function(data,headers){
+                                            $dialog.success("新增成功");
+                                            $modalInstance.close();
+                                        }).$promise.finally(function(){
+                                            $scope.pageSetting.saveBtnLoading = false;
+                                        });
+                                    }else {
+                                        GroupPermissionAPI.update($scope.groupPermission, function(data,headers){
+                                            $dialog.success("更新成功");
+                                            $modalInstance.close();
+                                        }).$promise.finally(function(){
+                                            $scope.pageSetting.saveBtnLoading = false;
+                                        });
+                                    }
+                                });
+                            }
                         }
                     };
                     $scope.cancel = function(){
@@ -107,14 +131,14 @@ define(function(){
                 }]
             }).result.then(function () {
                 $scope.getGroupPermissionList();
-            }, function () {
-                $scope.getGroupPermissionList();
             });
         };
         // 删除
         $scope.delete = function(index){
-            GroupPermissionAPI.delete({id:$scope.groupPermissionList[index].id}, function(){
-                $scope.getGroupPermissionList();
+            $dialog.confirm("请确认是否删除").then(function(){
+                GroupPermissionAPI.delete({id:$scope.groupPermissionList[index].id}, function(){
+                    $scope.getGroupPermissionList();
+                });
             });
         };
         // 批量删除

@@ -1,27 +1,26 @@
 package com.xmomen.module.system.service.impl;
 
+import com.xmomen.framework.mybatis.dao.MybatisDao;
+import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.module.system.entity.Dictionary;
 import com.xmomen.module.system.entity.DictionaryExample;
 import com.xmomen.module.system.mapper.DictionaryMapperExt;
 import com.xmomen.module.system.model.DictionaryCreate;
+import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.model.DictionaryUpdate;
-import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.service.DictionaryService;
-import com.xmomen.framework.mybatis.dao.MybatisDao;
-import com.xmomen.framework.mybatis.page.Page;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-20 23:14:12
+ * @date    2016-10-23 12:15:19
  * @version 1.0.0
  */
 @Service

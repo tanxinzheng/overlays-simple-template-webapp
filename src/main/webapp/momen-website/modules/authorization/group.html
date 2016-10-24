@@ -5,7 +5,7 @@
     <!-- main -->
     <div class="col">
         <!-- main header -->
-        <div class="bg-light lter b-b wrapper-md">
+        <div class="bg-light lter b-b wrapper-sm">
             <div class="row">
                 <div class="col-sm-6 col-xs-12">
                     <h1 class="m-n font-thin h3 text-black">组</h1>
@@ -13,21 +13,32 @@
             </div>
         </div>
         <!-- / main header -->
-        <div class="wrapper-md">
+        <div class="wrapper-sm">
             <div class="panel panel-default">
                 <div class="panel-heading">
                 组
                 </div>
                 <div class="row wrapper">
-                    <div class="col-sm-3">
+                    <div class="col-sm-12">
                         <div class="input-group">
                             <input type="text" ng-model="queryParam.keyword"
                                    data-ng-keyup="getGroupList()"
                                    class="input-sm form-control" placeholder="请输入关键字进行模糊查询">
-              <span class="input-group-btn">
-                <button class="btn btn-sm btn-default" data-ng-click="getGroupList()" type="button">查询</button>
-                <button class="btn btn-sm btn-default" data-ng-click="add()" type="button">新增</button>
-              </span>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-sm btn-default"
+                                            btn-loading="pageSetting.queryBtnLoading"
+                                            data-ng-click="getGroupList()" type="button">
+                                        <i class="icon icon-magnifier"></i>&nbsp;&nbsp;查询
+                                    </button>
+                                    <button class="btn btn-sm btn-default"
+                                            data-ng-click="reset()" type="button">
+                                        <i class="icon icon-action-redo"></i>&nbsp;&nbsp;重置
+                                    </button>
+                                    <button class="btn btn-sm btn-default"
+                                            data-ng-click="add()" type="button">
+                                        <i class="icon icon-plus"></i>&nbsp;&nbsp;新增
+                                    </button>
+                                </span>
                         </div>
                     </div>
                 </div>
@@ -51,7 +62,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr data-ng-repeat="item in groupList">
+                        <tr data-ng-repeat="item in groupList"
+                            ng-if="(groupList && groupList.length > 0) && !pageSetting.queryBtnLoading"
+                            data-ng-mouseenter="item.showAction=true"
+                            data-ng-mouseleave="item.showAction=false">
                             <td>
                                 <label class="i-checks m-b-none">
                                     <input type="checkbox"
@@ -72,7 +86,7 @@
                                 <a ng-bind="item.description"></a>
                             </td>
                             <td>
-                                <label class="i-switch bg-primary m-t-xs m-r">
+                                <label class="i-switch bg-primary m-r">
                                     <input type="checkbox" name="active"
                                            data-ng-true-value="true"
                                            data-ng-false-value="false"
@@ -82,17 +96,14 @@
                                 </label>
                             </td>
                             <td class="action">
-                                <div class="btn-group open" dropdown="">
-                                    <button type="button" class="btn btn-sm btn-default" data-ng-click="view($index)">查看</button>
-                                    <button type="button" class="btn btn-sm btn-default dropdown-toggle" dropdown-toggle>
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Split button!</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="javascript:void(0)" data-ng-click="view($index)">查看</a></li>
-                                        <li><a href="javascript:void(0)" data-ng-click="update($index)">修改</a></li>
+                                <div ng-show="item.showAction" class="dropdown dropdown-right-action" dropdown="">
+                                    <i class="icon icon-settings" dropdown-toggle="" aria-haspopup="true" aria-expanded="false"></i>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="javascript:void(0)" data-ng-click="view($index)"><i class="icon icon-info"></i>&nbsp;&nbsp;查看</a></li>
+                                        <li><a href="javascript:void(0)" data-ng-click="update($index)"><i class="fa fa-edit"></i>&nbsp;&nbsp;修改</a></li>
+                                        <li><a href="javascript:void(0)" data-ng-click="groupPermission($index)"><i class="icon icon-key"></i>&nbsp;&nbsp;组权限</a></li>
                                         <li class="divider"></li>
-                                        <li><a href="javascript:void(0)" data-ng-click="delete($index)">删除</a></li>
+                                        <li><a href="javascript:void(0)" data-ng-click="delete($index)"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;删除</a></li>
                                     </ul>
                                 </div>
                             </td>
@@ -100,14 +111,9 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-footer table-data-empty" ng-if="!groupList || groupList.length == 0">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <span><i class="icon icon-info">&nbsp;&nbsp;没有查询到符合条件的数据</i></span>
-                        </div>
-                    </div>
-                </div>
-                <footer class="panel-footer" ng-if="groupList && groupList.length > 0">
+                <div ug-empty-data-msg ng-if="(!groupList || groupList.length == 0) && !pageSetting.queryBtnLoading"></div>
+                <div ug-loading-msg ng-if="pageSetting.queryBtnLoading"></div>
+                <footer class="panel-footer" ng-if="groupList && groupList.length > 0 && !pageSetting.queryBtnLoading">
                     <div class="row">
                         <div class="col-sm-6">
                             <label class="i-checks m-b-none">
@@ -120,19 +126,19 @@
                             </label>
                             <div class="btn-group open" dropdown="">
                                 <button type="button" class="btn btn-sm btn-default dropdown-toggle" dropdown-toggle>
-                                    批量操作
+                                    批量操作&nbsp;&nbsp;
                                     <span class="caret"></span>
                                     <span class="sr-only">Split button!</span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="javascript:void(0)" data-ng-click="batchExport($index)"><i class="fa fa-download">&nbsp;&nbsp;批量导出</i></a></li>
                                     <li class="divider"></li>
-                                    <li><a href="javascript:void(0)" data-ng-click="batchDelete($index)"><i class="fa fa-minus">&nbsp;&nbsp;批量删除</i></a></li>
+                                    <li><a href="javascript:void(0)" data-ng-click="batchDelete($index)"><i class="fa fa-trash">&nbsp;&nbsp;批量删除</i></a></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-sm-6 text-right text-center-xs">
-                            <ug-pagination page-info="pageInfoSetting"></ug-pagination>
+                            <ug-pagination page-info="pageInfoSetting" load-parameter="queryParam" load-data="getGroupList"></ug-pagination>
                         </div>
                     </div>
                 </footer>
@@ -150,61 +156,64 @@
 
             <form class="form-horizontal" ug-validate="groupDetailForm" name="groupDetailFormName">
                 <fieldset>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">
-                                    用户组代码
-                                    <span class="vaild">*</span>
-                                </label>
-                                <div class="col-md-9">
-                                        <input class="form-control" type="text" name="groupCode" placeholder="请输入用户组代码"
-                                               ng-disabled="pageSetting.formDisabled"
-                                               data-msg-required="用户组代码必填"
-                                               required="true"
-                                               data-rule-maxlength="30"
-                                               ng-model="group.groupCode">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">
-                                    用户组名称
-                                    <span class="vaild">*</span>
-                                </label>
-                                <div class="col-md-9">
-                                        <input class="form-control" type="text" name="groupName" placeholder="请输入用户组名称"
-                                               ng-disabled="pageSetting.formDisabled"
-                                               data-msg-required="用户组名称必填"
-                                               required="true"
-                                               data-rule-maxlength="100"
-                                               ng-model="group.groupName">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">
-                                    用户组描述
-                                </label>
-                                <div class="col-md-9">
-                                        <input class="form-control" type="text" name="description" placeholder="请输入用户组描述"
-                                               ng-disabled="pageSetting.formDisabled"
-                                               data-rule-maxlength="200"
-                                               ng-model="group.description">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">
-                                    激活
-                                    <span class="vaild">*</span>
-                                </label>
-                                <div class="col-md-9">
-                                        <label class="i-switch bg-primary m-t-xs m-r">
-                                            <input type="checkbox" name="active"
-                                                   data-ng-true-value="true"
-                                                   data-ng-false-value="false"
-                                                   ng-disabled="pageSetting.formDisabled"
-                                                   ng-model="group.active">
-                                            <i></i>
-                                        </label>
-                                </div>
-                            </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            用户组代码
+                            <span class="vaild">*</span>
+                        </label>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text" name="groupCode" placeholder="请输入用户组代码"
+                                   ng-disabled="pageSetting.formDisabled"
+                                   data-msg-required="用户组代码必填"
+                                   required="true"
+                                   data-rule-maxlength="30"
+                                   data-msg-maxlength="用户组代码字符长度限制[0,30]"
+                                   ng-model="group.groupCode">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            用户组名称
+                            <span class="vaild">*</span>
+                        </label>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text" name="groupName" placeholder="请输入用户组名称"
+                                   ng-disabled="pageSetting.formDisabled"
+                                   data-msg-required="用户组名称必填"
+                                   required="true"
+                                   data-rule-maxlength="100"
+                                   data-msg-maxlength="用户组名称字符长度限制[0,100]"
+                                   ng-model="group.groupName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            用户组描述
+                        </label>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text" name="description" placeholder="请输入用户组描述"
+                                   ng-disabled="pageSetting.formDisabled"
+                                   data-rule-maxlength="200"
+                                   data-msg-maxlength="用户组描述字符长度限制[0,200]"
+                                   ng-model="group.description">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            激活
+                            <span class="vaild">*</span>
+                        </label>
+                        <div class="col-md-9">
+                            <label class="i-switch bg-primary m-r">
+                                <input type="checkbox" name="active"
+                                       data-ng-true-value="true"
+                                       data-ng-false-value="false"
+                                       ng-disabled="pageSetting.formDisabled"
+                                       ng-model="group.active">
+                                <i></i>
+                            </label>
+                        </div>
+                    </div>
 
                     <div class="form-group" ng-if="errors">
                         <label class="col-md-2 control-label"></label>
@@ -217,10 +226,120 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-disabled="pageSetting.formDisabled" ng-if="!pageSetting.formDisabled" type="submit" data-ng-click="saveGroup()">
+        <button class="btn btn-primary" type="submit"
+                btn-loading="pageSetting.saveBtnLoading"
+                ng-disabled="pageSetting.formDisabled"
+                ng-if="!pageSetting.formDisabled" data-ng-click="saveGroup()">
             <i class="fa fa-save"></i>
             保存
         </button>
+        <button class="btn btn-default" ng-click="cancel()">
+            <i class="icon icon-close"></i>
+            关闭</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="group_permission.html">
+    <div class="modal-header">
+        <h3 class="modal-title">［{{name}}］组权限</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <form name="groupNotHasPermissionForm">
+            <div class="col-sm-6">
+                <div class="panel b-a">
+                    <div class="panel-heading bg-info">
+                        <a href class="font-bold">可选权限</a>
+                        <span class="icon icon-check list-group-item-icon"
+                              title="全选"
+                              data-ng-click="unbindCheckAll()">&nbsp;</span>
+                        <span class="icon icon-plus list-group-item-icon"
+                              title="单击可批量新增已勾选的组权限资源"
+                              data-ng-click="addChoiceBind()">&nbsp;</span>
+                    </div>
+                    <div class="list-group list-group-sm list-group-scroll">
+                        <a href class="list-group-item"
+                           data-ng-mouseenter="item.mouseenter=true"
+                           data-ng-mouseleave="item.mouseenter=false"
+                           data-ng-repeat="item in groupNotHasPermissionList">
+                            <span class="icon icon-check list-group-item-icon"
+                                  ng-show="item.selected">&nbsp;</span>
+                            <span class="icon icon-plus list-group-item-icon"
+                                  data-ng-click="bind($index)"
+                                  ng-show="item.mouseenter">&nbsp;</span>
+                            <span class="list-group-item-text-block"
+                                  title="单击即可选中"
+                                  data-ng-click="choiceUnbind($index)">{{item.permissionName}}</span>
+                        </a>
+                        <a href class="list-group-item" ng-show="!groupNotHasPermissionList || groupNotHasPermissionList.length == 0">
+                            没有找到符合条件的数据
+                        </a>
+                    </div>
+                    <div class="clearfix panel-footer">
+                        <div class="input-group">
+                            <input type="text" class="form-control input-sm btn-rounded"
+                                   placeholder="请输入关键字过滤查询" data-ng-keyup="getNotHasGroupPermission()"
+                                   ng-model="queryParam.notHasPermissionKeyword">
+                            <span class="input-group-btn">
+                              <button type="submit" data-ng-click="getNotHasGroupPermission()" class="btn btn-default btn-sm btn-rounded">
+                                  <i class="fa fa-search"></i>
+                              </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+            <div class="col-sm-6">
+                <div class="panel b-a">
+                    <div class="panel-heading bg-primary">
+                        <a href class="font-bold">已有权限</a>
+                        <span class="icon icon-check list-group-item-icon"
+                              title="全选"
+                              data-ng-click="bindCheckAll()">&nbsp;</span>
+                        <span class="icon icon-close list-group-item-icon"
+                              title="单击可批量删除已勾选的组权限资源"
+                              data-ng-click="removeChoiceBind()">&nbsp;</span>
+                    </div>
+                    <div class="list-group list-group-sm list-group-scroll">
+                        <a href class="list-group-item"
+                           data-ng-mouseenter="item.mouseenter=true"
+                           data-ng-mouseleave="item.mouseenter=false"
+                           data-ng-repeat="item in groupHasPermissionList">
+                                <span class="icon icon-check list-group-item-icon"
+                                   ng-show="item.selected">&nbsp;</span>
+                                <span class="icon icon-close list-group-item-icon"
+                                  data-ng-click="unbind($index)"
+                                  ng-show="item.mouseenter">&nbsp;</span>
+                                <span class="list-group-item-text-block"
+                                      title="单击即可选中"
+                                      data-ng-click="choiceBind($index)">{{item.permissionName}}</span>
+                        </a>
+                    </div>
+                    <div class="clearfix panel-footer">
+                        <div class="input-group">
+                            <input type="text" class="form-control input-sm btn-rounded"
+                                   placeholder="请输入关键字过滤查询" data-ng-keyup="getHasGroupPermission()"
+                                   ng-model="queryParam.hasPermissionKeyword">
+                            <span class="input-group-btn">
+                              <button type="submit" data-ng-click="getHasGroupPermission()" class="btn btn-default btn-sm btn-rounded">
+                                  <i class="fa fa-search"></i>
+                              </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <!--<button class="btn btn-primary" type="submit"-->
+                <!--btn-loading="pageSetting.saveBtnLoading"-->
+                <!--ng-disabled="pageSetting.formDisabled"-->
+                <!--ng-if="!pageSetting.formDisabled" data-ng-click="saveGroup()">-->
+            <!--<i class="fa fa-save"></i>-->
+            <!--保存-->
+        <!--</button>-->
         <button class="btn btn-default" ng-click="cancel()">
             <i class="icon icon-close"></i>
             关闭</button>

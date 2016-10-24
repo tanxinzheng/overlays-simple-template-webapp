@@ -36,6 +36,24 @@
     padding: 10px 10px;
 }
 
+/** 框列表文字样式 */
+.list-group-item-text-block {
+    padding-right: 200px;
+    padding-bottom: 6px;
+    padding-top: 6px;
+}
+.list-group-item-icon {
+    float: right;
+    padding-bottom: 5px;
+    padding-top: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.list-group-scroll {
+    height: 400px;
+    overflow: scroll;
+}
+
 /** ui.router.tab样式   *****/
 body{}
 html a{outline:none;blr:expression(this.onFocus=this.blur());}

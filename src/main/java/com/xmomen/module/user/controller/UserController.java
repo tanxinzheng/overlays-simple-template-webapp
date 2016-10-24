@@ -2,11 +2,10 @@ package com.xmomen.module.user.controller;
 
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.web.exceptions.ArgumentValidException;
-//import com.xmomen.module.logger.Log;
 import com.xmomen.module.user.model.UserCreate;
+import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.model.UserQuery;
 import com.xmomen.module.user.model.UserUpdate;
-import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.service.UserService;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
@@ -17,12 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.io.Serializable;
 import java.util.List;
+
+//import com.xmomen.module.logger.Log;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-22 21:53:46
+ * @date    2016-10-23 12:15:19
  * @version 1.0.0
  */
 @RestController
