@@ -2,6 +2,16 @@ package com.xmomen.module.user.controller;
 
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.web.exceptions.ArgumentValidException;
+import com.xmomen.module.authorization.entity.UserGroup;
+import com.xmomen.module.authorization.entity.UserPermission;
+import com.xmomen.module.authorization.model.GroupModel;
+import com.xmomen.module.authorization.model.GroupQuery;
+import com.xmomen.module.authorization.model.PermissionModel;
+import com.xmomen.module.authorization.model.PermissionQuery;
+import com.xmomen.module.authorization.service.GroupService;
+import com.xmomen.module.authorization.service.PermissionService;
+import com.xmomen.module.authorization.service.UserGroupService;
+import com.xmomen.module.authorization.service.UserPermissionService;
 import com.xmomen.module.user.model.UserCreate;
 import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.model.UserQuery;
@@ -150,5 +160,88 @@ public class UserController {
         return new ModelAndView(NormalExcelConstants.JEECG_EXCEL_VIEW);
     }
 
+    @Autowired
+    PermissionService permissionService;
+
+    /**
+     * 查询用户组权限
+     * @param userId    用户主键
+     * @param limit     最大页数
+     * @param offset    页码
+     * @return
+     */
+//    @Log(actionName = "查询用户组所属权限")
+    @RequestMapping(value = "/{id}/permission", method = RequestMethod.GET)
+    public Page<PermissionModel> getUserPermission(
+            @PathVariable(value = "id") String userId,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "hasPermission", required = false) Boolean hasPermission,
+            @RequestParam(value = "limit") Integer limit,
+            @RequestParam(value = "offset") Integer offset){
+        PermissionQuery permissionQuery = new PermissionQuery();
+        permissionQuery.setUserId(userId);
+        permissionQuery.setKeyword(keyword);
+        permissionQuery.setHasPermission(hasPermission);
+        return permissionService.getPermissionModelPage(limit, offset, permissionQuery);
+    }
+
+    @Autowired
+    UserPermissionService userPermissionService;
+
+    /**
+     * 批量新增组权限
+     * @param userId   用户主键
+     * @param permissionIds     权限主键集
+     * @return List<UserPermission>    用户权限对象集
+     */
+    @RequestMapping(value = "/{id}/permission", method = RequestMethod.POST)
+    public List<UserPermission> createGroupPermission(
+            @PathVariable(value = "id") String userId,
+            @RequestParam(value = "permissionIds") String[] permissionIds){
+        return userPermissionService.createUserPermissions(userId, permissionIds);
+    }
+
+    @Autowired
+    GroupService groupService;
+
+    /**
+     * 查询用户组权限
+     * @param userId    用户主键
+     * @param keyword   关键字
+     * @param hasGroup     是否查询已有组
+     * @param limit     每页数量
+     * @param offset    页码
+     * @return
+     */
+//    @Log(actionName = "查询用户组所属权限")
+    @RequestMapping(value = "/{id}/group", method = RequestMethod.GET)
+    public Page<GroupModel> getUserGroup(
+            @PathVariable(value = "id") String userId,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "hasGroup", required = false) Boolean hasGroup,
+            @RequestParam(value = "limit") Integer limit,
+            @RequestParam(value = "offset") Integer offset){
+        GroupQuery groupQuery = new GroupQuery();
+        groupQuery.setUserId(userId);
+        groupQuery.setKeyword(keyword);
+        groupQuery.setHasGroup(hasGroup);
+        return groupService.getGroupModelPage(limit, offset, groupQuery);
+    }
+
+    @Autowired
+    UserGroupService userGroupService;
+
+    /**
+     * 批量新增用户组
+     * @param userId   用户主键
+     * @param groupIds     组主键集
+     * @return List<UserGroup>    用户组对象集
+     */
+    @RequestMapping(value = "/{id}/group", method = RequestMethod.POST)
+    public List<UserGroup> createUserGroup(
+            @PathVariable(value = "id") String userId,
+            @RequestParam(value = "groupIds") String[] groupIds){
+        return userGroupService.createUserGroups(userId, groupIds);
+    }
 
 }

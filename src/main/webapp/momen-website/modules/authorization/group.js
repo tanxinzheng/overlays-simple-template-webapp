@@ -167,7 +167,7 @@ define(function(){
             });
         };
         // 组权限
-        $scope.groupPermission = function(index){
+        $scope.viewGroupPermission = function(index){
             $modal.open({
                 templateUrl: 'group_permission.html',
                 modal:true,
@@ -184,64 +184,56 @@ define(function(){
                 },
                 controller: ['$scope', '$modalInstance', "$modal", "GroupAPI", "GroupPermissionAPI", "Params", function($scope, $modalInstance, $modal, GroupAPI, GroupPermissionAPI, Params){
                     $scope.queryParam = {};
-                    // 查询可选权限
-                    $scope.getNotHasGroupPermission = function(){
+                    // 查询可选资源
+                    $scope.getNotHasResource = function(){
                         GroupAPI.getGroupPermission({
                             limit:10000,
                             offset:1,
-                            keyword: $scope.queryParam.notHasPermissionKeyword,
+                            keyword: $scope.queryParam.notHasResourceKeyword,
                             groupId: Params.id,
                             hasPermission: false
                         }, function(data){
-                            $scope.groupNotHasPermissionList = data.data;
+                            $scope.notHasResourceList = data.data;
                         });
                     };
                     // 查询已有权限
-                    $scope.getHasGroupPermission = function(){
+                    $scope.getHasResource = function(){
                         GroupAPI.getGroupPermission({
                             limit:10000,
                             offset:1,
-                            keyword: $scope.queryParam.hasPermissionKeyword,
+                            keyword: $scope.queryParam.hasResourceKeyword,
                             groupId: Params.id,
                             hasPermission: true
                         }, function(data){
-                            $scope.groupHasPermissionList = data.data;
+                            $scope.hasResourceList = data.data;
                         });
                     };
                     // 选择待绑权限
                     $scope.choiceUnbind = function(index){
-                        $scope.groupNotHasPermissionList[index].selected = !$scope.groupNotHasPermissionList[index].selected;
+                        $scope.notHasResourceList[index].selected = !$scope.notHasResourceList[index].selected;
                     };
                     // 解绑权限
                     $scope.unbind = function(index){
-                        var permission = $scope.groupHasPermissionList[index];
-                        GroupPermissionAPI.get({
+                        var resource = $scope.hasResourceList[index];
+                        GroupPermissionAPI.delete({
                             groupId: Params.id,
-                            permissionId:permission.id,
-                            limit:10,
-                            offset:1
+                            permissionIds:[resource.id]
                         }, function(data){
-                            if(data.data && data.data.length == 1){
-                                GroupPermissionAPI.delete({
-                                    id: data.data[0].id
-                                }, function(){
-                                    permission.selected = null;
-                                    permission.mouseenter = null;
-                                    $scope.groupHasPermissionList.splice(index - 1, 1);
-                                    $scope.groupNotHasPermissionList.push(permission);
-                                });
-                            }
+                            resource.selected = null;
+                            resource.mouseenter = null;
+                            $scope.hasResourceList.splice(index, 1);
+                            $scope.notHasResourceList.push(resource);
                         });
                     };
                     $scope.unbindCheckAll = function(){
-                        for (var i = 0; i < $scope.groupNotHasPermissionList.length; i++) {
-                            var obj = $scope.groupNotHasPermissionList[i];
+                        for (var i = 0; i < $scope.notHasResourceList.length; i++) {
+                            var obj = $scope.notHasResourceList[i];
                             obj.selected = !obj.selected;
                         }
                     };
                     $scope.bindCheckAll = function(){
-                        for (var i = 0; i < $scope.groupHasPermissionList.length; i++) {
-                            var obj = $scope.groupHasPermissionList[i];
+                        for (var i = 0; i < $scope.hasResourceList.length; i++) {
+                            var obj = $scope.hasResourceList[i];
                             obj.selected = !obj.selected;
                         }
                     };
@@ -249,8 +241,8 @@ define(function(){
                     $scope.addChoiceBind = function(){
                         var ids = [];
                         var indexs = [];
-                        for (var i = 0; i < $scope.groupNotHasPermissionList.length; i++) {
-                            var obj = $scope.groupNotHasPermissionList[i];
+                        for (var i = 0; i < $scope.notHasResourceList.length; i++) {
+                            var obj = $scope.notHasResourceList[i];
                             if(obj.selected){
                                 ids.push(obj.id);
                                 indexs.push(i);
@@ -266,11 +258,11 @@ define(function(){
                         }, function(data){
                             if(data && data.length > 0){
                                 for (var i = 0; i < indexs.length; i++) {
-                                    var obj1 = $scope.groupNotHasPermissionList[indexs[i] - i];
-                                    $scope.groupNotHasPermissionList.splice(indexs[i] - i, 1);
+                                    var obj1 = $scope.notHasResourceList[indexs[i] - i];
+                                    $scope.notHasResourceList.splice(indexs[i] - i, 1);
                                     obj1.selected = false;
                                     obj1.mouseenter = false;
-                                    $scope.groupHasPermissionList.push(obj1);
+                                    $scope.hasResourceList.push(obj1);
                                 }
                             }
                         });
@@ -279,8 +271,8 @@ define(function(){
                     $scope.removeChoiceBind = function(){
                         var ids = [];
                         var indexs = [];
-                        for (var i = 0; i < $scope.groupHasPermissionList.length; i++) {
-                            var obj = $scope.groupHasPermissionList[i];
+                        for (var i = 0; i < $scope.hasResourceList.length; i++) {
+                            var obj = $scope.hasResourceList[i];
                             if(obj.selected){
                                 ids.push(obj.id);
                                 indexs.push(i);
@@ -290,44 +282,31 @@ define(function(){
                             $dialog.alert("请勾选需要删除的组权限资源");
                             return;
                         }
-                        GroupPermissionAPI.get({
+                        GroupPermissionAPI.delete({
                             groupId: Params.id,
-                            permissionIds: ids,
-                            limit:10,
-                            offset:1
+                            permissionIds: ids
                         }, function(data){
-                            if(data.data && data.data.length > 0){
-                                var deleteIds = [];
-                                for (var i = 0; i < data.data.length; i++) {
-                                    var obj1 = data.data[i];
-                                    deleteIds.push(obj1.id);
-                                }
-                                GroupPermissionAPI.delete({
-                                    ids: deleteIds
-                                }, function(){
-                                    for (var i = 0; i < indexs.length; i++) {
-                                        var obj1 = $scope.groupHasPermissionList[indexs[i] - i];
-                                        $scope.groupHasPermissionList.splice(indexs[i] - i, 1);
-                                        obj1.selected = false;
-                                        obj1.mouseenter = false;
-                                        $scope.groupNotHasPermissionList.push(obj1);
-                                    }
-                                });
+                            for (var i = 0; i < indexs.length; i++) {
+                                var obj1 = $scope.hasResourceList[indexs[i] - i];
+                                $scope.hasResourceList.splice(indexs[i] - i, 1);
+                                obj1.selected = false;
+                                obj1.mouseenter = false;
+                                $scope.notHasResourceList.push(obj1);
                             }
                         });
                     };
                     $scope.choiceBind = function(index){
-                        $scope.groupHasPermissionList[index].selected = !$scope.groupHasPermissionList[index].selected;
+                        $scope.hasResourceList[index].selected = !$scope.hasResourceList[index].selected;
                     };
                     $scope.bind = function(index){
-                        var permission = $scope.groupNotHasPermissionList[index];
+                        var resource = $scope.notHasResourceList[index];
                         GroupPermissionAPI.create({
                             groupId: Params.id,
-                            permissionId:permission.id
+                            permissionId:resource.id
                         }, function(){
-                            permission.selected = null;
-                            $scope.groupNotHasPermissionList.splice(index, 1);
-                            $scope.groupHasPermissionList.push(permission);
+                            resource.selected = null;
+                            $scope.notHasResourceList.splice(index, 1);
+                            $scope.hasResourceList.push(resource);
                         })
                     };
                     $scope.cancel = function(){
@@ -335,8 +314,8 @@ define(function(){
                     };
                     var init = function(){
                         if(Params && Params.id){
-                            $scope.getHasGroupPermission();
-                            $scope.getNotHasGroupPermission();
+                            $scope.getHasResource();
+                            $scope.getNotHasResource();
                         }
                         if(Params){
                             $scope.name = Params.name;

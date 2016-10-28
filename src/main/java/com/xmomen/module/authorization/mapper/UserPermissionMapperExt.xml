@@ -17,6 +17,15 @@
                 #{item}
                 </foreach>
             </if>
+            <if test="userId">
+                AND t.USER_ID = #{userId}
+            </if>
+            <if test="permissionIds">
+                AND t.PERMISSION_ID IN
+                <foreach collection="permissionIds" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
             <if test="excludeIds">
                 AND t.ID NOT IN
                 <foreach collection="excludeIds" item="item" separator="," open="(" close=")">

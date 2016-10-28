@@ -1,5 +1,6 @@
 package com.xmomen.module.authorization.controller;
 
+import com.xmomen.commons.StringUtilsExt;
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.web.exceptions.ArgumentValidException;
 import com.xmomen.module.authorization.model.GroupPermissionCreate;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 //import com.xmomen.module.logger.Log;
@@ -120,8 +122,25 @@ public class GroupPermissionController {
      */
     @RequestMapping(method = RequestMethod.DELETE)
     //@Log(actionName = "批量删除组权限")
-    public void deleteGroupPermissions(@RequestParam(value = "ids") String[] ids){
-        groupPermissionService.deleteGroupPermission(ids);
+    public void deleteGroupPermissions(@RequestParam(value = "ids", required = false) String[] ids,
+                                       @RequestParam(value = "groupId", required = false) String groupId,
+                                       @RequestParam(value = "permissionIds", required = false) String[] permissionIds){
+        if(StringUtilsExt.trimToNull(groupId) != null && permissionIds != null && permissionIds.length > 0){
+            GroupPermissionQuery groupPermissionQuery = new GroupPermissionQuery();
+            groupPermissionQuery.setPermissionIds(permissionIds);
+            groupPermissionQuery.setGroupId(groupId);
+            List<GroupPermissionModel> groupPermissionList = groupPermissionService.getGroupPermissionModelList(groupPermissionQuery);
+            if(ids == null){
+                List<String> list = new ArrayList<>();
+                for (GroupPermissionModel groupPermissionModel : groupPermissionList) {
+                    list.add(groupPermissionModel.getId());
+                }
+                ids = list.toArray(new String[list.size()]);
+            }
+        }
+        if(ids != null && ids.length > 0){
+            groupPermissionService.deleteGroupPermission(ids);
+        }
     }
 
     /**

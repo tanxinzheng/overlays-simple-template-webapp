@@ -114,6 +114,9 @@
                                         <li><a href="javascript:void(0)" data-ng-click="view($index)"><i class="icon icon-info"></i>&nbsp;&nbsp;查看</a></li>
                                         <li><a href="javascript:void(0)" data-ng-click="update($index)"><i class="fa fa-edit"></i>&nbsp;&nbsp;修改</a></li>
                                         <li class="divider"></li>
+                                        <!--<li><a href="javascript:void(0)" data-ng-click="viewUserPermission($index)"><i class="icon icon-key"></i>&nbsp;&nbsp;权限</a></li>-->
+                                        <li><a href="javascript:void(0)" data-ng-click="viewUserGroup($index)"><i class="icon icon-users"></i>&nbsp;&nbsp;用户组</a></li>
+                                        <li class="divider"></li>
                                         <li><a href="javascript:void(0)" data-ng-click="delete($index)"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;删除</a></li>
                                     </ul>
                                 </div>
@@ -284,6 +287,215 @@
             <i class="fa fa-save"></i>
             保存
         </button>
+        <button class="btn btn-default" ng-click="cancel()">
+            <i class="icon icon-close"></i>
+            关闭</button>
+    </div>
+</script>
+<script type="text/ng-template" id="user_permission.html">
+    <div class="modal-header">
+        <h3 class="modal-title">［{{name}}］用户权限</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel b-a">
+                    <div class="panel-heading bg-info">
+                        <a href class="font-bold">可选权限</a>
+                        <span class="icon icon-check list-group-item-icon"
+                              title="全选"
+                              data-ng-click="unbindCheckAll()">&nbsp;</span>
+                        <span class="icon icon-plus list-group-item-icon"
+                              title="单击可批量新增已勾选的用户权限资源"
+                              data-ng-click="addChoiceBind()">&nbsp;</span>
+                    </div>
+                    <div class="list-group list-group-sm list-group-scroll">
+                        <a href class="list-group-item"
+                           data-ng-mouseenter="item.mouseenter=true"
+                           data-ng-mouseleave="item.mouseenter=false"
+                           data-ng-repeat="item in notHasResourceList">
+                            <span class="icon icon-check list-group-item-icon"
+                                  ng-show="item.selected">&nbsp;</span>
+                            <span class="icon icon-plus list-group-item-icon"
+                                  data-ng-click="bind($index)"
+                                  ng-show="item.mouseenter">&nbsp;</span>
+                            <span class="list-group-item-text-block"
+                                  title="单击即可选中"
+                                  data-ng-click="choiceUnbind($index)">{{item.permissionName}}</span>
+                        </a>
+                        <a href class="list-group-item" ng-show="!notHasResourceList || notHasResourceList.length == 0">
+                            没有找到符合条件的数据
+                        </a>
+                    </div>
+                    <div class="clearfix panel-footer">
+                        <div class="input-group">
+                            <input type="text" class="form-control input-sm btn-rounded"
+                                   placeholder="请输入关键字过滤查询" data-ng-keyup="getNotHasResource()"
+                                   ng-model="queryParam.notHasResourceKeyword">
+                            <span class="input-group-btn">
+                              <button type="submit" data-ng-click="getNotHasResource()" class="btn btn-default btn-sm btn-rounded">
+                                  <i class="fa fa-search"></i>
+                              </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel b-a">
+                    <div class="panel-heading bg-primary">
+                        <a href class="font-bold">已有权限</a>
+                        <span class="icon icon-check list-group-item-icon"
+                              title="全选"
+                              data-ng-click="bindCheckAll()">&nbsp;</span>
+                        <span class="icon icon-close list-group-item-icon"
+                              title="单击可批量删除已勾选的用户权限资源"
+                              data-ng-click="removeChoiceBind()">&nbsp;</span>
+                    </div>
+                    <div class="list-group list-group-sm list-group-scroll">
+                        <a href class="list-group-item"
+                           data-ng-mouseenter="item.mouseenter=true"
+                           data-ng-mouseleave="item.mouseenter=false"
+                           data-ng-repeat="item in hasResourceList">
+                                <span class="icon icon-check list-group-item-icon"
+                                      ng-show="item.selected">&nbsp;</span>
+                                <span class="icon icon-close list-group-item-icon"
+                                      data-ng-click="unbind($index)"
+                                      ng-show="item.mouseenter">&nbsp;</span>
+                                <span class="list-group-item-text-block"
+                                      title="单击即可选中"
+                                      data-ng-click="choiceBind($index)">{{item.permissionName}}</span>
+                        </a>
+                    </div>
+                    <div class="clearfix panel-footer">
+                        <div class="input-group">
+                            <input type="text" class="form-control input-sm btn-rounded"
+                                   placeholder="请输入关键字过滤查询" data-ng-keyup="getHasResource()"
+                                   ng-model="queryParam.hasResourceKeyword">
+                            <span class="input-group-btn">
+                              <button type="submit" data-ng-click="getHasResource()" class="btn btn-default btn-sm btn-rounded">
+                                  <i class="fa fa-search"></i>
+                              </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <!--<button class="btn btn-primary" type="submit"-->
+        <!--btn-loading="pageSetting.saveBtnLoading"-->
+        <!--ng-disabled="pageSetting.formDisabled"-->
+        <!--ng-if="!pageSetting.formDisabled" data-ng-click="saveGroup()">-->
+        <!--<i class="fa fa-save"></i>-->
+        <!--保存-->
+        <!--</button>-->
+        <button class="btn btn-default" ng-click="cancel()">
+            <i class="icon icon-close"></i>
+            关闭</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="user_group.html">
+    <div class="modal-header">
+        <h3 class="modal-title">［{{name}}］用户组</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel b-a">
+                    <div class="panel-heading bg-info">
+                        <a href class="font-bold">可选用户组</a>
+                        <span class="icon icon-check list-group-item-icon"
+                              title="全选"
+                              data-ng-click="unbindCheckAll()">&nbsp;</span>
+                        <span class="icon icon-plus list-group-item-icon"
+                              title="单击可批量新增已勾选的用户组"
+                              data-ng-click="addChoiceBind()">&nbsp;</span>
+                    </div>
+                    <div class="list-group list-group-sm list-group-scroll">
+                        <a href class="list-group-item"
+                           data-ng-mouseenter="item.mouseenter=true"
+                           data-ng-mouseleave="item.mouseenter=false"
+                           data-ng-repeat="item in notHasResourceList">
+                            <span class="icon icon-check list-group-item-icon"
+                                  ng-show="item.selected">&nbsp;</span>
+                            <span class="icon icon-plus list-group-item-icon"
+                                  data-ng-click="bind($index)"
+                                  ng-show="item.mouseenter">&nbsp;</span>
+                            <span class="list-group-item-text-block"
+                                  title="单击即可选中"
+                                  data-ng-click="choiceUnbind($index)">{{item.groupName}}</span>
+                        </a>
+                        <a href class="list-group-item" ng-show="!notHasResourceList || notHasResourceList.length == 0">
+                            没有找到符合条件的数据
+                        </a>
+                    </div>
+                    <div class="clearfix panel-footer">
+                        <div class="input-group">
+                            <input type="text" class="form-control input-sm btn-rounded"
+                                   placeholder="请输入关键字过滤查询" data-ng-keyup="getNotHasResource()"
+                                   ng-model="queryParam.notHasResourceKeyword">
+                            <span class="input-group-btn">
+                              <button type="submit" data-ng-click="getNotHasResource()" class="btn btn-default btn-sm btn-rounded">
+                                  <i class="fa fa-search"></i>
+                              </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel b-a">
+                    <div class="panel-heading bg-primary">
+                        <a href class="font-bold">已有用户组</a>
+                        <span class="icon icon-check list-group-item-icon"
+                              title="全选"
+                              data-ng-click="bindCheckAll()">&nbsp;</span>
+                        <span class="icon icon-close list-group-item-icon"
+                              title="单击可批量删除已勾选的用户组"
+                              data-ng-click="removeChoiceBind()">&nbsp;</span>
+                    </div>
+                    <div class="list-group list-group-sm list-group-scroll">
+                        <a href class="list-group-item"
+                           data-ng-mouseenter="item.mouseenter=true"
+                           data-ng-mouseleave="item.mouseenter=false"
+                           data-ng-repeat="item in hasResourceList">
+                                <span class="icon icon-check list-group-item-icon"
+                                      ng-show="item.selected">&nbsp;</span>
+                                <span class="icon icon-close list-group-item-icon"
+                                      data-ng-click="unbind($index)"
+                                      ng-show="item.mouseenter">&nbsp;</span>
+                                <span class="list-group-item-text-block"
+                                      title="单击即可选中"
+                                      data-ng-click="choiceBind($index)">{{item.groupName}}</span>
+                        </a>
+                    </div>
+                    <div class="clearfix panel-footer">
+                        <div class="input-group">
+                            <input type="text" class="form-control input-sm btn-rounded"
+                                   placeholder="请输入关键字过滤查询" data-ng-keyup="getHasResource()"
+                                   ng-model="queryParam.hasResourceKeyword">
+                            <span class="input-group-btn">
+                              <button type="submit" data-ng-click="getHasResource()" class="btn btn-default btn-sm btn-rounded">
+                                  <i class="fa fa-search"></i>
+                              </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <!--<button class="btn btn-primary" type="submit"-->
+        <!--btn-loading="pageSetting.saveBtnLoading"-->
+        <!--ng-disabled="pageSetting.formDisabled"-->
+        <!--ng-if="!pageSetting.formDisabled" data-ng-click="saveGroup()">-->
+        <!--<i class="fa fa-save"></i>-->
+        <!--保存-->
+        <!--</button>-->
         <button class="btn btn-default" ng-click="cancel()">
             <i class="icon icon-close"></i>
             关闭</button>

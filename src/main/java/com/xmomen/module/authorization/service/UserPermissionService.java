@@ -106,4 +106,12 @@ public interface UserPermissionService {
      * @return UserPermissionModel 用户权限领域对象
      */
     UserPermissionModel getOneUserPermissionModel(UserPermissionQuery userPermissionQuery) throws TooManyResultsException;
+
+    /**
+     * 批量新增用户权限
+     * @param userId    用户主键
+     * @param permissionIds     权限主键集
+     * @return List<UserPermission>     用户权限集合
+     */
+    List<UserPermission> createUserPermissions(String userId, String[] permissionIds);
 }

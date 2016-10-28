@@ -2,7 +2,9 @@
  * Created by tanxinzheng on 16/7/3.
  */
 define(function(){
-    return angular.module("xmomen.draggable",[]).directive('draggable', ['$document', function($document) {
+    return angular.module("xmomen.draggable",[
+
+    ]).directive('draggable', ['$document', function($document) {
         return function(scope, elem, attr) {
             var startX = 0, startY = 0, x = 0, y = 0;
             var element = elem.parent().parent();

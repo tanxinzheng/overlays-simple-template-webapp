@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,6 +56,26 @@ public class UserGroupServiceImpl implements UserGroupService {
     @Transactional
     public UserGroup createUserGroup(UserGroup userGroup) {
         return mybatisDao.insertByModel(userGroup);
+    }
+
+    /**
+     * 批量新增用户组
+     *
+     * @param userId   用户主键
+     * @param groupIds 组主键集
+     * @return List<UserGroup> 用户组集合
+     */
+    @Override
+    public List<UserGroup> createUserGroups(String userId, String[] groupIds) {
+        List<UserGroup> userGroupList = new ArrayList<>();
+        for (String groupId : groupIds) {
+            UserGroup userGroup = new UserGroup();
+            userGroup.setUserId(userId);
+            userGroup.setGroupId(groupId);
+            userGroup = createUserGroup(userGroup);
+            userGroupList.add(userGroup);
+        }
+        return userGroupList;
     }
 
     /**

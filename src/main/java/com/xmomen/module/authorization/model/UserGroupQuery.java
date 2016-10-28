@@ -17,4 +17,8 @@ public @Data class UserGroupQuery implements Serializable {
     /** 排除主键集 */
     private String[] excludeIds;
 
+    private String[] groupIds;
+
+    private String userId;
+
 }

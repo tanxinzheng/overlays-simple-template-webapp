@@ -21,6 +21,8 @@ public @Data class PermissionQuery implements Serializable {
 
     private String groupId;
 
+    private String userId;
+
     private Boolean hasPermission;
 
 }

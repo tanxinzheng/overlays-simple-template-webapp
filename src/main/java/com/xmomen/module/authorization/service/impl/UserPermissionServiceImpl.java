@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -183,5 +184,27 @@ public class UserPermissionServiceImpl implements UserPermissionService {
     @Override
     public UserPermissionModel getOneUserPermissionModel(UserPermissionQuery userPermissionQuery) throws TooManyResultsException {
         return mybatisDao.getSqlSessionTemplate().selectOne(UserPermissionMapperExt.UserPermissionMapperNameSpace + "getUserPermissionModel", userPermissionQuery);
+    }
+
+    /**
+     * 批量新增用户权限
+     *
+     * @param userId        用户主键
+     * @param permissionIds 权限主键集
+     * @return List<UserPermission>     用户权限集合
+     */
+    @Override
+    public List<UserPermission> createUserPermissions(String userId, String[] permissionIds) {
+        List<UserPermission> userPermissionList = new ArrayList<>();
+        for (String permissionId : permissionIds) {
+            UserPermission userPermission = new UserPermission();
+            userPermission.setUserId(userId);
+            userPermission.setPermissionId(permissionId);
+            userPermission = createUserPermission(userPermission);
+            if(userPermission != null){
+                userPermissionList.add(userPermission);
+            }
+        }
+        return userPermissionList;
     }
 }

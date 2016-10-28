@@ -17,4 +17,8 @@ public @Data class UserPermissionQuery implements Serializable {
     /** 排除主键集 */
     private String[] excludeIds;
 
+    private String[] permissionIds;
+
+    private String userId;
+
 }

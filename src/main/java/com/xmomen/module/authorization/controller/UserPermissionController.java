@@ -1,5 +1,6 @@
 package com.xmomen.module.authorization.controller;
 
+import com.xmomen.commons.StringUtilsExt;
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.web.exceptions.ArgumentValidException;
 import com.xmomen.module.authorization.model.UserPermissionCreate;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 //import com.xmomen.module.logger.Log;
@@ -114,8 +116,25 @@ public class UserPermissionController {
      */
     @RequestMapping(method = RequestMethod.DELETE)
     //@Log(actionName = "批量删除用户权限")
-    public void deleteUserPermissions(@RequestParam(value = "ids") String[] ids){
-        userPermissionService.deleteUserPermission(ids);
+    public void deleteUserPermissions(@RequestParam(value = "ids", required = false) String[] ids,
+                                      @RequestParam(value = "userId", required = false) String userId,
+                                      @RequestParam(value = "permissionIds", required = false) String[] permissionIds){
+        if(StringUtilsExt.trimToNull(userId) != null && permissionIds != null && permissionIds.length > 0){
+            UserPermissionQuery userPermissionQuery = new UserPermissionQuery();
+            userPermissionQuery.setPermissionIds(permissionIds);
+            userPermissionQuery.setUserId(userId);
+            List<UserPermissionModel> userGroupModelList = userPermissionService.getUserPermissionModelList(userPermissionQuery);
+            if(ids == null){
+                List<String> list = new ArrayList<>();
+                for (UserPermissionModel userPermissionModel : userGroupModelList) {
+                    list.add(userPermissionModel.getId());
+                }
+                ids = list.toArray(new String[list.size()]);
+            }
+        }
+        if(ids != null && ids.length > 0) {
+            userPermissionService.deleteUserPermission(ids);
+        }
     }
 
     /**

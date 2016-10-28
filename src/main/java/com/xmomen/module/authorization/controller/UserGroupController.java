@@ -1,5 +1,6 @@
 package com.xmomen.module.authorization.controller;
 
+import com.xmomen.commons.StringUtilsExt;
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.web.exceptions.ArgumentValidException;
 import com.xmomen.module.authorization.model.UserGroupCreate;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 //import com.xmomen.module.logger.Log;
@@ -114,8 +116,25 @@ public class UserGroupController {
      */
     @RequestMapping(method = RequestMethod.DELETE)
     //@Log(actionName = "批量删除用户组")
-    public void deleteUserGroups(@RequestParam(value = "ids") String[] ids){
-        userGroupService.deleteUserGroup(ids);
+    public void deleteUserGroups(@RequestParam(value = "ids", required = false) String[] ids,
+                                 @RequestParam(value = "groupIds", required = false) String[] groupIds,
+                                 @RequestParam(value = "userId", required = false) String userId){
+        if(StringUtilsExt.trimToNull(userId) != null && groupIds != null && groupIds.length > 0){
+            UserGroupQuery userGroupQuery = new UserGroupQuery();
+            userGroupQuery.setGroupIds(groupIds);
+            userGroupQuery.setUserId(userId);
+            List<UserGroupModel> userGroupModelList = userGroupService.getUserGroupModelList(userGroupQuery);
+            if(ids == null){
+                List<String> list = new ArrayList<>();
+                for (UserGroupModel userGroupModel : userGroupModelList) {
+                    list.add(userGroupModel.getId());
+                }
+                ids = list.toArray(new String[list.size()]);
+            }
+        }
+        if(ids != null && ids.length > 0) {
+            userGroupService.deleteUserGroup(ids);
+        }
     }
 
     /**

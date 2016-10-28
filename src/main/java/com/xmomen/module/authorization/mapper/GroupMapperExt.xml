@@ -6,7 +6,9 @@
     <select id="getGroupModel"
             resultType="com.xmomen.module.authorization.model.GroupModel"
             parameterType="com.xmomen.module.authorization.model.GroupQuery">
-        SELECT * FROM xmo_group t
+        SELECT t.* FROM xmo_group t
+        LEFT JOIN xmo_user_group ug
+        ON ug.GROUP_ID=t.ID
         <where>
             <if test="keyword">
                     AND (t.GROUP_CODE LIKE CONCAT('%', #{keyword}, '%')
@@ -27,6 +29,19 @@
                 <foreach collection="excludeIds" item="item" separator="," open="(" close=")">
                     #{item}
                 </foreach>
+            </if>
+            <if test="userId and hasGroup">
+                AND ug.USER_ID = #{userId}
+            </if>
+            <if test="userId and !hasGroup">
+                AND t.ID NOT IN
+                (SELECT
+                g.ID AS group_id
+                FROM
+                xmo_group g
+                LEFT JOIN xmo_user_group ug
+                ON g.ID = ug.GROUP_ID
+                WHERE ug.USER_ID = #{userId})
             </if>
           </where>
           ORDER BY t.id

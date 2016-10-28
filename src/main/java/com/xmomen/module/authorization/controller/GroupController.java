@@ -164,9 +164,9 @@ public class GroupController {
      * @return
      */
 //    @Log(actionName = "查询用户组所属权限")
-    @RequestMapping(value = "/{groupId}/permission", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/permission", method = RequestMethod.GET)
     public Page<PermissionModel> findPermissionByGroup(
-            @PathVariable(value = "groupId") String groupId,
+            @PathVariable(value = "id") String groupId,
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "hasPermission", required = false) Boolean hasPermission,
             @RequestParam(value = "limit") Integer limit,
@@ -184,9 +184,9 @@ public class GroupController {
      * @param permissionIds     权限主键集
      * @return List<GroupPermission>    组权限对象集
      */
-    @RequestMapping(value = "/{groupId}/permission", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/permission", method = RequestMethod.POST)
     public List<GroupPermission> createGroupPermission(
-            @PathVariable(value = "groupId") String groupId,
+            @PathVariable(value = "id") String groupId,
             @RequestParam(value = "permissionIds") String[] permissionIds){
         return groupPermissionService.createGroupPermissions(groupId, permissionIds);
     }

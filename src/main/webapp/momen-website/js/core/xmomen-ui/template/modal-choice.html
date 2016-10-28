@@ -1,0 +1,106 @@
+<script type="text/ng-template" id="user_permission.html">
+    <div class="modal-header">
+        <h3 class="modal-title">［{{name}}］用户权限</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <form name="userNotHasPermissionForm">
+                <div class="col-sm-6">
+                    <div class="panel b-a">
+                        <div class="panel-heading bg-info">
+                            <a href class="font-bold">可选权限</a>
+                        <span class="icon icon-check list-group-item-icon"
+                              title="全选"
+                              data-ng-click="unbindCheckAll()">&nbsp;</span>
+                        <span class="icon icon-plus list-group-item-icon"
+                              title="单击可批量新增已勾选的组权限资源"
+                              data-ng-click="addChoiceBind()">&nbsp;</span>
+                        </div>
+                        <div class="list-group list-group-sm list-group-scroll">
+                            <a href class="list-group-item"
+                               data-ng-mouseenter="item.mouseenter=true"
+                               data-ng-mouseleave="item.mouseenter=false"
+                               data-ng-repeat="item in userNotHasPermissionList">
+                            <span class="icon icon-check list-group-item-icon"
+                                  ng-show="item.selected">&nbsp;</span>
+                            <span class="icon icon-plus list-group-item-icon"
+                                  data-ng-click="bind($index)"
+                                  ng-show="item.mouseenter">&nbsp;</span>
+                            <span class="list-group-item-text-block"
+                                  title="单击即可选中"
+                                  data-ng-click="choiceUnbind($index)">{{item.permissionName}}</span>
+                            </a>
+                            <a href class="list-group-item" ng-show="!userNotHasPermissionList || userNotHasPermissionList.length == 0">
+                                没有找到符合条件的数据
+                            </a>
+                        </div>
+                        <div class="clearfix panel-footer">
+                            <div class="input-group">
+                                <input type="text" class="form-control input-sm btn-rounded"
+                                       placeholder="请输入关键字过滤查询" data-ng-keyup="getNotHasUserPermission()"
+                                       ng-model="queryParam.notHasPermissionKeyword">
+                            <span class="input-group-btn">
+                              <button type="submit" data-ng-click="getNotHasUserPermission()" class="btn btn-default btn-sm btn-rounded">
+                                  <i class="fa fa-search"></i>
+                              </button>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="col-sm-6">
+                <div class="panel b-a">
+                    <div class="panel-heading bg-primary">
+                        <a href class="font-bold">已有权限</a>
+                        <span class="icon icon-check list-group-item-icon"
+                              title="全选"
+                              data-ng-click="bindCheckAll()">&nbsp;</span>
+                        <span class="icon icon-close list-group-item-icon"
+                              title="单击可批量删除已勾选的组权限资源"
+                              data-ng-click="removeChoiceBind()">&nbsp;</span>
+                    </div>
+                    <div class="list-group list-group-sm list-group-scroll">
+                        <a href class="list-group-item"
+                           data-ng-mouseenter="item.mouseenter=true"
+                           data-ng-mouseleave="item.mouseenter=false"
+                           data-ng-repeat="item in userHasPermissionList">
+                                <span class="icon icon-check list-group-item-icon"
+                                      ng-show="item.selected">&nbsp;</span>
+                                <span class="icon icon-close list-group-item-icon"
+                                      data-ng-click="unbind($index)"
+                                      ng-show="item.mouseenter">&nbsp;</span>
+                                <span class="list-group-item-text-block"
+                                      title="单击即可选中"
+                                      data-ng-click="choiceBind($index)">{{item.permissionName}}</span>
+                        </a>
+                    </div>
+                    <div class="clearfix panel-footer">
+                        <div class="input-group">
+                            <input type="text" class="form-control input-sm btn-rounded"
+                                   placeholder="请输入关键字过滤查询" data-ng-keyup="getHasUserPermission()"
+                                   ng-model="queryParam.hasPermissionKeyword">
+                            <span class="input-group-btn">
+                              <button type="submit" data-ng-click="getHasUserPermission()" class="btn btn-default btn-sm btn-rounded">
+                                  <i class="fa fa-search"></i>
+                              </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <!--<button class="btn btn-primary" type="submit"-->
+        <!--btn-loading="pageSetting.saveBtnLoading"-->
+        <!--ng-disabled="pageSetting.formDisabled"-->
+        <!--ng-if="!pageSetting.formDisabled" data-ng-click="saveUser()">-->
+        <!--<i class="fa fa-save"></i>-->
+        <!--保存-->
+        <!--</button>-->
+        <button class="btn btn-default" ng-click="cancel()">
+            <i class="icon icon-close"></i>
+            关闭</button>
+    </div>
+</script>

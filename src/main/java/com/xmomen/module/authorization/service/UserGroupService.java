@@ -32,6 +32,14 @@ public interface UserGroupService {
     UserGroup createUserGroup(UserGroup userGroup);
 
     /**
+     * 批量新增用户组
+     * @param userId    用户主键
+     * @param groupIds  组主键集
+     * @return List<UserGroup> 用户组集合
+     */
+    List<UserGroup> createUserGroups(String userId, String[] groupIds);
+
+    /**
      * 更新用户组
      * @param userGroupUpdate    更新用户组对象参数
      */
@@ -106,4 +114,6 @@ public interface UserGroupService {
      * @return UserGroupModel 用户组领域对象
      */
     UserGroupModel getOneUserGroupModel(UserGroupQuery userGroupQuery) throws TooManyResultsException;
+
+
 }

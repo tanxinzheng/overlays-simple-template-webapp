@@ -9,6 +9,8 @@
         SELECT t.* FROM xmo_permission t
         LEFT JOIN xmo_group_permission gp
         ON gp.PERMISSION_ID=t.ID
+        LEFT JOIN xmo_user_permission up
+        ON up.USER_ID=t.ID
         <where>
             <if test="keyword">
                     AND (t.PERMISSION_CODE LIKE CONCAT('%', #{keyword}, '%')
@@ -42,6 +44,19 @@
                 LEFT JOIN xmo_group_permission gp
                   ON p.ID = gp.PERMISSION_ID
                   WHERE gp.GROUP_ID = #{groupId})
+            </if>
+            <if test="userId and hasPermission">
+                AND up.USER_ID = #{userId}
+            </if>
+            <if test="userId and !hasPermission">
+                AND t.ID NOT IN
+                (SELECT
+                p.ID AS permission_id
+                FROM
+                xmo_permission p
+                LEFT JOIN xmo_user_permission up
+                ON p.ID = up.PERMISSION_ID
+                WHERE up.USER_ID = #{userId})
             </if>
           </where>
           ORDER BY t.id
