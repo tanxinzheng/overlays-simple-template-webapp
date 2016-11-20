@@ -8,6 +8,7 @@ import com.xmomen.module.authorization.model.UserGroupModel;
 import com.xmomen.module.authorization.model.UserGroupQuery;
 import com.xmomen.module.authorization.model.UserGroupUpdate;
 import com.xmomen.module.authorization.service.UserGroupService;
+import com.xmomen.module.logger.Log;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-
-//import com.xmomen.module.logger.Log;
 
 /**
  * @author  tanxinzheng
@@ -44,7 +43,7 @@ public class UserGroupController {
      * @return  Page<UserGroupModel> 用户组领域分页对象
      */
     @RequestMapping(method = RequestMethod.GET)
-    //@Log(actionName = "查询用户组列表")
+    @Log(actionName = "查询用户组列表")
     public Page<UserGroupModel> getUserGroupList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
                                   @RequestParam(value = "id", required = false) String id,
@@ -63,7 +62,7 @@ public class UserGroupController {
      * @return  UserGroupModel   用户组领域对象
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    //@Log(actionName = "查询用户组")
+    @Log(actionName = "查询用户组")
     public UserGroupModel getUserGroupById(@PathVariable(value = "id") String id){
         return userGroupService.getOneUserGroupModel(id);
     }
@@ -75,7 +74,7 @@ public class UserGroupController {
      * @return  UserGroupModel   用户组领域对象
      */
     @RequestMapping(method = RequestMethod.POST)
-    //@Log(actionName = "新增用户组")
+    @Log(actionName = "新增用户组")
     public UserGroupModel createUserGroup(@RequestBody @Valid UserGroupCreate userGroupCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
             throw new ArgumentValidException(bindingResult);
@@ -91,7 +90,7 @@ public class UserGroupController {
      * @throws ArgumentValidException       参数校验异常类
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    //@Log(actionName = "更新用户组")
+    @Log(actionName = "更新用户组")
     public void updateUserGroup(@PathVariable(value = "id") String id,
                            @RequestBody @Valid UserGroupUpdate userGroupUpdate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -105,7 +104,7 @@ public class UserGroupController {
      * @param id    主键
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    //@Log(actionName = "删除单个用户组")
+    @Log(actionName = "删除单个用户组")
     public void deleteUserGroup(@PathVariable(value = "id") String id){
         userGroupService.deleteUserGroup(id);
     }
@@ -115,7 +114,7 @@ public class UserGroupController {
      * @param ids    主键
      */
     @RequestMapping(method = RequestMethod.DELETE)
-    //@Log(actionName = "批量删除用户组")
+    @Log(actionName = "批量删除用户组")
     public void deleteUserGroups(@RequestParam(value = "ids", required = false) String[] ids,
                                  @RequestParam(value = "groupIds", required = false) String[] groupIds,
                                  @RequestParam(value = "userId", required = false) String userId){

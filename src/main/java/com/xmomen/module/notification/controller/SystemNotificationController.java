@@ -2,6 +2,7 @@ package com.xmomen.module.notification.controller;
 
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.web.exceptions.ArgumentValidException;
+import com.xmomen.module.logger.Log;
 import com.xmomen.module.notification.model.SystemNotificationCreate;
 import com.xmomen.module.notification.model.SystemNotificationModel;
 import com.xmomen.module.notification.model.SystemNotificationQuery;
@@ -17,8 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
-
-//import com.xmomen.module.logger.Log;
 
 /**
  * @author  tanxinzheng
@@ -42,7 +41,7 @@ public class SystemNotificationController {
      * @return  Page<SystemNotificationModel> 系统通知领域分页对象
      */
     @RequestMapping(method = RequestMethod.GET)
-    //@Log(actionName = "查询系统通知列表")
+    @Log(actionName = "查询系统通知列表")
     public Page<SystemNotificationModel> getSystemNotificationList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
                                   @RequestParam(value = "id", required = false) String id,
@@ -61,7 +60,7 @@ public class SystemNotificationController {
      * @return  SystemNotificationModel   系统通知领域对象
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    //@Log(actionName = "查询系统通知")
+    @Log(actionName = "查询系统通知")
     public SystemNotificationModel getSystemNotificationById(@PathVariable(value = "id") String id){
         return systemNotificationService.getOneSystemNotificationModel(id);
     }
@@ -73,7 +72,7 @@ public class SystemNotificationController {
      * @return  SystemNotificationModel   系统通知领域对象
      */
     @RequestMapping(method = RequestMethod.POST)
-    //@Log(actionName = "新增系统通知")
+    @Log(actionName = "新增系统通知")
     public SystemNotificationModel createSystemNotification(@RequestBody @Valid SystemNotificationCreate systemNotificationCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
             throw new ArgumentValidException(bindingResult);
@@ -89,7 +88,7 @@ public class SystemNotificationController {
      * @throws ArgumentValidException       参数校验异常类
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    //@Log(actionName = "更新系统通知")
+    @Log(actionName = "更新系统通知")
     public void updateSystemNotification(@PathVariable(value = "id") String id,
                            @RequestBody @Valid SystemNotificationUpdate systemNotificationUpdate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -103,7 +102,7 @@ public class SystemNotificationController {
      * @param id    主键
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    //@Log(actionName = "删除单个系统通知")
+    @Log(actionName = "删除单个系统通知")
     public void deleteSystemNotification(@PathVariable(value = "id") String id){
         systemNotificationService.deleteSystemNotification(id);
     }
@@ -113,7 +112,7 @@ public class SystemNotificationController {
      * @param ids    主键
      */
     @RequestMapping(method = RequestMethod.DELETE)
-    //@Log(actionName = "批量删除系统通知")
+    @Log(actionName = "批量删除系统通知")
     public void deleteSystemNotifications(@RequestParam(value = "ids") String[] ids){
         systemNotificationService.deleteSystemNotification(ids);
     }

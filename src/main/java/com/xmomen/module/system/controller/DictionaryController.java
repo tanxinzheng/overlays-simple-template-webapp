@@ -2,6 +2,7 @@ package com.xmomen.module.system.controller;
 
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.web.exceptions.ArgumentValidException;
+import com.xmomen.module.logger.Log;
 import com.xmomen.module.system.model.DictionaryCreate;
 import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.model.DictionaryQuery;
@@ -17,8 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
-
-//import com.xmomen.module.logger.Log;
 
 /**
  * @author  tanxinzheng
@@ -43,7 +42,7 @@ public class DictionaryController {
      * @return  Page<DictionaryModel> 数据字典领域分页对象
      */
     @RequestMapping(method = RequestMethod.GET)
-    //@Log(actionName = "查询数据字典列表")
+    @Log(actionName = "查询数据字典列表")
     public Page<DictionaryModel> getDictionaryList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
                                   @RequestParam(value = "keyword", required = false) String keyword,
@@ -64,7 +63,7 @@ public class DictionaryController {
      * @return  DictionaryModel   数据字典领域对象
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    //@Log(actionName = "查询数据字典")
+    @Log(actionName = "查询数据字典")
     public DictionaryModel getDictionaryById(@PathVariable(value = "id") String id){
         return dictionaryService.getOneDictionaryModel(id);
     }
@@ -76,7 +75,7 @@ public class DictionaryController {
      * @return  DictionaryModel   数据字典领域对象
      */
     @RequestMapping(method = RequestMethod.POST)
-    //@Log(actionName = "新增数据字典")
+    @Log(actionName = "新增数据字典")
     public DictionaryModel createDictionary(@RequestBody @Valid DictionaryCreate dictionaryCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
             throw new ArgumentValidException(bindingResult);
@@ -92,7 +91,7 @@ public class DictionaryController {
      * @throws ArgumentValidException       参数校验异常类
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    //@Log(actionName = "更新数据字典")
+    @Log(actionName = "更新数据字典")
     public void updateDictionary(@PathVariable(value = "id") String id,
                            @RequestBody @Valid DictionaryUpdate dictionaryUpdate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -106,7 +105,7 @@ public class DictionaryController {
      * @param id    主键
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    //@Log(actionName = "删除单个数据字典")
+    @Log(actionName = "删除单个数据字典")
     public void deleteDictionary(@PathVariable(value = "id") String id){
         dictionaryService.deleteDictionary(id);
     }
@@ -116,7 +115,7 @@ public class DictionaryController {
      * @param ids    主键
      */
     @RequestMapping(method = RequestMethod.DELETE)
-    //@Log(actionName = "批量删除数据字典")
+    @Log(actionName = "批量删除数据字典")
     public void deleteDictionarys(@RequestParam(value = "ids") String[] ids){
         dictionaryService.deleteDictionary(ids);
     }

@@ -2,6 +2,7 @@ package com.xmomen.module.notification.controller;
 
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.web.exceptions.ArgumentValidException;
+import com.xmomen.module.logger.Log;
 import com.xmomen.module.notification.model.NotificationCreate;
 import com.xmomen.module.notification.model.NotificationModel;
 import com.xmomen.module.notification.model.NotificationQuery;
@@ -17,8 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
-
-//import com.xmomen.module.logger.Log;
 
 /**
  * @author  tanxinzheng
@@ -42,7 +41,7 @@ public class NotificationController {
      * @return  Page<NotificationModel> 通知领域分页对象
      */
     @RequestMapping(method = RequestMethod.GET)
-    //@Log(actionName = "查询通知列表")
+    @Log(actionName = "查询通知列表")
     public Page<NotificationModel> getNotificationList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
                                   @RequestParam(value = "id", required = false) String id,
@@ -61,7 +60,7 @@ public class NotificationController {
      * @return  NotificationModel   通知领域对象
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    //@Log(actionName = "查询通知")
+    @Log(actionName = "查询通知")
     public NotificationModel getNotificationById(@PathVariable(value = "id") String id){
         return notificationService.getOneNotificationModel(id);
     }
@@ -73,7 +72,7 @@ public class NotificationController {
      * @return  NotificationModel   通知领域对象
      */
     @RequestMapping(method = RequestMethod.POST)
-    //@Log(actionName = "新增通知")
+    @Log(actionName = "新增通知")
     public NotificationModel createNotification(@RequestBody @Valid NotificationCreate notificationCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
             throw new ArgumentValidException(bindingResult);
@@ -89,7 +88,7 @@ public class NotificationController {
      * @throws ArgumentValidException       参数校验异常类
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    //@Log(actionName = "更新通知")
+    @Log(actionName = "更新通知")
     public void updateNotification(@PathVariable(value = "id") String id,
                            @RequestBody @Valid NotificationUpdate notificationUpdate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -103,7 +102,7 @@ public class NotificationController {
      * @param id    主键
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    //@Log(actionName = "删除单个通知")
+    @Log(actionName = "删除单个通知")
     public void deleteNotification(@PathVariable(value = "id") String id){
         notificationService.deleteNotification(id);
     }
@@ -113,7 +112,7 @@ public class NotificationController {
      * @param ids    主键
      */
     @RequestMapping(method = RequestMethod.DELETE)
-    //@Log(actionName = "批量删除通知")
+    @Log(actionName = "批量删除通知")
     public void deleteNotifications(@RequestParam(value = "ids") String[] ids){
         notificationService.deleteNotification(ids);
     }

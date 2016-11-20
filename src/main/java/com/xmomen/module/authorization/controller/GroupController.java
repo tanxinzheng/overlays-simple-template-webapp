@@ -7,6 +7,7 @@ import com.xmomen.module.authorization.model.*;
 import com.xmomen.module.authorization.service.GroupPermissionService;
 import com.xmomen.module.authorization.service.GroupService;
 import com.xmomen.module.authorization.service.PermissionService;
+import com.xmomen.module.logger.Log;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
-
-//import com.xmomen.module.logger.Log;
 
 /**
  * @author  tanxinzheng
@@ -49,7 +48,7 @@ public class GroupController {
      * @return  Page<GroupModel> 组领域分页对象
      */
     @RequestMapping(method = RequestMethod.GET)
-    //@Log(actionName = "查询组列表")
+    @Log(actionName = "查询组列表")
     public Page<GroupModel> getGroupList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
                                   @RequestParam(value = "keyword", required = false) String keyword,
@@ -70,7 +69,7 @@ public class GroupController {
      * @return  GroupModel   组领域对象
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    //@Log(actionName = "查询组")
+    @Log(actionName = "查询组")
     public GroupModel getGroupById(@PathVariable(value = "id") String id){
         return groupService.getOneGroupModel(id);
     }
@@ -82,7 +81,7 @@ public class GroupController {
      * @return  GroupModel   组领域对象
      */
     @RequestMapping(method = RequestMethod.POST)
-    //@Log(actionName = "新增组")
+    @Log(actionName = "新增组")
     public GroupModel createGroup(@RequestBody @Valid GroupCreate groupCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
             throw new ArgumentValidException(bindingResult);
@@ -98,7 +97,7 @@ public class GroupController {
      * @throws ArgumentValidException       参数校验异常类
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    //@Log(actionName = "更新组")
+    @Log(actionName = "更新组")
     public void updateGroup(@PathVariable(value = "id") String id,
                            @RequestBody @Valid GroupUpdate groupUpdate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -112,7 +111,7 @@ public class GroupController {
      * @param id    主键
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    //@Log(actionName = "删除单个组")
+    @Log(actionName = "删除单个组")
     public void deleteGroup(@PathVariable(value = "id") String id){
         groupService.deleteGroup(id);
     }
@@ -122,7 +121,7 @@ public class GroupController {
      * @param ids    主键
      */
     @RequestMapping(method = RequestMethod.DELETE)
-    //@Log(actionName = "批量删除组")
+    @Log(actionName = "删除组")
     public void deleteGroups(@RequestParam(value = "ids") String[] ids){
         groupService.deleteGroup(ids);
     }
@@ -137,6 +136,7 @@ public class GroupController {
     * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
     */
     @RequestMapping(value="/export", method = RequestMethod.GET)
+    @Log(actionName = "导出组信息")
     public ModelAndView exportGroup(
             @RequestParam(value = "id", required = false) String id,
             @RequestParam(value = "ids", required = false) String[] ids,
@@ -157,14 +157,28 @@ public class GroupController {
     }
 
     /**
+     * 批量新增组权限
+     * @param groupId   组主键
+     * @param permissionIds     权限主键集
+     * @return List<GroupPermission>    组权限对象集
+     */
+    @RequestMapping(value = "/{id}/permission", method = RequestMethod.POST)
+    @Log(actionName = "新增组权限")
+    public List<GroupPermission> createGroupPermission(
+            @PathVariable(value = "id") String groupId,
+            @RequestParam(value = "permissionIds") String[] permissionIds){
+        return groupPermissionService.createGroupPermissions(groupId, permissionIds);
+    }
+
+    /**
      * 查询用户组权限
      * @param groupId
      * @param limit
      * @param offset
      * @return
      */
-//    @Log(actionName = "查询用户组所属权限")
     @RequestMapping(value = "/{id}/permission", method = RequestMethod.GET)
+    @Log(actionName = "查询用户组所属权限")
     public Page<PermissionModel> findPermissionByGroup(
             @PathVariable(value = "id") String groupId,
             @RequestParam(value = "keyword", required = false) String keyword,
@@ -176,19 +190,6 @@ public class GroupController {
         permissionQuery.setKeyword(keyword);
         permissionQuery.setHasPermission(hasPermission);
         return permissionService.getPermissionModelPage(limit, offset, permissionQuery);
-    }
-
-    /**
-     * 批量新增组权限
-     * @param groupId   组主键
-     * @param permissionIds     权限主键集
-     * @return List<GroupPermission>    组权限对象集
-     */
-    @RequestMapping(value = "/{id}/permission", method = RequestMethod.POST)
-    public List<GroupPermission> createGroupPermission(
-            @PathVariable(value = "id") String groupId,
-            @RequestParam(value = "permissionIds") String[] permissionIds){
-        return groupPermissionService.createGroupPermissions(groupId, permissionIds);
     }
 
 

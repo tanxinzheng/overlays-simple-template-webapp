@@ -1,8 +1,9 @@
 package com.xmomen.module.logger.aspect;
 
+import com.xmomen.module.core.model.AccountModel;
+import com.xmomen.module.core.service.AccountService;
 import com.xmomen.module.logger.Log;
 import com.xmomen.module.logger.service.LoggerService;
-import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -30,49 +31,15 @@ public class LoggerAspect {
     @Autowired
     private LoggerService loggerService;
 
+    @Autowired
+    private AccountService accountService;
+
 
     /**
      * 日志逻辑切入点
      */
     @Pointcut("@annotation(com.xmomen.module.logger.Log)")
     public void getLogInfo() { }
-
-//    /**
-//     * 管理员添加操作日志(后置通知)
-//     * @param joinPoint
-//     * @throws Throwable
-//     */
-//    @AfterReturning(value = "getLogInfo()")
-//    public void afterReturning(JoinPoint joinPoint) throws Throwable{
-//        //判断参数
-//        if(joinPoint.getArgs() == null){//没有参数
-//            return;
-//        }
-//        final Object[] args = joinPoint.getArgs();
-//        final String arguments;
-//        if (args == null || args.length == 0) {
-//            arguments = "";
-//        } else {
-//            arguments = Arrays.deepToString(args);
-//        }
-//        //获取方法名
-//        String methodName = joinPoint.getSignature().getName();
-//        Object target = joinPoint.getTarget();
-//        Method method = getMethodByClassAndName(target.getClass(), methodName);    //得到拦截的方法
-//        Object[] args2 = joinPoint.getArgs();     //方法的参数
-//        Log an = (Log)getAnnotationByMethod(method ,Log.class );
-//        if(an == null){
-//            return;
-//        }
-//        String actionName = an.actionName();
-//        Parameter[] parameters = method.getParameters();
-//        String userId = getUserId();
-//        logger.debug("User action record info -> { UserId: {0} , ClientId: {1} , actionName: {2}, actionParameters: {3}, actionResult: {4} ");
-//        if(loggerService == null){
-//            return;
-//        }
-//        loggerService.setLogInfo(actionName, userId, getRemoteHost(request), arguments, null);
-//    }
 
     @Around(value = "getLogInfo()")
     public Object traceMethod(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
@@ -93,7 +60,7 @@ public class LoggerAspect {
             } else {
                 arguments = Arrays.deepToString(args);
             }
-            Integer userId = getUserId();
+            String userId = getUserId();
             returnVal = proceedingJoinPoint.proceed();
             logger.debug("User action record info -> { UserId: {0} , ClientId: {1} , actionName: {2}, actionParameters: {3}, actionResult: {4} ");
             if(loggerService != null){
@@ -136,9 +103,9 @@ public class LoggerAspect {
      * 获取用户ID
      * @return
      */
-    public Integer getUserId(){
-        Integer user_id =(Integer) SecurityUtils.getSubject().getSession().getAttribute("user_id");
-        return user_id;
+    public String getUserId(){
+        AccountModel accountModel = accountService.getSessionModel();
+        return accountModel.getUserId();
     }
 
     /**

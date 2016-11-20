@@ -102,10 +102,10 @@
                                 </label>
                             </td>
                             <td>
-                                <a ng-bind="item.createDate | date:'yyyy-HH-mm hh:MM:ss'"></a>
+                                <a ng-bind="item.createDate | date:'yyyy-MM-dd HH:mm:ss'"></a>
                             </td>
                             <td>
-                                <a ng-bind="item.lastLoginTime | date:'yyyy-HH-mm hh:MM:ss'"></a>
+                                <a ng-bind="item.lastLoginTime | date:'yyyy-MM-dd HH:mm:ss'"></a>
                             </td>
                             <td class="action">
                                 <div ng-show="item.showAction" class="dropdown dropdown-right-action" dropdown="">
@@ -236,38 +236,6 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">
-                            注册时间
-                        </label>
-                        <div class="col-md-9">
-                            <div class="input-group">
-                                <input class="form-control" type="text" name="createDate" placeholder="请输入注册时间"
-                                       ng-disabled="pageSetting.formDisabled"
-                                       ug-datetimepicker
-                                       ng-model="user.createDate">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">
-                            最后登录时间
-                        </label>
-                        <div class="col-md-9">
-                            <div class="input-group">
-                                <input class="form-control" type="text" name="lastLoginTime" placeholder="请输入最后登录时间"
-                                       ng-disabled="pageSetting.formDisabled"
-                                       ug-datetimepicker
-                                       ng-model="user.lastLoginTime">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="form-group" ng-if="errors">
                         <label class="col-md-2 control-label"></label>
@@ -384,13 +352,6 @@
         </div>
     </div>
     <div class="modal-footer">
-        <!--<button class="btn btn-primary" type="submit"-->
-        <!--btn-loading="pageSetting.saveBtnLoading"-->
-        <!--ng-disabled="pageSetting.formDisabled"-->
-        <!--ng-if="!pageSetting.formDisabled" data-ng-click="saveGroup()">-->
-        <!--<i class="fa fa-save"></i>-->
-        <!--保存-->
-        <!--</button>-->
         <button class="btn btn-default" ng-click="cancel()">
             <i class="icon icon-close"></i>
             关闭</button>
@@ -489,13 +450,6 @@
         </div>
     </div>
     <div class="modal-footer">
-        <!--<button class="btn btn-primary" type="submit"-->
-        <!--btn-loading="pageSetting.saveBtnLoading"-->
-        <!--ng-disabled="pageSetting.formDisabled"-->
-        <!--ng-if="!pageSetting.formDisabled" data-ng-click="saveGroup()">-->
-        <!--<i class="fa fa-save"></i>-->
-        <!--保存-->
-        <!--</button>-->
         <button class="btn btn-default" ng-click="cancel()">
             <i class="icon icon-close"></i>
             关闭</button>

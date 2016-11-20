@@ -59,8 +59,6 @@
                             <th>权限描述</th>
                             <th>激活</th>
                             <th>创建时间</th>
-                            <th>金额</th>
-                            <th>年龄</th>
                             <th class="action">操作</th>
                         </tr>
                         </thead>
@@ -100,12 +98,6 @@
                             </td>
                             <td>
                                 <a ng-bind="item.createDate | date:'yyyy-HH-mm hh:MM:ss'"></a>
-                            </td>
-                            <td>
-                                <a ng-bind="item.amount"></a>
-                            </td>
-                            <td>
-                                <a ng-bind="item.age"></a>
                             </td>
                             <td class="action">
                                 <div ng-show="item.showAction" class="dropdown dropdown-right-action" dropdown="">
@@ -229,53 +221,6 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">
-                            创建时间
-                        </label>
-                        <div class="col-md-9">
-                            <div class="input-group">
-                                <input class="form-control" type="text" name="createDate" placeholder="请输入创建时间"
-                                       ng-disabled="pageSetting.formDisabled"
-                                       ug-datetimepicker
-                                       ng-model="permission.createDate">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">
-                            金额
-                            <span class="vaild">*</span>
-                        </label>
-                        <div class="col-md-9">
-                            <input class="form-control" type="text" name="amount" placeholder="请输入金额"
-                                   ng-disabled="pageSetting.formDisabled"
-                                   data-msg-required="金额必填"
-                                   required="true"
-                                   data-rule-maxlength="10"
-                                   data-msg-maxlength="金额字符长度限制[0,10]"
-                                   ng-model="permission.amount">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">
-                            年龄
-                            <span class="vaild">*</span>
-                        </label>
-                        <div class="col-md-9">
-                            <input class="form-control" type="text" name="age" placeholder="请输入年龄"
-                                   ng-disabled="pageSetting.formDisabled"
-                                   data-msg-required="年龄必填"
-                                   required="true"
-                                   data-rule-maxlength="10"
-                                   data-msg-maxlength="年龄字符长度限制[0,10]"
-                                   ng-model="permission.age">
-                        </div>
-                    </div>
-
                     <div class="form-group" ng-if="errors">
                         <label class="col-md-2 control-label"></label>
                         <div class="col-md-10 error">

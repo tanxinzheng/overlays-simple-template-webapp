@@ -32,8 +32,6 @@ import java.util.Map;
  */
 public class FormAuthenticationFilterExt extends FormAuthenticationFilter {
 
-    private static final String SESSION_MODEL_KEY = "account_session";
-
     @Autowired
     AccountService accountService;
 
@@ -117,7 +115,7 @@ public class FormAuthenticationFilterExt extends FormAuthenticationFilter {
             user.setLastLoginTime(new Date());
             userService.updateUser(user);
         }
-        subject.getSession().setAttribute(SESSION_MODEL_KEY, accountModel);
+        subject.getSession().setAttribute(accountService.getSessionModelKey(), accountModel);
         if (!WebCommonUtils.isJSON(request)) {// 不是ajax请求
             issueSuccessRedirect(request, response);
         } else {

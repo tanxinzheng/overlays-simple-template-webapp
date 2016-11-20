@@ -8,12 +8,11 @@ import org.jeecgframework.poi.excel.annotation.ExcelTarget;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:20
+ * @date    2016-11-20 16:35:44
  * @version 1.0.0
  */
 @ExcelTarget(value = "PermissionModel")
@@ -36,12 +35,6 @@ public @Data class PermissionModel implements Serializable {
     /** 创建时间 */
     @Excel(name = "创建时间")
     private Date createDate;
-    /** 金额 */
-    @Excel(name = "金额")
-    private BigDecimal amount;
-    /** 年龄 */
-    @Excel(name = "年龄")
-    private Integer age;
     @JsonIgnore
     public Permission getEntity(){
         Permission permission = new Permission();

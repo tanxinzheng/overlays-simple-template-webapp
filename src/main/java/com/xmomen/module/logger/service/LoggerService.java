@@ -17,7 +17,7 @@ public class LoggerService {
     @Autowired
     LoggerMapper loggerMapper;
 
-    public void setLogInfo(String actionName, Integer userId, String clientId, String actionParams, String actionResult) {
+    public void setLogInfo(String actionName, String userId, String clientId, String actionParams, String actionResult) {
         LogModel logModel = new LogModel();
         logModel.setActionName(actionName);
         logModel.setUserId(userId);

@@ -7,6 +7,7 @@ import com.xmomen.module.authorization.model.PermissionModel;
 import com.xmomen.module.authorization.model.PermissionQuery;
 import com.xmomen.module.authorization.model.PermissionUpdate;
 import com.xmomen.module.authorization.service.PermissionService;
+import com.xmomen.module.logger.Log;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
-
-//import com.xmomen.module.logger.Log;
 
 /**
  * @author  tanxinzheng
@@ -43,7 +42,7 @@ public class PermissionController {
      * @return  Page<PermissionModel> 权限领域分页对象
      */
     @RequestMapping(method = RequestMethod.GET)
-    //@Log(actionName = "查询权限列表")
+    @Log(actionName = "查询权限列表")
     public Page<PermissionModel> getPermissionList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
                                   @RequestParam(value = "keyword", required = false) String keyword,
@@ -64,7 +63,7 @@ public class PermissionController {
      * @return  PermissionModel   权限领域对象
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    //@Log(actionName = "查询权限")
+    @Log(actionName = "查询权限")
     public PermissionModel getPermissionById(@PathVariable(value = "id") String id){
         return permissionService.getOnePermissionModel(id);
     }
@@ -76,7 +75,7 @@ public class PermissionController {
      * @return  PermissionModel   权限领域对象
      */
     @RequestMapping(method = RequestMethod.POST)
-    //@Log(actionName = "新增权限")
+    @Log(actionName = "新增权限")
     public PermissionModel createPermission(@RequestBody @Valid PermissionCreate permissionCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
             throw new ArgumentValidException(bindingResult);
@@ -92,7 +91,7 @@ public class PermissionController {
      * @throws ArgumentValidException       参数校验异常类
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    //@Log(actionName = "更新权限")
+    @Log(actionName = "更新权限")
     public void updatePermission(@PathVariable(value = "id") String id,
                            @RequestBody @Valid PermissionUpdate permissionUpdate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -106,7 +105,7 @@ public class PermissionController {
      * @param id    主键
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    //@Log(actionName = "删除单个权限")
+    @Log(actionName = "删除单个权限")
     public void deletePermission(@PathVariable(value = "id") String id){
         permissionService.deletePermission(id);
     }
@@ -116,7 +115,7 @@ public class PermissionController {
      * @param ids    主键
      */
     @RequestMapping(method = RequestMethod.DELETE)
-    //@Log(actionName = "批量删除权限")
+    @Log(actionName = "批量删除权限")
     public void deletePermissions(@RequestParam(value = "ids") String[] ids){
         permissionService.deletePermission(ids);
     }

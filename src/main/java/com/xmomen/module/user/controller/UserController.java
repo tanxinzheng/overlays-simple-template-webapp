@@ -29,8 +29,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.List;
 
-//import com.xmomen.module.logger.Log;
-
 /**
  * @author  tanxinzheng
  * @date    2016-10-23 12:15:19
@@ -54,7 +52,7 @@ public class UserController {
      * @return  Page<UserModel> 用户领域分页对象
      */
     @RequestMapping(method = RequestMethod.GET)
-    //@Log(actionName = "查询用户列表")
+    @Log(actionName = "查询用户列表")
     public Page<UserModel> getUserList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
                                   @RequestParam(value = "keyword", required = false) String keyword,
@@ -75,7 +73,7 @@ public class UserController {
      * @return  UserModel   用户领域对象
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    //@Log(actionName = "查询用户")
+    @Log(actionName = "查询用户")
     public UserModel getUserById(@PathVariable(value = "id") String id){
         return userService.getOneUserModel(id);
     }
@@ -87,7 +85,7 @@ public class UserController {
      * @return  UserModel   用户领域对象
      */
     @RequestMapping(method = RequestMethod.POST)
-    //@Log(actionName = "新增用户")
+    @Log(actionName = "新增用户")
     public UserModel createUser(@RequestBody @Valid UserCreate userCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
             throw new ArgumentValidException(bindingResult);
@@ -103,7 +101,7 @@ public class UserController {
      * @throws ArgumentValidException       参数校验异常类
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    //@Log(actionName = "更新用户")
+    @Log(actionName = "更新用户")
     public void updateUser(@PathVariable(value = "id") String id,
                            @RequestBody @Valid UserUpdate userUpdate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -117,7 +115,7 @@ public class UserController {
      * @param id    主键
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    //@Log(actionName = "删除单个用户")
+    @Log(actionName = "删除单个用户")
     public void deleteUser(@PathVariable(value = "id") String id){
         userService.deleteUser(id);
     }
@@ -127,7 +125,7 @@ public class UserController {
      * @param ids    主键
      */
     @RequestMapping(method = RequestMethod.DELETE)
-    //@Log(actionName = "批量删除用户")
+    @Log(actionName = "批量删除用户")
     public void deleteUsers(@RequestParam(value = "ids") String[] ids){
         userService.deleteUser(ids);
     }

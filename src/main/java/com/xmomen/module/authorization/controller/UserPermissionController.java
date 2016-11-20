@@ -8,6 +8,7 @@ import com.xmomen.module.authorization.model.UserPermissionModel;
 import com.xmomen.module.authorization.model.UserPermissionQuery;
 import com.xmomen.module.authorization.model.UserPermissionUpdate;
 import com.xmomen.module.authorization.service.UserPermissionService;
+import com.xmomen.module.logger.Log;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-
-//import com.xmomen.module.logger.Log;
 
 /**
  * @author  tanxinzheng
@@ -44,7 +43,7 @@ public class UserPermissionController {
      * @return  Page<UserPermissionModel> 用户权限领域分页对象
      */
     @RequestMapping(method = RequestMethod.GET)
-    //@Log(actionName = "查询用户权限列表")
+    @Log(actionName = "查询用户权限列表")
     public Page<UserPermissionModel> getUserPermissionList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
                                   @RequestParam(value = "id", required = false) String id,
@@ -63,7 +62,7 @@ public class UserPermissionController {
      * @return  UserPermissionModel   用户权限领域对象
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    //@Log(actionName = "查询用户权限")
+    @Log(actionName = "查询用户权限")
     public UserPermissionModel getUserPermissionById(@PathVariable(value = "id") String id){
         return userPermissionService.getOneUserPermissionModel(id);
     }
@@ -75,7 +74,7 @@ public class UserPermissionController {
      * @return  UserPermissionModel   用户权限领域对象
      */
     @RequestMapping(method = RequestMethod.POST)
-    //@Log(actionName = "新增用户权限")
+    @Log(actionName = "新增用户权限")
     public UserPermissionModel createUserPermission(@RequestBody @Valid UserPermissionCreate userPermissionCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
             throw new ArgumentValidException(bindingResult);
@@ -91,7 +90,7 @@ public class UserPermissionController {
      * @throws ArgumentValidException       参数校验异常类
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    //@Log(actionName = "更新用户权限")
+    @Log(actionName = "更新用户权限")
     public void updateUserPermission(@PathVariable(value = "id") String id,
                            @RequestBody @Valid UserPermissionUpdate userPermissionUpdate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -105,7 +104,7 @@ public class UserPermissionController {
      * @param id    主键
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    //@Log(actionName = "删除单个用户权限")
+    @Log(actionName = "删除单个用户权限")
     public void deleteUserPermission(@PathVariable(value = "id") String id){
         userPermissionService.deleteUserPermission(id);
     }
@@ -115,7 +114,7 @@ public class UserPermissionController {
      * @param ids    主键
      */
     @RequestMapping(method = RequestMethod.DELETE)
-    //@Log(actionName = "批量删除用户权限")
+    @Log(actionName = "批量删除用户权限")
     public void deleteUserPermissions(@RequestParam(value = "ids", required = false) String[] ids,
                                       @RequestParam(value = "userId", required = false) String userId,
                                       @RequestParam(value = "permissionIds", required = false) String[] permissionIds){

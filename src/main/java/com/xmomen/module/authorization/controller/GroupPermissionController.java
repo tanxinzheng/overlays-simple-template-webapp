@@ -8,6 +8,7 @@ import com.xmomen.module.authorization.model.GroupPermissionModel;
 import com.xmomen.module.authorization.model.GroupPermissionQuery;
 import com.xmomen.module.authorization.model.GroupPermissionUpdate;
 import com.xmomen.module.authorization.service.GroupPermissionService;
+import com.xmomen.module.logger.Log;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-
-//import com.xmomen.module.logger.Log;
 
 /**
  * @author  tanxinzheng
@@ -44,7 +43,7 @@ public class GroupPermissionController {
      * @return  Page<GroupPermissionModel> 组权限领域分页对象
      */
     @RequestMapping(method = RequestMethod.GET)
-    //@Log(actionName = "查询组权限列表")
+    @Log(actionName = "查询组权限列表")
     public Page<GroupPermissionModel> getGroupPermissionList(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
                                   @RequestParam(value = "groupId", required = false) String groupId,
@@ -69,7 +68,7 @@ public class GroupPermissionController {
      * @return  GroupPermissionModel   组权限领域对象
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    //@Log(actionName = "查询组权限")
+    @Log(actionName = "查询组权限")
     public GroupPermissionModel getGroupPermissionById(@PathVariable(value = "id") String id){
         return groupPermissionService.getOneGroupPermissionModel(id);
     }
@@ -81,7 +80,7 @@ public class GroupPermissionController {
      * @return  GroupPermissionModel   组权限领域对象
      */
     @RequestMapping(method = RequestMethod.POST)
-    //@Log(actionName = "新增组权限")
+    @Log(actionName = "新增组权限")
     public GroupPermissionModel createGroupPermission(@RequestBody @Valid GroupPermissionCreate groupPermissionCreate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
             throw new ArgumentValidException(bindingResult);
@@ -97,7 +96,7 @@ public class GroupPermissionController {
      * @throws ArgumentValidException       参数校验异常类
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    //@Log(actionName = "更新组权限")
+    @Log(actionName = "更新组权限")
     public void updateGroupPermission(@PathVariable(value = "id") String id,
                            @RequestBody @Valid GroupPermissionUpdate groupPermissionUpdate, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -111,7 +110,7 @@ public class GroupPermissionController {
      * @param id    主键
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    //@Log(actionName = "删除单个组权限")
+    @Log(actionName = "删除单个组权限")
     public void deleteGroupPermission(@PathVariable(value = "id") String id){
         groupPermissionService.deleteGroupPermission(id);
     }
@@ -121,7 +120,7 @@ public class GroupPermissionController {
      * @param ids    主键
      */
     @RequestMapping(method = RequestMethod.DELETE)
-    //@Log(actionName = "批量删除组权限")
+    @Log(actionName = "批量删除组权限")
     public void deleteGroupPermissions(@RequestParam(value = "ids", required = false) String[] ids,
                                        @RequestParam(value = "groupId", required = false) String groupId,
                                        @RequestParam(value = "permissionIds", required = false) String[] permissionIds){

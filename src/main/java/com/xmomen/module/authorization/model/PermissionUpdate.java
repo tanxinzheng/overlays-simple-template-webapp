@@ -5,12 +5,11 @@ import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:20
+ * @date    2016-11-20 16:35:44
  * @version 1.0.0
  */
 public @Data class PermissionUpdate implements Serializable {
@@ -27,10 +26,6 @@ public @Data class PermissionUpdate implements Serializable {
     private Boolean active;
     /** 创建时间 */
     private Date createDate;
-    /** 金额 */
-    private BigDecimal amount;
-    /** 年龄 */
-    private Integer age;
 
 
     public Permission getEntity(){

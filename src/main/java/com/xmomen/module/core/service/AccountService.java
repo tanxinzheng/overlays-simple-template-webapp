@@ -12,6 +12,7 @@ import com.xmomen.module.user.model.UserCreate;
 import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.SimpleAccount;
 import org.apache.shiro.util.ByteSource;
@@ -19,7 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -27,6 +28,10 @@ import java.util.Set;
  */
 @Service
 public class AccountService {
+
+    private static final String defaultSessionModelKey = "account_model_session";
+
+    private String sessionModelKey = defaultSessionModelKey;
 
     @Autowired
     MybatisDao mybatisDao;
@@ -77,6 +82,7 @@ public class AccountService {
         UserCreate userCreate = new UserCreate();
         userCreate.setEmail(register.getEmail());
         userCreate.setPhoneNumber(register.getPhoneNumber());
+        userCreate.setCreateDate(new Date());
         if(StringUtils.trimToNull(register.getNickname()) == null){
             userCreate.setNickname(register.getUsername());
         }else{
@@ -90,6 +96,14 @@ public class AccountService {
         BeanUtils.copyProperties(user, accountModel);
         accountModel.setUserId(user.getId());
         return accountModel;
+    }
+
+    /**
+     * 获取SessionModel
+     * @return
+     */
+    public AccountModel getSessionModel(){
+        return (AccountModel) SecurityUtils.getSubject().getSession().getAttribute(sessionModelKey);
     }
 
     /**
@@ -139,4 +153,11 @@ public class AccountService {
         return null;
     }
 
+    public String getSessionModelKey() {
+        return sessionModelKey;
+    }
+
+    public void setSessionModelKey(String sessionModelKey) {
+        this.sessionModelKey = sessionModelKey;
+    }
 }

@@ -1,14 +1,9 @@
 package com.xmomen.module.authorization.entity;
 
 import com.xmomen.framework.mybatis.model.BaseMybatisModel;
-import java.math.BigDecimal;
+
+import javax.persistence.*;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Version;
 
 @Entity
 @Table(name = "xmo_permission")
@@ -42,16 +37,6 @@ public class Permission extends BaseMybatisModel {
      * 创建时间
      */
     private Date createDate;
-
-    /**
-     * 金额
-     */
-    private BigDecimal amount;
-
-    /**
-     * 年龄
-     */
-    private Integer age;
 
     @Column(name = "ID")
     @Id
@@ -137,33 +122,5 @@ public class Permission extends BaseMybatisModel {
               return;
         }
         addValidField("createDate");
-    }
-
-    @Column(name = "AMOUNT")
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-        if(amount == null){
-              removeValidField("amount");
-              return;
-        }
-        addValidField("amount");
-    }
-
-    @Column(name = "AGE")
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-        if(age == null){
-              removeValidField("age");
-              return;
-        }
-        addValidField("age");
     }
 }
