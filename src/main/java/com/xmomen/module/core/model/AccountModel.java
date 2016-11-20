@@ -20,7 +20,7 @@ public @Data class AccountModel implements Serializable {
     private List<NavItem> navItems;
     private List<Role> roles;
 
-    public class NavItem {
+    public static class NavItem {
         private String url;
         private String name;
         private String title;
@@ -50,13 +50,10 @@ public @Data class AccountModel implements Serializable {
         }
     }
 
-    public class Role {
+    public static class Role implements Serializable {
         private String role;
         private String description;
         private Boolean available;
-
-        public Role() {
-        }
 
         public String getRole() {
             return role;

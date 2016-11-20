@@ -2,18 +2,12 @@
     app.settings.asideFolded = false;
     app.settings.asideDock = false;
   " >
-    <div class="col w-lg bg-light b-r bg-auto">
-        <!-- main header -->
-        <div class="bg-light lter b-b wrapper-sm">
-            <span>数据字典组</span>
-        </div>
-    </div>
     <!-- main -->
     <div class="col">
         <!-- main header -->
         <div class="bg-light lter b-b wrapper-sm">
             <div class="row">
-                <div class="col-sm-6 col-xs-12">
+                <div class="col-sm-12 col-xs-12">
                     <span>数据字典</span>
                 </div>
             </div>
@@ -180,19 +174,40 @@
 
             <form class="form-horizontal" ug-validate="dictionaryDetailForm" name="dictionaryDetailFormName">
                 <fieldset>
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-md-3 control-label">-->
+                            <!--字典类型-->
+                            <!--<span class="vaild">*</span>-->
+                        <!--</label>-->
+                        <!--<div class="col-md-9">-->
+                            <!--<input class="form-control" type="text" name="dictionaryType" placeholder="请输入字典类型"-->
+                                   <!--ng-disabled="pageSetting.formDisabled"-->
+                                   <!--data-msg-required="字典类型必填"-->
+                                   <!--required="true"-->
+                                   <!--data-rule-maxlength="50"-->
+                                   <!--data-msg-maxlength="字典类型字符长度限制[0,50]"-->
+                                   <!--ng-model="dictionary.dictionaryType">-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="form-group">
-                        <label class="col-md-3 control-label">
-                            字典类型
+                        <label class="col-sm-3 control-label">字典类型
                             <span class="vaild">*</span>
                         </label>
-                        <div class="col-md-9">
-                            <input class="form-control" type="text" name="dictionaryType" placeholder="请输入字典类型"
-                                   ng-disabled="pageSetting.formDisabled"
-                                   data-msg-required="字典类型必填"
-                                   required="true"
-                                   data-rule-maxlength="50"
-                                   data-msg-maxlength="字典类型字符长度限制[0,50]"
-                                   ng-model="dictionary.dictionaryType">
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <ui-select ng-model="dictionaryGroupSelect.selected" theme="bootstrap" required="true" ng-disabled="pageSetting.formDisabled">
+                                    <ui-select-match placeholder="请选择字典类型">{{$select.selected.dictionaryDesc}}</ui-select-match>
+                                    <ui-select-choices  repeat="item in dictionaryGroup | filter: $select.search">
+                                        <div ng-bind="item.dictionaryDesc | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button type="button" ng-click="addDictionaryGroup()" class="btn btn-default">
+                                        <span class="icon icon-plus"></span>
+                                    </button>
+                                </span>
+                                <input type="hidden" name="dictionaryType" ng-model="dictionary.dictionaryType" required="true" />
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -216,7 +231,7 @@
                             <span class="vaild">*</span>
                         </label>
                         <div class="col-md-9">
-                            <input class="form-control" type="text" name="code" placeholder="请输入代码"
+                            <input class="form-control" type="text" name="code" placeholder="请输入数字或字母的代码"
                                    ng-disabled="pageSetting.formDisabled"
                                    data-msg-required="代码必填"
                                    required="true"
@@ -233,6 +248,7 @@
                             <input class="form-control" type="text" name="sort" placeholder="请输入排序"
                                    ng-disabled="pageSetting.formDisabled"
                                    data-rule-maxlength="10"
+                                   data-rule-integer="true"
                                    data-msg-maxlength="排序字符长度限制[0,10]"
                                    ng-model="dictionary.sort">
                         </div>
@@ -295,6 +311,78 @@
                 btn-loading="pageSetting.saveBtnLoading"
                 ng-disabled="pageSetting.formDisabled"
                 ng-if="!pageSetting.formDisabled" data-ng-click="saveDictionary()">
+            <i class="fa fa-save"></i>
+            保存
+        </button>
+        <button class="btn btn-default" ng-click="cancel()">
+            <i class="icon icon-close"></i>
+            关闭</button>
+    </div>
+</script>
+<script type="text/ng-template" id="dictionaryGroup_detail.html">
+    <div class="modal-header">
+        <h3 class="modal-title">数据字典组</h3>
+    </div>
+    <div class="modal-body">
+        <div class="widget-body">
+
+            <form class="form-horizontal" ug-validate="dictionaryGroupDetailForm" name="dictionaryGroupDetailFormName">
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            字典编号
+                        </label>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text" name="dictionaryType" placeholder="请输入字典编号"
+                                   ng-disabled="pageSetting.formDisabled"
+                                   data-rule-maxlength="50"
+                                   data-msg-maxlength="字典编号字符长度限制[0,50]"
+                                   ng-model="dictionaryGroup.dictionaryType">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            字典描述
+                        </label>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text" name="dictionaryDesc" placeholder="请输入字典描述"
+                                   ng-disabled="pageSetting.formDisabled"
+                                   data-rule-maxlength="255"
+                                   data-msg-maxlength="字典描述字符长度限制[0,255]"
+                                   ng-model="dictionaryGroup.dictionaryDesc">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            激活
+                        </label>
+                        <div class="col-md-9 control-div">
+                            <label class="i-switch bg-primary m-r">
+                                <input type="checkbox" name="active"
+                                       data-ng-true-value="true"
+                                       data-ng-false-value="false"
+                                       ng-disabled="pageSetting.formDisabled"
+                                       ng-model="dictionaryGroup.active">
+                                <i></i>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="errors">
+                        <label class="col-md-2 control-label"></label>
+                        <div class="col-md-10 error">
+                            {{errors.message}}
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="submit"
+                btn-loading="pageSetting.saveBtnLoading"
+                ng-disabled="pageSetting.formDisabled"
+                ng-if="!pageSetting.formDisabled" data-ng-click="saveDictionaryGroup()">
             <i class="fa fa-save"></i>
             保存
         </button>

@@ -1,11 +1,9 @@
 package com.xmomen.framework.web.json;
 
-import com.alibaba.fastjson.serializer.JSONSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 
@@ -48,6 +46,8 @@ public class DictionaryJsonSerializer extends JsonSerializer<Object> {
         }
         jsonGenerator.writeObject(value);
         String dictionaryLabel = dictionaryInterpreterService.translate(dictionaryInterpreter.type(), String.valueOf(value));
-        jsonGenerator.writeStringField(dictionaryInterpreter.fieldName(), dictionaryLabel);
+        if(StringUtils.trimToNull(dictionaryInterpreter.fieldName()) != null){
+            jsonGenerator.writeStringField(dictionaryInterpreter.fieldName(), dictionaryLabel);
+        }
     }
 }

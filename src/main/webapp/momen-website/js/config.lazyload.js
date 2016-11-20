@@ -57,8 +57,8 @@ define(function() {
                     {
                         name: 'ui.select',
                         files: [
-                            'js/vendor/angular/angular-ui-select/select.min.js',
-                            'js/vendor/angular/angular-ui-select/select.min.css'
+                            'bower_components/angular-ui-select/dist/select.min.js',
+                            'bower_components/angular-ui-select/dist/select.min.css'
                         ]
                     },
                     {

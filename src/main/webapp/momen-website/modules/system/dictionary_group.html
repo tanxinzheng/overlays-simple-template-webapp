@@ -108,7 +108,7 @@
                 </div>
                 <div ug-empty-data-msg ng-if="(!dictionaryGroupList || dictionaryGroupList.length == 0) && !pageSetting.queryBtnLoading"></div>
                 <div ug-loading-msg ng-if="pageSetting.queryBtnLoading"></div>
-                <footer class="panel-footer" ng-if="dictionaryGroupList && dictionaryGroupList.length > 0 && !pageSetting.queryBtnLoading">
+                <footer class="panel-footer">
                     <div class="row">
                         <div class="col-sm-6">
                             <label class="i-checks m-b-none">
@@ -179,7 +179,7 @@
                         <label class="col-md-3 control-label">
                             激活
                         </label>
-                        <div class="col-md-9">
+                        <div class="col-md-9 control-div">
                             <label class="i-switch bg-primary m-r">
                                 <input type="checkbox" name="active"
                                        data-ng-true-value="true"

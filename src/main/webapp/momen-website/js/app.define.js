@@ -17,7 +17,8 @@ define(function(){
         'xmomen.ui',
         'ui.router',
         'ui.router.extras.tabs',
-
+        "angular-loading-bar",
+        
         'app.module',
         "config.router",
         "config.lazyload",

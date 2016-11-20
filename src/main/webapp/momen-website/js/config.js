@@ -2,8 +2,12 @@
 define(function(){
     angular.module("config",[]).config(
     ['$controllerProvider', '$compileProvider', '$filterProvider', '$provide', "$logProvider", "$httpProvider",
-        function ($controllerProvider,   $compileProvider,   $filterProvider,   $provide, $logProvider, $httpProvider) {
-
+        "cfpLoadingBarProvider",
+        function ($controllerProvider,   $compileProvider,   $filterProvider,   $provide, $logProvider, $httpProvider,
+                  cfpLoadingBarProvider) {
+            cfpLoadingBarProvider.latencyThreshold = 500;
+            cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
+            cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Loading...</div>';
             $logProvider.debugEnabled(false);
 
             // lazy controller, directive and service

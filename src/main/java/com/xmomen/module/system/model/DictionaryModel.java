@@ -1,6 +1,7 @@
 package com.xmomen.module.system.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.xmomen.framework.web.json.DictionaryInterpreter;
 import com.xmomen.module.system.entity.Dictionary;
 import lombok.Data;
 import org.jeecgframework.poi.excel.annotation.Excel;
@@ -21,6 +22,7 @@ public @Data class DictionaryModel implements Serializable {
     private String id;
     /** 字典类型 */
     @Excel(name = "字典类型")
+    @DictionaryInterpreter(type = "")
     private String dictionaryType;
     /** 名称 */
     @Excel(name = "名称")

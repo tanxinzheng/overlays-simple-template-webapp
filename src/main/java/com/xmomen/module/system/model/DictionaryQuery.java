@@ -19,4 +19,7 @@ public @Data class DictionaryQuery implements Serializable {
     /** 排除主键集 */
     private String[] excludeIds;
 
+    private String dictionaryType;
+
+    private String dictionaryCode;
 }

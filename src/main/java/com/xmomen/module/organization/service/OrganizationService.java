@@ -7,6 +7,7 @@ import com.xmomen.module.organization.entity.SysUserOrganization;
 import com.xmomen.module.organization.entity.SysUserOrganizationExample;
 import com.xmomen.module.organization.mapper.OrganizationMapper;
 import com.xmomen.module.organization.model.OrganizationModel;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +40,9 @@ public class OrganizationService {
             List<SysOrganization> sysOrganizationList = mybatisDao.selectByExample(sysOrganizationExample);
             for (SysOrganization sysOrganization : sysOrganizationList) {
                 List<OrganizationModel> organizationModels = organizationMapper.getOrganizationTree(sysOrganization.getId());
-                result.add(getTree(organizationModels, id));
+                if(CollectionUtils.isNotEmpty(organizationModels)){
+                    result.add(getTree(organizationModels, id));
+                }
             }
         }
         return result;

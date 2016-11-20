@@ -86,7 +86,7 @@ define(function(){
                         return params;
                     }
                 },
-                controller: ['$scope', '$modalInstance', "$modal", "DictionaryAPI", "Params", "$dialog", function($scope, $modalInstance, $modal, DictionaryAPI, Params, $dialog){
+                controller: ['$scope', '$modalInstance', "$modal", "DictionaryAPI", "Params", "$dialog", "DictionaryGroupAPI", function($scope, $modalInstance, $modal, DictionaryAPI, Params, $dialog, DictionaryGroupAPI){
                     //$scope.dictionary = null;
                     $scope.pageSetting = {
                         formDisabled : true,
@@ -100,34 +100,55 @@ define(function(){
                             id: Params.id
                         });
                     }
+                    $scope.dictionaryGroupSelect = {};
+                    $scope.$watch("dictionaryGroupSelect.selected", function(newVal, oldVal){
+                        if(newVal != oldVal){
+                            $scope.dictionary.dictionaryType = newVal.dictionaryType;
+                        }
+                    });
                     $scope.dictionaryDetailForm = {};
                     $scope.saveDictionary = function(){
                         if($scope.dictionaryDetailForm.validator.form()){
-                            if($scope.dictionaryDetailForm.validator.form()){
-                                $dialog.confirm("是否保存数据？").then(function(){
-                                    $scope.pageSetting.saveBtnLoading = true;
-                                    if ( !$scope.dictionary.id ) {
-                                        DictionaryAPI.create($scope.dictionary, function(data,headers){
-                                            $dialog.success("新增成功");
-                                            $modalInstance.close();
-                                        }).$promise.finally(function(){
-                                            $scope.pageSetting.saveBtnLoading = false;
-                                        });
-                                    }else {
-                                        DictionaryAPI.update($scope.dictionary, function(data,headers){
-                                            $dialog.success("更新成功");
-                                            $modalInstance.close();
-                                        }).$promise.finally(function(){
-                                            $scope.pageSetting.saveBtnLoading = false;
-                                        });
-                                    }
-                                });
-                            }
+                            $dialog.confirm("是否保存数据？").then(function(){
+                                $scope.pageSetting.saveBtnLoading = true;
+                                if ( !$scope.dictionary.id ) {
+                                    DictionaryAPI.create($scope.dictionary, function(data,headers){
+                                        $dialog.success("新增成功");
+                                        $modalInstance.close();
+                                    }).$promise.finally(function(){
+                                        $scope.pageSetting.saveBtnLoading = false;
+                                    });
+                                }else {
+                                    DictionaryAPI.update($scope.dictionary, function(data,headers){
+                                        $dialog.success("更新成功");
+                                        $modalInstance.close();
+                                    }).$promise.finally(function(){
+                                        $scope.pageSetting.saveBtnLoading = false;
+                                    });
+                                }
+                            });
                         }
+                    };
+                    $scope.dictionaryGroup = [];
+                    $scope.queryDictionaryGroup = function(){
+                        DictionaryGroupAPI.query({
+                            offset:1,
+                            limit:10000
+                        }, function(data){
+                            $scope.dictionaryGroup = data.data;
+                        });
+                    };
+                    $scope.addDictionaryGroup = function(){
+
                     };
                     $scope.cancel = function(){
                         $modalInstance.dismiss();
                     };
+                    var init = function(){
+                        $scope.dictionary = {};
+                        $scope.queryDictionaryGroup();
+                    };
+                    init();
                 }]
             }).result.then(function () {
                 $scope.getDictionaryList();

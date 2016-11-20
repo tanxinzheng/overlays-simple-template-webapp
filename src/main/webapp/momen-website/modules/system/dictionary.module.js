@@ -8,10 +8,11 @@
 define([
     "angularAMD",
     "./dictionary.api",
-    "./dictionary"
-],function(angularAMD, DictionaryRest, dictionary){
+    "./dictionary",
+    "./dictionary_group.api"
+],function(angularAMD, DictionaryRest, dictionary, DictionaryGroupRest){
     angular.module('dictionary.module',[
-        "Dictionary.REST"
+        "Dictionary.REST", "DictionaryGroup.REST"
     ]).config(['$stateProvider', '$urlRouterProvider',
         function ($stateProvider,   $urlRouterProvider) {
 
@@ -25,7 +26,12 @@ define([
                     'dictionary': angularAMD.route({
                         controller: dictionary,
                         //controllerUrl: "system/dictionary.js",
-                        templateUrl: 'modules/system/dictionary.html'
+                        templateUrl: 'modules/system/dictionary.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad', function( $ocLazyLoad ){
+                                return $ocLazyLoad.load('ui.select');
+                            }]
+                        }
                     })
                 },
                 sticky: true

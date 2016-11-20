@@ -1,9 +1,18 @@
 package com.xmomen.framework.web.json;
 
+import com.xmomen.module.system.model.DictionaryModel;
+import com.xmomen.module.system.model.DictionaryQuery;
+import com.xmomen.module.system.service.DictionaryService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * Created by tanxinzheng on 16/10/20.
  */
 public class DefaultDictionaryInterpreterService implements DictionaryInterpreterService {
+
+    @Autowired
+    DictionaryService dictionaryService;
+
     /**
      * 翻译
      *
@@ -13,6 +22,13 @@ public class DefaultDictionaryInterpreterService implements DictionaryInterprete
      */
     @Override
     public String translate(String dictionaryType, String dictionaryCode) {
-        return "成功";
+        DictionaryQuery dictionaryQuery = new DictionaryQuery();
+        dictionaryQuery.setDictionaryType(dictionaryType);
+        dictionaryQuery.setDictionaryCode(dictionaryCode);
+        DictionaryModel dictionaryModel = dictionaryService.getOneDictionaryModel(dictionaryQuery);
+        if(dictionaryModel != null){
+            return dictionaryModel.getName();
+        }
+        return null;
     }
 }

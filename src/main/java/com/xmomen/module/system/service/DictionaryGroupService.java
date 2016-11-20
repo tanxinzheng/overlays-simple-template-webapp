@@ -32,6 +32,13 @@ public interface DictionaryGroupService {
     DictionaryGroup createDictionaryGroup(DictionaryGroup dictionaryGroup);
 
     /**
+     * 批量新增字典组
+     * @param dictionaryGroupList 参数集合
+     * @return 数据字典组实体对象集合
+     */
+    List<DictionaryGroup> createDictionaryGroup(List<DictionaryGroup> dictionaryGroupList);
+
+    /**
      * 更新数据字典组
      * @param dictionaryGroupUpdate    更新数据字典组对象参数
      */

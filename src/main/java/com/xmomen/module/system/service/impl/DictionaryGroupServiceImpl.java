@@ -10,11 +10,13 @@ import com.xmomen.module.system.model.DictionaryGroupModel;
 import com.xmomen.module.system.model.DictionaryGroupQuery;
 import com.xmomen.module.system.model.DictionaryGroupUpdate;
 import com.xmomen.module.system.service.DictionaryGroupService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,6 +57,26 @@ public class DictionaryGroupServiceImpl implements DictionaryGroupService {
     @Transactional
     public DictionaryGroup createDictionaryGroup(DictionaryGroup dictionaryGroup) {
         return mybatisDao.insertByModel(dictionaryGroup);
+    }
+
+    /**
+     * 批量新增字典组
+     *
+     * @param dictionaryGroupList 参数集合
+     * @return List<DictionaryGroup> 数据字典组实体对象集合
+     */
+    @Override
+    @Transactional
+    public List<DictionaryGroup> createDictionaryGroup(List<DictionaryGroup> dictionaryGroupList) {
+        if(CollectionUtils.isNotEmpty(dictionaryGroupList)){
+            return null;
+        }
+        List<DictionaryGroup> dictionaryGroupResultList = new ArrayList<>();
+        for (DictionaryGroup dictionaryGroup : dictionaryGroupList) {
+            dictionaryGroup = createDictionaryGroup(dictionaryGroup);
+            dictionaryGroupResultList.add(dictionaryGroup);
+        }
+        return dictionaryGroupResultList;
     }
 
     /**

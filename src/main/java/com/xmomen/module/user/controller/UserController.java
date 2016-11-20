@@ -12,6 +12,7 @@ import com.xmomen.module.authorization.service.GroupService;
 import com.xmomen.module.authorization.service.PermissionService;
 import com.xmomen.module.authorization.service.UserGroupService;
 import com.xmomen.module.authorization.service.UserPermissionService;
+import com.xmomen.module.logger.Log;
 import com.xmomen.module.user.model.UserCreate;
 import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.model.UserQuery;
@@ -170,7 +171,7 @@ public class UserController {
      * @param offset    页码
      * @return
      */
-//    @Log(actionName = "查询用户组所属权限")
+    @Log(actionName = "查询用户组所属权限")
     @RequestMapping(value = "/{id}/permission", method = RequestMethod.GET)
     public Page<PermissionModel> getUserPermission(
             @PathVariable(value = "id") String userId,

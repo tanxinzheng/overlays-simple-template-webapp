@@ -89,29 +89,17 @@ define([
                 var thisResource = this;
                 return $dialog.confirm("是否保存数据？").then(function(){
                     if ( !thisResource.id ) {
-                        var call = thisResource.$create(function(data,headers){
+                        return thisResource.$create(function(data,headers){
                             $dialog.success("新增成功");
                             success(data, headers);
                         }, fail);
-                        console.log(call);
-                        return call;
                     }else {
-                        var call = thisResource.$update(function(data,headers){
+                        return thisResource.$update(function(data,headers){
                             $dialog.success("更新成功");
                             success(data, headers);
                         }, fail);
-                        console.log(call);
-                        return call;
                     }
                 });
-                //thisResource.$promise.then(function(){
-                //
-                //}, function(){
-                //
-                //}).finally(function(){
-                //
-                //});
-                //return thisResource;
             };
 
             resource.prototype.$delete = function(success, fail) {

@@ -12,6 +12,7 @@ require.config({
         "angularAMD": "bower_components/angularAMD/angularAMD",
 
         "toaster":'js/core/angularjs-toaster/toaster',
+        "loading-bar": "bower_components/angular-loading-bar/build/loading-bar",
 
         "app.module":"modules/app.module",
         "jquery-validate":"js/vendor/jquery/jquery-validate/jquery.validate",
@@ -43,7 +44,10 @@ require.config({
 
         "toaster" : ["css!js/core/angularjs-toaster/toaster"],
 
-        "App": [ "app.module", "ui-bootstrap-tpls", "angularAMD", "xmomen-ui", "config", "config-lazyload", "config-i18n", "config-router", "jquery-validate", "toaster"]
+        "loading-bar" : ["css!bower_components/angular-loading-bar/build/loading-bar"],
+
+        "App": [ "app.module", "ui-bootstrap-tpls", "angularAMD", "xmomen-ui", "loading-bar",
+            "config", "config-lazyload", "config-i18n", "config-router", "jquery-validate", "toaster"]
     }
 });
 define(["angular", "angularAMD", "App", "angular-ui-router"], function (angular, angularAMD, App) {

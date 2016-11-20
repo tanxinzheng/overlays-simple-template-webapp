@@ -26,6 +26,12 @@
                     #{item}
                 </foreach>
             </if>
+            <if test="dictionaryType">
+                AND t.DICTIONARY_TYPE = #{dictionaryType}
+            </if>
+            <if test="dictionaryCode">
+                AND t.code = #{dictionaryCode}
+            </if>
           </where>
           ORDER BY t.id
     </select>
