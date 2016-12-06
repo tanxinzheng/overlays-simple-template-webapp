@@ -28,8 +28,8 @@ public class UserRealm extends AuthorizingRealm {
         String username = (String)principals.getPrimaryPrincipal();
 
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        authorizationInfo.setRoles(accountService.findRoles(username));
-        authorizationInfo.setStringPermissions(accountService.findPermissions(username));
+        authorizationInfo.setRoles(accountService.findRoles());
+        authorizationInfo.setStringPermissions(accountService.findPermissions());
         return authorizationInfo;
     }
 

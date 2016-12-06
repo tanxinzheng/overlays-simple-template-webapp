@@ -103,26 +103,24 @@ define(function(){
                     $scope.dictionaryGroupDetailForm = {};
                     $scope.saveDictionaryGroup = function(){
                         if($scope.dictionaryGroupDetailForm.validator.form()){
-                            if($scope.dictionaryGroupDetailForm.validator.form()){
-                                $dialog.confirm("是否保存数据？").then(function(){
-                                    $scope.pageSetting.saveBtnLoading = true;
-                                    if ( !$scope.dictionaryGroup.id ) {
-                                        DictionaryGroupAPI.create($scope.dictionaryGroup, function(data,headers){
-                                            $dialog.success("新增成功");
-                                            $modalInstance.close();
-                                        }).$promise.finally(function(){
-                                            $scope.pageSetting.saveBtnLoading = false;
-                                        });
-                                    }else {
-                                        DictionaryGroupAPI.update($scope.dictionaryGroup, function(data,headers){
-                                            $dialog.success("更新成功");
-                                            $modalInstance.close();
-                                        }).$promise.finally(function(){
-                                            $scope.pageSetting.saveBtnLoading = false;
-                                        });
-                                    }
-                                });
-                            }
+                            $dialog.confirm("是否保存数据？").then(function(){
+                                $scope.pageSetting.saveBtnLoading = true;
+                                if ( !$scope.dictionaryGroup.id ) {
+                                    DictionaryGroupAPI.create($scope.dictionaryGroup, function(data,headers){
+                                        $dialog.success("新增成功");
+                                        $modalInstance.close();
+                                    }).$promise.finally(function(){
+                                        $scope.pageSetting.saveBtnLoading = false;
+                                    });
+                                }else {
+                                    DictionaryGroupAPI.update($scope.dictionaryGroup, function(data,headers){
+                                        $dialog.success("更新成功");
+                                        $modalInstance.close();
+                                    }).$promise.finally(function(){
+                                        $scope.pageSetting.saveBtnLoading = false;
+                                    });
+                                }
+                            });
                         }
                     };
                     $scope.cancel = function(){

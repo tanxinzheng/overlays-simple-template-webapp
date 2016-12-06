@@ -22,19 +22,13 @@ define([
                 title: "数据字典",
                 name: 'app.dictionary',
                 url: '/dictionary',
-                views: {
-                    'dictionary': angularAMD.route({
-                        controller: dictionary,
-                        //controllerUrl: "system/dictionary.js",
-                        templateUrl: 'modules/system/dictionary.html',
-                        resolve: {
-                            deps: ['$ocLazyLoad', function( $ocLazyLoad ){
-                                return $ocLazyLoad.load('ui.select');
-                            }]
-                        }
-                    })
-                },
-                sticky: true
+                controller: dictionary,
+                templateUrl: 'modules/system/dictionary.html',
+                resolve: {
+                    deps: ['$ocLazyLoad', function( $ocLazyLoad ){
+                        return $ocLazyLoad.load('ui.select');
+                    }]
+                }
             });
 
             angular.forEach(states, function(state){

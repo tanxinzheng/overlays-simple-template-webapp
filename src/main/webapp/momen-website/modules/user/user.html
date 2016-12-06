@@ -225,7 +225,7 @@
                         <label class="col-md-3 control-label">
                             锁定
                         </label>
-                        <div class="col-md-9">
+                        <div class="col-md-9 control-div">
                             <label class="i-switch bg-primary m-r">
                                 <input type="checkbox" name="locked"
                                        data-ng-true-value="true"
@@ -387,7 +387,9 @@
                                   ng-show="item.mouseenter">&nbsp;</span>
                             <span class="list-group-item-text-block"
                                   title="单击即可选中"
-                                  data-ng-click="choiceUnbind($index)">{{item.groupName}}</span>
+                                  data-ng-click="choiceUnbind($index)">{{item.groupName}}
+                                <label class="label bg-info">{{item.description}}</label>
+                            </span>
                         </a>
                         <a href class="list-group-item" ng-show="!notHasResourceList || notHasResourceList.length == 0">
                             没有找到符合条件的数据
@@ -430,7 +432,9 @@
                                       ng-show="item.mouseenter">&nbsp;</span>
                                 <span class="list-group-item-text-block"
                                       title="单击即可选中"
-                                      data-ng-click="choiceBind($index)">{{item.groupName}}</span>
+                                      data-ng-click="choiceBind($index)">{{item.groupName}}
+                                   <label class="label bg-info">{{item.description}}</label>
+                                </span>
                         </a>
                     </div>
                     <div class="clearfix panel-footer">

@@ -21,14 +21,8 @@ define([
                 title: "组权限",
                 name: 'app.groupPermission',
                 url: '/group/permission',
-                views: {
-                    'groupPermission': angularAMD.route({
-                        controller: groupPermission,
-                        //controllerUrl: "authorization/group_permission.js",
-                        templateUrl: 'modules/authorization/group_permission.html'
-                    })
-                },
-                sticky: true
+                controller: groupPermission,
+                templateUrl: 'modules/authorization/group_permission.html'
             });
 
             angular.forEach(states, function(state){

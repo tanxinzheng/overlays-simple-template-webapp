@@ -2,6 +2,12 @@ package com.xmomen.module.core.service;
 
 import com.xmomen.commons.StringUtilsExt;
 import com.xmomen.framework.mybatis.dao.MybatisDao;
+import com.xmomen.module.authorization.model.GroupModel;
+import com.xmomen.module.authorization.model.GroupQuery;
+import com.xmomen.module.authorization.model.PermissionModel;
+import com.xmomen.module.authorization.model.PermissionQuery;
+import com.xmomen.module.authorization.service.GroupService;
+import com.xmomen.module.authorization.service.PermissionService;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.model.Register;
 import com.xmomen.module.shiro.PasswordHelper;
@@ -21,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,6 +46,12 @@ public class AccountService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    GroupService groupService;
+
+    @Autowired
+    PermissionService permissionService;
 
     /**
      * 查询帐号
@@ -103,7 +117,13 @@ public class AccountService {
      * @return
      */
     public AccountModel getSessionModel(){
-        return (AccountModel) SecurityUtils.getSubject().getSession().getAttribute(sessionModelKey);
+        AccountModel accountModel = (AccountModel) SecurityUtils.getSubject().getSession().getAttribute(sessionModelKey);
+        if(accountModel == null){
+            String username = (String) SecurityUtils.getSubject().getPrincipal();
+            accountModel = getAccountModelByUsername(username);
+            SecurityUtils.getSubject().getSession().setAttribute(sessionModelKey, accountModel);
+        }
+        return accountModel;
     }
 
     /**
@@ -137,20 +157,36 @@ public class AccountService {
 
     /**
      * 查询角色
-     * @param username
      * @return
      */
-    public Set<String> findRoles(String username){
-        return null;
+    public Set<String> findRoles(){
+        AccountModel accountModel = getSessionModel();
+        GroupQuery groupQuery = new GroupQuery();
+        groupQuery.setUserId(accountModel.getUserId());
+        groupQuery.setHasGroup(true);
+        List<GroupModel> groupList = groupService.getGroupModelList(groupQuery);
+        Set<String> roles = new HashSet<>();
+        for (GroupModel groupModel : groupList) {
+            roles.add(groupModel.getGroupCode());
+        }
+        return roles;
     }
 
     /**
      * 查询权限
-     * @param username
      * @return
      */
-    public Set<String> findPermissions(String username){
-        return null;
+    public Set<String> findPermissions(){
+        AccountModel accountModel = getSessionModel();
+        PermissionQuery permissionQuery = new PermissionQuery();
+        permissionQuery.setUserId(accountModel.getUserId());
+        permissionQuery.setHasPermission(true);
+        List<PermissionModel> permissionModelList = permissionService.getPermissionModelList(permissionQuery);
+        Set<String> permissions = new HashSet<>();
+        for (PermissionModel permissionModel : permissionModelList) {
+            permissions.add(permissionModel.getPermissionCode());
+        }
+        return permissions;
     }
 
     public String getSessionModelKey() {

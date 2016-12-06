@@ -7,9 +7,10 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -33,22 +34,22 @@ public class AccountController {
         }
         String username = subject.getPrincipal().toString();
         AccountModel accountModel = accountService.getAccountModelByUsername(username);
-        //Set<String> roles = permissionService.findRoles(username);
-
         return accountModel;
     }
-//
-//    /**
-//     * 用户修改密码
-//     * @return
-//     */
-//    @RequestMapping(value = "/account/resetPassword", method = RequestMethod.POST)
-//    public void resetPassword(@RequestParam(value = "current_password") String currentPassword,
-//                              @RequestParam(value = "password") String password){
-//        Subject subject = SecurityUtils.getSubject();
-//        String username = subject.getPrincipal().toString();
-//        userService.changePassword(username, currentPassword, password);
-//    }
+
+    /**
+     * 用户修改密码
+     * @return
+     */
+    @RequestMapping(value = "/account/permissions", method = RequestMethod.GET)
+    public Map getAccountPermission(){
+        Set<String> roles = accountService.findRoles();
+        Set<String> permissions = accountService.findPermissions();
+        Map rolesMap = new HashMap();
+        rolesMap.put("roles", roles);
+        rolesMap.put("permissions", permissions);
+        return rolesMap;
+    }
 
 
 }

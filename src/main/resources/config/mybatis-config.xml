@@ -19,6 +19,7 @@
 		<!--<setting name="defaultExecutorType" value="BATCH" />-->
 		<!-- 数据库超过25000秒仍未响应则超时 -->
 		<setting name="defaultStatementTimeout" value="25000" />
+		<setting name="lazyLoadingEnabled" value="true"/>
 	</settings>
 
 	<plugins>

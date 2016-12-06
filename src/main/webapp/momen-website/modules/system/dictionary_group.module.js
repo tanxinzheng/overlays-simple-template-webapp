@@ -2,7 +2,7 @@
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:19
+ * @date    2016-11-20 17:50:08
  * @version 1.0.0
  */
 define([
@@ -21,14 +21,8 @@ define([
                 title: "数据字典组",
                 name: 'app.dictionaryGroup',
                 url: '/dictionary/group',
-                views: {
-                    'dictionaryGroup': angularAMD.route({
-                        controller: dictionaryGroup,
-                        //controllerUrl: "system/dictionary_group.js",
-                        templateUrl: 'modules/system/dictionary_group.html'
-                    })
-                },
-                sticky: true
+                controller: dictionaryGroup,
+                templateUrl: 'modules/system/dictionary_group.html'
             });
 
             angular.forEach(states, function(state){

@@ -21,14 +21,8 @@ define([
                 title: "用户权限",
                 name: 'app.userPermission',
                 url: '/user/permission',
-                views: {
-                    'userPermission': angularAMD.route({
-                        controller: userPermission,
-                        //controllerUrl: "authorization/user_permission.js",
-                        templateUrl: 'modules/authorization/user_permission.html'
-                    })
-                },
-                sticky: true
+                controller: userPermission,
+                templateUrl: 'modules/authorization/user_permission.html'
             });
 
             angular.forEach(states, function(state){

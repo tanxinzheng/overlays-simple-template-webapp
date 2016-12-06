@@ -21,14 +21,8 @@ define([
                 title: "通知",
                 name: 'app.notification',
                 url: '/notification',
-                views: {
-                    'notification': angularAMD.route({
-                        controller: notification,
-                        //controllerUrl: "notification/notification.js",
-                        templateUrl: 'modules/notification/notification.html'
-                    })
-                },
-                sticky: true
+                controller: notification,
+                templateUrl: 'modules/notification/notification.html'
             });
 
             angular.forEach(states, function(state){

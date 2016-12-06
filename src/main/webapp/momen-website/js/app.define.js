@@ -16,9 +16,9 @@ define(function(){
         'pascalprecht.translate',
         'xmomen.ui',
         'ui.router',
-        'ui.router.extras.tabs',
+        //'ui.router.extras.tabs',
         "angular-loading-bar",
-        
+        //'permission',
         'app.module',
         "config.router",
         "config.lazyload",

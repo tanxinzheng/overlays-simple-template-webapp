@@ -116,8 +116,8 @@
                 </div>
                 <div id="loading-bar-container"></div>
                 <div ug-empty-data-msg ng-if="(!permissionList || permissionList.length == 0) && !pageSetting.queryBtnLoading"></div>
-                <!--<div ug-loading-msg ng-if="pageSetting.queryBtnLoading"></div>-->
-                <footer class="panel-footer">
+                <div ug-loading-msg ng-if="pageSetting.queryBtnLoading"></div>
+                <footer class="panel-footer" ng-if="permissionList && permissionList.length > 0 && !pageSetting.queryBtnLoading">
                     <div class="row">
                         <div class="col-sm-6">
                             <label class="i-checks m-b-none">
@@ -132,7 +132,7 @@
                                 <button type="button" class="btn btn-sm btn-default dropdown-toggle" dropdown-toggle>
                                     批量操作&nbsp;&nbsp;
                                     <span class="caret"></span>
-                                    <span class="sr-only">Split button!</span>
+                                    <span class="sr-only">分割按钮</span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="javascript:void(0)" data-ng-click="batchExport($index)"><i class="fa fa-download">&nbsp;&nbsp;批量导出</i></a></li>

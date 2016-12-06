@@ -8,6 +8,11 @@
     padding-left: 4px !important;
 }
 
+.control-div {
+    padding-top: 7px;
+    margin-bottom: 0;
+}
+
 /** 错误提示 **/
 .error {
     color: red;

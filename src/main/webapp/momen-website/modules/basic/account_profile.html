@@ -1,112 +1,43 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm">
-  <div class="col">
-    <!--<div style="background:url(img/c4.jpg) center center; background-size:cover">-->
-      <!--<div class="wrapper-lg bg-white-opacity">-->
-        <!--<div class="row m-t">-->
-          <!--<div class="col-sm-7">-->
-            <!--<a href class="thumb-lg pull-left m-r">-->
-              <!--<img src="img/a0.jpg" class="img-circle">-->
-            <!--</a>-->
-            <!--<div class="clear m-b">-->
-              <!--<div class="m-b m-t-sm">-->
-                <!--<span class="h3 text-black" ng-bind="Account.nickname"></span>-->
-                <!--<small class="m-l">London, UK</small>-->
-              <!--</div>-->
-              <!--<p class="m-b">-->
-                <!--<a href class="btn btn-sm btn-bg btn-rounded btn-default btn-icon"><i class="fa fa-twitter"></i></a>-->
-                <!--<a href class="btn btn-sm btn-bg btn-rounded btn-default btn-icon"><i class="fa fa-facebook"></i></a>-->
-                <!--<a href class="btn btn-sm btn-bg btn-rounded btn-default btn-icon"><i class="fa fa-google-plus"></i></a>-->
-              <!--</p>-->
-              <!--<a href class="btn btn-sm btn-success btn-rounded">Follow</a>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div class="col-sm-5">-->
-            <!--<div class="pull-right pull-none-xs text-center">-->
-              <!--<a href class="m-b-md inline m">-->
-                <!--<span class="h3 block font-bold">2k</span>-->
-                <!--<small>Followers</small>-->
-              <!--</a>-->
-              <!--<a href class="m-b-md inline m">-->
-                <!--<span class="h3 block font-bold">250</span>-->
-                <!--<small>Following</small>-->
-              <!--</a>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-
-  </div>
-  <div class="col bg-white-only">
-    <div class="vbox">
-      <div class="wrapper-sm b-b">
-        <div class="m-t-n-xxs m-b-n-xxs m-l-xs">
-          <a class="btn btn-xs btn-default pull-right" ng-hide="!item" ng-click="deleteItem(item)"><i class="fa fa-times"></i></a>
-          <a class="btn btn-xs btn-default" ng-hide="item.editing" ng-click="editItem(item)">Edit</a>
-          <a class="btn btn-xs btn-default" ng-show="item.editing" ng-click="doneEditing(item)">Done</a>
-        </div>
-      </div>
-      <div class="row-row">
-        <div class="cell">
-          <div class="cell-inner">
-            <div class="wrapper-lg">
-              <div class="hbox h-auto m-b-lg">
-                <div class="col text-center w-sm">
-                  <div class="thumb-lg avatar inline">
-                    <img ng-src="{{item.avatar}}" ng-show="item.avatar">
-                  </div>
-                </div>
-                <div class="col v-middle h1 font-thin">
-                  <div ng-hide="item.editing">{{item.first}} {{item.last}}</div>
-                  <div ng-show="item.editing">
-                    <input type="text" placeholder="First" class="form-control w-auto input-lg m-b-n-xxs font-bold" ng-model="item.first" >
-                    <input type="text" placeholder="Last" class="form-control w-auto input-lg font-bold" ng-model="item.last" >
-                  </div>
-                </div>
-              </div>
-              <!-- fields -->
-              <div class="form-horizontal">
-                <div class="form-group m-b-sm" ng-hide="!item.mobile && !item.editing">
-                  <label class="col-sm-3 control-label">Mobile</label>
-                  <div class="col-sm-9">
-                    <p class="form-control-static" ng-hide="item.editing">{{item.mobile}}</p>
-                    <input type="text" class="form-control" ng-show="item.editing" ng-model="item.mobile" >
-                  </div>
-                </div>
-                <div class="form-group m-b-sm" ng-hide="!item.home && !item.editing">
-                  <label class="col-sm-3 control-label">Home</label>
-                  <div class="col-sm-9">
-                    <p class="form-control-static" ng-hide="item.editing">{{item.home}}</p>
-                    <input type="text" class="form-control" ng-show="item.editing" ng-model="item.home" >
-                  </div>
-                </div>
-                <div class="form-group m-b-sm" ng-hide="!item.work && !item.editing">
-                  <label class="col-sm-3 control-label">Work</label>
-                  <div class="col-sm-9">
-                    <p class="form-control-static" ng-hide="item.editing">{{item.work}}</p>
-                    <input type="text" class="form-control" ng-show="item.editing" ng-model="item.work" >
-                  </div>
-                </div>
-                <div class="form-group m-b-sm" ng-hide="!item.company && !item.editing">
-                  <label class="col-sm-3 control-label">Company</label>
-                  <div class="col-sm-9">
-                    <p class="form-control-static" ng-hide="item.editing">{{item.company}}</p>
-                    <input type="text" class="form-control" ng-show="item.editing" ng-model="item.company" >
-                  </div>
-                </div>
-                <div class="form-group m-b-sm" ng-hide="!item.note && !item.editing">
-                  <label class="col-sm-3 control-label">Note</label>
-                  <div class="col-sm-9">
-                    <p class="form-control-static" ng-hide="item.editing">{{item.note}}</p>
-                    <textarea class="form-control" ng-show="item.editing" ng-model="item.note" rows="5"></textarea>
-                  </div>
-                </div>
-              </div>
-              <!-- / fields -->
-            </div>
+<div class="wrapper-sm">
+  <h1 class="m-n font-thin h3">基本资料</h1>
+</div>
+<div class="wrapper-md" >
+    <div class="panel panel-default">
+    <div class="panel-heading font-bold">
+      基本资料
+    </div>
+    <div class="panel-body">
+      <form class="form-horizontal" method="get">
+        <div class="form-group">
+          <label class="col-lg-2 control-label">头像：</label>
+          <div class="col-lg-10">
+            <a href class="thumb-lg pull-left m-r">
+              <img src="img/a0.jpg" class="img-circle">
+            </a>
           </div>
         </div>
-      </div>
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label font-bold">用户名</label>
+          <div class="col-lg-10">
+            <p class="form-control-static" ng-bind="Account.username"></p>
+          </div>
+        </div>
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label font-bold">登录密码</label>
+          <div class="col-lg-10">
+            <p class="form-control-static">安全性高的密码可以使帐号更安全。建议您定期更换密码，设置一个包含字母，符号或数字中至少两项且长度超过6位的密码。</p>
+          </div>
+        </div>
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+        <div class="form-group">
+          <div class="col-sm-4 col-sm-offset-2">
+            <button type="submit" class="btn btn-default">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

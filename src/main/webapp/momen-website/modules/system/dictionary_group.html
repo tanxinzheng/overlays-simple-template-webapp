@@ -108,7 +108,7 @@
                 </div>
                 <div ug-empty-data-msg ng-if="(!dictionaryGroupList || dictionaryGroupList.length == 0) && !pageSetting.queryBtnLoading"></div>
                 <div ug-loading-msg ng-if="pageSetting.queryBtnLoading"></div>
-                <footer class="panel-footer">
+                <footer class="panel-footer" ng-if="dictionaryGroupList && dictionaryGroupList.length > 0 && !pageSetting.queryBtnLoading">
                     <div class="row">
                         <div class="col-sm-6">
                             <label class="i-checks m-b-none">

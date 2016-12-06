@@ -10,7 +10,7 @@ require.config({
         "ui-bootstrap-tpls":"js/core/angular-bootstrap/ui-bootstrap-tpls",
         // angularAMD
         "angularAMD": "bower_components/angularAMD/angularAMD",
-
+        "permission":"js/vendor/angular/angular-permission/dist/angular-permission.min",
         "toaster":'js/core/angularjs-toaster/toaster',
         "loading-bar": "bower_components/angular-loading-bar/build/loading-bar",
 
@@ -33,7 +33,6 @@ require.config({
     shim: {
         "jquery" : { exports : "jquery" },
         "datetimepicker" : ["jquery","css!js/vendor/bootstrap/bootstrap-datetimepicker/css/bootstrap-datetimepicker"],
-        //"angularAMD" : { exports : "angularAMD"},
         // angular
         "angular": { exports: "angular" },
         // angular-ui
@@ -51,5 +50,11 @@ require.config({
     }
 });
 define(["angular", "angularAMD", "App", "angular-ui-router"], function (angular, angularAMD, App) {
-    return angularAMD.bootstrap(App);
+    angular.element(document).ready(function() {
+        $.get('/account/permissions', function(data) {
+            var permissionList = data;
+            angularAMD.bootstrap(App);
+        });
+    });
+    //return angularAMD.bootstrap(App);
 });

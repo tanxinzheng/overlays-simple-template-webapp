@@ -86,13 +86,13 @@
                              targetProject="./src/main/java" type="XMLMAPPER" >
         </javaClientGenerator>
 
-        <table tableName="xmo_dictionary" domainObjectName="Dictionary">
-            <property name="tableComment" value="数据字典" />
-            <property name="modulePackage" value="com.xmomen.module.system" />
-            <property name="moduleName" value="system" />
-            <property name="keywordColumns" value="DICTIONARY_TYPE,SHOW_VALUE,CODE_VALUE" />
-            <generatedKey column="id" sqlStatement="SELECT replace(UUID(),'-','')" />
-        </table>
+        <!--<table tableName="xmo_dictionary" domainObjectName="Dictionary">-->
+            <!--<property name="tableComment" value="数据字典" />-->
+            <!--<property name="modulePackage" value="com.xmomen.module.system" />-->
+            <!--<property name="moduleName" value="system" />-->
+            <!--<property name="keywordColumns" value="DICTIONARY_TYPE,SHOW_VALUE,CODE_VALUE" />-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(UUID(),'-','')" />-->
+        <!--</table>-->
         <table tableName="xmo_dictionary_group" domainObjectName="DictionaryGroup">
             <property name="tableComment" value="数据字典组" />
             <property name="modulePackage" value="com.xmomen.module.system" />

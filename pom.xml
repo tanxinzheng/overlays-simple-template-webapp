@@ -117,10 +117,10 @@
                 </dependencies>
                 <configuration>
                     <configurationFiles>
-                        <configurationFile>src/main/resources/tools/generatorConfig-user.xml</configurationFile>
-                        <configurationFile>src/main/resources/tools/generatorConfig-notification.xml</configurationFile>
+                        <!--<configurationFile>src/main/resources/tools/generatorConfig-user.xml</configurationFile>-->
+                        <!--<configurationFile>src/main/resources/tools/generatorConfig-notification.xml</configurationFile>-->
                         <configurationFile>src/main/resources/tools/generatorConfig-system.xml</configurationFile>
-                        <configurationFile>src/main/resources/tools/generatorConfig-authorization.xml</configurationFile>
+                        <!--<configurationFile>src/main/resources/tools/generatorConfig-authorization.xml</configurationFile>-->
                     </configurationFiles>
                 </configuration>
             </plugin>

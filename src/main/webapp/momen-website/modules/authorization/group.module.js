@@ -22,14 +22,8 @@ define([
                 title: "组",
                 name: 'app.group',
                 url: '/group',
-                views: {
-                    'group': angularAMD.route({
-                        controller: group,
-                        //controllerUrl: "authorization/group.js",
-                        templateUrl: 'modules/authorization/group.html'
-                    })
-                },
-                sticky: true
+                controller: group,
+                templateUrl: 'modules/authorization/group.html'
             });
 
             angular.forEach(states, function(state){

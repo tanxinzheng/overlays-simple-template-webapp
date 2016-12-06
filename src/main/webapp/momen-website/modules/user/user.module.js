@@ -21,18 +21,12 @@ define([
                 title: "用户",
                 name: 'app.user',
                 url: '/user',
-                views: {
-                    'user': angularAMD.route({
-                        controller: user,
-                        //controllerUrl: "user/user.js",
-                        templateUrl: 'modules/user/user.html'
-                    })
-                },
-                sticky: true
+                controller: user,
+                templateUrl: 'modules/user/user.html'
             });
 
             angular.forEach(states, function(state){
-                $stateProvider.state(state.name, angularAMD.route(state));
+                $stateProvider.state(state.name, state);
             });
         }
     ]);

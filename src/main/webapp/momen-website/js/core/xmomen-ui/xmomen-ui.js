@@ -55,9 +55,13 @@ define([
     }).factory("HttpInterceptor", ["$q", "$log", function($q, $log){
         return {
             request: function (config) {
-                if(config.method=='GET'){
+                if(config.method=='GET' && !config.cache){
                     if(config.params){
                         config.params._noCache = new Date().getTime();
+                    }else{
+                        config.params = {
+                            _noCache : new Date().getTime()
+                        }
                     }
                 }
                 return config;

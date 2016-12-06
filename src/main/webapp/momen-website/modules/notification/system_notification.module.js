@@ -21,14 +21,8 @@ define([
                 title: "系统通知",
                 name: 'app.systemNotification',
                 url: '/systemNotification',
-                views: {
-                    'systemNotification': angularAMD.route({
-                        controller: systemNotification,
-                        //controllerUrl: "notification/system_notification.js",
-                        templateUrl: 'modules/notification/system_notification.html'
-                    })
-                },
-                sticky: true
+                controller: systemNotification,
+                templateUrl: 'modules/notification/system_notification.html'
             });
 
             angular.forEach(states, function(state){

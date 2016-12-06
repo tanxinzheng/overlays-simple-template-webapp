@@ -103,26 +103,24 @@ define(function(){
                     $scope.${domainObjectName}DetailForm = {};
                     $scope.save${domainObjectClassName} = function(){
                         if($scope.${domainObjectName}DetailForm.validator.form()){
-                            if($scope.${domainObjectName}DetailForm.validator.form()){
-                                $dialog.confirm("是否保存数据？").then(function(){
-                                    $scope.pageSetting.saveBtnLoading = true;
-                                    if ( !$scope.${domainObjectName}.id ) {
-                                        ${domainObjectClassName}API.create($scope.${domainObjectName}, function(data,headers){
-                                            $dialog.success("新增成功");
-                                            $modalInstance.close();
-                                        }).$promise.finally(function(){
-                                            $scope.pageSetting.saveBtnLoading = false;
-                                        });
-                                    }else {
-                                        ${domainObjectClassName}API.update($scope.${domainObjectName}, function(data,headers){
-                                            $dialog.success("更新成功");
-                                            $modalInstance.close();
-                                        }).$promise.finally(function(){
-                                            $scope.pageSetting.saveBtnLoading = false;
-                                        });
-                                    }
-                                });
-                            }
+                            $dialog.confirm("是否保存数据？").then(function(){
+                                $scope.pageSetting.saveBtnLoading = true;
+                                if ( !$scope.${domainObjectName}.id ) {
+                                    ${domainObjectClassName}API.create($scope.${domainObjectName}, function(data,headers){
+                                        $dialog.success("新增成功");
+                                        $modalInstance.close();
+                                    }).$promise.finally(function(){
+                                        $scope.pageSetting.saveBtnLoading = false;
+                                    });
+                                }else {
+                                    ${domainObjectClassName}API.update($scope.${domainObjectName}, function(data,headers){
+                                        $dialog.success("更新成功");
+                                        $modalInstance.close();
+                                    }).$promise.finally(function(){
+                                        $scope.pageSetting.saveBtnLoading = false;
+                                    });
+                                }
+                            });
                         }
                     };
                     $scope.cancel = function(){

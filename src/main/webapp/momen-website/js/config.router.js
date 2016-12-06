@@ -8,30 +8,30 @@ angular.module("config.router",[]).config(['$stateProvider', '$urlRouterProvider
         function ($stateProvider,   $urlRouterProvider) {
 
             $urlRouterProvider
-                .otherwise('/dashboard');
+                .otherwise('/app/dashboard');
 
             var states = [];
             states.push({
                 name: 'app',
-                url: '',
-                views: {
-                    '@':  {
-                        templateUrl: 'modules/app.html'
-                    }
-                },
+                url: '/app',
+                //views: {
+                //    '@':  {
+                        templateUrl: 'modules/app.html',
+                    //}
+                //},
                 abstract: true
             });
 
             states.push({
                 name: 'app.dashboard',
                 url: '/dashboard',
-                views: {
-                    'dashboard': {
+                //views: {
+                //    'dashboard': {
                         controllerUrl: 'modules/dashboard.js',
                         templateUrl: 'modules/dashboard.html'
-                    }
-                },
-                sticky: true
+                    //}
+                //},
+                //sticky: true
             });
 
             states.push( {
@@ -46,8 +46,15 @@ angular.module("config.router",[]).config(['$stateProvider', '$urlRouterProvider
                 }
             });
 
+            states.push({
+                title:"403",
+                name:"unauthorized",
+                url: '/unauthorized',
+                templateUrl: 'views/error/error403.html'
+            });
+
             angular.forEach(states, function(state){
-                $stateProvider.state(state.name, angularAMD.route(state));
+                $stateProvider.state(state.name, state);
             })
         }
     ]).run(['$rootScope', '$state', '$stateParams',
