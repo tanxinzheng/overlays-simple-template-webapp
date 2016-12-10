@@ -13,7 +13,7 @@ xmomenUiDirective.directive('btnLoading', [function() {
     link: function(scope, el, attr) {
       var defaultLoadingText = attr.btnLoadingText;
       if(!defaultLoadingText){
-        defaultLoadingText = "<i class='icon-refresh'>&nbsp;稍等</i>"
+        defaultLoadingText = "<i class='fa fa-spinner fa-spin'></i>&nbsp;稍等"
       }
       scope.prevText = el.html();
       scope.$watch(function(){

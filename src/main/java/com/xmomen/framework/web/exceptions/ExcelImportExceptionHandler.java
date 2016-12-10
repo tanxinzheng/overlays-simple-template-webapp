@@ -1,0 +1,56 @@
+package com.xmomen.framework.web.exceptions;
+
+import com.xmomen.framework.poi.ExcelImportResultModel;
+import com.xmomen.framework.poi.ExcelImportValidFailException;
+import com.xmomen.framework.utils.Base64Utils;
+import com.xmomen.framework.utils.StringUtilsExt;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.jeecgframework.poi.excel.entity.result.ExcelImportResult;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+/**
+ * Created by tanxinzheng on 16/12/10.
+ */
+@ControllerAdvice
+public class ExcelImportExceptionHandler extends AbstractRestExceptionHandler {
+
+    /**
+     * Excel导入校验失败
+     * @param ex
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    @ExceptionHandler({ExcelImportValidFailException.class})
+    public final ResponseEntity<ExcelImportResultModel> handleException(ExcelImportValidFailException ex, HttpServletRequest request) throws IOException {
+        ExcelImportResultModel restError = new ExcelImportResultModel(ex, request);
+        restError.setStatus(HttpStatus.BAD_REQUEST.value());
+        restError.setMessage("导入Excel数据校验失败");
+        HttpHeaders headers = new HttpHeaders();
+        ExcelImportResult excelImportResult = ex.getExcelImportResult();
+        Workbook workbook = excelImportResult.getWorkbook();
+        if(workbook != null){
+            String uuid = StringUtilsExt.getUUID(16);
+            String fileName = uuid + "_校验结果.xls";
+            String encoderFileName = Base64Utils.encoder(fileName);
+            ServletContext servletContext = request.getServletContext();
+            String savepath = servletContext.getRealPath("/WEB-INF/temps");
+            FileOutputStream os = new FileOutputStream(new File(savepath, fileName));
+            workbook.write(os);
+            os.flush();
+            os.close();
+            restError.setValidResultUrl("/download/temps?filename=" + encoderFileName);
+        }
+        return new ResponseEntity<ExcelImportResultModel>(restError, headers, HttpStatus.BAD_REQUEST);
+    }
+}

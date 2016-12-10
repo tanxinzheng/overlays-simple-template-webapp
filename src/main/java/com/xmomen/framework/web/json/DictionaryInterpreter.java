@@ -16,7 +16,7 @@ public @interface DictionaryInterpreter {
      * 字典类型
      * @return
      */
-    DictionaryIndex type();
+    String type();
 
     /**
      * 字段名称

@@ -60,18 +60,18 @@ define(function(){
         };
         // 新增
         $scope.add = function(index){
-            $scope.openModal(index, "ADD");
+            $scope.openModal("ADD", index);
         };
         // 查看
         $scope.view = function(index){
-            $scope.openModal(index, "VIEW");
+            $scope.openModal("VIEW", index);
         };
         // 修改
         $scope.update = function(index){
-            $scope.openModal(index, "UPDATE");
+            $scope.openModal("UPDATE", index);
         };
         // 弹出
-        $scope.openModal = function(index, action){
+        $scope.openModal = function(action, index){
             $modal.open({
                 templateUrl: 'dictionaryGroup_detail.html',
                 modal:true,
@@ -80,7 +80,7 @@ define(function(){
                         var params = {
                             action: action
                         };
-                        if($scope.dictionaryGroupList[index] && $scope.dictionaryGroupList[index].id){
+                        if(index >= 0 && $scope.dictionaryGroupList[index] && $scope.dictionaryGroupList[index].id){
                             params.id = $scope.dictionaryGroupList[index].id;
                         }
                         return params;

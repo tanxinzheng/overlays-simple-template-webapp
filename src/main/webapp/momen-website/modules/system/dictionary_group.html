@@ -154,10 +154,13 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label">
                             字典编号
+                            <span class="vaild">*</span>
                         </label>
                         <div class="col-md-9">
                             <input class="form-control" type="text" name="dictionaryType" placeholder="请输入字典编号"
                                    ng-disabled="pageSetting.formDisabled"
+                                   data-msg-required="字典编号必填"
+                                   required="true"
                                    data-rule-maxlength="50"
                                    data-msg-maxlength="字典编号字符长度限制[0,50]"
                                    ng-model="dictionaryGroup.dictionaryType">
@@ -178,6 +181,7 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label">
                             激活
+                            <span class="vaild">*</span>
                         </label>
                         <div class="col-md-9 control-div">
                             <label class="i-switch bg-primary m-r">

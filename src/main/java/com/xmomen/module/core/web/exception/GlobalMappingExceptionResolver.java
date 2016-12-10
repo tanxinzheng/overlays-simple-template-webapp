@@ -1,6 +1,7 @@
 package com.xmomen.module.core.web.exception;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.web.rest.RestError;
 import com.xmomen.framework.web.rest.WebCommonUtils;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,10 @@ public class GlobalMappingExceptionResolver extends SimpleMappingExceptionResolv
         response.setCharacterEncoding("UTF-8");
         RestError restError = new RestError(ex, request);
         restError.setStatus(status);
+        if(ex instanceof BusinessException){
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            restError.setStatus(HttpStatus.BAD_REQUEST.value());
+        }
         try {
             response.getWriter().write(JSONObject.toJSONString(restError));
         } catch (IOException e) {

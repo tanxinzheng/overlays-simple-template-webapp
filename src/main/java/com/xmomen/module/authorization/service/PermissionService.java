@@ -25,6 +25,13 @@ public interface PermissionService {
     PermissionModel createPermission(PermissionCreate permissionCreate);
 
     /**
+     * 批量新增权限
+     * @param permissionCreates     新增权限对象集合参数
+     * @return List<PermissionModel>    权限领域对象集合
+     */
+    List<PermissionModel> createPermissions(List<PermissionCreate> permissionCreates);
+
+    /**
      * 新增权限实体对象
      * @param   permission 新增权限实体对象参数
      * @return  Permission 权限实体对象

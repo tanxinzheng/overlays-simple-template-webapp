@@ -8,37 +8,37 @@
 
         <property name="targetWebDir" value="./src/main/webapp" />
         <property name="targetWebModuleDir" value="./momen-website/modules" />
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorQueryModelPlugin"  >
-            <property name="template" value="./src/main/resources/template/queryModel.ftl" />
-        </plugin>
+        <!--<plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorQueryModelPlugin"  >-->
+            <!--<property name="template" value="./src/main/resources/template/queryModel.ftl" />-->
+        <!--</plugin>-->
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorCreateModelPlugin"  >
             <property name="template" value="./src/main/resources/template/createModel.ftl" />
         </plugin>
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorUpdateModelPlugin"  >
-            <property name="template" value="./src/main/resources/template/updateModel.ftl" />
-        </plugin>
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorServicePlugin"  >
-            <property name="template" value="./src/main/resources/template/service.ftl" />
-        </plugin>
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorServiceImplPlugin"  >
-            <property name="template" value="./src/main/resources/template/serviceImpl.ftl" />
-        </plugin>
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorControllerPlugin" >
-            <property name="template" value="./src/main/resources/template/controller.ftl" />
-        </plugin>
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorMapperJavaPlugin"  >
-            <property name="template" value="./src/main/resources/template/mapper.ftl" />
-        </plugin>
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorMapperXmlPlugin" >
-            <property name="template" value="./src/main/resources/template/mapper-xml.ftl" />
-        </plugin>
+        <!--<plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorUpdateModelPlugin"  >-->
+            <!--<property name="template" value="./src/main/resources/template/updateModel.ftl" />-->
+        <!--</plugin>-->
+        <!--<plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorServicePlugin"  >-->
+            <!--<property name="template" value="./src/main/resources/template/service.ftl" />-->
+        <!--</plugin>-->
+        <!--<plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorServiceImplPlugin"  >-->
+            <!--<property name="template" value="./src/main/resources/template/serviceImpl.ftl" />-->
+        <!--</plugin>-->
+        <!--<plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorControllerPlugin" >-->
+            <!--<property name="template" value="./src/main/resources/template/controller.ftl" />-->
+        <!--</plugin>-->
+        <!--<plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorMapperJavaPlugin"  >-->
+            <!--<property name="template" value="./src/main/resources/template/mapper.ftl" />-->
+        <!--</plugin>-->
+        <!--<plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorMapperXmlPlugin" >-->
+            <!--<property name="template" value="./src/main/resources/template/mapper-xml.ftl" />-->
+        <!--</plugin>-->
 
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorJsApiPlugin" >
-            <property name="template" value="./src/main/resources/template/js-api.ftl" />
-        </plugin>
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorListJsPlugin" >
-            <property name="template" value="./src/main/resources/template/list-js.ftl" />
-        </plugin>
+        <!--<plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorJsApiPlugin" >-->
+            <!--<property name="template" value="./src/main/resources/template/js-api.ftl" />-->
+        <!--</plugin>-->
+        <!--<plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorListJsPlugin" >-->
+            <!--<property name="template" value="./src/main/resources/template/list-js.ftl" />-->
+        <!--</plugin>-->
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorListHtmlPlugin" >
             <property name="template" value="./src/main/resources/template/list-html.ftl" />
         </plugin>
@@ -46,9 +46,9 @@
             <property name="template" value="./src/main/resources/template/js-module.ftl" />
         </plugin>
 
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorModelPlugin" >
-            <property name="template" value="./src/main/resources/template/model.ftl" />
-        </plugin>
+        <!--<plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorModelPlugin" >-->
+            <!--<property name="template" value="./src/main/resources/template/model.ftl" />-->
+        <!--</plugin>-->
         
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.ModelCommentPlugin" />
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.ModelAnnotationPlugin" />

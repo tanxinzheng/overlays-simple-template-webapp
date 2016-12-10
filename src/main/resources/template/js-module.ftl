@@ -17,14 +17,8 @@ define([
                 title: "${tableComment}",
                 name: 'app.${domainObjectName}',
                 url: '${restMapping}',
-                views: {
-                    '${domainObjectName}': angularAMD.route({
-                        controller: ${domainObjectName},
-                        //controllerUrl: "${moduleName}/${domainObjectUnderlineName}.js",
-                        templateUrl: 'modules/${moduleName}/${domainObjectUnderlineName}.html'
-                    })
-                },
-                sticky: true
+                controller: ${domainObjectName},
+                templateUrl: 'modules/${moduleName}/${domainObjectUnderlineName}.html'
             });
 
             angular.forEach(states, function(state){

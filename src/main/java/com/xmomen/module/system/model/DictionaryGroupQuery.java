@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:19
+ * @date    2016-12-7 0:55:25
  * @version 1.0.0
  */
 public @Data class DictionaryGroupQuery implements Serializable {

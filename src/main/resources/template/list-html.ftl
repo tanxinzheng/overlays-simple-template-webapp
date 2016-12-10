@@ -171,7 +171,11 @@
                             <span class="vaild">*</span>
                             </#if>
                         </label>
+                        <#if field['fieldType'] = 'Boolean'>
                         <div class="col-md-9 control-div">
+                        <#else>
+                        <div class="col-md-9">
+                        </#if>
                             <#if field['fieldType'] = 'Boolean'>
                             <label class="i-switch bg-primary m-r">
                                 <input type="checkbox" name="${field['fieldName']}"

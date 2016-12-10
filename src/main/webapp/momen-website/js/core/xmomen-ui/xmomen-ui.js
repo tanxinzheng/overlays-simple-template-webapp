@@ -52,7 +52,8 @@ define([
                 ]
             }
         ]
-    }).factory("HttpInterceptor", ["$q", "$log", function($q, $log){
+    }).factory("HttpInterceptor", ["$q", "$log", "$injector", function($q, $log, $injector){
+        var $dialog = null;
         return {
             request: function (config) {
                 if(config.method=='GET' && !config.cache){
@@ -68,16 +69,21 @@ define([
             },
             responseError:function(response){
                 $log.error("Response Error: ", response);
-                if(response.status == 401){
+                if(!$dialog){
+                    $dialog = $injector.get("$dialog");
+                }
+                if(response.status == 400){
+                    $dialog.error(response.data.message);
+                }else if(response.status == 401){
                     //未找到用户
                     window.location.reload();
                 }else if(response.status == 500){
-                    //$dialog.alert("系统操作异常，请联系管理员。");
+                    $dialog.error("系统操作异常，请联系管理员。");
                 }
                 return $q.reject(response);
             }
         }
-    }]).factory( 'Resource', [ '$resource', '$dialog', function( $resource , $dialog) {
+    }]).factory( 'Resource', [ '$resource', '$dialog', "Upload", "$timeout", function( $resource , $dialog, Upload, $timeout) {
         return function( url, params, methods ) {
             var defaults = {
                 query: {method: "GET", isArray: false},
@@ -112,27 +118,64 @@ define([
                     return thisResource.$delete(function(data,headers){
                         $dialog.success("删除成功");
                         success(data, headers);
-                    }, fail);
+                    }, function(data, headers){
+                        if(fail){
+                            fail(data.data, headers);
+                        }
+                    });
                 })
             };
 
             resource.$export = function(option, success, fail) {
-                $dialog.confirm("是否导出数据？").then(function(){
+                $dialog.confirm("是否以当前查询条件导出数据（包含当前所有分页数据）？").then(function(){
                     var params = "";
                     if(option && option.data){
                         for(var p in option.data){
                             if(option.data[p]){
-                                params += p + "=" + data[p] + "&";
+                                params += p + "=" + option.data[p] + "&";
                             }
                         }
                         params = "?"+params;
                     }
-                    var anchor = angular.element('<a/>');
+                    var anchor = angular.element("<iframe/>");
                     anchor.attr({
-                        href: option.url + params,
-                        target: '_blank'
-                    })[0].click();
-                    $dialog.success("已成功导出");
+                        style:"display:none",
+                        src: option.url + params,
+                        onLoad:function(){
+                            $dialog.success("已成功导出");
+                            $timeout(function(){
+                                anchor.remove();
+                            },2000)
+                        }
+                    });
+                    angular.element("body").append(anchor);
+                })
+            };
+
+            resource.$upload = function(option, success, fail) {
+                $dialog.confirm("是否导入文件？").then(function(){
+                    Upload.upload(option).then(function (data) {
+                        $dialog.success("文件上传成功");
+                        success(data.data, data.headers);
+                    }, function(data){
+                        var anchor = angular.element("<iframe/>");
+                        anchor.attr({
+                            style:"display:none",
+                            src: data.data.validResultUrl,
+                            onLoad:function(){
+                                $timeout(function(){
+                                    anchor.remove();
+                                },2000)
+                            }
+                        });
+                        angular.element("body").append(anchor);
+                        if(fail){
+                            fail(data.data, data.headers);
+                        }
+                    }, function (evt) {
+                        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+                    });
                 })
             };
 

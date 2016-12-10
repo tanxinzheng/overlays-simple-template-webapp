@@ -1,35 +1,27 @@
 package com.xmomen.module.system.controller;
 
-import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.web.exceptions.ArgumentValidException;
 import com.xmomen.module.logger.Log;
-import com.xmomen.module.system.entity.DictionaryGroup;
 import com.xmomen.module.system.model.DictionaryGroupCreate;
 import com.xmomen.module.system.model.DictionaryGroupModel;
 import com.xmomen.module.system.model.DictionaryGroupQuery;
 import com.xmomen.module.system.model.DictionaryGroupUpdate;
 import com.xmomen.module.system.service.DictionaryGroupService;
-import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.entity.ExportParams;
-import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:19
+ * @date    2016-12-7 0:55:25
  * @version 1.0.0
  */
 @RestController
@@ -155,40 +147,6 @@ public class DictionaryGroupController {
         modelMap.put(NormalExcelConstants.CLASS, DictionaryGroupModel.class);
         modelMap.put(NormalExcelConstants.DATA_LIST, dictionaryGroupList);
         return new ModelAndView(NormalExcelConstants.JEECG_EXCEL_VIEW);
-    }
-
-    /**
-     * 导入
-     * @param multipartFile
-     * @param modelMap
-     * @throws BusinessException
-     */
-    @RequestMapping(value="/import", method = RequestMethod.POST)
-    public void exportDictionaryGroup(
-            @RequestParam(value = "file") MultipartFile multipartFile,
-            ModelMap modelMap) throws BusinessException {
-        if(multipartFile.isEmpty()){
-            throw new BusinessException("请添加需要上传的文件");
-        }
-        try {
-            InputStream inputStream = multipartFile.getInputStream();
-            if(inputStream == null){
-
-            }
-            List<DictionaryGroup> dictionaryGroupList = new ArrayList<DictionaryGroup>();
-            ImportParams params = new ImportParams();
-            params.setTitleRows(0);
-            params.setHeadRows(1);
-            params.setNeedSave(true);
-            try {
-                dictionaryGroupList = ExcelImportUtil.importExcel(inputStream, DictionaryGroup.class, params);
-            } catch (Exception e) {
-                throw new BusinessException("读取失败，请联系管理员。");
-            }
-            dictionaryGroupService.createDictionaryGroup(dictionaryGroupList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 

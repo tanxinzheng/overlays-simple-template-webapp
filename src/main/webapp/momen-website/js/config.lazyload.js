@@ -68,6 +68,12 @@ define(function() {
                         ]
                     },
                     {
+                        name: 'ngFileUpload',
+                        files: [
+                            'bower_components/ng-file-upload/ng-file-upload.js'
+                        ]
+                    },
+                    {
                         name: 'ui.calendar',
                         files: ['js/vendor/angular/angular-ui-calendar/calendar.js']
                     },

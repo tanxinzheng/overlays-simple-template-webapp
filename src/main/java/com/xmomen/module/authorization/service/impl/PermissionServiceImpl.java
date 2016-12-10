@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,6 +44,29 @@ public class PermissionServiceImpl implements PermissionService {
             return getOnePermissionModel(permission.getId());
         }
         return null;
+    }
+
+    /**
+     * 批量新增权限
+     *
+     * @param permissionCreates 新增权限对象集合参数
+     * @return List<PermissionModel>    权限领域对象集合
+     */
+    @Override
+    @Transactional
+    public List<PermissionModel> createPermissions(List<PermissionCreate> permissionCreates) {
+        List<PermissionModel> permissionModelList = null;
+        for (PermissionCreate permissionCreate : permissionCreates) {
+            PermissionModel permissionModel = createPermission(permissionCreate);
+
+            if(permissionModel != null){
+                if(permissionModelList == null){
+                    permissionModelList = new ArrayList<>();
+                }
+                permissionModelList.add(permissionModel);
+            }
+        }
+        return permissionModelList;
     }
 
     /**

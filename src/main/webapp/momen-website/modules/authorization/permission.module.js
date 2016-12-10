@@ -22,7 +22,12 @@ define([
                 name: 'app.permission',
                 url: '/permission',
                 controller: permission,
-                templateUrl: 'modules/authorization/permission.html'
+                templateUrl: 'modules/authorization/permission.html',
+                resolve:{
+                    deps:["$ocLazyLoad", function($ocLazyLoad){
+                        return $ocLazyLoad.load("ngFileUpload");
+                    }]
+                }
             });
 
             angular.forEach(states, function(state){

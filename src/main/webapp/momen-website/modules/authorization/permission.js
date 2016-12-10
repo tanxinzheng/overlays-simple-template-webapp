@@ -152,8 +152,10 @@ define(function(){
             }
             if(choiceItems && choiceItems.length > 0){
                 $dialog.confirm("已勾选记录数：" + choiceItems.length + "，请确认是否删除已勾选数据").then(function(){
-                    PermissionAPI.delete({ids:choiceItems}, function(){
+                    PermissionAPI.delete({ids:choiceItems}, function(data, header){
                         $scope.getPermissionList();
+                    }, function(data, header){
+                        console.log(data);
                     });
                 })
             }else{
@@ -164,6 +166,18 @@ define(function(){
         $scope.batchExport = function(){
             PermissionAPI.export({
                 data:{keyword: $scope.queryParam.keyword}
+            });
+        };
+        // 导入
+        $scope.import = function(file){
+            if(!file){
+                return;
+            }
+            PermissionAPI.upload({
+                url: '/permission/upload',
+                data: {file: file}
+            }, function (resp) {
+                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
             });
         };
         var init = function(){

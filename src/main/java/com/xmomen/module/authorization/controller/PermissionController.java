@@ -1,22 +1,32 @@
 package com.xmomen.module.authorization.controller;
 
+import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.mybatis.page.Page;
+import com.xmomen.framework.poi.ExcelImportValidFailException;
 import com.xmomen.framework.web.exceptions.ArgumentValidException;
 import com.xmomen.module.authorization.model.PermissionCreate;
 import com.xmomen.module.authorization.model.PermissionModel;
 import com.xmomen.module.authorization.model.PermissionQuery;
 import com.xmomen.module.authorization.model.PermissionUpdate;
 import com.xmomen.module.authorization.service.PermissionService;
+import com.xmomen.module.authorization.service.impl.PermissionExcelDataHandler;
 import com.xmomen.module.logger.Log;
+import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.entity.ExportParams;
+import org.jeecgframework.poi.excel.entity.ImportParams;
+import org.jeecgframework.poi.excel.entity.result.ExcelImportResult;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
+import org.jeecgframework.poi.exception.excel.ExcelImportException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -129,7 +139,7 @@ public class PermissionController {
     * @param modelMap   modelMap对象
     * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
     */
-    @RequestMapping(value="/export", method = RequestMethod.GET)
+    @RequestMapping(value = "/export", method = RequestMethod.GET)
     public ModelAndView exportPermission(
             @RequestParam(value = "id", required = false) String id,
             @RequestParam(value = "ids", required = false) String[] ids,
@@ -149,5 +159,44 @@ public class PermissionController {
         return new ModelAndView(NormalExcelConstants.JEECG_EXCEL_VIEW);
     }
 
+
+    @Autowired
+    PermissionExcelDataHandler permissionExcelDataHandler;
+
+    /**
+     * 上传文件
+     * @param file  上传的Excel文件
+     * @return List<PermissionModel>    权限领域对象集合
+     */
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public List<PermissionModel> uploadPermissions(
+            @RequestParam(value = "file") MultipartFile file) throws BusinessException {
+        if(file.isEmpty()){
+            throw new BusinessException("上传的文件为空");
+        }
+        ImportParams importParams = new ImportParams();
+        importParams.setNeedVerfiy(true);
+        importParams.setDataHanlder(permissionExcelDataHandler);
+        InputStream inputStream = null;
+        List<PermissionCreate> list = null;
+        ExcelImportResult excelImportResult = null;
+        try {
+            inputStream = file.getInputStream();
+            excelImportResult = ExcelImportUtil.importExcelVerify(inputStream, PermissionCreate.class, importParams);
+        } catch (ExcelImportException e){
+            throw new BusinessException(e.getMessage(), e);
+        } catch (IOException e) {
+            throw new BusinessException(e.getMessage(), e);
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage(), e);
+        } finally {
+            //IOUtils.closeQuietly(inputStream);
+        }
+        if(excelImportResult.isVerfiyFail()){
+            throw new ExcelImportValidFailException(excelImportResult);
+        }
+        list = excelImportResult.getList();
+        return permissionService.createPermissions(list);
+    }
 
 }

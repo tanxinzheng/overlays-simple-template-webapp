@@ -60,18 +60,18 @@ define(function(){
         };
         // 新增
         $scope.add = function(index){
-            $scope.openModal(index, "ADD");
+            $scope.openModal("ADD", index);
         };
         // 查看
         $scope.view = function(index){
-            $scope.openModal(index, "VIEW");
+            $scope.openModal("VIEW", index);
         };
         // 修改
         $scope.update = function(index){
-            $scope.openModal(index, "UPDATE");
+            $scope.openModal("UPDATE", index);
         };
         // 弹出
-        $scope.openModal = function(index, action){
+        $scope.openModal = function(action, index){
             $modal.open({
                 templateUrl: '${domainObjectName}_detail.html',
                 modal:true,
@@ -80,7 +80,7 @@ define(function(){
                         var params = {
                             action: action
                         };
-                        if($scope.${domainObjectName}List[index] && $scope.${domainObjectName}List[index].id){
+                        if(index >= 0 && $scope.${domainObjectName}List[index] && $scope.${domainObjectName}List[index].id){
                             params.id = $scope.${domainObjectName}List[index].id;
                         }
                         return params;

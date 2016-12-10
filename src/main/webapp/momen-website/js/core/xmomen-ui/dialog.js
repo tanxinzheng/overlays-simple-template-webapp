@@ -36,7 +36,7 @@ define(["toaster","ui-bootstrap-tpls"], function(toaster){
                 }
                 //type, title, body, timeout, bodyOutputType, clickHandler)
                 angular.extend(defaultConfig, option);
-                toaster.pop(defaultConfig.type, defaultConfig.title, defaultConfig.text);
+                toaster.pop(defaultConfig.type, defaultConfig.title, defaultConfig.text, defaultConfig.timeout, defaultConfig.bodyOutputType, defaultConfig.clickHandler);
             },
             error : function(option){
                 var defaultConfig = {

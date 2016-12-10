@@ -2,7 +2,7 @@ package ${targetPackage};
 
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.web.exceptions.ArgumentValidException;
-//import com.xmomen.module.logger.Log;
+import com.xmomen.module.logger.Log;
 import ${modulePackage}.model.${domainObjectClassName}Create;
 import ${modulePackage}.model.${domainObjectClassName}Query;
 import ${modulePackage}.model.${domainObjectClassName}Update;
@@ -41,7 +41,7 @@ public class ${domainObjectClassName}Controller {
      * @return  Page<${domainObjectClassName}Model> ${tableComment}领域分页对象
      */
     @RequestMapping(method = RequestMethod.GET)
-    //@Log(actionName = "查询${tableComment}列表")
+    @Log(actionName = "查询${tableComment}列表")
     public Page<${domainObjectClassName}Model> get${domainObjectClassName}List(@RequestParam(value = "limit") Integer limit,
                                   @RequestParam(value = "offset") Integer offset,
                             <#if keywordColumns?exists >
@@ -66,7 +66,7 @@ public class ${domainObjectClassName}Controller {
      * @return  ${domainObjectClassName}Model   ${tableComment}领域对象
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    //@Log(actionName = "查询${tableComment}")
+    @Log(actionName = "查询${tableComment}")
     public ${domainObjectClassName}Model get${domainObjectClassName}ById(@PathVariable(value = "id") String id){
         return ${domainObjectName}Service.getOne${domainObjectClassName}Model(id);
     }
@@ -78,7 +78,7 @@ public class ${domainObjectClassName}Controller {
      * @return  ${domainObjectClassName}Model   ${tableComment}领域对象
      */
     @RequestMapping(method = RequestMethod.POST)
-    //@Log(actionName = "新增${tableComment}")
+    @Log(actionName = "新增${tableComment}")
     public ${domainObjectClassName}Model create${domainObjectClassName}(@RequestBody @Valid ${domainObjectClassName}Create ${domainObjectName}Create, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
             throw new ArgumentValidException(bindingResult);
@@ -94,7 +94,7 @@ public class ${domainObjectClassName}Controller {
      * @throws ArgumentValidException       参数校验异常类
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    //@Log(actionName = "更新${tableComment}")
+    @Log(actionName = "更新${tableComment}")
     public void update${domainObjectClassName}(@PathVariable(value = "id") String id,
                            @RequestBody @Valid ${domainObjectClassName}Update ${domainObjectName}Update, BindingResult bindingResult) throws ArgumentValidException {
         if(bindingResult != null && bindingResult.hasErrors()){
@@ -108,7 +108,7 @@ public class ${domainObjectClassName}Controller {
      * @param id    主键
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    //@Log(actionName = "删除单个${tableComment}")
+    @Log(actionName = "删除单个${tableComment}")
     public void delete${domainObjectClassName}(@PathVariable(value = "id") String id){
         ${domainObjectName}Service.delete${domainObjectClassName}(id);
     }
@@ -118,7 +118,7 @@ public class ${domainObjectClassName}Controller {
      * @param ids    主键
      */
     @RequestMapping(method = RequestMethod.DELETE)
-    //@Log(actionName = "批量删除${tableComment}")
+    @Log(actionName = "批量删除${tableComment}")
     public void delete${domainObjectClassName}s(@RequestParam(value = "ids") String[] ids){
         ${domainObjectName}Service.delete${domainObjectClassName}(ids);
     }

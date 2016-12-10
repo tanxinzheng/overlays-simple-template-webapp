@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:19
+ * @date    2016-12-7 1:47:07
  * @version 1.0.0
  */
 public @Data class DictionaryGroupCreate implements Serializable {
@@ -20,7 +20,7 @@ public @Data class DictionaryGroupCreate implements Serializable {
     /** 字典描述 */
     private String dictionaryDesc;
     /** 激活 */
-    private Boolean active;
+    private boolean active;
 
     public DictionaryGroup getEntity(){
         DictionaryGroup dictionaryGroup = new DictionaryGroup();
