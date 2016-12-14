@@ -32,7 +32,7 @@ public class PermissionExcelDataHandler implements IExcelDataHandler {
      */
     @Override
     public String[] getNeedHandlerFields() {
-        return new String[]{"权限代码"};
+        return new String[]{};
     }
 
     /**
@@ -50,7 +50,7 @@ public class PermissionExcelDataHandler implements IExcelDataHandler {
                 return "用户视图查询";
             }
         }
-        return value;
+        return null;
     }
 
     /**
@@ -60,7 +60,7 @@ public class PermissionExcelDataHandler implements IExcelDataHandler {
      */
     @Override
     public void setNeedHandlerFields(String[] fields) {
-        fields = new String[]{"permissionCode"};
+        //fields = new String[]{"permissionCode"};
     }
 
     /**

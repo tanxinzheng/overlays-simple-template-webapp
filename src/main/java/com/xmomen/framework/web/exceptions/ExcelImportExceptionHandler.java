@@ -49,7 +49,7 @@ public class ExcelImportExceptionHandler extends AbstractRestExceptionHandler {
             workbook.write(os);
             os.flush();
             os.close();
-            restError.setValidResultUrl("/download/temps?filename=" + encoderFileName);
+            restError.setValidResultUrl("/download/temps?file=" + encoderFileName);
         }
         return new ResponseEntity<ExcelImportResultModel>(restError, headers, HttpStatus.BAD_REQUEST);
     }

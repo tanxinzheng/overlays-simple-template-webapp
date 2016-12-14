@@ -10,7 +10,9 @@ import com.xmomen.module.authorization.model.PermissionQuery;
 import com.xmomen.module.authorization.model.PermissionUpdate;
 import com.xmomen.module.authorization.service.PermissionService;
 import com.xmomen.module.authorization.service.impl.PermissionExcelDataHandler;
+import com.xmomen.module.authorization.service.impl.PermissionExcelValidHandler;
 import com.xmomen.module.logger.Log;
+import org.apache.commons.io.IOUtils;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
@@ -163,6 +165,9 @@ public class PermissionController {
     @Autowired
     PermissionExcelDataHandler permissionExcelDataHandler;
 
+    @Autowired
+    PermissionExcelValidHandler permissionExcelValidHandler;
+
     /**
      * 上传文件
      * @param file  上传的Excel文件
@@ -176,6 +181,9 @@ public class PermissionController {
         }
         ImportParams importParams = new ImportParams();
         importParams.setNeedVerfiy(true);
+        importParams.setTitleRows(0);
+        importParams.setHeadRows(1);
+        importParams.setVerifyHanlder(permissionExcelValidHandler);
         importParams.setDataHanlder(permissionExcelDataHandler);
         InputStream inputStream = null;
         List<PermissionCreate> list = null;
@@ -190,7 +198,7 @@ public class PermissionController {
         } catch (Exception e) {
             throw new BusinessException(e.getMessage(), e);
         } finally {
-            //IOUtils.closeQuietly(inputStream);
+            IOUtils.closeQuietly(inputStream);
         }
         if(excelImportResult.isVerfiyFail()){
             throw new ExcelImportValidFailException(excelImportResult);
