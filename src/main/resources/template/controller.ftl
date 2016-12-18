@@ -79,10 +79,7 @@ public class ${domainObjectClassName}Controller {
      */
     @RequestMapping(method = RequestMethod.POST)
     @Log(actionName = "新增${tableComment}")
-    public ${domainObjectClassName}Model create${domainObjectClassName}(@RequestBody @Valid ${domainObjectClassName}Create ${domainObjectName}Create, BindingResult bindingResult) throws ArgumentValidException {
-        if(bindingResult != null && bindingResult.hasErrors()){
-            throw new ArgumentValidException(bindingResult);
-        }
+    public ${domainObjectClassName}Model create${domainObjectClassName}(@RequestBody @Valid ${domainObjectClassName}Create ${domainObjectName}Create) {
         return ${domainObjectName}Service.create${domainObjectClassName}(${domainObjectName}Create);
     }
 
@@ -96,10 +93,7 @@ public class ${domainObjectClassName}Controller {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @Log(actionName = "更新${tableComment}")
     public void update${domainObjectClassName}(@PathVariable(value = "id") String id,
-                           @RequestBody @Valid ${domainObjectClassName}Update ${domainObjectName}Update, BindingResult bindingResult) throws ArgumentValidException {
-        if(bindingResult != null && bindingResult.hasErrors()){
-            throw new ArgumentValidException(bindingResult);
-        }
+                           @RequestBody @Valid ${domainObjectClassName}Update ${domainObjectName}Update){
         ${domainObjectName}Service.update${domainObjectClassName}(${domainObjectName}Update);
     }
 

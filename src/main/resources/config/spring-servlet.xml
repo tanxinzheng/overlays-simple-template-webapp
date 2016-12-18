@@ -67,13 +67,17 @@
 		<property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
 	</bean>
 
-	<mvc:annotation-driven validator="validator">
+	<mvc:annotation-driven validator="validator" conversion-service="conversionService">
 		<mvc:message-converters>
 			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 				 <property name="objectMapper" ref="jacksonObjectMapper"></property>
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
+
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+
+	</bean>
 
 	<!-- ###########	信息国际化相关配置  Start	###############	-->
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
