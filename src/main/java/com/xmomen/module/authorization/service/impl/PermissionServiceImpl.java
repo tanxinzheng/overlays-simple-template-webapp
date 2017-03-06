@@ -58,7 +58,6 @@ public class PermissionServiceImpl implements PermissionService {
         List<PermissionModel> permissionModelList = null;
         for (PermissionCreate permissionCreate : permissionCreates) {
             PermissionModel permissionModel = createPermission(permissionCreate);
-
             if(permissionModel != null){
                 if(permissionModelList == null){
                     permissionModelList = new ArrayList<>();

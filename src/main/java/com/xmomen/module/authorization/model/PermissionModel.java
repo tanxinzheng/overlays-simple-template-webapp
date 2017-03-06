@@ -34,6 +34,7 @@ public @Data class PermissionModel implements Serializable {
     private Boolean active;
     /** 创建时间 */
     @Excel(name = "创建时间", exportFormat = "yyyyMMdd")
+
     private Date createDate;
     @JsonIgnore
     public Permission getEntity(){

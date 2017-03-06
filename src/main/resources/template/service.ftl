@@ -1,9 +1,7 @@
 package ${targetPackage};
 
 import com.xmomen.framework.mybatis.page.Page;
-import ${modulePackage}.model.${domainObjectClassName}Create;
 import ${modulePackage}.model.${domainObjectClassName}Query;
-import ${modulePackage}.model.${domainObjectClassName}Update;
 import ${modulePackage}.model.${domainObjectClassName}Model;
 import ${modulePackage}.entity.${domainObjectClassName};
 import org.apache.ibatis.exceptions.TooManyResultsException;
@@ -16,10 +14,10 @@ public interface ${domainObjectClassName}Service {
 
     /**
      * 新增${tableComment}
-     * @param  ${domainObjectName}Create   新增${tableComment}对象参数
+     * @param  ${domainObjectName}Model   新增${tableComment}对象参数
      * @return  ${domainObjectClassName}Model    ${tableComment}领域对象
      */
-    public ${domainObjectClassName}Model create${domainObjectClassName}(${domainObjectClassName}Create ${domainObjectName}Create);
+    public ${domainObjectClassName}Model create${domainObjectClassName}(${domainObjectClassName}Model ${domainObjectName}Model);
 
     /**
      * 新增${tableComment}实体对象
@@ -29,10 +27,17 @@ public interface ${domainObjectClassName}Service {
     public ${domainObjectClassName} create${domainObjectClassName}(${domainObjectClassName} ${domainObjectName});
 
     /**
+    * 批量新增${tableComment}
+    * @param ${domainObjectClassName}Model     新增${tableComment}对象集合参数
+    * @return List<${domainObjectClassName}Model>    ${tableComment}领域对象集合
+    */
+    List<${domainObjectClassName}Model> create${domainObjectClassName}s(List<${domainObjectClassName}Model> ${domainObjectName}Models);
+
+    /**
      * 更新${tableComment}
-     * @param ${domainObjectName}Update    更新${tableComment}对象参数
+     * @param ${domainObjectName}Model    更新${tableComment}对象参数
      */
-    public void update${domainObjectClassName}(${domainObjectClassName}Update ${domainObjectName}Update);
+    public void update${domainObjectClassName}(${domainObjectClassName}Model ${domainObjectName}Model);
 
     /**
      * 更新${tableComment}实体对象

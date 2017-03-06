@@ -27,6 +27,10 @@
 
 	<aop:aspectj-autoproxy />
 
+	<!--	swagger config	-->
+	<bean id="springSwaggerConfig" class="com.mangofactory.swagger.configuration.SpringSwaggerConfig" />
+	<bean id="documentationConfig" class="com.xmomen.module.core.web.ApplicationSwaggerConfig" />
+
 	<bean  class="com.xmomen.module.logger.aspect.LoggerAspect" />
 	<!-- ###########	数据字典翻译器  Start	###############	-->
 	<bean id="dictionaryAnnotationIntrospector" class="com.xmomen.framework.web.json.DictionaryAnnotationIntrospector">
@@ -61,6 +65,8 @@
 	</bean>
 
 	<mvc:resources mapping="/momen-website/**" location="/momen-website/"/>
+
+	<mvc:resources mapping="/doc/api/**" location="/doc/swagger-ui/dist/"/>
 
 	<!-- 以下 validator  ConversionService 在使用 mvc:annotation-driven 会 自动注册-->
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">

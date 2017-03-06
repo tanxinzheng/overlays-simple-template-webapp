@@ -99,16 +99,11 @@ public class PermissionController {
      * 更新权限
      * @param id                            主键
      * @param permissionUpdate 更新对象参数
-     * @param bindingResult                 参数校验结果
-     * @throws ArgumentValidException       参数校验异常类
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @Log(actionName = "更新权限")
     public void updatePermission(@PathVariable(value = "id") String id,
-                           @RequestBody @Valid PermissionUpdate permissionUpdate, BindingResult bindingResult) throws ArgumentValidException {
-        if(bindingResult != null && bindingResult.hasErrors()){
-            throw new ArgumentValidException(bindingResult);
-        }
+                           @RequestBody @Valid PermissionUpdate permissionUpdate) {
         permissionService.updatePermission(permissionUpdate);
     }
 
@@ -171,10 +166,9 @@ public class PermissionController {
     /**
      * 上传文件
      * @param file  上传的Excel文件
-     * @return List<PermissionModel>    权限领域对象集合
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public List<PermissionModel> uploadPermissions(
+    public void uploadPermissions(
             @RequestParam(value = "file") MultipartFile file) throws BusinessException {
         if(file.isEmpty()){
             throw new BusinessException("上传的文件为空");
@@ -204,7 +198,7 @@ public class PermissionController {
             throw new ExcelImportValidFailException(excelImportResult);
         }
         list = excelImportResult.getList();
-        return permissionService.createPermissions(list);
+        permissionService.createPermissions(list);
     }
 
 }

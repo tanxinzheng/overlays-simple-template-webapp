@@ -11,12 +11,12 @@
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorQueryModelPlugin"  >
             <property name="template" value="./src/main/resources/template/queryModel.ftl" />
         </plugin>
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorCreateModelPlugin"  >
-            <property name="template" value="./src/main/resources/template/createModel.ftl" />
-        </plugin>
-        <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorUpdateModelPlugin"  >
-            <property name="template" value="./src/main/resources/template/updateModel.ftl" />
-        </plugin>
+        <!--<plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorCreateModelPlugin"  >-->
+            <!--<property name="template" value="./src/main/resources/template/createModel.ftl" />-->
+        <!--</plugin>-->
+        <!--<plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorUpdateModelPlugin"  >-->
+            <!--<property name="template" value="./src/main/resources/template/updateModel.ftl" />-->
+        <!--</plugin>-->
         <plugin type="com.xmomen.maven.plugins.mybatis.generator.plugins.GeneratorServicePlugin"  >
             <property name="template" value="./src/main/resources/template/service.ftl" />
         </plugin>

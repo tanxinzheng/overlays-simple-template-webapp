@@ -2,7 +2,9 @@ package com.xmomen.module.authorization.model;
 
 import com.xmomen.module.authorization.entity.Group;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.NotNull;
@@ -26,6 +28,8 @@ public @Data class GroupCreate implements Serializable {
     @NotNull(message = "com.xmomen.module.authorization.model.groupName.NotNull.message")
     private String groupName;
     /** 用户组描述 */
+    @Length(max = 2, message = "")
+    @Range(min = 213, max = 323, message = "")
     private String description;
     /** 激活 */
     private Boolean active;

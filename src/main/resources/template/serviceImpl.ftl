@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,13 +30,13 @@ public class ${domainObjectClassName}ServiceImpl implements ${domainObjectClassN
     /**
      * 新增${tableComment}
      *
-     * @param ${domainObjectName}Create 新增${tableComment}对象参数
+     * @param ${domainObjectName}Model 新增${tableComment}对象参数
      * @return ${domainObjectClassName}Model    ${tableComment}领域对象
      */
     @Override
     @Transactional
-    public ${domainObjectClassName}Model create${domainObjectClassName}(${domainObjectClassName}Create ${domainObjectName}Create) {
-        ${domainObjectClassName} ${domainObjectName} = create${domainObjectClassName}(${domainObjectName}Create.getEntity());
+    public ${domainObjectClassName}Model create${domainObjectClassName}(${domainObjectClassName}Model ${domainObjectName}Model) {
+        ${domainObjectClassName} ${domainObjectName} = create${domainObjectClassName}(${domainObjectName}Model.getEntity());
         if(${domainObjectName} != null){
             return getOne${domainObjectClassName}Model(${domainObjectName}.getId());
         }
@@ -55,14 +56,36 @@ public class ${domainObjectClassName}ServiceImpl implements ${domainObjectClassN
     }
 
     /**
+    * 批量新增${tableComment}
+    *
+    * @param ${domainObjectName}Models 新增${tableComment}对象集合参数
+    * @return List<${domainObjectClassName}Model>    ${tableComment}领域对象集合
+    */
+    @Override
+    @Transactional
+    public List<${domainObjectClassName}Model> create${domainObjectClassName}s(List<${domainObjectClassName}Model> ${domainObjectName}Models) {
+        List<${domainObjectClassName}Model> ${domainObjectName}ModelList = null;
+        for (${domainObjectClassName}Model ${domainObjectName}Model : ${domainObjectName}Models) {
+            ${domainObjectName}Model = create${domainObjectClassName}(${domainObjectName}Model);
+            if(${domainObjectName}Model != null){
+                if(${domainObjectName}ModelList == null){
+                    ${domainObjectName}ModelList = new ArrayList<>();
+                }
+                ${domainObjectName}ModelList.add(${domainObjectName}Model);
+            }
+        }
+        return ${domainObjectName}ModelList;
+    }
+
+    /**
      * 更新${tableComment}
      *
-     * @param ${domainObjectName}Update 更新${tableComment}对象参数
+     * @param ${domainObjectName}Model 更新${tableComment}对象参数
      */
     @Override
     @Transactional
-    public void update${domainObjectClassName}(${domainObjectClassName}Update ${domainObjectName}Update) {
-        mybatisDao.update(${domainObjectName}Update.getEntity());
+    public void update${domainObjectClassName}(${domainObjectClassName}Model ${domainObjectName}Model) {
+        mybatisDao.update(${domainObjectName}Model.getEntity());
     }
 
     /**

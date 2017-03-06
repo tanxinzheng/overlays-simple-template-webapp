@@ -1,23 +1,31 @@
 package ${targetPackage};
 
+import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.mybatis.page.Page;
-import com.xmomen.framework.web.exceptions.ArgumentValidException;
+import com.xmomen.framework.poi.ExcelImportValidFailException;
 import com.xmomen.module.logger.Log;
-import ${modulePackage}.model.${domainObjectClassName}Create;
 import ${modulePackage}.model.${domainObjectClassName}Query;
-import ${modulePackage}.model.${domainObjectClassName}Update;
 import ${modulePackage}.model.${domainObjectClassName}Model;
 import ${modulePackage}.service.${domainObjectClassName}Service;
+
+import org.apache.commons.io.IOUtils;
+import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.entity.ExportParams;
+import org.jeecgframework.poi.excel.entity.ImportParams;
+import org.jeecgframework.poi.excel.entity.result.ExcelImportResult;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
+import org.jeecgframework.poi.exception.excel.ExcelImportException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.Serializable;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 <#include "header.ftl">
@@ -74,27 +82,24 @@ public class ${domainObjectClassName}Controller {
     /**
      * 新增${tableComment}
      * @param   ${domainObjectName}Create  新增对象参数
-     * @param   bindingResult   参数校验结果
      * @return  ${domainObjectClassName}Model   ${tableComment}领域对象
      */
     @RequestMapping(method = RequestMethod.POST)
     @Log(actionName = "新增${tableComment}")
-    public ${domainObjectClassName}Model create${domainObjectClassName}(@RequestBody @Valid ${domainObjectClassName}Create ${domainObjectName}Create) {
-        return ${domainObjectName}Service.create${domainObjectClassName}(${domainObjectName}Create);
+    public ${domainObjectClassName}Model create${domainObjectClassName}(@RequestBody @Valid ${domainObjectClassName}Model ${domainObjectName}Model) {
+        return ${domainObjectName}Service.create${domainObjectClassName}(${domainObjectName}Model);
     }
 
     /**
      * 更新${tableComment}
      * @param id                            主键
      * @param ${domainObjectName}Update 更新对象参数
-     * @param bindingResult                 参数校验结果
-     * @throws ArgumentValidException       参数校验异常类
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @Log(actionName = "更新${tableComment}")
     public void update${domainObjectClassName}(@PathVariable(value = "id") String id,
-                           @RequestBody @Valid ${domainObjectClassName}Update ${domainObjectName}Update){
-        ${domainObjectName}Service.update${domainObjectClassName}(${domainObjectName}Update);
+                           @RequestBody @Valid ${domainObjectClassName}Model ${domainObjectName}Model){
+        ${domainObjectName}Service.update${domainObjectClassName}(${domainObjectName}Model);
     }
 
     /**
@@ -150,6 +155,41 @@ public class ${domainObjectClassName}Controller {
         modelMap.put(NormalExcelConstants.CLASS, ${domainObjectClassName}Model.class);
         modelMap.put(NormalExcelConstants.DATA_LIST, ${domainObjectName}List);
         return new ModelAndView(NormalExcelConstants.JEECG_EXCEL_VIEW);
+    }
+
+    /**
+    * 上传文件
+    * @param file  上传的Excel文件
+    */
+    @RequestMapping(value = "/import", method = RequestMethod.POST)
+    public void importPermissions(@RequestParam(value = "file") MultipartFile file) throws BusinessException {
+        if(file.isEmpty()){
+            throw new BusinessException("上传失败，文件为空");
+        }
+        ImportParams importParams = new ImportParams();
+        importParams.setNeedVerfiy(true);
+        importParams.setTitleRows(0);
+        importParams.setHeadRows(1);
+        InputStream inputStream = null;
+        List<${domainObjectClassName}Model> list = null;
+        ExcelImportResult excelImportResult = null;
+        try {
+            inputStream = file.getInputStream();
+            excelImportResult = ExcelImportUtil.importExcelVerify(inputStream, ${domainObjectClassName}Model.class, importParams);
+        } catch (ExcelImportException e){
+            throw new BusinessException(e.getMessage(), e);
+        } catch (IOException e) {
+            throw new BusinessException(e.getMessage(), e);
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage(), e);
+        } finally {
+            IOUtils.closeQuietly(inputStream);
+        }
+        if(excelImportResult.isVerfiyFail()){
+            throw new ExcelImportValidFailException(excelImportResult);
+        }
+        list = excelImportResult.getList();
+        ${domainObjectName}Service.create${domainObjectClassName}s(list);
     }
 
 
