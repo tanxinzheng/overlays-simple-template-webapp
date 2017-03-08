@@ -1,0 +1,3 @@
+[submodule "src/main/webapp/xmomen-website"]
+	path = src/main/webapp/xmomen-website
+	url = https://github.com/tanxinzheng/xmomen-website.git
