@@ -88,10 +88,7 @@ public class PermissionController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @Log(actionName = "新增权限")
-    public PermissionModel createPermission(@RequestBody @Valid PermissionCreate permissionCreate, BindingResult bindingResult) throws ArgumentValidException {
-        if(bindingResult != null && bindingResult.hasErrors()){
-            throw new ArgumentValidException(bindingResult);
-        }
+    public PermissionModel createPermission(@RequestBody @Valid PermissionCreate permissionCreate){
         return permissionService.createPermission(permissionCreate);
     }
 

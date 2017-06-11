@@ -2,17 +2,16 @@
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:19
+ * @date    2017-5-26 15:50:34
  * @version 1.0.0
  */
 define([
     "angularAMD",
     "./dictionary.api",
-    "./dictionary",
-    "./dictionary_group.api"
-],function(angularAMD, DictionaryRest, dictionary, DictionaryGroupRest){
+    "./dictionary"
+],function(angularAMD, DictionaryRest, dictionary){
     angular.module('dictionary.module',[
-        "Dictionary.REST", "DictionaryGroup.REST"
+        "Dictionary.REST"
     ]).config(['$stateProvider', '$urlRouterProvider',
         function ($stateProvider,   $urlRouterProvider) {
 
@@ -23,12 +22,7 @@ define([
                 name: 'app.dictionary',
                 url: '/dictionary',
                 controller: dictionary,
-                templateUrl: 'modules/system/dictionary.html',
-                resolve: {
-                    deps: ['$ocLazyLoad', function( $ocLazyLoad ){
-                        return $ocLazyLoad.load('ui.select');
-                    }]
-                }
+                templateUrl: 'modules/system/dictionary.html'
             });
 
             angular.forEach(states, function(state){

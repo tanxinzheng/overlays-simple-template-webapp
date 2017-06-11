@@ -1,7 +1,6 @@
 package com.xmomen.module.user.controller;
 
 import com.xmomen.framework.mybatis.page.Page;
-import com.xmomen.framework.web.exceptions.ArgumentValidException;
 import com.xmomen.module.authorization.entity.UserGroup;
 import com.xmomen.module.authorization.entity.UserPermission;
 import com.xmomen.module.authorization.model.GroupModel;
@@ -22,7 +21,6 @@ import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -86,10 +84,7 @@ public class UserController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @Log(actionName = "新增用户")
-    public UserModel createUser(@RequestBody @Valid UserCreate userCreate, BindingResult bindingResult) throws ArgumentValidException {
-        if(bindingResult != null && bindingResult.hasErrors()){
-            throw new ArgumentValidException(bindingResult);
-        }
+    public UserModel createUser(@RequestBody @Valid UserCreate userCreate){
         return userService.createUser(userCreate);
     }
 
@@ -103,10 +98,7 @@ public class UserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @Log(actionName = "更新用户")
     public void updateUser(@PathVariable(value = "id") String id,
-                           @RequestBody @Valid UserUpdate userUpdate, BindingResult bindingResult) throws ArgumentValidException {
-        if(bindingResult != null && bindingResult.hasErrors()){
-            throw new ArgumentValidException(bindingResult);
-        }
+                           @RequestBody @Valid UserUpdate userUpdate){
         userService.updateUser(userUpdate);
     }
 

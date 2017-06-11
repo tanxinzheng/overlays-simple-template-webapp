@@ -1,44 +1,43 @@
 package com.xmomen.module.system.service.impl;
 
-import com.xmomen.framework.mybatis.dao.MybatisDao;
-import com.xmomen.framework.mybatis.page.Page;
-import com.xmomen.module.system.entity.Dictionary;
-import com.xmomen.module.system.entity.DictionaryExample;
-import com.xmomen.module.system.mapper.DictionaryMapperExt;
-import com.xmomen.module.system.model.DictionaryCreate;
+import com.xmomen.framework.mybatis.page.PageInterceptor;
+import com.xmomen.module.system.model.Dictionary;
+import com.xmomen.module.system.mapper.DictionaryMapper;
 import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.model.DictionaryQuery;
-import com.xmomen.module.system.model.DictionaryUpdate;
 import com.xmomen.module.system.service.DictionaryService;
+import com.xmomen.framework.mybatis.page.Page;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:19
+ * @date    2017-6-11 1:07:45
  * @version 1.0.0
  */
 @Service
 public class DictionaryServiceImpl implements DictionaryService {
 
     @Autowired
-    MybatisDao mybatisDao;
+    DictionaryMapper dictionaryMapper;
 
     /**
      * 新增数据字典
      *
-     * @param dictionaryCreate 新增数据字典对象参数
+     * @param dictionaryModel 新增数据字典对象参数
      * @return DictionaryModel    数据字典领域对象
      */
     @Override
     @Transactional
-    public DictionaryModel createDictionary(DictionaryCreate dictionaryCreate) {
-        Dictionary dictionary = createDictionary(dictionaryCreate.getEntity());
+    public DictionaryModel createDictionary(DictionaryModel dictionaryModel) {
+        Dictionary dictionary = createDictionary(dictionaryModel.getEntity());
         if(dictionary != null){
             return getOneDictionaryModel(dictionary.getId());
         }
@@ -54,18 +53,53 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     @Transactional
     public Dictionary createDictionary(Dictionary dictionary) {
-        return mybatisDao.insertByModel(dictionary);
+        dictionaryMapper.insertSelective(dictionary);
+        return dictionary;
+    }
+
+    /**
+    * 批量新增数据字典
+    *
+    * @param dictionaryModels 新增数据字典对象集合参数
+    * @return List<DictionaryModel>    数据字典领域对象集合
+    */
+    @Override
+    @Transactional
+    public List<DictionaryModel> createDictionarys(List<DictionaryModel> dictionaryModels) {
+        List<DictionaryModel> dictionaryModelList = null;
+        for (DictionaryModel dictionaryModel : dictionaryModels) {
+            dictionaryModel = createDictionary(dictionaryModel);
+            if(dictionaryModel != null){
+                if(dictionaryModelList == null){
+                    dictionaryModelList = new ArrayList<>();
+                }
+                dictionaryModelList.add(dictionaryModel);
+            }
+        }
+        return dictionaryModelList;
+    }
+
+    /**
+    * 更新数据字典
+    *
+    * @param dictionaryModel 更新数据字典对象参数
+    * @param dictionaryQuery 过滤数据字典对象参数
+    */
+    @Override
+    @Transactional
+    public void updateDictionary(DictionaryModel dictionaryModel, DictionaryQuery dictionaryQuery) {
+        dictionaryMapper.updateSelectiveByQuery(dictionaryModel.getEntity(), dictionaryQuery);
     }
 
     /**
      * 更新数据字典
      *
-     * @param dictionaryUpdate 更新数据字典对象参数
+     * @param dictionaryModel 更新数据字典对象参数
      */
     @Override
     @Transactional
-    public void updateDictionary(DictionaryUpdate dictionaryUpdate) {
-        mybatisDao.update(dictionaryUpdate.getEntity());
+    public void updateDictionary(DictionaryModel dictionaryModel) {
+        updateDictionary(dictionaryModel.getEntity());
     }
 
     /**
@@ -77,7 +111,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     @Transactional
     public void updateDictionary(Dictionary dictionary) {
-        mybatisDao.update(dictionary);
+        dictionaryMapper.updateSelective(dictionary);
     }
 
     /**
@@ -88,9 +122,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     @Transactional
     public void deleteDictionary(String[] ids) {
-        DictionaryExample dictionaryExample = new DictionaryExample();
-        dictionaryExample.createCriteria().andIdIn(Arrays.asList((String[]) ids));
-        mybatisDao.deleteByExample(dictionaryExample);
+        dictionaryMapper.deletesByPrimaryKey(Arrays.asList(ids));
     }
 
     /**
@@ -101,32 +133,20 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     @Transactional
     public void deleteDictionary(String id) {
-        mybatisDao.deleteByPrimaryKey(Dictionary.class, id);
+        dictionaryMapper.deleteByPrimaryKey(id);
     }
 
     /**
      * 查询数据字典领域分页对象（带参数条件）
      *
-     * @param limit     每页最大数
-     * @param offset    页码
      * @param dictionaryQuery 查询参数
      * @return Page<DictionaryModel>   数据字典参数对象
      */
     @Override
-    public Page<DictionaryModel> getDictionaryModelPage(int limit, int offset, DictionaryQuery dictionaryQuery) {
-        return (Page<DictionaryModel>) mybatisDao.selectPage(DictionaryMapperExt.DictionaryMapperNameSpace + "getDictionaryModel", dictionaryQuery, limit, offset);
-    }
-
-    /**
-     * 查询数据字典领域分页对象（无参数条件）
-     *
-     * @param limit  每页最大数
-     * @param offset 页码
-     * @return Page<DictionaryModel> 数据字典领域对象
-     */
-    @Override
-    public Page<DictionaryModel> getDictionaryModelPage(int limit, int offset) {
-        return (Page<DictionaryModel>) mybatisDao.selectPage(DictionaryMapperExt.DictionaryMapperNameSpace + "getDictionaryModel", null, limit, offset);
+    public Page<DictionaryModel> getDictionaryModelPage(DictionaryQuery dictionaryQuery) {
+        PageInterceptor.startPage(dictionaryQuery);
+        dictionaryMapper.selectModel(dictionaryQuery);
+        return PageInterceptor.endPage();
     }
 
     /**
@@ -137,17 +157,7 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     public List<DictionaryModel> getDictionaryModelList(DictionaryQuery dictionaryQuery) {
-        return mybatisDao.getSqlSessionTemplate().selectList(DictionaryMapperExt.DictionaryMapperNameSpace + "getDictionaryModel", dictionaryQuery);
-    }
-
-    /**
-     * 查询数据字典领域集合对象（无参数条件）
-     *
-     * @return List<DictionaryModel> 数据字典领域集合对象
-     */
-    @Override
-    public List<DictionaryModel> getDictionaryModelList() {
-        return mybatisDao.getSqlSessionTemplate().selectList(DictionaryMapperExt.DictionaryMapperNameSpace + "getDictionaryModel");
+        return dictionaryMapper.selectModel(dictionaryQuery);
     }
 
     /**
@@ -158,7 +168,7 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     public Dictionary getOneDictionary(String id) {
-        return mybatisDao.selectByPrimaryKey(Dictionary.class, id);
+        return dictionaryMapper.selectByPrimaryKey(id);
     }
 
     /**
@@ -169,9 +179,7 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     public DictionaryModel getOneDictionaryModel(String id) {
-        DictionaryQuery dictionaryQuery = new DictionaryQuery();
-        dictionaryQuery.setId(id);
-        return mybatisDao.getSqlSessionTemplate().selectOne(DictionaryMapperExt.DictionaryMapperNameSpace + "getDictionaryModel", dictionaryQuery);
+        return dictionaryMapper.selectModelByPrimaryKey(id);
     }
 
     /**
@@ -182,6 +190,13 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     public DictionaryModel getOneDictionaryModel(DictionaryQuery dictionaryQuery) throws TooManyResultsException {
-        return mybatisDao.getSqlSessionTemplate().selectOne(DictionaryMapperExt.DictionaryMapperNameSpace + "getDictionaryModel", dictionaryQuery);
+        List<DictionaryModel> dictionaryModelList = dictionaryMapper.selectModel(dictionaryQuery);
+        if(CollectionUtils.isEmpty(dictionaryModelList)){
+            return null;
+        }
+        if(dictionaryModelList.size() > 1){
+            throw new TooManyResultsException();
+        }
+        return dictionaryModelList.get(0);
     }
 }

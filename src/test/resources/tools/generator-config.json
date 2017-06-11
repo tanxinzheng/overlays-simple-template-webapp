@@ -1,0 +1,37 @@
+{
+  "dataSource":{
+    "driver":"com.mysql.jdbc.Driver",
+    "url":"jdbc:mysql://121.40.156.26:3306/pms?useUnicode=true&amp;characterEncoding=utf8",
+    "username":"root",
+    "password":"fuckyoumysql"
+  },
+  "metadata":{
+    "ignoreKeywordValidate":true,
+    "templates":{
+      "ServiceTest":{
+        "fileExt":"ServiceTest.java",
+        "templateFileName":"src/test/resources/templates/serviceTest.ftl",
+        "targetPackage":"service",
+        "targetProject":"src/test/java"
+      }
+    },
+    "overwriteTemplates":{
+      "ControllerTest":"src/test/resources/templates/controllerTest.ftl",
+      "Controller":"src/test/resources/templates/controller.ftl",
+      "Model":"src/test/resources/templates/model.ftl",
+      "Service":"src/test/resources/templates/service.ftl",
+      "ServiceImpl":"src/test/resources/templates/serviceImpl.ftl",
+      "Mapper":"src/test/resources/templates/mapper.ftl",
+      "MapperXml":"src/test/resources/templates/mapperXml.ftl"
+    }
+  },
+  "tables":[
+    {
+      "domainObjectName":"dictionary",
+      "tableComment":"数据字典",
+      "tableName":"xmo_dictionary",
+      "modulePackage":"com.xmomen.module.system",
+      "restMapping":"/dictionary"
+    }
+  ]
+}

@@ -23,11 +23,11 @@ public class DefaultDictionaryInterpreterService implements DictionaryInterprete
     @Override
     public String translate(String dictionaryType, String dictionaryCode) {
         DictionaryQuery dictionaryQuery = new DictionaryQuery();
-        dictionaryQuery.setDictionaryType(dictionaryType);
-        dictionaryQuery.setDictionaryCode(dictionaryCode);
+        dictionaryQuery.setCode(dictionaryCode);
+        dictionaryQuery.setType(dictionaryType);
         DictionaryModel dictionaryModel = dictionaryService.getOneDictionaryModel(dictionaryQuery);
         if(dictionaryModel != null){
-            return dictionaryModel.getName();
+            return dictionaryModel.getDictionaryName();
         }
         return null;
     }

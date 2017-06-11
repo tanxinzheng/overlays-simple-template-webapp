@@ -82,7 +82,11 @@
 	</mvc:annotation-driven>
 
 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
-
+		<property name="formatters">
+			<set>
+				<bean class="org.springframework.format.datetime.DateFormatter"></bean>
+			</set>
+		</property>
 	</bean>
 
 	<!-- ###########	信息国际化相关配置  Start	###############	-->
@@ -140,7 +144,7 @@
 	<!-- 异常统一处理 -->
 	<bean id="exceptionHandlerExceptionResolver" class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver"/>
 
-	<bean id="handlerExceptionResolver" class="com.xmomen.module.core.web.exception.GlobalMappingExceptionResolver">
+	<bean id="handlerExceptionResolver" class="com.xmomen.framework.web.rest.RestExceptionResolver">
 		<property name="exceptionMappings">
 			<props>
 				<prop key="java.lang.Exception">errors/error</prop>

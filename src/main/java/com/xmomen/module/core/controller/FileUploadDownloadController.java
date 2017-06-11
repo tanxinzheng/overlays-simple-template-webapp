@@ -1,7 +1,8 @@
 package com.xmomen.module.core.controller;
 
-import com.xmomen.commons.Base64Utils;
+//import com.xmomen.commons.Base64Utils;
 import com.xmomen.framework.exception.BusinessException;
+import com.xmomen.framework.utils.Base64Utils;
 import com.xmomen.framework.utils.StringUtilsExt;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpHeaders;

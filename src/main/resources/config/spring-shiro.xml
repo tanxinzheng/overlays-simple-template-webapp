@@ -88,6 +88,15 @@
         <property name="rememberMeManager" ref="rememberMeManager"/>
     </bean>
 
+    <!-- 启用注解权限控制方式 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+        <property name="proxyTargetClass" value="true" />
+    </bean>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
     <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
@@ -121,6 +130,8 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
+                /doc/** = anon
+                /api-docs/** = anon
                 /errors/** = anon
                 /unauthorized = anon
                 /register/** = anon

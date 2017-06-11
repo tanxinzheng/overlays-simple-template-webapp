@@ -29,7 +29,6 @@ public abstract class AbstractRestExceptionHandler {
             restError.setStatus(status.value());
             return new ResponseEntity(restError, headers, status);
         }
-
         return new ResponseEntity(body, headers, status);
     }
 }
