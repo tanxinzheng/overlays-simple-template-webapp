@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,6 +54,9 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     @Transactional
     public Dictionary createDictionary(Dictionary dictionary) {
+        dictionary.setCreatedTime(new Date());
+        dictionary.setUpdatedTime(new Date());
+        dictionary.setDataVersion(1);
         dictionaryMapper.insertSelective(dictionary);
         return dictionary;
     }

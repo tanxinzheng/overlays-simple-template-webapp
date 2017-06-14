@@ -31,6 +31,7 @@
 	<import resource="classpath:config/spring-jdbc.xml" />
 	<import resource="classpath:config/spring-mybatis.xml" />
 	<import resource="classpath:config/spring-shiro.xml" />
+	<!--<import resource="classpath:config/spring-shiro-stateless.xml" />-->
 	<import resource="classpath:deployerConfigContext.xml" />
 
 </beans>

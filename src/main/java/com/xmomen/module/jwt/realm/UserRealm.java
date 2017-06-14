@@ -1,4 +1,4 @@
-package com.xmomen.module.shiro.realm;
+package com.xmomen.module.jwt.realm;
 
 import com.xmomen.module.core.service.AccountService;
 import org.apache.shiro.authc.*;

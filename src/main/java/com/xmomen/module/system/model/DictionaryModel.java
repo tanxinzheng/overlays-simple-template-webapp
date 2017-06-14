@@ -14,11 +14,12 @@ import org.springframework.beans.BeanUtils;
 import java.lang.Boolean;
 import java.lang.String;
 import java.lang.Integer;
+import java.util.Date;
 import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2017-6-11 1:07:45
+ * @date    2017-6-12 1:53:38
  * @version 1.0.0
  */
 @ExcelTarget(value = "DictionaryModel")
@@ -64,6 +65,23 @@ public @Data class DictionaryModel extends BaseModel implements Serializable {
     @Excel(name = "显示")
     @NotNull(message = "显示为必填项")
     private Boolean isShow;
+    /** 创建人 */
+    @Excel(name = "创建人")
+    @Length(max = 32, message = "创建人字符长度限制[0,32]")
+    private String createdUserId;
+    /** 创建时间 */
+    @Excel(name = "创建时间")
+    private Date createdTime;
+    /** 更新人 */
+    @Excel(name = "更新人")
+    @Length(max = 32, message = "更新人字符长度限制[0,32]")
+    private String updatedUserId;
+    /** 更新时间 */
+    @Excel(name = "更新时间")
+    private Date updatedTime;
+    /** 数据版本号 */
+    @Range(max = 999999999, min = -999999999, message = "数据版本号数值范围[999999999,-999999999]")
+    private Integer dataVersion;
 
     /**
     * Get Dictionary Entity Object

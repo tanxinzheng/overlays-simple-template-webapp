@@ -1,4 +1,4 @@
-package com.xmomen.module.core.web.filter;
+package com.xmomen.module.jwt.filter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xmomen.framework.web.rest.WebCommonUtils;

@@ -20,7 +20,7 @@ public @Data class AccountModel implements Serializable {
     private List<NavItem> navItems;
     private List<Role> roles;
 
-    public static class NavItem {
+    public static class NavItem implements Serializable {
         private String url;
         private String name;
         private String title;

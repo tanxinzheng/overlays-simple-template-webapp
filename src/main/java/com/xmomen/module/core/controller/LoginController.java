@@ -1,27 +1,23 @@
 package com.xmomen.module.core.controller;
 
+import com.xmomen.module.shiro.filter.JWTOrFormAuthenticationFilter;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.security.auth.login.AccountLockedException;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by Jeng on 2016/1/5.
  */
 @Controller
 public class LoginController {
-
-    private static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     /**
      * 用户登陆页面
@@ -30,9 +26,9 @@ public class LoginController {
      * @return          页面跳转地址
      */
     @RequestMapping(value = "/login")
-    public String login(HttpServletRequest request, Model model){
+    public String login(HttpServletRequest request, HttpServletResponse response, Model model){
         if(SecurityUtils.getSubject().isAuthenticated()){
-            return "redirect:/";
+            return "forward:/";
         }
         String exceptionClassName = (String)request.getAttribute("shiroLoginFailure");
         String error = null;
@@ -50,5 +46,17 @@ public class LoginController {
         model.addAttribute("error", error);
         return "login";
     }
+
+//    @ResponseBody
+//    @RequestMapping(value = "/login/token",method = RequestMethod.POST)
+//    public String login(@RequestParam(value = "username") String username,
+//                                @RequestParam(value = "password") String password){
+//        Key key = MacProvider.generateKey();
+//        String compactJws = Jwts.builder()
+//                .setSubject(username)
+//                .signWith(SignatureAlgorithm.HS512, key)
+//                .compact();
+//        return null;
+//    }
 
 }

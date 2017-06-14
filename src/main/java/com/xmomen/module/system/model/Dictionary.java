@@ -6,11 +6,12 @@ import com.xmomen.framework.model.BaseEntity;
 import java.lang.Boolean;
 import java.lang.String;
 import java.lang.Integer;
+import java.util.Date;
 import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2017-6-11 1:07:45
+ * @date    2017-6-12 1:53:38
  * @version 1.0.0
  */
 public @Data class Dictionary extends BaseEntity implements Serializable {
@@ -33,5 +34,16 @@ public @Data class Dictionary extends BaseEntity implements Serializable {
     private String parentId;
     /** 显示 */
     private Boolean isShow;
+    /** 创建人 */
+    private String createdUserId;
+    /** 创建时间 */
+    private Date createdTime;
+    /** 更新人 */
+    private String updatedUserId;
+    /** 更新时间 */
+    private Date updatedTime;
+    /** 数据版本号 */
+    private Integer dataVersion;
+
 
 }

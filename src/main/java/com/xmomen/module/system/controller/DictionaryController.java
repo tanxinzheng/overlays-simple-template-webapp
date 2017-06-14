@@ -3,6 +3,7 @@ package com.xmomen.module.system.controller;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.logger.ActionLog;
+import com.xmomen.framework.web.controller.BaseRestController;
 import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.service.DictionaryService;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/dictionary")
-public class DictionaryController {
+public class DictionaryController extends BaseRestController {
 
     public static final String PERMISSION_DICTIONARY_CREATE = "dictionary:create";
     public static final String PERMISSION_DICTIONARY_DELETE = "dictionary:delete";
@@ -72,6 +73,8 @@ public class DictionaryController {
     @RequiresPermissions(value = {PERMISSION_DICTIONARY_CREATE})
     @RequestMapping(method = RequestMethod.POST)
     public DictionaryModel createDictionary(@RequestBody @Valid DictionaryModel dictionaryModel) {
+        dictionaryModel.setCreatedUserId(getCurrentUserId());
+        dictionaryModel.setUpdatedUserId(getCurrentUserId());
         return dictionaryService.createDictionary(dictionaryModel);
     }
 
@@ -90,6 +93,8 @@ public class DictionaryController {
         if(StringUtils.isNotBlank(id)){
             dictionaryModel.setId(id);
         }
+        dictionaryModel.setCreatedUserId(getCurrentUserId());
+        dictionaryModel.setUpdatedUserId(getCurrentUserId());
         dictionaryService.updateDictionary(dictionaryModel);
         return dictionaryService.getOneDictionaryModel(id);
     }

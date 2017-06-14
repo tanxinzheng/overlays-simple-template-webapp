@@ -45,8 +45,8 @@
                 <if test="updatedTime != null" >
                     UPDATED_TIME,
                 </if>
-                <if test="show != null" >
-                    `SHOW`,
+                <if test="dataVersion != null" >
+                    DATA_VERSION,
                 </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -87,8 +87,8 @@
                 <if test="updatedTime != null" >
                 #{updatedTime},
                 </if>
-                <if test="show != null" >
-                #{show},
+                <if test="dataVersion != null" >
+                #{dataVersion},
                 </if>
         </trim>
     </insert>
@@ -146,8 +146,8 @@
             <if test="updatedTime != null" >
             UPDATED_TIME = #{updatedTime},
             </if>
-            <if test="show != null" >
-            `SHOW` = #{show},
+            <if test="dataVersion != null" >
+            DATA_VERSION = #{dataVersion},
             </if>
         </set>
         WHERE ID = #{id}
@@ -195,8 +195,8 @@
             <if test="record.updatedTime != null" >
             UPDATED_TIME = #{updatedTime},
             </if>
-            <if test="record.show != null" >
-            `SHOW` = #{show},
+            <if test="record.dataVersion != null" >
+            DATA_VERSION = #{dataVersion},
             </if>
         </set>
         <if test="query != null" >

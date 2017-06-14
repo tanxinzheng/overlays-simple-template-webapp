@@ -3,6 +3,7 @@ package ${targetPackage};
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.logger.ActionLog;
+import com.xmomen.framework.web.controller.BaseRestController;
 import ${modulePackage}.model.${domainObjectClassName}Query;
 import ${modulePackage}.model.${domainObjectClassName}Model;
 import ${modulePackage}.service.${domainObjectClassName}Service;
@@ -18,7 +19,7 @@ import java.util.List;
 <#include "header.ftl">
 @RestController
 @RequestMapping(value = "${restMapping}")
-public class ${domainObjectClassName}Controller {
+public class ${domainObjectClassName}Controller extends BaseRestController {
 
     public static final String PERMISSION_${domainObjectClassName?upper_case}_CREATE = "${domainObjectName?lower_case}:create";
     public static final String PERMISSION_${domainObjectClassName?upper_case}_DELETE = "${domainObjectName?lower_case}:delete";
@@ -68,6 +69,8 @@ public class ${domainObjectClassName}Controller {
     @RequiresPermissions(value = {PERMISSION_${domainObjectClassName?upper_case}_CREATE})
     @RequestMapping(method = RequestMethod.POST)
     public ${domainObjectClassName}Model create${domainObjectClassName}(@RequestBody @Valid ${domainObjectClassName}Model ${domainObjectName}Model) {
+        ${domainObjectName}Model.setCreatedUserId(getCurrentUserId());
+        ${domainObjectName}Model.setUpdatedUserId(getCurrentUserId());
         return ${domainObjectName}Service.create${domainObjectClassName}(${domainObjectName}Model);
     }
 
@@ -86,6 +89,8 @@ public class ${domainObjectClassName}Controller {
         if(StringUtils.isNotBlank(id)){
             ${domainObjectName}Model.set${primaryKeyColumn.columnName?cap_first}(id);
         }
+        ${domainObjectName}Model.setCreatedUserId(getCurrentUserId());
+        ${domainObjectName}Model.setUpdatedUserId(getCurrentUserId());
         ${domainObjectName}Service.update${domainObjectClassName}(${domainObjectName}Model);
         return ${domainObjectName}Service.getOne${domainObjectClassName}Model(id);
     }
