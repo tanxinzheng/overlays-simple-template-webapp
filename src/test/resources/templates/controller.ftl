@@ -69,8 +69,6 @@ public class ${domainObjectClassName}Controller extends BaseRestController {
     @RequiresPermissions(value = {PERMISSION_${domainObjectClassName?upper_case}_CREATE})
     @RequestMapping(method = RequestMethod.POST)
     public ${domainObjectClassName}Model create${domainObjectClassName}(@RequestBody @Valid ${domainObjectClassName}Model ${domainObjectName}Model) {
-        ${domainObjectName}Model.setCreatedUserId(getCurrentUserId());
-        ${domainObjectName}Model.setUpdatedUserId(getCurrentUserId());
         return ${domainObjectName}Service.create${domainObjectClassName}(${domainObjectName}Model);
     }
 
@@ -89,8 +87,6 @@ public class ${domainObjectClassName}Controller extends BaseRestController {
         if(StringUtils.isNotBlank(id)){
             ${domainObjectName}Model.set${primaryKeyColumn.columnName?cap_first}(id);
         }
-        ${domainObjectName}Model.setCreatedUserId(getCurrentUserId());
-        ${domainObjectName}Model.setUpdatedUserId(getCurrentUserId());
         ${domainObjectName}Service.update${domainObjectClassName}(${domainObjectName}Model);
         return ${domainObjectName}Service.getOne${domainObjectClassName}Model(id);
     }
@@ -109,7 +105,7 @@ public class ${domainObjectClassName}Controller extends BaseRestController {
 
     /**
      *  删除${tableComment}
-     * @param dictionaryQuery    查询参数对象
+     * @param ${domainObjectName}Query    查询参数对象
      */
     @ApiOperation(value = "批量删除${tableComment}")
     @ActionLog(actionName = "批量删除${tableComment}")

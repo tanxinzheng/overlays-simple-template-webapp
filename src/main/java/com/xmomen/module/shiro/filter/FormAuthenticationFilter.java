@@ -1,11 +1,11 @@
-package com.xmomen.module.core.web.filter;
+package com.xmomen.module.shiro.filter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xmomen.framework.web.rest.RestError;
 import com.xmomen.framework.web.rest.WebCommonUtils;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.service.AccountService;
-import com.xmomen.module.user.entity.User;
+import com.xmomen.module.user.model.User;
 import com.xmomen.module.user.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
@@ -18,13 +18,9 @@ import org.springframework.http.HttpStatus;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Jeng on 2016/1/7.

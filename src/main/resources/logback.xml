@@ -54,7 +54,7 @@
 		</filter>
     </appender>
 
-    <logger name="org.springframework" level="ERROR"/>
+    <!--<logger name="org.springframework" level="ERROR"/>-->
     <logger name="org.mybatis.spring" level="ERROR"/>
     <logger name="org.apache" level="INFO"/>
     <logger name="net.sf.ehcache" level="INFO"/>

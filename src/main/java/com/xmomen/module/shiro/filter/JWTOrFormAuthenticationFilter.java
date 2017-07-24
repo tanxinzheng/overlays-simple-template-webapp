@@ -1,25 +1,26 @@
 package com.xmomen.module.shiro.filter;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.web.rest.WebCommonUtils;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.service.AccountService;
 import com.xmomen.module.shiro.token.JWTAuthenticationToken;
-import com.xmomen.module.user.entity.User;
+import com.xmomen.module.user.model.User;
 import com.xmomen.module.user.service.UserService;
 import io.jsonwebtoken.*;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.CharSet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
-import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
@@ -73,10 +74,13 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
         if (isLoginRequest(request, response)) {
             String username = request.getParameter(DEFAULT_USERNAME_PARAM);
             String password = request.getParameter(DEFAULT_PASSWORD_PARAM);
-            if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
-                return new UsernamePasswordToken(username, password);
+            if(StringUtils.isEmpty(username)){
+                throw new BusinessException("请输入用户名");
             }
-            throw new IncorrectCredentialsException();
+            if(StringUtils.isEmpty(password)){
+                throw new BusinessException("请输入密码");
+            }
+            return new UsernamePasswordToken(username, password);
         }
 
         if (isLoggedAttempt(request, response)) {
@@ -101,7 +105,14 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        if (isLoginRequest(request, response) || isLoggedAttempt(request, response)) {
+        if(WebCommonUtils.isJSON(request) && isLoginSubmission(request, response)){
+            // 是登录请求，且请求中存在jwt token
+            if (log.isTraceEnabled()) {
+                log.trace("Ajax Login submission detected.");
+            }
+            return executeLogin(request, response);
+        }
+        if(isLoginRequest(request, response) && !WebCommonUtils.isJSON(request)) {
             // 是登录请求，且请求中存在jwt token
             if (isLoginSubmission(request, response)) {
                 if (log.isTraceEnabled()) {
@@ -123,7 +134,7 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
         if(!WebCommonUtils.isJSON(request)){
             redirectToLogin(request, response);
         }else{
-            buildJSONMessage("Requires authentication", request, response);
+            buildJSONMessage(HttpStatus.UNAUTHORIZED, "Requires authentication", request, response);
         }
         return false;
     }
@@ -188,18 +199,14 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
                 userService.updateUser(user);
             }
         }
-//        if (!WebCommonUtils.isJSON(request)) {// 不是ajax请求
-//            httpServletResponse.sendRedirect(getSuccessUrl());
-//            WebUtils.issueRedirect(request, response, getSuccessUrl());
-//            issueSuccessRedirect(request, response);
-//            return true;
-//        } else {
-//            httpServletResponse.setCharacterEncoding("UTF-8");
-//            PrintWriter out = httpServletResponse.getWriter();
-//            out.println("{success:true,message:'登入成功'}");
-//            out.flush();
-//            out.close();
-//        }
+        if (!WebCommonUtils.isJSON(request)) {// 不是ajax请求
+            httpServletResponse.sendRedirect(getSuccessUrl());
+            WebUtils.issueRedirect(request, response, getSuccessUrl());
+            issueSuccessRedirect(request, response);
+            return true;
+        } else {
+            buildJSONMessage(HttpStatus.OK, "登录成功", request, response);
+        }
         return true;
     }
 
@@ -218,40 +225,31 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
             setFailureAttribute(request, e);
             return true;
         }
-        try {
-            response.setCharacterEncoding("UTF-8");
-            PrintWriter out = response.getWriter();
-            String message = e.getClass().getSimpleName();
-            if ("IncorrectCredentialsException".equals(message)) {
-                out.println("{success:false,message:'密码错误'}");
-            } else if ("UnknownAccountException".equals(message)) {
-                out.println("{success:false,message:'账号不存在'}");
-            } else if ("LockedAccountException".equals(message)) {
-                out.println("{success:false,message:'账号被锁定'}");
-            } else {
-                out.println("{success:false,message:'未知错误'}");
-            }
-            out.flush();
-            out.close();
-        } catch (IOException e1) {
-            logger.error(e1.getMessage(), e1.getCause());
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        String message = e.getClass().getSimpleName();
+        if (IncorrectCredentialsException.class.getSimpleName().equals(message)) {
+            buildJSONMessage(HttpStatus.BAD_REQUEST, "用户名或密码错误", request, response);
+        } else if (UnknownAccountException.class.getSimpleName().equals(message)) {
+            buildJSONMessage(HttpStatus.BAD_REQUEST, "此用户名未注册", request, response);
+        } else if (LockedAccountException.class.getSimpleName().equals(message)) {
+            buildJSONMessage(HttpStatus.BAD_REQUEST, "此用户名被锁", request, response);
+        } else {
+            buildJSONMessage(HttpStatus.BAD_REQUEST, e.getMessage(), request, response);
         }
         return false;
     }
 
-    private void buildJSONMessage(String message, ServletRequest request, ServletResponse response){
+    private void buildJSONMessage(HttpStatus httpStatus, String message, ServletRequest request, ServletResponse response){
         try {
             Map map = new HashMap<String, Object>();
-            map.put("code", HttpStatus.UNAUTHORIZED.value());
+            map.put("code", httpStatus.value());
             map.put("message", message);
             map.put("timestamp", new Date());
             HttpServletResponse httpServletResponse = WebUtils.toHttp(response);
+            httpServletResponse.setContentType("text/html");
+            httpServletResponse.setStatus(httpStatus.value());
             httpServletResponse.setCharacterEncoding("UTF-8");
-            httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
-            servletOutputStream.print(JSONObject.toJSONString(map));
+            PrintWriter servletOutputStream = httpServletResponse.getWriter();
+            servletOutputStream.write(JSONObject.toJSONString(map));
             servletOutputStream.flush();
             servletOutputStream.close();
         } catch (IOException e) {

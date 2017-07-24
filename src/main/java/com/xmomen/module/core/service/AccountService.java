@@ -12,9 +12,7 @@ import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.model.Register;
 import com.xmomen.module.shiro.PasswordHelper;
 import com.xmomen.module.shiro.realm.UserRealm;
-import com.xmomen.module.user.entity.User;
-import com.xmomen.module.user.entity.UserExample;
-import com.xmomen.module.user.model.UserCreate;
+import com.xmomen.module.user.model.User;
 import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
@@ -59,11 +57,7 @@ public class AccountService {
      * @return
      */
     public AccountModel getAccountModelByUsername(String username) {
-        UserExample userExample = new UserExample();
-        userExample.createCriteria().andUsernameEqualTo(username);
-        userExample.or().andEmailEqualTo(username);
-        userExample.or().andPhoneNumberEqualTo(username);
-        User user = mybatisDao.selectOneByExample(userExample);
+        UserModel user = userService.getOneUserModelByUsername(username);
         if(user != null){
             AccountModel accountModel = new AccountModel();
             accountModel.setLocked(user.getLocked());
@@ -93,7 +87,7 @@ public class AccountService {
         }
         String salt = StringUtilsExt.getUUID(32);
         String encryptPassword = PasswordHelper.encryptPassword(register.getPassword(), salt);
-        UserCreate userCreate = new UserCreate();
+        UserModel userCreate = new UserModel();
         userCreate.setEmail(register.getEmail());
         userCreate.setPhoneNumber(register.getPhoneNumber());
         userCreate.setCreateDate(new Date());
@@ -132,11 +126,7 @@ public class AccountService {
      * @return
      */
     public SimpleAccount getAccountByUsername(String username) {
-        UserExample userExample = new UserExample();
-        userExample.createCriteria().andUsernameEqualTo(username);
-        userExample.or().andEmailEqualTo(username);
-        userExample.or().andPhoneNumberEqualTo(username);
-        User user = mybatisDao.selectOneByExample(userExample);
+        UserModel user = userService.getOneUserModelByUsername(username);
         if(user != null){
             SimpleAccount account = new SimpleAccount(user.getUsername(), user.getPassword(), ByteSource.Util.bytes(user.getSalt()), UserRealm.class.getName());
             if(user.getLocked() != null){

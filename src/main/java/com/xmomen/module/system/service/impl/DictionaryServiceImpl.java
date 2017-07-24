@@ -10,6 +10,8 @@ import com.xmomen.framework.mybatis.page.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,6 +93,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     */
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "dictionariesCache", key = "#dictionaryModel.groupCode")
     public void updateDictionary(DictionaryModel dictionaryModel, DictionaryQuery dictionaryQuery) {
         dictionaryMapper.updateSelectiveByQuery(dictionaryModel.getEntity(), dictionaryQuery);
     }
@@ -102,6 +105,7 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "dictionariesCache", key = "#dictionaryModel.groupCode")
     public void updateDictionary(DictionaryModel dictionaryModel) {
         updateDictionary(dictionaryModel.getEntity());
     }
@@ -114,6 +118,7 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "dictionariesCache", key = "#dictionary.groupCode")
     public void updateDictionary(Dictionary dictionary) {
         dictionaryMapper.updateSelective(dictionary);
     }
@@ -125,6 +130,7 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "dictionariesCache", allEntries = true)
     public void deleteDictionary(String[] ids) {
         dictionaryMapper.deletesByPrimaryKey(Arrays.asList(ids));
     }
@@ -136,6 +142,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     */
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "dictionariesCache", allEntries = true)
     public void deleteDictionary(String id) {
         dictionaryMapper.deleteByPrimaryKey(id);
     }
@@ -160,6 +167,7 @@ public class DictionaryServiceImpl implements DictionaryService {
      * @return List<DictionaryModel> 数据字典领域集合对象
      */
     @Override
+    @Cacheable(cacheNames = "dictionariesCache", key = "#dictionaryQuery.type")
     public List<DictionaryModel> getDictionaryModelList(DictionaryQuery dictionaryQuery) {
         return dictionaryMapper.selectModel(dictionaryQuery);
     }
@@ -193,6 +201,7 @@ public class DictionaryServiceImpl implements DictionaryService {
      * @return DictionaryModel 数据字典领域对象
      */
     @Override
+    @Cacheable(cacheNames = "dictionariesCache", key = "#dictionaryQuery.type")
     public DictionaryModel getOneDictionaryModel(DictionaryQuery dictionaryQuery) throws TooManyResultsException {
         List<DictionaryModel> dictionaryModelList = dictionaryMapper.selectModel(dictionaryQuery);
         if(CollectionUtils.isEmpty(dictionaryModelList)){

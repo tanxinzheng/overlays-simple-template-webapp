@@ -1,40 +1,58 @@
 package com.xmomen.module.user.model;
 
+import com.xmomen.framework.model.BaseModel;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.xmomen.module.user.entity.User;
+import com.xmomen.module.user.model.User;
 import lombok.Data;
+import org.hibernate.validator.constraints.*;
+import javax.validation.constraints.*;
 import org.jeecgframework.poi.excel.annotation.Excel;
 import org.jeecgframework.poi.excel.annotation.ExcelTarget;
 import org.springframework.beans.BeanUtils;
 
-import java.io.Serializable;
+import java.lang.Boolean;
+import java.lang.String;
 import java.util.Date;
+import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:19
+ * @date    2017-6-16 22:59:54
  * @version 1.0.0
  */
 @ExcelTarget(value = "UserModel")
-public @Data class UserModel implements Serializable {
+public @Data class UserModel extends BaseModel implements Serializable {
 
     /** 主键 */
+    @Length(max = 32, message = "主键字符长度限制[0,32]")
     private String id;
     /** 用户名 */
     @Excel(name = "用户名")
+    @NotBlank(message = "用户名为必填项")
+    @Length(max = 30, message = "用户名字符长度限制[0,30]")
     private String username;
     /** 真实姓名 */
     @Excel(name = "真实姓名")
+    @Length(max = 50, message = "真实姓名字符长度限制[0,50]")
     private String nickname;
     /** 密码盐值 */
+    @Excel(name = "密码盐值")
+    @NotBlank(message = "密码盐值为必填项")
+    @Length(max = 50, message = "密码盐值字符长度限制[0,50]")
     private String salt;
     /** 密码 */
+    @Excel(name = "密码")
+    @NotBlank(message = "密码为必填项")
+    @Length(max = 50, message = "密码字符长度限制[0,50]")
     private String password;
     /** 邮箱 */
     @Excel(name = "邮箱")
+    @Length(max = 30, message = "邮箱字符长度限制[0,30]")
     private String email;
     /** 手机号码 */
     @Excel(name = "手机号码")
+    @Length(max = 20, message = "手机号码字符长度限制[0,20]")
     private String phoneNumber;
     /** 锁定 */
     @Excel(name = "锁定")
@@ -45,6 +63,11 @@ public @Data class UserModel implements Serializable {
     /** 最后登录时间 */
     @Excel(name = "最后登录时间")
     private Date lastLoginTime;
+
+    /**
+    * Get User Entity Object
+    * @return
+    */
     @JsonIgnore
     public User getEntity(){
         User user = new User();

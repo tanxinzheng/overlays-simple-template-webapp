@@ -11,6 +11,6 @@ public class IndexController {
 
     @RequestMapping(value = "/")
     public String index(){
-        return "redirect:/momen-website/index.html";
+        return "redirect:/xmomen-website/index.html";
     }
 }

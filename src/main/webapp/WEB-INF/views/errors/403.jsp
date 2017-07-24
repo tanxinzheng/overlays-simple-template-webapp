@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="include/header.jsp"%>
+<%@include file="../include/header.jsp"%>
     <div class="text-center m-b-lg">
         <h1 class="text-shadow text-white">403</h1>
     </div>
@@ -17,4 +17,4 @@
             <i class="fa fa-fw fa-unlock-alt m-r-xs"></i> 登出
         </a>
     </div>
-<%@include file="include/footer.jsp"%>
+<%@include file="../include/footer.jsp"%>

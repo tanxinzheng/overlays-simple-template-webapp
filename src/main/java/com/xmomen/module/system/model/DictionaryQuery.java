@@ -13,6 +13,7 @@ import java.io.Serializable;
 public @Data class DictionaryQuery extends BaseQuery implements Serializable {
 
     private String keyword;
+    private String parentId;
     private String id;
     private String[] ids;
     private String[] excludeIds;

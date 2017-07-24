@@ -5,13 +5,15 @@
 	   xmlns:context="http://www.springframework.org/schema/context"
 	   xmlns:aop="http://www.springframework.org/schema/aop"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/context/spring-context.xsd
 	http://www.springframework.org/schema/mvc
-	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-	<context:annotation-config/>
+	<context:annotation-config />
 	
 	<!-- 扫描所有的controller 但是不扫描service-->
 	<context:component-scan base-package="com.xmomen">
@@ -65,7 +67,6 @@
 	</bean>
 
 	<mvc:resources mapping="/momen-website/**" location="/momen-website/"/>
-
 	<mvc:resources mapping="/doc/api/**" location="/doc/swagger-ui/dist/"/>
 
 	<!-- 以下 validator  ConversionService 在使用 mvc:annotation-driven 会 自动注册-->
@@ -109,37 +110,33 @@
 	</mvc:interceptors>
 	<!-- ###########	信息国际化相关配置  End	###############	-->
 
-	<bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-		<property name="prefix" value="/WEB-INF/views/"/>
-		<property name="suffix" value=".jsp"/>
-	</bean>
+	<!--<bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+		<!--<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>-->
+		<!--<property name="prefix" value="/WEB-INF/views/"/>-->
+		<!--<property name="suffix" value=".jsp"/>-->
+	<!--</bean>-->
 
-	<bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
-		<property name="order" value="0" />
-	</bean>
-
-	<!-- Spring MVC 内容协商配置 -->
-	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-        <property name="contentNegotiationManager">
-            <bean class="org.springframework.web.accept.ContentNegotiationManager">
-                <constructor-arg>
-                    <bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
-                        <constructor-arg>
-                            <map>
-                                <entry key="json" value="application/json"/>
-                            </map>
-                        </constructor-arg>
-                    </bean>
-                </constructor-arg>
-            </bean>
-        </property>
-		<property name="defaultViews">
-			<list>
-				<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
-			</list>
-		</property>
+	<!--<bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">-->
+		<!--<property name="order" value="0" />-->
+	<!--</bean>-->
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="defaultContentType" value="application/json;charset=UTF-8"/>
+        <property name="parameterName" value="type"/>
+        <property name="favorParameter" value="true"/>
+        <property name="ignoreUnknownPathExtensions" value="false"/>
+        <property name="ignoreAcceptHeader" value="false"/>
+        <property name="useJaf" value="true"/>
     </bean>
+
+    <mvc:view-resolvers>
+        <mvc:content-negotiation>
+            <mvc:default-views>
+                <bean class="com.xmomen.framework.web.views.ExcelView"/>
+                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+            </mvc:default-views>
+        </mvc:content-negotiation>
+        <mvc:jsp prefix="/WEB-INF/views/" suffix=".jsp"/>
+    </mvc:view-resolvers>
 
 	<!-- 异常统一处理 -->
 	<bean id="exceptionHandlerExceptionResolver" class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver"/>
@@ -147,18 +144,19 @@
 	<bean id="handlerExceptionResolver" class="com.xmomen.framework.web.rest.RestExceptionResolver">
 		<property name="exceptionMappings">
 			<props>
+				<prop key="org.apache.shiro.authz.UnauthorizedException">errors/403</prop>
 				<prop key="java.lang.Exception">errors/error</prop>
-				<prop key="java.lang.Throwable">errors/err</prop>
 			</props>
 		</property>
 		<property name="statusCodes">
 			<props>
 				<prop key="errors/error">500</prop>
 				<prop key="errors/404">404</prop>
+				<prop key="errors/403">403</prop>
 			</props>
 		</property>
 		<!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->
-		<property name="defaultErrorView" value="errors/error"></property>
+		<property name="defaultErrorView" value="errors/500"></property>
 		<!-- 默认HTTP状态码 -->
 		<property name="defaultStatusCode" value="500"></property>
 	</bean>

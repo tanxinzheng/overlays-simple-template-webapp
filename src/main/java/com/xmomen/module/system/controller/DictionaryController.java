@@ -9,10 +9,17 @@ import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.service.DictionaryService;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jeecgframework.poi.excel.entity.ExportParams;
+import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.servlet.ModelAndView;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -21,7 +28,7 @@ import java.util.List;
  * @date    2017-6-11 18:57:11
  * @version 1.0.0
  */
-@RestController
+@Controller
 @RequestMapping(value = "/dictionary")
 public class DictionaryController extends BaseRestController {
 
@@ -40,7 +47,7 @@ public class DictionaryController extends BaseRestController {
      */
     @ApiOperation(value = "查询数据字典列表")
     @ActionLog(actionName = "查询数据字典列表")
-    @RequiresPermissions(value = {PERMISSION_DICTIONARY_VIEW})
+    //@RequiresPermissions(value = {PERMISSION_DICTIONARY_VIEW})
     @RequestMapping(method = RequestMethod.GET)
     public Page<DictionaryModel> getDictionaryList(DictionaryQuery dictionaryQuery){
         if(dictionaryQuery.isPaging()){
@@ -57,7 +64,7 @@ public class DictionaryController extends BaseRestController {
      */
     @ApiOperation(value = "查询数据字典")
     @ActionLog(actionName = "查询数据字典")
-    @RequiresPermissions(value = {PERMISSION_DICTIONARY_VIEW})
+    //@RequiresPermissions(value = {PERMISSION_DICTIONARY_VIEW})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public DictionaryModel getDictionaryById(@PathVariable(value = "id") String id){
         return dictionaryService.getOneDictionaryModel(id);
@@ -70,7 +77,7 @@ public class DictionaryController extends BaseRestController {
      */
     @ApiOperation(value = "新增数据字典")
     @ActionLog(actionName = "新增数据字典")
-    @RequiresPermissions(value = {PERMISSION_DICTIONARY_CREATE})
+    //@RequiresPermissions(value = {PERMISSION_DICTIONARY_CREATE})
     @RequestMapping(method = RequestMethod.POST)
     public DictionaryModel createDictionary(@RequestBody @Valid DictionaryModel dictionaryModel) {
         dictionaryModel.setCreatedUserId(getCurrentUserId());
@@ -86,7 +93,7 @@ public class DictionaryController extends BaseRestController {
      */
     @ApiOperation(value = "更新数据字典")
     @ActionLog(actionName = "更新数据字典")
-    @RequiresPermissions(value = {PERMISSION_DICTIONARY_UPDATE})
+    //@RequiresPermissions(value = {PERMISSION_DICTIONARY_UPDATE})
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public DictionaryModel updateDictionary(@PathVariable(value = "id") String id,
                            @RequestBody @Valid DictionaryModel dictionaryModel){
@@ -105,7 +112,7 @@ public class DictionaryController extends BaseRestController {
      */
     @ApiOperation(value = "删除单个数据字典")
     @ActionLog(actionName = "删除单个数据字典")
-    @RequiresPermissions(value = {PERMISSION_DICTIONARY_DELETE})
+    //@RequiresPermissions(value = {PERMISSION_DICTIONARY_DELETE})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteDictionary(@PathVariable(value = "id") String id){
         dictionaryService.deleteDictionary(id);
@@ -117,10 +124,26 @@ public class DictionaryController extends BaseRestController {
      */
     @ApiOperation(value = "批量删除数据字典")
     @ActionLog(actionName = "批量删除数据字典")
-    @RequiresPermissions(value = {PERMISSION_DICTIONARY_DELETE})
+    //@RequiresPermissions(value = {PERMISSION_DICTIONARY_DELETE})
     @RequestMapping(method = RequestMethod.DELETE)
     public void deleteDictionarys(DictionaryQuery dictionaryQuery){
         dictionaryService.deleteDictionary(dictionaryQuery.getIds());
+    }
+
+    /**
+     * 导出
+     * @param dictionaryQuery    查询参数对象
+     * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
+     */
+    @RequestMapping(value="/export", method = RequestMethod.GET)
+    public ModelAndView exportDictionarys(DictionaryQuery dictionaryQuery,
+            ModelMap modelMap) {
+        List<DictionaryModel> dictionaryModelList = dictionaryService.getDictionaryModelList(dictionaryQuery);
+        modelMap.put(NormalExcelConstants.FILE_NAME, "数据字典");
+        modelMap.put(NormalExcelConstants.PARAMS, new ExportParams());
+        modelMap.put(NormalExcelConstants.CLASS, DictionaryModel.class);
+        modelMap.put(NormalExcelConstants.DATA_LIST, dictionaryModelList);
+        return new ModelAndView(NormalExcelConstants.JEECG_EXCEL_VIEW);
     }
 
 

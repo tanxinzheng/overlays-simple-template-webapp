@@ -1,6 +1,9 @@
 package com.xmomen.module.user.controller;
 
+import com.wordnik.swagger.annotations.ApiOperation;
 import com.xmomen.framework.mybatis.page.Page;
+import com.xmomen.framework.logger.ActionLog;
+import com.xmomen.framework.web.controller.BaseRestController;
 import com.xmomen.module.authorization.entity.UserGroup;
 import com.xmomen.module.authorization.entity.UserPermission;
 import com.xmomen.module.authorization.model.GroupModel;
@@ -11,144 +14,119 @@ import com.xmomen.module.authorization.service.GroupService;
 import com.xmomen.module.authorization.service.PermissionService;
 import com.xmomen.module.authorization.service.UserGroupService;
 import com.xmomen.module.authorization.service.UserPermissionService;
-import com.xmomen.module.logger.Log;
-import com.xmomen.module.user.model.UserCreate;
-import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.model.UserQuery;
-import com.xmomen.module.user.model.UserUpdate;
+import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.service.UserService;
-import org.jeecgframework.poi.excel.entity.ExportParams;
-import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import org.apache.commons.lang3.StringUtils;
 import javax.validation.Valid;
 import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:19
+ * @date    2017-6-16 22:59:54
  * @version 1.0.0
  */
 @RestController
 @RequestMapping(value = "/user")
-public class UserController {
+public class UserController extends BaseRestController {
+
+    public static final String PERMISSION_USER_CREATE = "user:create";
+    public static final String PERMISSION_USER_DELETE = "user:delete";
+    public static final String PERMISSION_USER_UPDATE = "user:update";
+    public static final String PERMISSION_USER_VIEW   = "user:view";
 
     @Autowired
     UserService userService;
 
     /**
-     * 用户列表
-     * @param   limit           每页结果数
-     * @param   offset          页码
-     * @param   keyword         关键字
-     * @param   id              主键
-     * @param   ids             主键数组
-     * @param   excludeIds      不包含主键数组
-     * @return  Page<UserModel> 用户领域分页对象
+     * 数据字典列表
+     * @param   userQuery    数据字典查询参数对象
+     * @return  Page<UserModel> 数据字典领域分页对象
      */
+    @ApiOperation(value = "查询数据字典列表")
+    @ActionLog(actionName = "查询数据字典列表")
+    @RequiresPermissions(value = {PERMISSION_USER_VIEW})
     @RequestMapping(method = RequestMethod.GET)
-    @Log(actionName = "查询用户列表")
-    public Page<UserModel> getUserList(@RequestParam(value = "limit") Integer limit,
-                                  @RequestParam(value = "offset") Integer offset,
-                                  @RequestParam(value = "keyword", required = false) String keyword,
-                                  @RequestParam(value = "id", required = false) String id,
-                                  @RequestParam(value = "ids", required = false) String[] ids,
-                                  @RequestParam(value = "excludeIds", required = false) String[] excludeIds){
-        UserQuery userQuery = new UserQuery();
-        userQuery.setId(id);
-        userQuery.setExcludeIds(excludeIds);
-        userQuery.setIds(ids);
-        userQuery.setKeyword(keyword);
-        return userService.getUserModelPage(limit, offset, userQuery);
+    public Page<UserModel> getUserList(UserQuery userQuery){
+        if(userQuery.isPaging()){
+            return userService.getUserModelPage(userQuery);
+        }
+        List<UserModel> userList = userService.getUserModelList(userQuery);
+        return new Page(userList);
     }
 
     /**
-     * 查询单个用户
+     * 查询单个数据字典
      * @param   id  主键
-     * @return  UserModel   用户领域对象
+     * @return  UserModel   数据字典领域对象
      */
+    @ApiOperation(value = "查询数据字典")
+    @ActionLog(actionName = "查询数据字典")
+    @RequiresPermissions(value = {PERMISSION_USER_VIEW})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @Log(actionName = "查询用户")
     public UserModel getUserById(@PathVariable(value = "id") String id){
         return userService.getOneUserModel(id);
     }
 
     /**
-     * 新增用户
-     * @param   userCreate  新增对象参数
-     * @param   bindingResult   参数校验结果
-     * @return  UserModel   用户领域对象
+     * 新增数据字典
+     * @param   userModel  新增对象参数
+     * @return  UserModel   数据字典领域对象
      */
+    @ApiOperation(value = "新增数据字典")
+    @ActionLog(actionName = "新增数据字典")
+    @RequiresPermissions(value = {PERMISSION_USER_CREATE})
     @RequestMapping(method = RequestMethod.POST)
-    @Log(actionName = "新增用户")
-    public UserModel createUser(@RequestBody @Valid UserCreate userCreate){
-        return userService.createUser(userCreate);
+    public UserModel createUser(@RequestBody @Valid UserModel userModel) {
+        return userService.createUser(userModel);
     }
 
     /**
-     * 更新用户
-     * @param id                            主键
-     * @param userUpdate 更新对象参数
-     * @param bindingResult                 参数校验结果
-     * @throws ArgumentValidException       参数校验异常类
+     * 更新数据字典
+     * @param id    主键
+     * @param userModel  更新对象参数
+     * @return  UserModel   数据字典领域对象
      */
+    @ApiOperation(value = "更新数据字典")
+    @ActionLog(actionName = "更新数据字典")
+    @RequiresPermissions(value = {PERMISSION_USER_UPDATE})
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    @Log(actionName = "更新用户")
-    public void updateUser(@PathVariable(value = "id") String id,
-                           @RequestBody @Valid UserUpdate userUpdate){
-        userService.updateUser(userUpdate);
+    public UserModel updateUser(@PathVariable(value = "id") String id,
+                           @RequestBody @Valid UserModel userModel){
+        if(StringUtils.isNotBlank(id)){
+            userModel.setId(id);
+        }
+        userService.updateUser(userModel);
+        return userService.getOneUserModel(id);
     }
 
     /**
-     *  删除用户
+     *  删除数据字典
      * @param id    主键
      */
+    @ApiOperation(value = "删除单个数据字典")
+    @ActionLog(actionName = "删除单个数据字典")
+    @RequiresPermissions(value = {PERMISSION_USER_DELETE})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @Log(actionName = "删除单个用户")
     public void deleteUser(@PathVariable(value = "id") String id){
         userService.deleteUser(id);
     }
 
     /**
-     *  删除用户
-     * @param ids    主键
+     *  删除数据字典
+     * @param userQuery    查询参数对象
      */
+    @ApiOperation(value = "批量删除数据字典")
+    @ActionLog(actionName = "批量删除数据字典")
+    @RequiresPermissions(value = {PERMISSION_USER_DELETE})
     @RequestMapping(method = RequestMethod.DELETE)
-    @Log(actionName = "批量删除用户")
-    public void deleteUsers(@RequestParam(value = "ids") String[] ids){
-        userService.deleteUser(ids);
-    }
-
-    /**
-    * 导出
-    * @param id     主键
-    * @param ids    包含的主键数组
-    * @param excludeIds     排除的主键数组
-    * @param keyword    关键字
-    * @param modelMap   modelMap对象
-    * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
-    */
-    @RequestMapping(value="/export", method = RequestMethod.GET)
-    public ModelAndView exportUser(
-            @RequestParam(value = "id", required = false) String id,
-            @RequestParam(value = "ids", required = false) String[] ids,
-            @RequestParam(value = "excludeIds", required = false) String[] excludeIds,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            ModelMap modelMap) {
-        UserQuery userQuery = new UserQuery();
-        userQuery.setId(id);
-        userQuery.setExcludeIds(excludeIds);
-        userQuery.setIds(ids);
-        userQuery.setKeyword(keyword);
-        List<UserModel> userList = userService.getUserModelList(userQuery);
-        modelMap.put(NormalExcelConstants.FILE_NAME, "用户信息");
-        modelMap.put(NormalExcelConstants.PARAMS, new ExportParams());
-        modelMap.put(NormalExcelConstants.CLASS, UserModel.class);
-        modelMap.put(NormalExcelConstants.DATA_LIST, userList);
-        return new ModelAndView(NormalExcelConstants.JEECG_EXCEL_VIEW);
+    public void deleteUsers(UserQuery userQuery){
+        userService.deleteUser(userQuery.getIds());
     }
 
     @Autowired
@@ -161,7 +139,7 @@ public class UserController {
      * @param offset    页码
      * @return
      */
-    @Log(actionName = "查询用户组所属权限")
+    @ActionLog(actionName = "查询用户组所属权限")
     @RequestMapping(value = "/{id}/permission", method = RequestMethod.GET)
     public Page<PermissionModel> getUserPermission(
             @PathVariable(value = "id") String userId,

@@ -28,6 +28,7 @@
 		</property>
 	</bean>
 
+	<import resource="classpath:config/spring-cache.xml" />
 	<import resource="classpath:config/spring-jdbc.xml" />
 	<import resource="classpath:config/spring-mybatis.xml" />
 	<import resource="classpath:config/spring-shiro.xml" />
