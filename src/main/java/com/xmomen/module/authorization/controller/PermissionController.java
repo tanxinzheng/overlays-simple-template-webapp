@@ -1,72 +1,53 @@
 package com.xmomen.module.authorization.controller;
 
-import com.xmomen.framework.exception.BusinessException;
+import com.wordnik.swagger.annotations.ApiOperation;
 import com.xmomen.framework.mybatis.page.Page;
-import com.xmomen.framework.poi.ExcelImportValidFailException;
-import com.xmomen.framework.web.exceptions.ArgumentValidException;
-import com.xmomen.module.authorization.model.PermissionCreate;
-import com.xmomen.module.authorization.model.PermissionModel;
+import com.xmomen.framework.logger.ActionLog;
+import com.xmomen.framework.web.controller.BaseRestController;
 import com.xmomen.module.authorization.model.PermissionQuery;
-import com.xmomen.module.authorization.model.PermissionUpdate;
+import com.xmomen.module.authorization.model.PermissionModel;
 import com.xmomen.module.authorization.service.PermissionService;
-import com.xmomen.module.authorization.service.impl.PermissionExcelDataHandler;
-import com.xmomen.module.authorization.service.impl.PermissionExcelValidHandler;
-import com.xmomen.module.logger.Log;
-import org.apache.commons.io.IOUtils;
-import org.jeecgframework.poi.excel.ExcelImportUtil;
-import org.jeecgframework.poi.excel.entity.ExportParams;
-import org.jeecgframework.poi.excel.entity.ImportParams;
-import org.jeecgframework.poi.excel.entity.result.ExcelImportResult;
-import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
-import org.jeecgframework.poi.exception.excel.ExcelImportException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import org.apache.commons.lang3.StringUtils;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:20
+ * @date    2017-7-25 1:52:35
  * @version 1.0.0
  */
 @RestController
 @RequestMapping(value = "/permission")
-public class PermissionController {
+public class PermissionController extends BaseRestController {
+
+    public static final String PERMISSION_PERMISSION_CREATE = "permission:create";
+    public static final String PERMISSION_PERMISSION_DELETE = "permission:delete";
+    public static final String PERMISSION_PERMISSION_UPDATE = "permission:update";
+    public static final String PERMISSION_PERMISSION_VIEW   = "permission:view";
 
     @Autowired
     PermissionService permissionService;
 
     /**
      * 权限列表
-     * @param   limit           每页结果数
-     * @param   offset          页码
-     * @param   keyword         关键字
-     * @param   id              主键
-     * @param   ids             主键数组
-     * @param   excludeIds      不包含主键数组
+     * @param   permissionQuery    权限查询参数对象
      * @return  Page<PermissionModel> 权限领域分页对象
      */
+    @ApiOperation(value = "查询权限列表")
+    @ActionLog(actionName = "查询权限列表")
+    @RequiresPermissions(value = {PERMISSION_PERMISSION_VIEW})
     @RequestMapping(method = RequestMethod.GET)
-    @Log(actionName = "查询权限列表")
-    public Page<PermissionModel> getPermissionList(@RequestParam(value = "limit") Integer limit,
-                                  @RequestParam(value = "offset") Integer offset,
-                                  @RequestParam(value = "keyword", required = false) String keyword,
-                                  @RequestParam(value = "id", required = false) String id,
-                                  @RequestParam(value = "ids", required = false) String[] ids,
-                                  @RequestParam(value = "excludeIds", required = false) String[] excludeIds){
-        PermissionQuery permissionQuery = new PermissionQuery();
-        permissionQuery.setId(id);
-        permissionQuery.setExcludeIds(excludeIds);
-        permissionQuery.setIds(ids);
-        permissionQuery.setKeyword(keyword);
-        return permissionService.getPermissionModelPage(limit, offset, permissionQuery);
+    public Page<PermissionModel> getPermissionList(PermissionQuery permissionQuery){
+        if(permissionQuery.isPaging()){
+            return permissionService.getPermissionModelPage(permissionQuery);
+        }
+        List<PermissionModel> permissionList = permissionService.getPermissionModelList(permissionQuery);
+        return new Page(permissionList);
     }
 
     /**
@@ -74,128 +55,69 @@ public class PermissionController {
      * @param   id  主键
      * @return  PermissionModel   权限领域对象
      */
+    @ApiOperation(value = "查询权限")
+    @ActionLog(actionName = "查询权限")
+    @RequiresPermissions(value = {PERMISSION_PERMISSION_VIEW})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @Log(actionName = "查询权限")
     public PermissionModel getPermissionById(@PathVariable(value = "id") String id){
         return permissionService.getOnePermissionModel(id);
     }
 
     /**
      * 新增权限
-     * @param   permissionCreate  新增对象参数
-     * @param   bindingResult   参数校验结果
+     * @param   permissionModel  新增对象参数
      * @return  PermissionModel   权限领域对象
      */
+    @ApiOperation(value = "新增权限")
+    @ActionLog(actionName = "新增权限")
+    @RequiresPermissions(value = {PERMISSION_PERMISSION_CREATE})
     @RequestMapping(method = RequestMethod.POST)
-    @Log(actionName = "新增权限")
-    public PermissionModel createPermission(@RequestBody @Valid PermissionCreate permissionCreate){
-        return permissionService.createPermission(permissionCreate);
+    public PermissionModel createPermission(@RequestBody @Valid PermissionModel permissionModel) {
+        return permissionService.createPermission(permissionModel);
     }
 
     /**
      * 更新权限
-     * @param id                            主键
-     * @param permissionUpdate 更新对象参数
+     * @param id    主键
+     * @param permissionModel  更新对象参数
+     * @return  PermissionModel   权限领域对象
      */
+    @ApiOperation(value = "更新权限")
+    @ActionLog(actionName = "更新权限")
+    @RequiresPermissions(value = {PERMISSION_PERMISSION_UPDATE})
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    @Log(actionName = "更新权限")
-    public void updatePermission(@PathVariable(value = "id") String id,
-                           @RequestBody @Valid PermissionUpdate permissionUpdate) {
-        permissionService.updatePermission(permissionUpdate);
+    public PermissionModel updatePermission(@PathVariable(value = "id") String id,
+                           @RequestBody @Valid PermissionModel permissionModel){
+        if(StringUtils.isNotBlank(id)){
+            permissionModel.setId(id);
+        }
+        permissionService.updatePermission(permissionModel);
+        return permissionService.getOnePermissionModel(id);
     }
 
     /**
      *  删除权限
      * @param id    主键
      */
+    @ApiOperation(value = "删除单个权限")
+    @ActionLog(actionName = "删除单个权限")
+    @RequiresPermissions(value = {PERMISSION_PERMISSION_DELETE})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @Log(actionName = "删除单个权限")
     public void deletePermission(@PathVariable(value = "id") String id){
         permissionService.deletePermission(id);
     }
 
     /**
      *  删除权限
-     * @param ids    主键
+     * @param permissionQuery    查询参数对象
      */
+    @ApiOperation(value = "批量删除权限")
+    @ActionLog(actionName = "批量删除权限")
+    @RequiresPermissions(value = {PERMISSION_PERMISSION_DELETE})
     @RequestMapping(method = RequestMethod.DELETE)
-    @Log(actionName = "批量删除权限")
-    public void deletePermissions(@RequestParam(value = "ids") String[] ids){
-        permissionService.deletePermission(ids);
+    public void deletePermissions(PermissionQuery permissionQuery){
+        permissionService.deletePermission(permissionQuery.getIds());
     }
 
-    /**
-    * 导出
-    * @param id     主键
-    * @param ids    包含的主键数组
-    * @param excludeIds     排除的主键数组
-    * @param keyword    关键字
-    * @param modelMap   modelMap对象
-    * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
-    */
-    @RequestMapping(value = "/export", method = RequestMethod.GET)
-    public ModelAndView exportPermission(
-            @RequestParam(value = "id", required = false) String id,
-            @RequestParam(value = "ids", required = false) String[] ids,
-            @RequestParam(value = "excludeIds", required = false) String[] excludeIds,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            ModelMap modelMap) {
-        PermissionQuery permissionQuery = new PermissionQuery();
-        permissionQuery.setId(id);
-        permissionQuery.setExcludeIds(excludeIds);
-        permissionQuery.setIds(ids);
-        permissionQuery.setKeyword(keyword);
-        List<PermissionModel> permissionList = permissionService.getPermissionModelList(permissionQuery);
-        modelMap.put(NormalExcelConstants.FILE_NAME, "权限信息");
-        modelMap.put(NormalExcelConstants.PARAMS, new ExportParams());
-        modelMap.put(NormalExcelConstants.CLASS, PermissionModel.class);
-        modelMap.put(NormalExcelConstants.DATA_LIST, permissionList);
-        return new ModelAndView(NormalExcelConstants.JEECG_EXCEL_VIEW);
-    }
-
-
-    @Autowired
-    PermissionExcelDataHandler permissionExcelDataHandler;
-
-    @Autowired
-    PermissionExcelValidHandler permissionExcelValidHandler;
-
-    /**
-     * 上传文件
-     * @param file  上传的Excel文件
-     */
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public void uploadPermissions(
-            @RequestParam(value = "file") MultipartFile file) throws BusinessException {
-        if(file.isEmpty()){
-            throw new BusinessException("上传的文件为空");
-        }
-        ImportParams importParams = new ImportParams();
-        importParams.setNeedVerfiy(true);
-        importParams.setTitleRows(0);
-        importParams.setHeadRows(1);
-        importParams.setVerifyHanlder(permissionExcelValidHandler);
-        importParams.setDataHanlder(permissionExcelDataHandler);
-        InputStream inputStream = null;
-        List<PermissionCreate> list = null;
-        ExcelImportResult excelImportResult = null;
-        try {
-            inputStream = file.getInputStream();
-            excelImportResult = ExcelImportUtil.importExcelVerify(inputStream, PermissionCreate.class, importParams);
-        } catch (ExcelImportException e){
-            throw new BusinessException(e.getMessage(), e);
-        } catch (IOException e) {
-            throw new BusinessException(e.getMessage(), e);
-        } catch (Exception e) {
-            throw new BusinessException(e.getMessage(), e);
-        } finally {
-            IOUtils.closeQuietly(inputStream);
-        }
-        if(excelImportResult.isVerfiyFail()){
-            throw new ExcelImportValidFailException(excelImportResult);
-        }
-        list = excelImportResult.getList();
-        permissionService.createPermissions(list);
-    }
 
 }

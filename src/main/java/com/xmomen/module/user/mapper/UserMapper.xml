@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmomen.module.user.mapper.UserMapper" >
+
+    <insert id="insertSelective" parameterType="com.xmomen.module.user.model.User" useGeneratedKeys="true" keyProperty="id" keyColumn="ID" >
+        <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+            SELECT replace(UUID(),'-','')
+        </selectKey>
+        insert into xmo_user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+        ID,
+                <if test="username != null" >
+                    USERNAME,
+                </if>
+                <if test="nickname != null" >
+                    NICKNAME,
+                </if>
+                <if test="salt != null" >
+                    SALT,
+                </if>
+                <if test="password != null" >
+                    PASSWORD,
+                </if>
+                <if test="email != null" >
+                    EMAIL,
+                </if>
+                <if test="phoneNumber != null" >
+                    PHONE_NUMBER,
+                </if>
+                <if test="locked != null" >
+                    LOCKED,
+                </if>
+                <if test="createDate != null" >
+                    CREATE_DATE,
+                </if>
+                <if test="lastLoginTime != null" >
+                    LAST_LOGIN_TIME,
+                </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{id},
+                <if test="username != null" >
+                #{username},
+                </if>
+                <if test="nickname != null" >
+                #{nickname},
+                </if>
+                <if test="salt != null" >
+                #{salt},
+                </if>
+                <if test="password != null" >
+                #{password},
+                </if>
+                <if test="email != null" >
+                #{email},
+                </if>
+                <if test="phoneNumber != null" >
+                #{phoneNumber},
+                </if>
+                <if test="locked != null" >
+                #{locked},
+                </if>
+                <if test="createDate != null" >
+                #{createDate},
+                </if>
+                <if test="lastLoginTime != null" >
+                #{lastLoginTime},
+                </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from xmo_user where ID = #{id}
+    </delete>
+
+    <delete id="deletesByPrimaryKey" parameterType="java.util.ArrayList" >
+        delete from xmo_user where ID IN
+        <foreach collection="ids" item="item" separator="," open="(" close=")">
+        #{item}
+        </foreach>
+    </delete>
+
+    <update id="updateSelective" parameterType="com.xmomen.module.user.model.User" >
+        update xmo_user
+        <set>
+            <if test="id != null" >
+            ID = #{id},
+            </if>
+            <if test="username != null" >
+            USERNAME = #{username},
+            </if>
+            <if test="nickname != null" >
+            NICKNAME = #{nickname},
+            </if>
+            <if test="salt != null" >
+            SALT = #{salt},
+            </if>
+            <if test="password != null" >
+            PASSWORD = #{password},
+            </if>
+            <if test="email != null" >
+            EMAIL = #{email},
+            </if>
+            <if test="phoneNumber != null" >
+            PHONE_NUMBER = #{phoneNumber},
+            </if>
+            <if test="locked != null" >
+            LOCKED = #{locked},
+            </if>
+            <if test="createDate != null" >
+            CREATE_DATE = #{createDate},
+            </if>
+            <if test="lastLoginTime != null" >
+            LAST_LOGIN_TIME = #{lastLoginTime},
+            </if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <update id="updateSelectiveByQuery" parameterType="map" >
+        update xmo_user
+        <set >
+            <if test="record.id != null" >
+            ID = #{id},
+            </if>
+            <if test="record.username != null" >
+            USERNAME = #{username},
+            </if>
+            <if test="record.nickname != null" >
+            NICKNAME = #{nickname},
+            </if>
+            <if test="record.salt != null" >
+            SALT = #{salt},
+            </if>
+            <if test="record.password != null" >
+            PASSWORD = #{password},
+            </if>
+            <if test="record.email != null" >
+            EMAIL = #{email},
+            </if>
+            <if test="record.phoneNumber != null" >
+            PHONE_NUMBER = #{phoneNumber},
+            </if>
+            <if test="record.locked != null" >
+            LOCKED = #{locked},
+            </if>
+            <if test="record.createDate != null" >
+            CREATE_DATE = #{createDate},
+            </if>
+            <if test="record.lastLoginTime != null" >
+            LAST_LOGIN_TIME = #{lastLoginTime},
+            </if>
+        </set>
+        <if test="query != null" >
+            <include refid="Update_By_Query_Where_Clause"/>
+        </if>
+    </update>
+
+    <!--    查询消息    -->
+    <select id="select"
+            resultType="com.xmomen.module.user.model.User"
+            parameterType="com.xmomen.module.user.model.UserQuery">
+        SELECT * FROM xmo_user
+        <include refid="Update_By_Query_Where_Clause"/>
+        ORDER BY ID
+    </select>
+
+    <select id="selectByPrimaryKey"
+            resultType="com.xmomen.module.user.model.User"
+            parameterType="java.lang.String">
+        SELECT * FROM xmo_user WHERE ID = #{id}
+    </select>
+
+    <select id="selectModelByPrimaryKey"
+            resultType="com.xmomen.module.user.model.UserModel"
+            parameterType="java.lang.String">
+        SELECT * FROM xmo_user WHERE ID = #{id}
+    </select>
+
+    <select id="selectModel"
+            resultType="com.xmomen.module.user.model.UserModel"
+            parameterType="com.xmomen.module.user.model.UserQuery">
+        SELECT * FROM xmo_user
+        <include refid="Update_By_Query_Where_Clause"/>
+        ORDER BY id
+    </select>
+
+    <sql id="Update_By_Query_Where_Clause">
+        <where>
+            <if test="keyword">
+                AND ID LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="id">
+                AND ID = #{id}
+            </if>
+            <if test="ids">
+                AND ID IN
+                <foreach collection="ids" item="item" separator="," open="(" close=")">
+                #{item}
+                </foreach>
+            </if>
+            <if test="excludeIds">
+                AND ID NOT IN
+                <foreach collection="excludeIds" item="item" separator="," open="(" close=")">
+                #{item}
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectModelByUsername"
+            resultType="com.xmomen.module.user.model.UserModel"
+            parameterType="java.lang.String">
+        SELECT * FROM xmo_user where (username = #{username} or email = #{username} or PHONE_NUMBER = #{username})
+    </select>
+</mapper>

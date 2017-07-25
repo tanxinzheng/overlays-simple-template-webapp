@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmomen.module.authorization.mapper.GroupMapper" >
+
+    <insert id="insertSelective" parameterType="com.xmomen.module.authorization.model.Group" useGeneratedKeys="true" keyProperty="id" keyColumn="ID" >
+        <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+            SELECT replace(UUID(),'-','')
+        </selectKey>
+        insert into xmo_group
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+        ID,
+                <if test="groupCode != null" >
+                    GROUP_CODE,
+                </if>
+                <if test="groupName != null" >
+                    GROUP_NAME,
+                </if>
+                <if test="description != null" >
+                    DESCRIPTION,
+                </if>
+                <if test="active != null" >
+                    ACTIVE,
+                </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{id},
+                <if test="groupCode != null" >
+                #{groupCode},
+                </if>
+                <if test="groupName != null" >
+                #{groupName},
+                </if>
+                <if test="description != null" >
+                #{description},
+                </if>
+                <if test="active != null" >
+                #{active},
+                </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from xmo_group where ID = #{id}
+    </delete>
+
+    <delete id="deletesByPrimaryKey" parameterType="java.util.ArrayList" >
+        delete from xmo_group where ID IN
+        <foreach collection="ids" item="item" separator="," open="(" close=")">
+        #{item}
+        </foreach>
+    </delete>
+
+    <update id="updateSelective" parameterType="com.xmomen.module.authorization.model.Group" >
+        update xmo_group
+        <set>
+            <if test="id != null" >
+            ID = #{id},
+            </if>
+            <if test="groupCode != null" >
+            GROUP_CODE = #{groupCode},
+            </if>
+            <if test="groupName != null" >
+            GROUP_NAME = #{groupName},
+            </if>
+            <if test="description != null" >
+            DESCRIPTION = #{description},
+            </if>
+            <if test="active != null" >
+            ACTIVE = #{active},
+            </if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <update id="updateSelectiveByQuery" parameterType="map" >
+        update xmo_group
+        <set >
+            <if test="record.id != null" >
+            ID = #{id},
+            </if>
+            <if test="record.groupCode != null" >
+            GROUP_CODE = #{groupCode},
+            </if>
+            <if test="record.groupName != null" >
+            GROUP_NAME = #{groupName},
+            </if>
+            <if test="record.description != null" >
+            DESCRIPTION = #{description},
+            </if>
+            <if test="record.active != null" >
+            ACTIVE = #{active},
+            </if>
+        </set>
+        <if test="query != null" >
+            <include refid="Update_By_Query_Where_Clause"/>
+        </if>
+    </update>
+
+    <!--    查询消息    -->
+    <select id="select"
+            resultType="com.xmomen.module.authorization.model.Group"
+            parameterType="com.xmomen.module.authorization.model.GroupQuery">
+        SELECT * FROM xmo_group
+        <include refid="Update_By_Query_Where_Clause"/>
+        ORDER BY ID
+    </select>
+
+    <select id="selectByPrimaryKey"
+            resultType="com.xmomen.module.authorization.model.Group"
+            parameterType="java.lang.String">
+        SELECT * FROM xmo_group WHERE ID = #{id}
+    </select>
+
+    <select id="selectModelByPrimaryKey"
+            resultType="com.xmomen.module.authorization.model.GroupModel"
+            parameterType="java.lang.String">
+        SELECT * FROM xmo_group WHERE ID = #{id}
+    </select>
+
+    <select id="selectModel"
+            resultType="com.xmomen.module.authorization.model.GroupModel"
+            parameterType="com.xmomen.module.authorization.model.GroupQuery">
+        SELECT * FROM xmo_group
+        <include refid="Update_By_Query_Where_Clause"/>
+        ORDER BY id
+    </select>
+
+    <sql id="Update_By_Query_Where_Clause">
+        <where>
+            <if test="keyword">
+                AND (
+                  GROUP_CODE LIKE CONCAT('%', #{keyword}, '%')
+                  OR GROUP_NAME LIKE CONCAT('%', #{keyword}, '%')
+                  OR DESCRIPTION LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+            <if test="id">
+                AND ID = #{id}
+            </if>
+            <if test="ids">
+                AND ID IN
+                <foreach collection="ids" item="item" separator="," open="(" close=")">
+                #{item}
+                </foreach>
+            </if>
+            <if test="excludeIds">
+                AND ID NOT IN
+                <foreach collection="excludeIds" item="item" separator="," open="(" close=")">
+                #{item}
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <!--    查询消息    -->
+    <select id="getGroupModel"
+            resultType="com.xmomen.module.authorization.model.GroupModel"
+            parameterType="com.xmomen.module.authorization.model.GroupQuery">
+        SELECT t.* FROM xmo_group t
+        LEFT JOIN xmo_user_group ug
+        ON ug.GROUP_ID=t.ID
+        <where>
+            <if test="keyword">
+                AND (t.GROUP_CODE LIKE CONCAT('%', #{keyword}, '%')
+                OR t.GROUP_NAME LIKE CONCAT('%', #{keyword}, '%')
+                OR t.DESCRIPTION LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="id">
+                AND t.ID = #{id}
+            </if>
+            <if test="ids">
+                AND t.ID IN
+                <foreach collection="ids" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="excludeIds">
+                AND t.ID NOT IN
+                <foreach collection="excludeIds" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="userId and hasBind">
+                AND ug.USER_ID = #{userId}
+            </if>
+            <if test="userId and !hasBind">
+                AND t.ID NOT IN
+                (SELECT
+                g.ID AS group_id
+                FROM
+                xmo_group g
+                LEFT JOIN xmo_user_group ug
+                ON g.ID = ug.GROUP_ID
+                WHERE ug.USER_ID = #{userId})
+            </if>
+        </where>
+        ORDER BY t.id
+    </select>
+
+
+</mapper>

@@ -1,26 +1,20 @@
 package com.xmomen.module.authorization.model;
 
 import lombok.Data;
+import com.xmomen.framework.model.BaseQuery;
 
 import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:20
+ * @date    2017-7-25 1:52:35
  * @version 1.0.0
  */
-public @Data class GroupPermissionQuery implements Serializable {
-    /** 主键 */
+public @Data class GroupPermissionQuery extends BaseQuery implements Serializable {
+
+    private String keyword;
     private String id;
-    /** 包含主键集 */
     private String[] ids;
-    /** 排除主键集 */
     private String[] excludeIds;
-
-    private String groupId;
-
-    private String permissionId;
-
-    private String[] permissionIds;
 
 }

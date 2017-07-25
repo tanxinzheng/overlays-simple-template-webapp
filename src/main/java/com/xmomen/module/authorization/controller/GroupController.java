@@ -1,32 +1,35 @@
 package com.xmomen.module.authorization.controller;
 
+import com.wordnik.swagger.annotations.ApiOperation;
 import com.xmomen.framework.mybatis.page.Page;
-import com.xmomen.framework.web.exceptions.ArgumentValidException;
-import com.xmomen.module.authorization.entity.GroupPermission;
+import com.xmomen.framework.logger.ActionLog;
+import com.xmomen.framework.web.controller.BaseRestController;
 import com.xmomen.module.authorization.model.*;
 import com.xmomen.module.authorization.service.GroupPermissionService;
 import com.xmomen.module.authorization.service.GroupService;
-import com.xmomen.module.authorization.service.PermissionService;
-import com.xmomen.module.logger.Log;
-import org.jeecgframework.poi.excel.entity.ExportParams;
-import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
+import com.xmomen.module.authorization.service.PermissionService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import org.apache.commons.lang3.StringUtils;
 import javax.validation.Valid;
 import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:20
+ * @date    2017-7-25 0:51:13
  * @version 1.0.0
  */
 @RestController
 @RequestMapping(value = "/group")
-public class GroupController {
+public class GroupController extends BaseRestController {
+
+    public static final String PERMISSION_GROUP_CREATE = "group:create";
+    public static final String PERMISSION_GROUP_DELETE = "group:delete";
+    public static final String PERMISSION_GROUP_UPDATE = "group:update";
+    public static final String PERMISSION_GROUP_VIEW   = "group:view";
 
     @Autowired
     GroupService groupService;
@@ -38,159 +41,117 @@ public class GroupController {
     PermissionService permissionService;
 
     /**
-     * 组列表
-     * @param   limit           每页结果数
-     * @param   offset          页码
-     * @param   keyword         关键字
-     * @param   id              主键
-     * @param   ids             主键数组
-     * @param   excludeIds      不包含主键数组
-     * @return  Page<GroupModel> 组领域分页对象
+     * 用户组列表
+     * @param   groupQuery    用户组查询参数对象
+     * @return  Page<GroupModel> 用户组领域分页对象
      */
+    @ApiOperation(value = "查询用户组列表")
+    @ActionLog(actionName = "查询用户组列表")
+    @RequiresPermissions(value = {PERMISSION_GROUP_VIEW})
     @RequestMapping(method = RequestMethod.GET)
-    @Log(actionName = "查询组列表")
-    public Page<GroupModel> getGroupList(@RequestParam(value = "limit") Integer limit,
-                                  @RequestParam(value = "offset") Integer offset,
-                                  @RequestParam(value = "keyword", required = false) String keyword,
-                                  @RequestParam(value = "id", required = false) String id,
-                                  @RequestParam(value = "ids", required = false) String[] ids,
-                                  @RequestParam(value = "excludeIds", required = false) String[] excludeIds){
-        GroupQuery groupQuery = new GroupQuery();
-        groupQuery.setId(id);
-        groupQuery.setExcludeIds(excludeIds);
-        groupQuery.setIds(ids);
-        groupQuery.setKeyword(keyword);
-        return groupService.getGroupModelPage(limit, offset, groupQuery);
+    public Page<GroupModel> getGroupList(GroupQuery groupQuery){
+        if(groupQuery.isPaging()){
+            return groupService.getGroupModelPage(groupQuery);
+        }
+        List<GroupModel> groupList = groupService.getGroupModelList(groupQuery);
+        return new Page(groupList);
     }
 
     /**
-     * 查询单个组
+     * 查询单个用户组
      * @param   id  主键
-     * @return  GroupModel   组领域对象
+     * @return  GroupModel   用户组领域对象
      */
+    @ApiOperation(value = "查询用户组")
+    @ActionLog(actionName = "查询用户组")
+    @RequiresPermissions(value = {PERMISSION_GROUP_VIEW})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @Log(actionName = "查询组")
     public GroupModel getGroupById(@PathVariable(value = "id") String id){
         return groupService.getOneGroupModel(id);
     }
 
     /**
-     * 新增组
-     * @param   groupCreate  新增对象参数
-     * @param   bindingResult   参数校验结果
-     * @return  GroupModel   组领域对象
+     * 新增用户组
+     * @param   groupModel  新增对象参数
+     * @return  GroupModel   用户组领域对象
      */
+    @ApiOperation(value = "新增用户组")
+    @ActionLog(actionName = "新增用户组")
+    @RequiresPermissions(value = {PERMISSION_GROUP_CREATE})
     @RequestMapping(method = RequestMethod.POST)
-    @Log(actionName = "新增组")
-    public GroupModel createGroup(@RequestBody @Valid GroupCreate groupCreate, BindingResult bindingResult) throws ArgumentValidException {
-        if(bindingResult != null && bindingResult.hasErrors()){
-            throw new ArgumentValidException(bindingResult);
-        }
-        return groupService.createGroup(groupCreate);
+    public GroupModel createGroup(@RequestBody @Valid GroupModel groupModel) {
+        return groupService.createGroup(groupModel);
     }
 
     /**
-     * 更新组
-     * @param id                            主键
-     * @param groupUpdate 更新对象参数
-     * @param bindingResult                 参数校验结果
-     * @throws ArgumentValidException       参数校验异常类
+     * 更新用户组
+     * @param id    主键
+     * @param groupModel  更新对象参数
+     * @return  GroupModel   用户组领域对象
      */
+    @ApiOperation(value = "更新用户组")
+    @ActionLog(actionName = "更新用户组")
+    @RequiresPermissions(value = {PERMISSION_GROUP_UPDATE})
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    @Log(actionName = "更新组")
-    public void updateGroup(@PathVariable(value = "id") String id,
-                           @RequestBody @Valid GroupUpdate groupUpdate, BindingResult bindingResult) throws ArgumentValidException {
-        if(bindingResult != null && bindingResult.hasErrors()){
-            throw new ArgumentValidException(bindingResult);
+    public GroupModel updateGroup(@PathVariable(value = "id") String id,
+                           @RequestBody @Valid GroupModel groupModel){
+        if(StringUtils.isNotBlank(id)){
+            groupModel.setId(id);
         }
-        groupService.updateGroup(groupUpdate);
+        groupService.updateGroup(groupModel);
+        return groupService.getOneGroupModel(id);
     }
 
     /**
-     *  删除组
+     *  删除用户组
      * @param id    主键
      */
+    @ApiOperation(value = "删除单个用户组")
+    @ActionLog(actionName = "删除单个用户组")
+    @RequiresPermissions(value = {PERMISSION_GROUP_DELETE})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @Log(actionName = "删除单个组")
     public void deleteGroup(@PathVariable(value = "id") String id){
         groupService.deleteGroup(id);
     }
 
     /**
-     *  删除组
-     * @param ids    主键
+     *  删除用户组
+     * @param groupQuery    查询参数对象
      */
+    @ApiOperation(value = "批量删除用户组")
+    @ActionLog(actionName = "批量删除用户组")
+    @RequiresPermissions(value = {PERMISSION_GROUP_DELETE})
     @RequestMapping(method = RequestMethod.DELETE)
-    @Log(actionName = "删除组")
-    public void deleteGroups(@RequestParam(value = "ids") String[] ids){
-        groupService.deleteGroup(ids);
+    public void deleteGroups(GroupQuery groupQuery){
+        groupService.deleteGroup(groupQuery.getIds());
     }
 
     /**
-    * 导出
-    * @param id     主键
-    * @param ids    包含的主键数组
-    * @param excludeIds     排除的主键数组
-    * @param keyword    关键字
-    * @param modelMap   modelMap对象
-    * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
-    */
-    @RequestMapping(value="/export", method = RequestMethod.GET)
-    @Log(actionName = "导出组信息")
-    public ModelAndView exportGroup(
-            @RequestParam(value = "id", required = false) String id,
-            @RequestParam(value = "ids", required = false) String[] ids,
-            @RequestParam(value = "excludeIds", required = false) String[] excludeIds,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            ModelMap modelMap) {
-        GroupQuery groupQuery = new GroupQuery();
-        groupQuery.setId(id);
-        groupQuery.setExcludeIds(excludeIds);
-        groupQuery.setIds(ids);
-        groupQuery.setKeyword(keyword);
-        List<GroupModel> groupList = groupService.getGroupModelList(groupQuery);
-        modelMap.put(NormalExcelConstants.FILE_NAME, "组信息");
-        modelMap.put(NormalExcelConstants.PARAMS, new ExportParams());
-        modelMap.put(NormalExcelConstants.CLASS, GroupModel.class);
-        modelMap.put(NormalExcelConstants.DATA_LIST, groupList);
-        return new ModelAndView(NormalExcelConstants.JEECG_EXCEL_VIEW);
-    }
-
-    /**
-     * 批量新增组权限
+     * 批量新增用户组所属权限
      * @param groupId   组主键
      * @param permissionIds     权限主键集
      * @return List<GroupPermission>    组权限对象集
      */
-    @RequestMapping(value = "/{id}/permission", method = RequestMethod.POST)
-    @Log(actionName = "新增组权限")
-    public List<GroupPermission> createGroupPermission(
-            @PathVariable(value = "id") String groupId,
+    @ApiOperation(value = "批量删除用户组")
+    @ActionLog(actionName = "新增组权限")
+    @RequestMapping(value = "/{groupId}/permission", method = RequestMethod.POST)
+    public void createGroupPermission(
+            @PathVariable(value = "groupId") String groupId,
             @RequestParam(value = "permissionIds") String[] permissionIds){
-        return groupPermissionService.createGroupPermissions(groupId, permissionIds);
+        groupPermissionService.createGroupPermissions(groupId, permissionIds);
     }
 
     /**
-     * 查询用户组权限
+     * 查询用户组所属权限
      * @param groupId
-     * @param limit
-     * @param offset
+     * @param groupPermissionQuery
      * @return
      */
-    @RequestMapping(value = "/{id}/permission", method = RequestMethod.GET)
-    @Log(actionName = "查询用户组所属权限")
-    public Page<PermissionModel> findPermissionByGroup(
-            @PathVariable(value = "id") String groupId,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "hasPermission", required = false) Boolean hasPermission,
-            @RequestParam(value = "limit") Integer limit,
-            @RequestParam(value = "offset") Integer offset){
-        PermissionQuery permissionQuery = new PermissionQuery();
-        permissionQuery.setGroupId(groupId);
-        permissionQuery.setKeyword(keyword);
-        permissionQuery.setHasPermission(hasPermission);
-        return permissionService.getPermissionModelPage(limit, offset, permissionQuery);
+    @ApiOperation(value = "查询用户组所属权限")
+    @ActionLog(actionName = "查询用户组所属权限")
+    @RequestMapping(value = "/{groupId}/permission", method = RequestMethod.GET)
+    public Page<PermissionModel> findPermissionByGroup(@PathVariable(value = "groupId") String groupId,
+                                                       GroupPermissionQuery groupPermissionQuery){
+        return groupPermissionService.getGroupPermissions(groupPermissionQuery);
     }
-
-
 }

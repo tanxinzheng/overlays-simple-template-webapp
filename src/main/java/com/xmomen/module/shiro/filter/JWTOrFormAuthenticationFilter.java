@@ -75,10 +75,10 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
             String username = request.getParameter(DEFAULT_USERNAME_PARAM);
             String password = request.getParameter(DEFAULT_PASSWORD_PARAM);
             if(StringUtils.isEmpty(username)){
-                throw new BusinessException("请输入用户名");
+                throw new AuthenticationException("请输入用户名");
             }
             if(StringUtils.isEmpty(password)){
-                throw new BusinessException("请输入密码");
+                throw new AuthenticationException("请输入密码");
             }
             return new UsernamePasswordToken(username, password);
         }
@@ -106,14 +106,19 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         if(WebCommonUtils.isJSON(request) && isLoginSubmission(request, response)){
-            // 是登录请求，且请求中存在jwt token
+            // 是登录请求，且Ajax或json请求
             if (log.isTraceEnabled()) {
                 log.trace("Ajax Login submission detected.");
             }
-            return executeLogin(request, response);
+            try{
+                return executeLogin(request, response);
+            } catch (AuthenticationException e){
+                buildJSONMessage(HttpStatus.BAD_REQUEST, e.getMessage(), request, response);
+                return false;
+            }
         }
         if(isLoginRequest(request, response) && !WebCommonUtils.isJSON(request)) {
-            // 是登录请求，且请求中存在jwt token
+            // 是登录请求，页面请求
             if (isLoginSubmission(request, response)) {
                 if (log.isTraceEnabled()) {
                     log.trace("Login submission detected.  Attempting to execute login.");

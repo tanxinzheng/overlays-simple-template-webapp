@@ -4,16 +4,9 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.web.controller.BaseRestController;
-import com.xmomen.module.authorization.entity.UserGroup;
-import com.xmomen.module.authorization.entity.UserPermission;
-import com.xmomen.module.authorization.model.GroupModel;
-import com.xmomen.module.authorization.model.GroupQuery;
-import com.xmomen.module.authorization.model.PermissionModel;
-import com.xmomen.module.authorization.model.PermissionQuery;
-import com.xmomen.module.authorization.service.GroupService;
+import com.xmomen.module.authorization.model.*;
 import com.xmomen.module.authorization.service.PermissionService;
 import com.xmomen.module.authorization.service.UserGroupService;
-import com.xmomen.module.authorization.service.UserPermissionService;
 import com.xmomen.module.user.model.UserQuery;
 import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.service.UserService;
@@ -132,69 +125,50 @@ public class UserController extends BaseRestController {
     @Autowired
     PermissionService permissionService;
 
+//    @Autowired
+//    UserPermissionService userPermissionService;
+//
+//    /**
+//     * 查询用户组权限
+//     * @param userId    用户主键
+//     * @return
+//     */
+//    @ActionLog(actionName = "查询用户组所属权限")
+//    @RequestMapping(value = "/{userId}/permission", method = RequestMethod.GET)
+//    public Page<PermissionModel> getUserPermission(
+//            @PathVariable(value = "userId") String userId,
+//            UserPermissionQuery userPermissionQuery){
+//        userPermissionQuery.setUserId(userId);
+//        return userPermissionService.getUserPermissions(userPermissionQuery);
+//    }
+//
+//    /**
+//     * 批量新增用户权限
+//     * @param userId   用户主键
+//     * @param permissionIds     权限主键集
+//     * @return List<UserPermission>    用户权限对象集
+//     */
+//    @ActionLog(actionName = "批量新增用户权限")
+//    @RequestMapping(value = "/{userId}/permission", method = RequestMethod.POST)
+//    public void createGroupPermission(
+//            @PathVariable(value = "userId") String userId,
+//            @RequestParam(value = "permissionIds") String[] permissionIds){
+//        userPermissionService.createUserPermissions(userId, permissionIds);
+//    }
+
     /**
      * 查询用户组权限
      * @param userId    用户主键
-     * @param limit     最大页数
-     * @param offset    页码
+     * @param userGroupQuery    查询参数
      * @return
      */
     @ActionLog(actionName = "查询用户组所属权限")
-    @RequestMapping(value = "/{id}/permission", method = RequestMethod.GET)
-    public Page<PermissionModel> getUserPermission(
-            @PathVariable(value = "id") String userId,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "hasPermission", required = false) Boolean hasPermission,
-            @RequestParam(value = "limit") Integer limit,
-            @RequestParam(value = "offset") Integer offset){
-        PermissionQuery permissionQuery = new PermissionQuery();
-        permissionQuery.setUserId(userId);
-        permissionQuery.setKeyword(keyword);
-        permissionQuery.setHasPermission(hasPermission);
-        return permissionService.getPermissionModelPage(limit, offset, permissionQuery);
-    }
-
-    @Autowired
-    UserPermissionService userPermissionService;
-
-    /**
-     * 批量新增组权限
-     * @param userId   用户主键
-     * @param permissionIds     权限主键集
-     * @return List<UserPermission>    用户权限对象集
-     */
-    @RequestMapping(value = "/{id}/permission", method = RequestMethod.POST)
-    public List<UserPermission> createGroupPermission(
-            @PathVariable(value = "id") String userId,
-            @RequestParam(value = "permissionIds") String[] permissionIds){
-        return userPermissionService.createUserPermissions(userId, permissionIds);
-    }
-
-    @Autowired
-    GroupService groupService;
-
-    /**
-     * 查询用户组权限
-     * @param userId    用户主键
-     * @param keyword   关键字
-     * @param hasGroup     是否查询已有组
-     * @param limit     每页数量
-     * @param offset    页码
-     * @return
-     */
-//    @Log(actionName = "查询用户组所属权限")
-    @RequestMapping(value = "/{id}/group", method = RequestMethod.GET)
+    @RequestMapping(value = "/{userId}/group", method = RequestMethod.GET)
     public Page<GroupModel> getUserGroup(
-            @PathVariable(value = "id") String userId,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "hasGroup", required = false) Boolean hasGroup,
-            @RequestParam(value = "limit") Integer limit,
-            @RequestParam(value = "offset") Integer offset){
-        GroupQuery groupQuery = new GroupQuery();
-        groupQuery.setUserId(userId);
-        groupQuery.setKeyword(keyword);
-        groupQuery.setHasGroup(hasGroup);
-        return groupService.getGroupModelPage(limit, offset, groupQuery);
+            @PathVariable(value = "userId") String userId,
+            UserGroupQuery userGroupQuery){
+        userGroupQuery.setUserId(userId);
+        return userGroupService.getUserGroupsPage(userGroupQuery);
     }
 
     @Autowired
@@ -206,11 +180,11 @@ public class UserController extends BaseRestController {
      * @param groupIds     组主键集
      * @return List<UserGroup>    用户组对象集
      */
-    @RequestMapping(value = "/{id}/group", method = RequestMethod.POST)
-    public List<UserGroup> createUserGroup(
-            @PathVariable(value = "id") String userId,
+    @RequestMapping(value = "/{userId}/group", method = RequestMethod.POST)
+    public void createUserGroup(
+            @PathVariable(value = "userId") String userId,
             @RequestParam(value = "groupIds") String[] groupIds){
-        return userGroupService.createUserGroups(userId, groupIds);
+        userGroupService.createUserGroups(userId, groupIds);
     }
 
 }

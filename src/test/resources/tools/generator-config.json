@@ -7,6 +7,7 @@
   },
   "metadata":{
     "ignoreKeywordValidate":true,
+    "templateTypes":["MapperXml"],
     "overwriteTemplates":{
       "ControllerTest":"src/test/resources/templates/controllerTest.ftl",
       "Controller":"src/test/resources/templates/controller.ftl",
@@ -19,32 +20,11 @@
   },
   "tables":[
     {
-      "domainObjectName":"groupPermissionRelation",
-      "tableComment":"组权限",
-      "tableName":"xmo_group_permission",
-      "modulePackage":"com.xmomen.module.authorization",
-      "restMapping":"/group/permission"
-    },
-    {
       "domainObjectName":"permission",
       "tableComment":"权限",
       "tableName":"xmo_permission",
       "modulePackage":"com.xmomen.module.authorization",
       "restMapping":"/permission"
-    },
-    {
-      "domainObjectName":"userGroupRelation",
-      "tableComment":"用户组关联",
-      "tableName":"xmo_user_group",
-      "modulePackage":"com.xmomen.module.authorization",
-      "restMapping":"/user/group"
-    },
-    {
-      "domainObjectName":"groupPermissionRelation",
-      "tableComment":"组权限",
-      "tableName":"xmo_group_permission",
-      "modulePackage":"com.xmomen.module.authorization",
-      "restMapping":"/group/permission"
     }
   ]
 }

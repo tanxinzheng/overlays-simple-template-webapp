@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmomen.module.authorization.mapper.GroupPermissionMapper" >
+
+    <insert id="insertSelective" parameterType="com.xmomen.module.authorization.model.GroupPermission" useGeneratedKeys="true" keyProperty="id" keyColumn="ID" >
+        <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+            SELECT replace(UUID(),'-','')
+        </selectKey>
+        insert into xmo_group_permission
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+        ID,
+                <if test="groupId != null" >
+                    GROUP_ID,
+                </if>
+                <if test="permissionId != null" >
+                    PERMISSION_ID,
+                </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{id},
+                <if test="groupId != null" >
+                #{groupId},
+                </if>
+                <if test="permissionId != null" >
+                #{permissionId},
+                </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from xmo_group_permission where ID = #{id}
+    </delete>
+
+    <delete id="deletesByPrimaryKey" parameterType="java.util.ArrayList" >
+        delete from xmo_group_permission where ID IN
+        <foreach collection="ids" item="item" separator="," open="(" close=")">
+        #{item}
+        </foreach>
+    </delete>
+
+    <update id="updateSelective" parameterType="com.xmomen.module.authorization.model.GroupPermission" >
+        update xmo_group_permission
+        <set>
+            <if test="id != null" >
+            ID = #{id},
+            </if>
+            <if test="groupId != null" >
+            GROUP_ID = #{groupId},
+            </if>
+            <if test="permissionId != null" >
+            PERMISSION_ID = #{permissionId},
+            </if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <update id="updateSelectiveByQuery" parameterType="map" >
+        update xmo_group_permission
+        <set >
+            <if test="record.id != null" >
+            ID = #{id},
+            </if>
+            <if test="record.groupId != null" >
+            GROUP_ID = #{groupId},
+            </if>
+            <if test="record.permissionId != null" >
+            PERMISSION_ID = #{permissionId},
+            </if>
+        </set>
+        <if test="query != null" >
+            <include refid="Update_By_Query_Where_Clause"/>
+        </if>
+    </update>
+
+    <!--    查询消息    -->
+    <select id="select"
+            resultType="com.xmomen.module.authorization.model.GroupPermission"
+            parameterType="com.xmomen.module.authorization.model.GroupPermissionQuery">
+        SELECT * FROM xmo_group_permission
+        <include refid="Update_By_Query_Where_Clause"/>
+        ORDER BY ID
+    </select>
+
+    <select id="selectByPrimaryKey"
+            resultType="com.xmomen.module.authorization.model.GroupPermission"
+            parameterType="java.lang.String">
+        SELECT * FROM xmo_group_permission WHERE ID = #{id}
+    </select>
+
+    <select id="selectModelByPrimaryKey"
+            resultType="com.xmomen.module.authorization.model.GroupPermissionModel"
+            parameterType="java.lang.String">
+        SELECT * FROM xmo_group_permission WHERE ID = #{id}
+    </select>
+
+    <select id="selectModel"
+            resultType="com.xmomen.module.authorization.model.GroupPermissionModel"
+            parameterType="com.xmomen.module.authorization.model.GroupPermissionQuery">
+        SELECT * FROM xmo_group_permission
+        <include refid="Update_By_Query_Where_Clause"/>
+        ORDER BY id
+    </select>
+
+    <sql id="Update_By_Query_Where_Clause">
+        <where>
+            <if test="keyword">
+                AND ID LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="id">
+                AND ID = #{id}
+            </if>
+            <if test="ids">
+                AND ID IN
+                <foreach collection="ids" item="item" separator="," open="(" close=")">
+                #{item}
+                </foreach>
+            </if>
+            <if test="excludeIds">
+                AND ID NOT IN
+                <foreach collection="excludeIds" item="item" separator="," open="(" close=")">
+                #{item}
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+</mapper>

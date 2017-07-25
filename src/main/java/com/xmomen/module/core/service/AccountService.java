@@ -12,7 +12,6 @@ import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.model.Register;
 import com.xmomen.module.shiro.PasswordHelper;
 import com.xmomen.module.shiro.realm.UserRealm;
-import com.xmomen.module.user.model.User;
 import com.xmomen.module.user.model.UserModel;
 import com.xmomen.module.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
@@ -153,7 +152,7 @@ public class AccountService {
         AccountModel accountModel = getSessionModel();
         GroupQuery groupQuery = new GroupQuery();
         groupQuery.setUserId(accountModel.getUserId());
-        groupQuery.setHasGroup(true);
+        groupQuery.setHasBindGroup(true);
         List<GroupModel> groupList = groupService.getGroupModelList(groupQuery);
         Set<String> roles = new HashSet<>();
         for (GroupModel groupModel : groupList) {
@@ -170,7 +169,7 @@ public class AccountService {
         AccountModel accountModel = getSessionModel();
         PermissionQuery permissionQuery = new PermissionQuery();
         permissionQuery.setUserId(accountModel.getUserId());
-        permissionQuery.setHasPermission(true);
+//        permissionQuery.setHasBindPermission(true);
         List<PermissionModel> permissionModelList = permissionService.getPermissionModelList(permissionQuery);
         Set<String> permissions = new HashSet<>();
         for (PermissionModel permissionModel : permissionModelList) {

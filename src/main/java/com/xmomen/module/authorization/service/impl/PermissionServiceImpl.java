@@ -1,15 +1,13 @@
 package com.xmomen.module.authorization.service.impl;
 
-import com.xmomen.framework.mybatis.dao.MybatisDao;
-import com.xmomen.framework.mybatis.page.Page;
-import com.xmomen.module.authorization.entity.Permission;
-import com.xmomen.module.authorization.entity.PermissionExample;
-import com.xmomen.module.authorization.mapper.PermissionMapperExt;
-import com.xmomen.module.authorization.model.PermissionCreate;
+import com.xmomen.framework.mybatis.page.PageInterceptor;
+import com.xmomen.module.authorization.model.Permission;
+import com.xmomen.module.authorization.mapper.PermissionMapper;
 import com.xmomen.module.authorization.model.PermissionModel;
 import com.xmomen.module.authorization.model.PermissionQuery;
-import com.xmomen.module.authorization.model.PermissionUpdate;
 import com.xmomen.module.authorization.service.PermissionService;
+import com.xmomen.framework.mybatis.page.Page;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,51 +19,29 @@ import java.util.List;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:20
+ * @date    2017-7-25 1:52:35
  * @version 1.0.0
  */
 @Service
 public class PermissionServiceImpl implements PermissionService {
 
     @Autowired
-    MybatisDao mybatisDao;
+    PermissionMapper permissionMapper;
 
     /**
      * 新增权限
      *
-     * @param permissionCreate 新增权限对象参数
+     * @param permissionModel 新增权限对象参数
      * @return PermissionModel    权限领域对象
      */
     @Override
     @Transactional
-    public PermissionModel createPermission(PermissionCreate permissionCreate) {
-        Permission permission = createPermission(permissionCreate.getEntity());
+    public PermissionModel createPermission(PermissionModel permissionModel) {
+        Permission permission = createPermission(permissionModel.getEntity());
         if(permission != null){
             return getOnePermissionModel(permission.getId());
         }
         return null;
-    }
-
-    /**
-     * 批量新增权限
-     *
-     * @param permissionCreates 新增权限对象集合参数
-     * @return List<PermissionModel>    权限领域对象集合
-     */
-    @Override
-    @Transactional
-    public List<PermissionModel> createPermissions(List<PermissionCreate> permissionCreates) {
-        List<PermissionModel> permissionModelList = null;
-        for (PermissionCreate permissionCreate : permissionCreates) {
-            PermissionModel permissionModel = createPermission(permissionCreate);
-            if(permissionModel != null){
-                if(permissionModelList == null){
-                    permissionModelList = new ArrayList<>();
-                }
-                permissionModelList.add(permissionModel);
-            }
-        }
-        return permissionModelList;
     }
 
     /**
@@ -77,19 +53,53 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     @Transactional
     public Permission createPermission(Permission permission) {
-        permission.setPermissionCode(permission.getPermissionCode().toUpperCase());
-        return mybatisDao.insertByModel(permission);
+        permissionMapper.insertSelective(permission);
+        return permission;
+    }
+
+    /**
+    * 批量新增权限
+    *
+    * @param permissionModels 新增权限对象集合参数
+    * @return List<PermissionModel>    权限领域对象集合
+    */
+    @Override
+    @Transactional
+    public List<PermissionModel> createPermissions(List<PermissionModel> permissionModels) {
+        List<PermissionModel> permissionModelList = null;
+        for (PermissionModel permissionModel : permissionModels) {
+            permissionModel = createPermission(permissionModel);
+            if(permissionModel != null){
+                if(permissionModelList == null){
+                    permissionModelList = new ArrayList<>();
+                }
+                permissionModelList.add(permissionModel);
+            }
+        }
+        return permissionModelList;
+    }
+
+    /**
+    * 更新权限
+    *
+    * @param permissionModel 更新权限对象参数
+    * @param permissionQuery 过滤权限对象参数
+    */
+    @Override
+    @Transactional
+    public void updatePermission(PermissionModel permissionModel, PermissionQuery permissionQuery) {
+        permissionMapper.updateSelectiveByQuery(permissionModel.getEntity(), permissionQuery);
     }
 
     /**
      * 更新权限
      *
-     * @param permissionUpdate 更新权限对象参数
+     * @param permissionModel 更新权限对象参数
      */
     @Override
     @Transactional
-    public void updatePermission(PermissionUpdate permissionUpdate) {
-        mybatisDao.update(permissionUpdate.getEntity());
+    public void updatePermission(PermissionModel permissionModel) {
+        updatePermission(permissionModel.getEntity());
     }
 
     /**
@@ -101,7 +111,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     @Transactional
     public void updatePermission(Permission permission) {
-        mybatisDao.update(permission);
+        permissionMapper.updateSelective(permission);
     }
 
     /**
@@ -112,9 +122,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     @Transactional
     public void deletePermission(String[] ids) {
-        PermissionExample permissionExample = new PermissionExample();
-        permissionExample.createCriteria().andIdIn(Arrays.asList((String[]) ids));
-        mybatisDao.deleteByExample(permissionExample);
+        permissionMapper.deletesByPrimaryKey(Arrays.asList(ids));
     }
 
     /**
@@ -125,32 +133,20 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     @Transactional
     public void deletePermission(String id) {
-        mybatisDao.deleteByPrimaryKey(Permission.class, id);
+        permissionMapper.deleteByPrimaryKey(id);
     }
 
     /**
      * 查询权限领域分页对象（带参数条件）
      *
-     * @param limit     每页最大数
-     * @param offset    页码
      * @param permissionQuery 查询参数
      * @return Page<PermissionModel>   权限参数对象
      */
     @Override
-    public Page<PermissionModel> getPermissionModelPage(int limit, int offset, PermissionQuery permissionQuery) {
-        return (Page<PermissionModel>) mybatisDao.selectPage(PermissionMapperExt.PermissionMapperNameSpace + "getPermissionModel", permissionQuery, limit, offset);
-    }
-
-    /**
-     * 查询权限领域分页对象（无参数条件）
-     *
-     * @param limit  每页最大数
-     * @param offset 页码
-     * @return Page<PermissionModel> 权限领域对象
-     */
-    @Override
-    public Page<PermissionModel> getPermissionModelPage(int limit, int offset) {
-        return (Page<PermissionModel>) mybatisDao.selectPage(PermissionMapperExt.PermissionMapperNameSpace + "getPermissionModel", null, limit, offset);
+    public Page<PermissionModel> getPermissionModelPage(PermissionQuery permissionQuery) {
+        PageInterceptor.startPage(permissionQuery);
+        permissionMapper.selectModel(permissionQuery);
+        return PageInterceptor.endPage();
     }
 
     /**
@@ -161,17 +157,7 @@ public class PermissionServiceImpl implements PermissionService {
      */
     @Override
     public List<PermissionModel> getPermissionModelList(PermissionQuery permissionQuery) {
-        return mybatisDao.getSqlSessionTemplate().selectList(PermissionMapperExt.PermissionMapperNameSpace + "getPermissionModel", permissionQuery);
-    }
-
-    /**
-     * 查询权限领域集合对象（无参数条件）
-     *
-     * @return List<PermissionModel> 权限领域集合对象
-     */
-    @Override
-    public List<PermissionModel> getPermissionModelList() {
-        return mybatisDao.getSqlSessionTemplate().selectList(PermissionMapperExt.PermissionMapperNameSpace + "getPermissionModel");
+        return permissionMapper.selectModel(permissionQuery);
     }
 
     /**
@@ -182,7 +168,7 @@ public class PermissionServiceImpl implements PermissionService {
      */
     @Override
     public Permission getOnePermission(String id) {
-        return mybatisDao.selectByPrimaryKey(Permission.class, id);
+        return permissionMapper.selectByPrimaryKey(id);
     }
 
     /**
@@ -193,9 +179,7 @@ public class PermissionServiceImpl implements PermissionService {
      */
     @Override
     public PermissionModel getOnePermissionModel(String id) {
-        PermissionQuery permissionQuery = new PermissionQuery();
-        permissionQuery.setId(id);
-        return mybatisDao.getSqlSessionTemplate().selectOne(PermissionMapperExt.PermissionMapperNameSpace + "getPermissionModel", permissionQuery);
+        return permissionMapper.selectModelByPrimaryKey(id);
     }
 
     /**
@@ -206,6 +190,13 @@ public class PermissionServiceImpl implements PermissionService {
      */
     @Override
     public PermissionModel getOnePermissionModel(PermissionQuery permissionQuery) throws TooManyResultsException {
-        return mybatisDao.getSqlSessionTemplate().selectOne(PermissionMapperExt.PermissionMapperNameSpace + "getPermissionModel", permissionQuery);
+        List<PermissionModel> permissionModelList = permissionMapper.selectModel(permissionQuery);
+        if(CollectionUtils.isEmpty(permissionModelList)){
+            return null;
+        }
+        if(permissionModelList.size() > 1){
+            throw new TooManyResultsException();
+        }
+        return permissionModelList.get(0);
     }
 }

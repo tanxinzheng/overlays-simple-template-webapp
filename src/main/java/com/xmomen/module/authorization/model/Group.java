@@ -1,17 +1,18 @@
 package com.xmomen.module.authorization.model;
 
-import com.xmomen.module.authorization.entity.Group;
 import lombok.Data;
-import org.springframework.beans.BeanUtils;
+import com.xmomen.framework.model.BaseEntity;
 
+import java.lang.Boolean;
+import java.lang.String;
 import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2016-10-23 12:15:20
+ * @date    2017-7-25 0:51:13
  * @version 1.0.0
  */
-public @Data class GroupUpdate implements Serializable {
+public @Data class Group extends BaseEntity implements Serializable {
 
     /** 主键 */
     private String id;
@@ -25,9 +26,4 @@ public @Data class GroupUpdate implements Serializable {
     private Boolean active;
 
 
-    public Group getEntity(){
-        Group group = new Group();
-        BeanUtils.copyProperties(this, group);
-        return group;
-    }
 }
