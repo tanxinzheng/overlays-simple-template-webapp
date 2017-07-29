@@ -1,15 +1,13 @@
 package com.xmomen.module.shiro.filter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.web.rest.WebCommonUtils;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.service.AccountService;
 import com.xmomen.module.shiro.token.JWTAuthenticationToken;
-import com.xmomen.module.user.model.User;
-import com.xmomen.module.user.service.UserService;
+import com.xmomen.module.authorization.model.User;
+import com.xmomen.module.authorization.service.UserService;
 import io.jsonwebtoken.*;
-import org.apache.commons.lang.CharSet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
@@ -20,9 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
@@ -30,8 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringReader;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -256,7 +250,7 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
             PrintWriter servletOutputStream = httpServletResponse.getWriter();
             servletOutputStream.write(JSONObject.toJSONString(map));
             servletOutputStream.flush();
-            servletOutputStream.close();
+//            servletOutputStream.close();
         } catch (IOException e) {
             logger.error(e.getMessage(), e.getCause());
             e.printStackTrace();

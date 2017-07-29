@@ -40,7 +40,7 @@ public class UserGroupController extends BaseRestController {
      */
     @ApiOperation(value = "查询用户组关联列表")
     @ActionLog(actionName = "查询用户组关联列表")
-    @RequiresPermissions(value = {PERMISSION_USERGROUP_VIEW})
+    //@RequiresPermissions(value = {PERMISSION_USERGROUP_VIEW})
     @RequestMapping(method = RequestMethod.GET)
     public Page<UserGroupModel> getUserGroupList(UserGroupQuery userGroupQuery){
         if(userGroupQuery.isPaging()){
@@ -57,7 +57,7 @@ public class UserGroupController extends BaseRestController {
      */
     @ApiOperation(value = "查询用户组关联")
     @ActionLog(actionName = "查询用户组关联")
-    @RequiresPermissions(value = {PERMISSION_USERGROUP_VIEW})
+    //@RequiresPermissions(value = {PERMISSION_USERGROUP_VIEW})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public UserGroupModel getUserGroupById(@PathVariable(value = "id") String id){
         return userGroupService.getOneUserGroupModel(id);
@@ -70,7 +70,7 @@ public class UserGroupController extends BaseRestController {
      */
     @ApiOperation(value = "新增用户组关联")
     @ActionLog(actionName = "新增用户组关联")
-    @RequiresPermissions(value = {PERMISSION_USERGROUP_CREATE})
+    //@RequiresPermissions(value = {PERMISSION_USERGROUP_CREATE})
     @RequestMapping(method = RequestMethod.POST)
     public UserGroupModel createUserGroup(@RequestBody @Valid UserGroupModel userGroupModel) {
         return userGroupService.createUserGroup(userGroupModel);
@@ -84,7 +84,7 @@ public class UserGroupController extends BaseRestController {
      */
     @ApiOperation(value = "更新用户组关联")
     @ActionLog(actionName = "更新用户组关联")
-    @RequiresPermissions(value = {PERMISSION_USERGROUP_UPDATE})
+    //@RequiresPermissions(value = {PERMISSION_USERGROUP_UPDATE})
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public UserGroupModel updateUserGroup(@PathVariable(value = "id") String id,
                            @RequestBody @Valid UserGroupModel userGroupModel){
@@ -101,7 +101,7 @@ public class UserGroupController extends BaseRestController {
      */
     @ApiOperation(value = "删除单个用户组关联")
     @ActionLog(actionName = "删除单个用户组关联")
-    @RequiresPermissions(value = {PERMISSION_USERGROUP_DELETE})
+    //@RequiresPermissions(value = {PERMISSION_USERGROUP_DELETE})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteUserGroup(@PathVariable(value = "id") String id){
         userGroupService.deleteUserGroup(id);
@@ -113,7 +113,7 @@ public class UserGroupController extends BaseRestController {
      */
     @ApiOperation(value = "批量删除用户组关联")
     @ActionLog(actionName = "批量删除用户组关联")
-    @RequiresPermissions(value = {PERMISSION_USERGROUP_DELETE})
+    //@RequiresPermissions(value = {PERMISSION_USERGROUP_DELETE})
     @RequestMapping(method = RequestMethod.DELETE)
     public void deleteUserGroups(UserGroupQuery userGroupQuery){
         userGroupService.deleteUserGroup(userGroupQuery.getIds());

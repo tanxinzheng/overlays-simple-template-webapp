@@ -23,18 +23,18 @@
                 </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-        #{id},
+        #{id, jdbcType=VARCHAR},
                 <if test="groupCode != null" >
-                #{groupCode},
+                #{groupCode, jdbcType=VARCHAR},
                 </if>
                 <if test="groupName != null" >
-                #{groupName},
+                #{groupName, jdbcType=VARCHAR},
                 </if>
                 <if test="description != null" >
-                #{description},
+                #{description, jdbcType=VARCHAR},
                 </if>
                 <if test="active != null" >
-                #{active},
+                #{active, jdbcType=CHAR},
                 </if>
         </trim>
     </insert>
@@ -54,19 +54,19 @@
         update xmo_group
         <set>
             <if test="id != null" >
-            ID = #{id},
+            ID = #{id, jdbcType=VARCHAR},
             </if>
             <if test="groupCode != null" >
-            GROUP_CODE = #{groupCode},
+            GROUP_CODE = #{groupCode, jdbcType=VARCHAR},
             </if>
             <if test="groupName != null" >
-            GROUP_NAME = #{groupName},
+            GROUP_NAME = #{groupName, jdbcType=VARCHAR},
             </if>
             <if test="description != null" >
-            DESCRIPTION = #{description},
+            DESCRIPTION = #{description, jdbcType=VARCHAR},
             </if>
             <if test="active != null" >
-            ACTIVE = #{active},
+            ACTIVE = #{active, jdbcType=CHAR},
             </if>
         </set>
         WHERE ID = #{id}
@@ -76,19 +76,19 @@
         update xmo_group
         <set >
             <if test="record.id != null" >
-            ID = #{id},
+            ID = #{id, jdbcType=VARCHAR},
             </if>
             <if test="record.groupCode != null" >
-            GROUP_CODE = #{groupCode},
+            GROUP_CODE = #{groupCode, jdbcType=VARCHAR},
             </if>
             <if test="record.groupName != null" >
-            GROUP_NAME = #{groupName},
+            GROUP_NAME = #{groupName, jdbcType=VARCHAR},
             </if>
             <if test="record.description != null" >
-            DESCRIPTION = #{description},
+            DESCRIPTION = #{description, jdbcType=VARCHAR},
             </if>
             <if test="record.active != null" >
-            ACTIVE = #{active},
+            ACTIVE = #{active, jdbcType=CHAR},
             </if>
         </set>
         <if test="query != null" >

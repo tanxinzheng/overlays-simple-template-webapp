@@ -1,4 +1,4 @@
-package com.xmomen.module.user.model;
+package com.xmomen.module.authorization.model;
 
 import lombok.Data;
 import com.xmomen.framework.model.BaseQuery;

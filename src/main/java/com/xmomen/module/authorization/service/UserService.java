@@ -1,9 +1,9 @@
-package com.xmomen.module.user.service;
+package com.xmomen.module.authorization.service;
 
 import com.xmomen.framework.mybatis.page.Page;
-import com.xmomen.module.user.model.UserQuery;
-import com.xmomen.module.user.model.UserModel;
-import com.xmomen.module.user.model.User;
+import com.xmomen.module.authorization.model.UserQuery;
+import com.xmomen.module.authorization.model.UserModel;
+import com.xmomen.module.authorization.model.User;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 
 import java.util.List;

@@ -38,33 +38,33 @@
                 </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-        #{id},
+        #{id, jdbcType=VARCHAR},
                 <if test="permissionCode != null" >
-                #{permissionCode},
+                #{permissionCode, jdbcType=VARCHAR},
                 </if>
                 <if test="permissionName != null" >
-                #{permissionName},
+                #{permissionName, jdbcType=VARCHAR},
                 </if>
                 <if test="description != null" >
-                #{description},
+                #{description, jdbcType=VARCHAR},
                 </if>
                 <if test="active != null" >
-                #{active},
+                #{active, jdbcType=CHAR},
                 </if>
                 <if test="createdUserId != null" >
-                #{createdUserId},
+                #{createdUserId, jdbcType=VARCHAR},
                 </if>
                 <if test="createdTime != null" >
-                #{createdTime},
+                #{createdTime, jdbcType=TIMESTAMP},
                 </if>
                 <if test="updatedUserId != null" >
-                #{updatedUserId},
+                #{updatedUserId, jdbcType=VARCHAR},
                 </if>
                 <if test="updatedTime != null" >
-                #{updatedTime},
+                #{updatedTime, jdbcType=TIMESTAMP},
                 </if>
                 <if test="dataVersion != null" >
-                #{dataVersion},
+                #{dataVersion, jdbcType=INT},
                 </if>
         </trim>
     </insert>
@@ -84,34 +84,34 @@
         update xmo_permission
         <set>
             <if test="id != null" >
-            ID = #{id},
+            ID = #{id, jdbcType=VARCHAR},
             </if>
             <if test="permissionCode != null" >
-            PERMISSION_CODE = #{permissionCode},
+            PERMISSION_CODE = #{permissionCode, jdbcType=VARCHAR},
             </if>
             <if test="permissionName != null" >
-            PERMISSION_NAME = #{permissionName},
+            PERMISSION_NAME = #{permissionName, jdbcType=VARCHAR},
             </if>
             <if test="description != null" >
-            DESCRIPTION = #{description},
+            DESCRIPTION = #{description, jdbcType=VARCHAR},
             </if>
             <if test="active != null" >
-            ACTIVE = #{active},
+            ACTIVE = #{active, jdbcType=CHAR},
             </if>
             <if test="createdUserId != null" >
-            CREATED_USER_ID = #{createdUserId},
+            CREATED_USER_ID = #{createdUserId, jdbcType=VARCHAR},
             </if>
             <if test="createdTime != null" >
-            CREATED_TIME = #{createdTime},
+            CREATED_TIME = #{createdTime, jdbcType=TIMESTAMP},
             </if>
             <if test="updatedUserId != null" >
-            UPDATED_USER_ID = #{updatedUserId},
+            UPDATED_USER_ID = #{updatedUserId, jdbcType=VARCHAR},
             </if>
             <if test="updatedTime != null" >
-            UPDATED_TIME = #{updatedTime},
+            UPDATED_TIME = #{updatedTime, jdbcType=TIMESTAMP},
             </if>
             <if test="dataVersion != null" >
-            DATA_VERSION = #{dataVersion},
+            DATA_VERSION = #{dataVersion, jdbcType=INT},
             </if>
         </set>
         WHERE ID = #{id}
@@ -121,34 +121,34 @@
         update xmo_permission
         <set >
             <if test="record.id != null" >
-            ID = #{id},
+            ID = #{id, jdbcType=VARCHAR},
             </if>
             <if test="record.permissionCode != null" >
-            PERMISSION_CODE = #{permissionCode},
+            PERMISSION_CODE = #{permissionCode, jdbcType=VARCHAR},
             </if>
             <if test="record.permissionName != null" >
-            PERMISSION_NAME = #{permissionName},
+            PERMISSION_NAME = #{permissionName, jdbcType=VARCHAR},
             </if>
             <if test="record.description != null" >
-            DESCRIPTION = #{description},
+            DESCRIPTION = #{description, jdbcType=VARCHAR},
             </if>
             <if test="record.active != null" >
-            ACTIVE = #{active},
+            ACTIVE = #{active, jdbcType=CHAR},
             </if>
             <if test="record.createdUserId != null" >
-            CREATED_USER_ID = #{createdUserId},
+            CREATED_USER_ID = #{createdUserId, jdbcType=VARCHAR},
             </if>
             <if test="record.createdTime != null" >
-            CREATED_TIME = #{createdTime},
+            CREATED_TIME = #{createdTime, jdbcType=TIMESTAMP},
             </if>
             <if test="record.updatedUserId != null" >
-            UPDATED_USER_ID = #{updatedUserId},
+            UPDATED_USER_ID = #{updatedUserId, jdbcType=VARCHAR},
             </if>
             <if test="record.updatedTime != null" >
-            UPDATED_TIME = #{updatedTime},
+            UPDATED_TIME = #{updatedTime, jdbcType=TIMESTAMP},
             </if>
             <if test="record.dataVersion != null" >
-            DATA_VERSION = #{dataVersion},
+            DATA_VERSION = #{dataVersion, jdbcType=INT},
             </if>
         </set>
         <if test="query != null" >

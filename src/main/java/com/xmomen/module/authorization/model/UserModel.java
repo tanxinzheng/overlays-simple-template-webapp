@@ -1,12 +1,11 @@
-package com.xmomen.module.user.model;
+package com.xmomen.module.authorization.model;
 
 import com.xmomen.framework.model.BaseModel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.xmomen.module.user.model.User;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Data;
 import org.hibernate.validator.constraints.*;
-import javax.validation.constraints.*;
 import org.jeecgframework.poi.excel.annotation.Excel;
 import org.jeecgframework.poi.excel.annotation.ExcelTarget;
 import org.springframework.beans.BeanUtils;
@@ -37,11 +36,13 @@ public @Data class UserModel extends BaseModel implements Serializable {
     @Length(max = 50, message = "真实姓名字符长度限制[0,50]")
     private String nickname;
     /** 密码盐值 */
+    @JsonIgnore
     @Excel(name = "密码盐值")
-    @NotBlank(message = "密码盐值为必填项")
+//    @NotBlank(message = "密码盐值为必填项")
     @Length(max = 50, message = "密码盐值字符长度限制[0,50]")
     private String salt;
     /** 密码 */
+    @JsonIgnore
     @Excel(name = "密码")
     @NotBlank(message = "密码为必填项")
     @Length(max = 50, message = "密码字符长度限制[0,50]")
@@ -59,7 +60,7 @@ public @Data class UserModel extends BaseModel implements Serializable {
     private Boolean locked;
     /** 注册时间 */
     @Excel(name = "注册时间")
-    private Date createDate;
+    private Date createdTime;
     /** 最后登录时间 */
     @Excel(name = "最后登录时间")
     private Date lastLoginTime;

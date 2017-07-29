@@ -7,8 +7,10 @@
   },
   "metadata":{
     "ignoreKeywordValidate":true,
-    "templateTypes":["MapperXml"],
+    "templateTypes":["GridJs", "GridHtml"],
     "overwriteTemplates":{
+      "GridJs":"src/test/resources/templates/grid-js.ftl",
+      "GridHtml":"src/test/resources/templates/grid-html.ftl",
       "ControllerTest":"src/test/resources/templates/controllerTest.ftl",
       "Controller":"src/test/resources/templates/controller.ftl",
       "Model":"src/test/resources/templates/model.ftl",
@@ -16,6 +18,18 @@
       "ServiceImpl":"src/test/resources/templates/serviceImpl.ftl",
       "Mapper":"src/test/resources/templates/mapper.ftl",
       "MapperXml":"src/test/resources/templates/mapperXml.ftl"
+    },
+    "templates":{
+      "GridJs":{
+        "fileExt":".js",
+        "templateFileName":"src/test/resources/templates/gridJs.ftl",
+        "targetProject":"src/main/webapp"
+      },
+      "GridHtml":{
+        "fileExt":".html",
+        "templateFileName":"src/test/resources/templates/gridHtml.ftl",
+        "targetProject":"src/main/webapp"
+      }
     }
   },
   "tables":[

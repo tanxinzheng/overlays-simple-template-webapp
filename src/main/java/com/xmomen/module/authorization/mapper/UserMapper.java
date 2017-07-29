@@ -1,8 +1,8 @@
-package com.xmomen.module.user.mapper;
+package com.xmomen.module.authorization.mapper;
 
-import com.xmomen.module.user.model.User;
-import com.xmomen.module.user.model.UserModel;
-import com.xmomen.module.user.model.UserQuery;
+import com.xmomen.module.authorization.model.User;
+import com.xmomen.module.authorization.model.UserModel;
+import com.xmomen.module.authorization.model.UserQuery;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

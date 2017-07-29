@@ -8,11 +8,11 @@ import com.xmomen.module.authorization.model.PermissionQuery;
 import com.xmomen.module.authorization.model.PermissionModel;
 import com.xmomen.module.authorization.service.PermissionService;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -31,19 +31,19 @@ public class PermissionController extends BaseRestController {
     public static final String PERMISSION_PERMISSION_VIEW   = "permission:view";
 
     @Autowired
-    PermissionService permissionService;
+    private PermissionService permissionService;
 
     /**
-     * 权限列表
+     * 权限列表.
      * @param   permissionQuery    权限查询参数对象
      * @return  Page<PermissionModel> 权限领域分页对象
      */
     @ApiOperation(value = "查询权限列表")
     @ActionLog(actionName = "查询权限列表")
-    @RequiresPermissions(value = {PERMISSION_PERMISSION_VIEW})
+    //@RequiresPermissions(value = {PERMISSION_PERMISSION_VIEW})
     @RequestMapping(method = RequestMethod.GET)
-    public Page<PermissionModel> getPermissionList(PermissionQuery permissionQuery){
-        if(permissionQuery.isPaging()){
+    public Page<PermissionModel> getPermissionList(final PermissionQuery permissionQuery) {
+        if (permissionQuery.isPaging()) {
             return permissionService.getPermissionModelPage(permissionQuery);
         }
         List<PermissionModel> permissionList = permissionService.getPermissionModelList(permissionQuery);
@@ -51,15 +51,15 @@ public class PermissionController extends BaseRestController {
     }
 
     /**
-     * 查询单个权限
+     * 查询单个权限.
      * @param   id  主键
      * @return  PermissionModel   权限领域对象
      */
     @ApiOperation(value = "查询权限")
     @ActionLog(actionName = "查询权限")
-    @RequiresPermissions(value = {PERMISSION_PERMISSION_VIEW})
+    //@RequiresPermissions(value = {PERMISSION_PERMISSION_VIEW})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public PermissionModel getPermissionById(@PathVariable(value = "id") String id){
+    public PermissionModel getPermissionById(@PathVariable(value = "id") String id) {
         return permissionService.getOnePermissionModel(id);
     }
 
@@ -70,7 +70,7 @@ public class PermissionController extends BaseRestController {
      */
     @ApiOperation(value = "新增权限")
     @ActionLog(actionName = "新增权限")
-    @RequiresPermissions(value = {PERMISSION_PERMISSION_CREATE})
+    //@RequiresPermissions(value = {PERMISSION_PERMISSION_CREATE})
     @RequestMapping(method = RequestMethod.POST)
     public PermissionModel createPermission(@RequestBody @Valid PermissionModel permissionModel) {
         return permissionService.createPermission(permissionModel);
@@ -84,7 +84,7 @@ public class PermissionController extends BaseRestController {
      */
     @ApiOperation(value = "更新权限")
     @ActionLog(actionName = "更新权限")
-    @RequiresPermissions(value = {PERMISSION_PERMISSION_UPDATE})
+    //@RequiresPermissions(value = {PERMISSION_PERMISSION_UPDATE})
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public PermissionModel updatePermission(@PathVariable(value = "id") String id,
                            @RequestBody @Valid PermissionModel permissionModel){
@@ -101,7 +101,7 @@ public class PermissionController extends BaseRestController {
      */
     @ApiOperation(value = "删除单个权限")
     @ActionLog(actionName = "删除单个权限")
-    @RequiresPermissions(value = {PERMISSION_PERMISSION_DELETE})
+    //@RequiresPermissions(value = {PERMISSION_PERMISSION_DELETE})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deletePermission(@PathVariable(value = "id") String id){
         permissionService.deletePermission(id);
@@ -113,9 +113,9 @@ public class PermissionController extends BaseRestController {
      */
     @ApiOperation(value = "批量删除权限")
     @ActionLog(actionName = "批量删除权限")
-    @RequiresPermissions(value = {PERMISSION_PERMISSION_DELETE})
+    //@RequiresPermissions(value = {PERMISSION_PERMISSION_DELETE})
     @RequestMapping(method = RequestMethod.DELETE)
-    public void deletePermissions(PermissionQuery permissionQuery){
+    public void deletePermissions(final PermissionQuery permissionQuery){
         permissionService.deletePermission(permissionQuery.getIds());
     }
 

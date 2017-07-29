@@ -47,7 +47,7 @@ public class GroupController extends BaseRestController {
      */
     @ApiOperation(value = "查询用户组列表")
     @ActionLog(actionName = "查询用户组列表")
-    @RequiresPermissions(value = {PERMISSION_GROUP_VIEW})
+    //@RequiresPermissions(value = {PERMISSION_GROUP_VIEW})
     @RequestMapping(method = RequestMethod.GET)
     public Page<GroupModel> getGroupList(GroupQuery groupQuery){
         if(groupQuery.isPaging()){
@@ -64,7 +64,7 @@ public class GroupController extends BaseRestController {
      */
     @ApiOperation(value = "查询用户组")
     @ActionLog(actionName = "查询用户组")
-    @RequiresPermissions(value = {PERMISSION_GROUP_VIEW})
+    //@RequiresPermissions(value = {PERMISSION_GROUP_VIEW})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public GroupModel getGroupById(@PathVariable(value = "id") String id){
         return groupService.getOneGroupModel(id);
@@ -77,7 +77,7 @@ public class GroupController extends BaseRestController {
      */
     @ApiOperation(value = "新增用户组")
     @ActionLog(actionName = "新增用户组")
-    @RequiresPermissions(value = {PERMISSION_GROUP_CREATE})
+    //@RequiresPermissions(value = {PERMISSION_GROUP_CREATE})
     @RequestMapping(method = RequestMethod.POST)
     public GroupModel createGroup(@RequestBody @Valid GroupModel groupModel) {
         return groupService.createGroup(groupModel);
@@ -91,7 +91,7 @@ public class GroupController extends BaseRestController {
      */
     @ApiOperation(value = "更新用户组")
     @ActionLog(actionName = "更新用户组")
-    @RequiresPermissions(value = {PERMISSION_GROUP_UPDATE})
+    //@RequiresPermissions(value = {PERMISSION_GROUP_UPDATE})
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public GroupModel updateGroup(@PathVariable(value = "id") String id,
                            @RequestBody @Valid GroupModel groupModel){
@@ -108,7 +108,7 @@ public class GroupController extends BaseRestController {
      */
     @ApiOperation(value = "删除单个用户组")
     @ActionLog(actionName = "删除单个用户组")
-    @RequiresPermissions(value = {PERMISSION_GROUP_DELETE})
+    //@RequiresPermissions(value = {PERMISSION_GROUP_DELETE})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteGroup(@PathVariable(value = "id") String id){
         groupService.deleteGroup(id);
@@ -120,7 +120,7 @@ public class GroupController extends BaseRestController {
      */
     @ApiOperation(value = "批量删除用户组")
     @ActionLog(actionName = "批量删除用户组")
-    @RequiresPermissions(value = {PERMISSION_GROUP_DELETE})
+    //@RequiresPermissions(value = {PERMISSION_GROUP_DELETE})
     @RequestMapping(method = RequestMethod.DELETE)
     public void deleteGroups(GroupQuery groupQuery){
         groupService.deleteGroup(groupQuery.getIds());

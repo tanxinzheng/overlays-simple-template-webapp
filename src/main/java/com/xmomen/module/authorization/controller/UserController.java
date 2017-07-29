@@ -1,4 +1,4 @@
-package com.xmomen.module.user.controller;
+package com.xmomen.module.authorization.controller;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.xmomen.framework.mybatis.page.Page;
@@ -7,9 +7,9 @@ import com.xmomen.framework.web.controller.BaseRestController;
 import com.xmomen.module.authorization.model.*;
 import com.xmomen.module.authorization.service.PermissionService;
 import com.xmomen.module.authorization.service.UserGroupService;
-import com.xmomen.module.user.model.UserQuery;
-import com.xmomen.module.user.model.UserModel;
-import com.xmomen.module.user.service.UserService;
+import com.xmomen.module.authorization.model.UserQuery;
+import com.xmomen.module.authorization.model.UserModel;
+import com.xmomen.module.authorization.service.UserService;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class UserController extends BaseRestController {
      */
     @ApiOperation(value = "查询数据字典列表")
     @ActionLog(actionName = "查询数据字典列表")
-    @RequiresPermissions(value = {PERMISSION_USER_VIEW})
+    //@RequiresPermissions(value = {PERMISSION_USER_VIEW})
     @RequestMapping(method = RequestMethod.GET)
     public Page<UserModel> getUserList(UserQuery userQuery){
         if(userQuery.isPaging()){
@@ -60,7 +60,7 @@ public class UserController extends BaseRestController {
      */
     @ApiOperation(value = "查询数据字典")
     @ActionLog(actionName = "查询数据字典")
-    @RequiresPermissions(value = {PERMISSION_USER_VIEW})
+    //@RequiresPermissions(value = {PERMISSION_USER_VIEW})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public UserModel getUserById(@PathVariable(value = "id") String id){
         return userService.getOneUserModel(id);
@@ -73,7 +73,7 @@ public class UserController extends BaseRestController {
      */
     @ApiOperation(value = "新增数据字典")
     @ActionLog(actionName = "新增数据字典")
-    @RequiresPermissions(value = {PERMISSION_USER_CREATE})
+    //@RequiresPermissions(value = {PERMISSION_USER_CREATE})
     @RequestMapping(method = RequestMethod.POST)
     public UserModel createUser(@RequestBody @Valid UserModel userModel) {
         return userService.createUser(userModel);
@@ -87,7 +87,7 @@ public class UserController extends BaseRestController {
      */
     @ApiOperation(value = "更新数据字典")
     @ActionLog(actionName = "更新数据字典")
-    @RequiresPermissions(value = {PERMISSION_USER_UPDATE})
+    //@RequiresPermissions(value = {PERMISSION_USER_UPDATE})
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public UserModel updateUser(@PathVariable(value = "id") String id,
                            @RequestBody @Valid UserModel userModel){
@@ -104,7 +104,7 @@ public class UserController extends BaseRestController {
      */
     @ApiOperation(value = "删除单个数据字典")
     @ActionLog(actionName = "删除单个数据字典")
-    @RequiresPermissions(value = {PERMISSION_USER_DELETE})
+    //@RequiresPermissions(value = {PERMISSION_USER_DELETE})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteUser(@PathVariable(value = "id") String id){
         userService.deleteUser(id);
@@ -116,7 +116,7 @@ public class UserController extends BaseRestController {
      */
     @ApiOperation(value = "批量删除数据字典")
     @ActionLog(actionName = "批量删除数据字典")
-    @RequiresPermissions(value = {PERMISSION_USER_DELETE})
+    //@RequiresPermissions(value = {PERMISSION_USER_DELETE})
     @RequestMapping(method = RequestMethod.DELETE)
     public void deleteUsers(UserQuery userQuery){
         userService.deleteUser(userQuery.getIds());

@@ -1,11 +1,11 @@
-package com.xmomen.module.user.service.impl;
+package com.xmomen.module.authorization.service.impl;
 
 import com.xmomen.framework.mybatis.page.PageInterceptor;
-import com.xmomen.module.user.model.User;
-import com.xmomen.module.user.mapper.UserMapper;
-import com.xmomen.module.user.model.UserModel;
-import com.xmomen.module.user.model.UserQuery;
-import com.xmomen.module.user.service.UserService;
+import com.xmomen.module.authorization.model.User;
+import com.xmomen.module.authorization.mapper.UserMapper;
+import com.xmomen.module.authorization.model.UserModel;
+import com.xmomen.module.authorization.model.UserQuery;
+import com.xmomen.module.authorization.service.UserService;
 import com.xmomen.framework.mybatis.page.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
