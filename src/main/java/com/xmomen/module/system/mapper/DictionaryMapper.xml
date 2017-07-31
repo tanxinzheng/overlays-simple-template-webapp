@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xmomen.module.system.mapper.DictionaryMapper" >
 
-    <insert id="insertSelective" parameterType="com.xmomen.module.system.model.Dictionary" useGeneratedKeys="true" keyProperty="id" keyColumn="ID" >
+    <insert id="insertSelective" parameterType="com.xmomen.module.system.model.Dictionary" flushCache="true" useGeneratedKeys="true" keyProperty="id" keyColumn="ID" >
         <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
             SELECT replace(UUID(),'-','')
         </selectKey>
@@ -255,5 +255,16 @@
             </if>
         </where>
     </sql>
+
+    <insert id="insertByBatch" parameterType="java.util.List">
+        insert into xmo_dictionary (ID, GROUP_CODE, GROUP_NAME, DICTIONARY_CODE, DICTIONARY_NAME, SORT, IS_SHOW, ACTIVE, CREATED_TIME, CREATED_USER_ID, UPDATED_TIME, UPDATED_USER_ID)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.groupCode},
+            #{item.groupName}, #{item.dictionaryCode},
+            #{item.dictionaryName}, #{item.sort}, #{item.isShow},
+            #{item.active}, sysdate(), #{item.createdUserId}, sysdate(), #{item.updatedUserId})
+        </foreach>
+    </insert>
 
 </mapper>

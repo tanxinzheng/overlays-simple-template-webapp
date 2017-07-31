@@ -30,6 +30,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.apache.shiro.web.filter.authc.FormAuthenticationFilter.DEFAULT_PASSWORD_PARAM;
+import static org.apache.shiro.web.filter.authc.FormAuthenticationFilter.DEFAULT_REMEMBER_ME_PARAM;
+import static org.apache.shiro.web.filter.authc.FormAuthenticationFilter.DEFAULT_USERNAME_PARAM;
+
 /**
  * Created by Jeng on 2016/1/7.
  */
@@ -41,15 +45,15 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
 
     private String failureKeyAttribute = DEFAULT_ERROR_KEY_ATTRIBUTE_NAME;
 
-    public static final String DEFAULT_USERNAME_PARAM = "username";
-    public static final String DEFAULT_PASSWORD_PARAM = "password";
-    public static final String DEFAULT_REMEMBER_ME_PARAM = "rememberMe";
-
+//    public static final String DEFAULT_USERNAME_PARAM = "username";
+//    public static final String DEFAULT_PASSWORD_PARAM = "password";
+//    public static final String DEFAULT_REMEMBER_ME_PARAM = "rememberMe";
+//
     private static final Logger log = LoggerFactory.getLogger(FormAuthenticationFilter.class);
 
-    private String usernameParam = DEFAULT_USERNAME_PARAM;
-    private String passwordParam = DEFAULT_PASSWORD_PARAM;
-    private String rememberMeParam = DEFAULT_REMEMBER_ME_PARAM;
+//    private String usernameParam = DEFAULT_USERNAME_PARAM;
+//    private String passwordParam = DEFAULT_PASSWORD_PARAM;
+//    private String rememberMeParam = DEFAULT_REMEMBER_ME_PARAM;
 
     @Autowired
     AccountService accountService;
@@ -74,7 +78,9 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
             if(StringUtils.isEmpty(password)){
                 throw new AuthenticationException("请输入密码");
             }
-            return new UsernamePasswordToken(username, password);
+            boolean isRememberMe = isRememberMe(request);
+            String host = getHost(request);
+            return new UsernamePasswordToken(username, password, isRememberMe, host);
         }
 
         if (isLoggedAttempt(request, response)) {
@@ -136,6 +142,18 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
             buildJSONMessage(HttpStatus.UNAUTHORIZED, "Requires authentication", request, response);
         }
         return false;
+    }
+
+    protected boolean isRememberMe(ServletRequest request) {
+        String value = request.getParameter(DEFAULT_REMEMBER_ME_PARAM);
+        return value != null &&
+                (value.equalsIgnoreCase("true") ||
+                        value.equalsIgnoreCase("t") ||
+                        value.equalsIgnoreCase("1") ||
+                        value.equalsIgnoreCase("enabled") ||
+                        value.equalsIgnoreCase("y") ||
+                        value.equalsIgnoreCase("yes") ||
+                        value.equalsIgnoreCase("on"));
     }
 
 
@@ -244,13 +262,13 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
             map.put("message", message);
             map.put("timestamp", new Date());
             HttpServletResponse httpServletResponse = WebUtils.toHttp(response);
-            httpServletResponse.setContentType("text/html");
+//            httpServletResponse.setContentType("text/html");
             httpServletResponse.setStatus(httpStatus.value());
             httpServletResponse.setCharacterEncoding("UTF-8");
             PrintWriter servletOutputStream = httpServletResponse.getWriter();
             servletOutputStream.write(JSONObject.toJSONString(map));
             servletOutputStream.flush();
-//            servletOutputStream.close();
+            servletOutputStream.close();
         } catch (IOException e) {
             logger.error(e.getMessage(), e.getCause());
             e.printStackTrace();
@@ -274,28 +292,28 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
     public void setFailureKeyAttribute(String failureKeyAttribute) {
         this.failureKeyAttribute = failureKeyAttribute;
     }
-
-    public String getUsernameParam() {
-        return usernameParam;
-    }
-
-    public void setUsernameParam(String usernameParam) {
-        this.usernameParam = usernameParam;
-    }
-
-    public String getPasswordParam() {
-        return passwordParam;
-    }
-
-    public void setPasswordParam(String passwordParam) {
-        this.passwordParam = passwordParam;
-    }
-
-    public String getRememberMeParam() {
-        return rememberMeParam;
-    }
-
-    public void setRememberMeParam(String rememberMeParam) {
-        this.rememberMeParam = rememberMeParam;
-    }
+//
+//    public String getUsernameParam() {
+//        return usernameParam;
+//    }
+//
+//    public void setUsernameParam(String usernameParam) {
+//        this.usernameParam = usernameParam;
+//    }
+//
+//    public String getPasswordParam() {
+//        return passwordParam;
+//    }
+//
+//    public void setPasswordParam(String passwordParam) {
+//        this.passwordParam = passwordParam;
+//    }
+//
+//    public String getRememberMeParam() {
+//        return rememberMeParam;
+//    }
+//
+//    public void setRememberMeParam(String rememberMeParam) {
+//        this.rememberMeParam = rememberMeParam;
+//    }
 }

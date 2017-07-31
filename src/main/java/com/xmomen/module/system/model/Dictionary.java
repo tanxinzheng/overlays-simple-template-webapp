@@ -2,6 +2,7 @@ package com.xmomen.module.system.model;
 
 import lombok.Data;
 import com.xmomen.framework.model.BaseEntity;
+import org.apache.commons.lang.StringUtils;
 
 import java.lang.Boolean;
 import java.lang.String;
@@ -45,5 +46,17 @@ public @Data class Dictionary extends BaseEntity implements Serializable {
     /** 数据版本号 */
     private Integer dataVersion;
 
+    public void setGroupCode(String groupCode) {
+        if(groupCode == null){
+            return;
+        }
+        this.groupCode = groupCode.toUpperCase();
+    }
 
+    public void setDictionaryCode(String dictionaryCode) {
+        if(dictionaryCode == null){
+            return;
+        }
+        this.dictionaryCode = dictionaryCode.toUpperCase();
+    }
 }

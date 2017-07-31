@@ -89,7 +89,7 @@ public class AccountService {
         UserModel userCreate = new UserModel();
         userCreate.setEmail(register.getEmail());
         userCreate.setPhoneNumber(register.getPhoneNumber());
-        userCreate.setCreateDate(new Date());
+        userCreate.setCreatedTime(new Date());
         if(StringUtils.trimToNull(register.getNickname()) == null){
             userCreate.setNickname(register.getUsername());
         }else{

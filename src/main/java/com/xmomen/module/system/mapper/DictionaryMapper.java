@@ -31,4 +31,6 @@ public interface DictionaryMapper {
     int updateSelective(Dictionary record);
 
     int updateSelectiveByQuery(@Param("record") Dictionary record, @Param("query") DictionaryQuery example);
+
+    void insertByBatch(List<DictionaryModel> list);
 }

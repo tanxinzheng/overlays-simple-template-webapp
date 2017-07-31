@@ -1,5 +1,6 @@
 package com.xmomen.module.system.service.impl;
 
+import com.google.common.collect.Lists;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.module.system.model.Dictionary;
 import com.xmomen.module.system.mapper.DictionaryMapper;
@@ -8,6 +9,8 @@ import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.service.DictionaryService;
 import com.xmomen.framework.mybatis.page.Page;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -15,10 +18,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author  tanxinzheng
@@ -71,17 +71,15 @@ public class DictionaryServiceImpl implements DictionaryService {
     */
     @Override
     @Transactional
-    public List<DictionaryModel> createDictionarys(List<DictionaryModel> dictionaryModels) {
-        List<DictionaryModel> dictionaryModelList = null;
+    public List<DictionaryModel> createDictionaries(List<DictionaryModel> dictionaryModels) {
+        List<DictionaryModel> dictionaryModelList = Lists.newArrayList();
         for (DictionaryModel dictionaryModel : dictionaryModels) {
-            dictionaryModel = createDictionary(dictionaryModel);
-            if(dictionaryModel != null){
-                if(dictionaryModelList == null){
-                    dictionaryModelList = new ArrayList<>();
-                }
-                dictionaryModelList.add(dictionaryModel);
-            }
+            dictionaryModel.setUpdatedUserId("SYSTEM");
+            dictionaryModel.setCreatedUserId("SYSTEM");
+            dictionaryModel.setId(UUID.randomUUID().toString().replaceAll("-",""));
+            dictionaryModelList.add(dictionaryModel);
         }
+        dictionaryMapper.insertByBatch(dictionaryModels);
         return dictionaryModelList;
     }
 
@@ -132,6 +130,9 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Transactional
     @CacheEvict(cacheNames = "dictionariesCache", allEntries = true)
     public void deleteDictionary(String[] ids) {
+        if(ArrayUtils.isEmpty(ids)){
+            return;
+        }
         dictionaryMapper.deletesByPrimaryKey(Arrays.asList(ids));
     }
 
@@ -144,6 +145,9 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Transactional
     @CacheEvict(cacheNames = "dictionariesCache", allEntries = true)
     public void deleteDictionary(String id) {
+        if(StringUtils.isBlank(id)){
+            return;
+        }
         dictionaryMapper.deleteByPrimaryKey(id);
     }
 
@@ -167,7 +171,7 @@ public class DictionaryServiceImpl implements DictionaryService {
      * @return List<DictionaryModel> 数据字典领域集合对象
      */
     @Override
-    @Cacheable(cacheNames = "dictionariesCache", key = "#dictionaryQuery.type")
+    @Cacheable(cacheNames = "dictionariesCache")
     public List<DictionaryModel> getDictionaryModelList(DictionaryQuery dictionaryQuery) {
         return dictionaryMapper.selectModel(dictionaryQuery);
     }
@@ -180,6 +184,9 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     public Dictionary getOneDictionary(String id) {
+        if(StringUtils.isBlank(id)){
+            return null;
+        }
         return dictionaryMapper.selectByPrimaryKey(id);
     }
 
@@ -191,6 +198,9 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     public DictionaryModel getOneDictionaryModel(String id) {
+        if(StringUtils.isBlank(id)){
+            return null;
+        }
         return dictionaryMapper.selectModelByPrimaryKey(id);
     }
 

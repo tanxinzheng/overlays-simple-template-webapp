@@ -42,36 +42,36 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.4.6.v20170531</version>
-                <configuration>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <webApp>
-                        <contextPath>/</contextPath>
-                    </webApp>
-                    <httpConnector>
-                        <port>8000</port>
-                    </httpConnector>
-                </configuration>
-            </plugin>
             <!--<plugin>-->
-                <!--<groupId>org.mortbay.jetty</groupId>-->
+                <!--<groupId>org.eclipse.jetty</groupId>-->
                 <!--<artifactId>jetty-maven-plugin</artifactId>-->
-                <!--<version>8.1.8.v20121106</version>-->
+                <!--<version>9.4.6.v20170531</version>-->
                 <!--<configuration>-->
-                    <!--<webAppConfig>-->
+                    <!--<scanIntervalSeconds>10</scanIntervalSeconds>-->
+                    <!--<webApp>-->
                         <!--<contextPath>/</contextPath>-->
-                    <!--</webAppConfig>-->
-                    <!--<connectors>-->
-                        <!--<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">-->
-                            <!--<port>8080</port>-->
-                            <!--<maxIdleTime>60000</maxIdleTime>-->
-                        <!--</connector>-->
-                    <!--</connectors>-->
+                    <!--</webApp>-->
+                    <!--<httpConnector>-->
+                        <!--<port>8000</port>-->
+                    <!--</httpConnector>-->
                 <!--</configuration>-->
             <!--</plugin>-->
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>8.1.8.v20121106</version>
+                <configuration>
+                    <webAppConfig>
+                        <contextPath>/</contextPath>
+                    </webAppConfig>
+                    <connectors>
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                            <port>8000</port>
+                            <maxIdleTime>60000</maxIdleTime>
+                        </connector>
+                    </connectors>
+                </configuration>
+            </plugin>
             <!--    代码覆盖率    -->
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -262,11 +262,6 @@
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
             <version>1.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.14</version>
         </dependency>
         <dependency>
             <groupId>org.jeecg</groupId>

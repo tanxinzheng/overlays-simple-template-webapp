@@ -1,26 +1,33 @@
 package com.xmomen.module.system.controller;
 
+import com.google.common.collect.Lists;
 import com.wordnik.swagger.annotations.ApiOperation;
+import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.logger.ActionLog;
+import com.xmomen.framework.poi.ExcelUtils;
 import com.xmomen.framework.web.controller.BaseRestController;
 import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.service.DictionaryService;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.util.CollectionUtils;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.entity.ExportParams;
+import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -126,25 +133,43 @@ public class DictionaryController extends BaseRestController {
     @ActionLog(actionName = "批量删除数据字典")
     //@RequiresPermissions(value = {PERMISSION_DICTIONARY_DELETE})
     @RequestMapping(method = RequestMethod.DELETE)
-    public void deleteDictionarys(DictionaryQuery dictionaryQuery){
+    public void deleteDictionaries(DictionaryQuery dictionaryQuery){
         dictionaryService.deleteDictionary(dictionaryQuery.getIds());
     }
 
     /**
-     * 导出
+     * 下载Excel模板
+     * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
+     */
+    @RequestMapping(value="/template", method = RequestMethod.GET)
+    public ModelAndView downloadTemplate(ModelMap modelMap) {
+        List<DictionaryModel> dictionaryModelList = Lists.newArrayList();
+        return ExcelUtils.export(modelMap, DictionaryModel.class, dictionaryModelList, "数据字典_模板");
+    }
+
+    /**
+     * 导出Excel
      * @param dictionaryQuery    查询参数对象
      * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
      */
     @RequestMapping(value="/export", method = RequestMethod.GET)
-    public ModelAndView exportDictionarys(DictionaryQuery dictionaryQuery,
-            ModelMap modelMap) {
+    public ModelAndView exportDictionaries(DictionaryQuery dictionaryQuery,
+                                           ModelMap modelMap) {
         List<DictionaryModel> dictionaryModelList = dictionaryService.getDictionaryModelList(dictionaryQuery);
-        modelMap.put(NormalExcelConstants.FILE_NAME, "数据字典");
-        modelMap.put(NormalExcelConstants.PARAMS, new ExportParams());
-        modelMap.put(NormalExcelConstants.CLASS, DictionaryModel.class);
-        modelMap.put(NormalExcelConstants.DATA_LIST, dictionaryModelList);
-        return new ModelAndView(NormalExcelConstants.JEECG_EXCEL_VIEW);
+        return ExcelUtils.export(modelMap, DictionaryModel.class, dictionaryModelList, "数据字典");
     }
 
+    /**
+     * 导入Excel
+     * @param file
+     */
+    @RequestMapping(value="/import", method = RequestMethod.POST)
+    public void importDictionaries(@RequestParam("file") MultipartFile file) throws IOException {
+        List<DictionaryModel> list = ExcelUtils.transform(file, DictionaryModel.class);
+        if(CollectionUtils.isEmpty(list)){
+            return;
+        }
+        dictionaryService.createDictionarys(list);
+    }
 
 }

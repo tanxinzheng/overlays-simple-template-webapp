@@ -7,10 +7,8 @@
   },
   "metadata":{
     "ignoreKeywordValidate":true,
-    "templateTypes":["GridJs", "GridHtml"],
+    "templateTypes":["GridJs", "GridHtml", "JsApi"],
     "overwriteTemplates":{
-      "GridJs":"src/test/resources/templates/grid-js.ftl",
-      "GridHtml":"src/test/resources/templates/grid-html.ftl",
       "ControllerTest":"src/test/resources/templates/controllerTest.ftl",
       "Controller":"src/test/resources/templates/controller.ftl",
       "Model":"src/test/resources/templates/model.ftl",
@@ -20,14 +18,22 @@
       "MapperXml":"src/test/resources/templates/mapperXml.ftl"
     },
     "templates":{
+      "JsApi":{
+        "fileExt":".api.js",
+        "templateFileName":"src/test/resources/templates/jsApi.ftl",
+        "targetPackage":"",
+        "targetProject":"src/main/webapp"
+      },
       "GridJs":{
         "fileExt":".js",
         "templateFileName":"src/test/resources/templates/gridJs.ftl",
+        "targetPackage":"",
         "targetProject":"src/main/webapp"
       },
       "GridHtml":{
         "fileExt":".html",
         "templateFileName":"src/test/resources/templates/gridHtml.ftl",
+        "targetPackage":"",
         "targetProject":"src/main/webapp"
       }
     }

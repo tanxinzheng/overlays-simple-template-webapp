@@ -101,9 +101,6 @@
 
     <!-- 基于Form表单的身份验证过滤器 -->
     <bean id="loginAuthenticationFilter" class="com.xmomen.module.shiro.filter.JWTOrFormAuthenticationFilter">
-        <property name="usernameParam" value="username"/>
-        <property name="passwordParam" value="password"/>
-        <property name="rememberMeParam" value="rememberMe"/>
         <property name="loginUrl" value="/login"/>
     </bean>
 

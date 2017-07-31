@@ -34,7 +34,7 @@ public interface DictionaryService {
     * @param dictionaryModels     新增数据字典对象集合参数
     * @return List<DictionaryModel>    数据字典领域对象集合
     */
-    List<DictionaryModel> createDictionarys(List<DictionaryModel> dictionaryModels);
+    List<DictionaryModel> createDictionaries(List<DictionaryModel> dictionaryModels);
 
     /**
     * 更新数据字典

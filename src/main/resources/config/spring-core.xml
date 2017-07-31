@@ -16,17 +16,10 @@
 	</context:component-scan>
 
 	<!-- 注册BeanFactory -->
-	<bean id="springContextUtil" class="com.xmomen.framework.support.SpringContextUtil" primary="true" />
+	<!--<bean id="springContextUtil" class="com.xmomen.framework.support.SpringContextUtil" primary="true" />-->
 
 	<!-- 引入属性文件 -->
-	<bean id="propertyPlaceholderConfigurer" class="com.xmomen.framework.support.PropertyPlaceholderConfigurerExt">
-		<property name="ignoreResourceNotFound" value="true" />
-		<property name="locations">
-			<list>
-				<value>classpath:application.properties</value>
-			</list>
-		</property>
-	</bean>
+	<context:property-placeholder location="classpath:application.properties"/>
 
 	<import resource="classpath:config/spring-cache.xml" />
 	<import resource="classpath:config/spring-jdbc.xml" />

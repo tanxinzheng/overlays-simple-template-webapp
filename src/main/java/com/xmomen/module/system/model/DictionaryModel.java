@@ -54,34 +54,48 @@ public @Data class DictionaryModel extends BaseModel implements Serializable {
     @Range(max = 999999999, min = -999999999, message = "排序数值范围[999999999,-999999999]")
     private Integer sort;
     /** 激活 */
-    @Excel(name = "激活")
+    @Excel(name = "激活", replace = { "是_true", "否_false" })
     @NotNull(message = "激活为必填项")
     private Boolean active;
     /** 父节点 */
-    @Excel(name = "父节点")
+//    @Excel(name = "父节点")
     @Length(max = 32, message = "父节点字符长度限制[0,32]")
     private String parentId;
     /** 显示 */
-    @Excel(name = "显示")
+    @Excel(name = "显示", replace = { "是_true", "否_false" })
     @NotNull(message = "显示为必填项")
     private Boolean isShow;
     /** 创建人 */
-    @Excel(name = "创建人")
+//    @Excel(name = "创建人")
     @Length(max = 32, message = "创建人字符长度限制[0,32]")
     private String createdUserId;
     /** 创建时间 */
-    @Excel(name = "创建时间")
+//    @Excel(name = "创建时间")
     private Date createdTime;
     /** 更新人 */
-    @Excel(name = "更新人")
+//    @Excel(name = "更新人")
     @Length(max = 32, message = "更新人字符长度限制[0,32]")
     private String updatedUserId;
     /** 更新时间 */
-    @Excel(name = "更新时间")
+//    @Excel(name = "更新时间")
     private Date updatedTime;
     /** 数据版本号 */
     @Range(max = 999999999, min = -999999999, message = "数据版本号数值范围[999999999,-999999999]")
     private Integer dataVersion;
+
+    public void setGroupCode(String groupCode) {
+        if(groupCode == null){
+            return;
+        }
+        this.groupCode = groupCode.toUpperCase();
+    }
+
+    public void setDictionaryCode(String dictionaryCode) {
+        if(dictionaryCode == null){
+            return;
+        }
+        this.dictionaryCode = dictionaryCode.toUpperCase();
+    }
 
     /**
     * Get Dictionary Entity Object

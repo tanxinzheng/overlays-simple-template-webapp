@@ -1,10 +1,13 @@
 package com.xmomen.module.core.controller;
 
-//import com.xmomen.commons.Base64Utils;
 import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.utils.Base64Utils;
-import com.xmomen.framework.utils.StringUtilsExt;
+import com.xmomen.module.system.model.DictionaryModel;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.shiro.util.CollectionUtils;
+import org.jeecgframework.poi.excel.ExcelImportUtil;
+import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,11 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
 
 /**
  * Created by tanxinzheng on 16/10/16.
  */
 @Controller
+@RequestMapping(value = "/file")
 public class FileUploadDownloadController {
 
     /**
@@ -33,7 +38,7 @@ public class FileUploadDownloadController {
     @RequestMapping(value = "/upload")
     public void upload(@RequestParam("file") MultipartFile file,
                        HttpServletRequest request) throws IOException {
-        String uuid = StringUtilsExt.getUUID(32);
+        String uuid = RandomStringUtils.randomNumeric(32);
         request.getServletContext().getRealPath("/WEB-INF/uploads/" + uuid);
     }
 
