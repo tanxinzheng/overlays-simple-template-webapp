@@ -8,6 +8,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -26,8 +27,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Log logger = LogFactory.getLog(RestExceptionHandler.class);
 
-    protected ResponseEntity<Object> handleBindingResult(BindingResult bindingResult,Exception ex, Object body, HttpHeaders headers, HttpStatus status, HttpServletRequest request) {
-        RestError restError = new RestError(ex, request);
+    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers,
+                                                         HttpStatus status, WebRequest request) {
+        BindingResult bindingResult = ex.getBindingResult();
+        RestError restError = new RestError(ex);
         restError.setStatus(HttpStatus.BAD_REQUEST.value());
         restError.setMessage("非法请求参数，校验请求参数不合法");
         BindingResult result = bindingResult;
@@ -57,9 +60,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             WebRequest webRequest = request;
             webRequest.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, WebRequest.SCOPE_REQUEST);
         }
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        if(WebCommonUtils.isJSON(httpRequest)){
-            RestError restError = new RestError(ex, httpRequest);
+        if(WebCommonUtils.isJSON(request)){
+            RestError restError = new RestError(ex);
             restError.setStatus(status.value());
             return new ResponseEntity(restError, headers, status);
         }

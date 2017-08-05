@@ -1,5 +1,12 @@
 package com.xmomen.framework.web.controller;
 
+import com.xmomen.module.core.model.AccountModel;
+import com.xmomen.module.core.service.AccountService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.subject.SubjectContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -8,11 +15,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BaseRestController {
 
+    @Autowired
+    AccountService accountService;
+
     /**
      * 获取当前用户ID
      * @return
      */
     public String getCurrentUserId(){
         return "ADMIN";
+    }
+
+    /**
+     * 获取当前用户
+     * @return
+     */
+    public AccountModel getCurrentAccount() {
+        Subject subject = SecurityUtils.getSubject();
+        if(!subject.isAuthenticated()){
+            throw new AuthenticationException();
+        }
+        String username = subject.getPrincipal().toString();
+        return accountService.getAccountModelByUsername(username);
     }
 }

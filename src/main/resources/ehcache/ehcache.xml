@@ -12,4 +12,14 @@
            timeToLiveSeconds="300"
            memoryStoreEvictionPolicy="LRU" />
 
+    <!--  验证码  -->
+    <cache name="validate_code_cache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+
 </ehcache>

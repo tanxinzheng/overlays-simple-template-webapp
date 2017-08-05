@@ -20,8 +20,4 @@
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
 
-	<bean id="mybatisDao" class="com.xmomen.framework.mybatis.dao.impl.MybatisDaoImpl">
-		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
-	</bean>
-
 </beans>

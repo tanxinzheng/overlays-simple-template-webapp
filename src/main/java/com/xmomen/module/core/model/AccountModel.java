@@ -3,6 +3,7 @@ package com.xmomen.module.core.model;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ public @Data class AccountModel implements Serializable {
     private String nickname;
     private String email;
     private String phoneNumber;
+    private Date createdTime;
+    private Date lastLoginTime;
     private Boolean locked;
 
     private List<NavItem> navItems;

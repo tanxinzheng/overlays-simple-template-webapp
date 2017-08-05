@@ -141,6 +141,7 @@ public class DictionaryController extends BaseRestController {
      * 下载Excel模板
      * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
      */
+    @ActionLog(actionName = "下载数据字典导入模板")
     @RequestMapping(value="/template", method = RequestMethod.GET)
     public ModelAndView downloadTemplate(ModelMap modelMap) {
         List<DictionaryModel> dictionaryModelList = Lists.newArrayList();
@@ -152,6 +153,7 @@ public class DictionaryController extends BaseRestController {
      * @param dictionaryQuery    查询参数对象
      * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
      */
+    @ActionLog(actionName = "导出数据字典")
     @RequestMapping(value="/export", method = RequestMethod.GET)
     public ModelAndView exportDictionaries(DictionaryQuery dictionaryQuery,
                                            ModelMap modelMap) {
@@ -163,13 +165,14 @@ public class DictionaryController extends BaseRestController {
      * 导入Excel
      * @param file
      */
+    @ActionLog(actionName = "导入数据字典")
     @RequestMapping(value="/import", method = RequestMethod.POST)
     public void importDictionaries(@RequestParam("file") MultipartFile file) throws IOException {
         List<DictionaryModel> list = ExcelUtils.transform(file, DictionaryModel.class);
         if(CollectionUtils.isEmpty(list)){
             return;
         }
-        dictionaryService.createDictionarys(list);
+        dictionaryService.createDictionaries(list);
     }
 
 }

@@ -7,7 +7,7 @@
            maxEntriesLocalHeap="2000"
            eternal="false"
            timeToIdleSeconds="3600"
-           timeToLiveSeconds="0"
+           timeToLiveSeconds="3000"
            overflowToDisk="false"
            statistics="true">
     </cache>

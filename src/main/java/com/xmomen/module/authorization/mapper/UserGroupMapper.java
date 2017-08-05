@@ -31,4 +31,6 @@ public interface UserGroupMapper {
     int updateSelectiveByQuery(@Param("record") UserGroup record, @Param("query") UserGroupQuery example);
 
     List<GroupModel> selectUserGroup(UserGroupQuery userGroupQuery);
+
+    void deleteByQuery(UserGroupQuery userGroupQuery);
 }

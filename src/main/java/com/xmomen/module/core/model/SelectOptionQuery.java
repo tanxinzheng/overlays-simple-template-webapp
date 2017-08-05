@@ -10,6 +10,6 @@ import org.hibernate.validator.constraints.NotBlank;
 @Data
 public class SelectOptionQuery extends BaseQuery {
     @NotBlank
-    private String type;
+    private String typeCode;
     private String parentId;
 }

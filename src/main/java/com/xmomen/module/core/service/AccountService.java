@@ -1,7 +1,6 @@
 package com.xmomen.module.core.service;
 
 import com.xmomen.commons.StringUtilsExt;
-import com.xmomen.framework.mybatis.dao.MybatisDao;
 import com.xmomen.module.authorization.model.GroupModel;
 import com.xmomen.module.authorization.model.GroupQuery;
 import com.xmomen.module.authorization.model.PermissionModel;
@@ -39,9 +38,6 @@ public class AccountService {
     private String sessionModelKey = defaultSessionModelKey;
 
     @Autowired
-    MybatisDao mybatisDao;
-
-    @Autowired
     UserService userService;
 
     @Autowired
@@ -64,6 +60,8 @@ public class AccountService {
             accountModel.setEmail(user.getEmail());
             accountModel.setNickname(user.getNickname());
             accountModel.setPhoneNumber(user.getPhoneNumber());
+            accountModel.setCreatedTime(user.getCreatedTime());
+            accountModel.setLastLoginTime(user.getLastLoginTime());
             accountModel.setUserId(user.getId());
             return accountModel;
         }

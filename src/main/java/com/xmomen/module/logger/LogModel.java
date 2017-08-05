@@ -15,6 +15,8 @@ class LogModel implements Serializable{
     private String actionName;
     private Date actionDate;
     private String clientIp;
+    private String targetClass;
+    private String targetMethod;
     private String actionParams;
     private String actionResult;
     private String remark;

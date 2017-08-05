@@ -2,8 +2,7 @@ package com.xmomen.framework.web.exceptions;
 
 import com.xmomen.framework.poi.ExcelImportResultModel;
 import com.xmomen.framework.poi.ExcelImportValidFailException;
-import com.xmomen.framework.utils.Base64Utils;
-import com.xmomen.framework.utils.StringUtilsExt;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jeecgframework.poi.excel.entity.result.ExcelImportResult;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.Date;
 
 /**
  * Created by tanxinzheng on 16/12/10.
@@ -40,9 +41,9 @@ public class ExcelImportExceptionHandler extends AbstractRestExceptionHandler {
         ExcelImportResult excelImportResult = ex.getExcelImportResult();
         Workbook workbook = excelImportResult.getWorkbook();
         if(workbook != null){
-            String uuid = StringUtilsExt.getUUID(16);
+            String uuid = DateFormatUtils.ISO_DATETIME_FORMAT.format(new Date());
             String fileName = uuid + "_校验结果.xls";
-            String encoderFileName = Base64Utils.encoder(fileName);
+            String encoderFileName = URLEncoder.encode(fileName, "UTF-8");
             ServletContext servletContext = request.getServletContext();
             String savepath = servletContext.getRealPath("/WEB-INF/temps");
             FileOutputStream os = new FileOutputStream(new File(savepath, fileName));

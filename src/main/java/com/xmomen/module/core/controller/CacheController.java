@@ -32,7 +32,7 @@ public class CacheController {
     @ApiOperation(value = "查询数据字典列表")
     @ActionLog(actionName = "查询数据字典列表")
     @RequestMapping(value = "/cache", method = RequestMethod.GET)
-    public List<SelectOptionModel> getDictionaryList(@Valid SelectOptionQuery selectOptionQuery){
+    public List<SelectOptionModel> getDictionaryList(SelectOptionQuery selectOptionQuery){
         return dictionarySelectService.selectOptionModels(selectOptionQuery);
     }
 }

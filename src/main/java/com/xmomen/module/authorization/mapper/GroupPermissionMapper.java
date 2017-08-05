@@ -3,6 +3,7 @@ package com.xmomen.module.authorization.mapper;
 import com.xmomen.module.authorization.model.GroupPermission;
 import com.xmomen.module.authorization.model.GroupPermissionModel;
 import com.xmomen.module.authorization.model.GroupPermissionQuery;
+import com.xmomen.module.authorization.model.PermissionModel;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -31,4 +32,6 @@ public interface GroupPermissionMapper {
     int updateSelective(GroupPermission record);
 
     int updateSelectiveByQuery(@Param("record") GroupPermission record, @Param("query") GroupPermissionQuery example);
+
+    List<PermissionModel> selectGroupPermissions(GroupPermissionQuery groupPermissionQuery);
 }

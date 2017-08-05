@@ -9,6 +9,7 @@ import com.xmomen.module.authorization.service.PermissionService;
 import com.xmomen.module.authorization.service.UserGroupService;
 import com.xmomen.module.authorization.model.UserQuery;
 import com.xmomen.module.authorization.model.UserModel;
+import com.xmomen.module.authorization.service.UserPermissionService;
 import com.xmomen.module.authorization.service.UserService;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -125,36 +126,22 @@ public class UserController extends BaseRestController {
     @Autowired
     PermissionService permissionService;
 
-//    @Autowired
-//    UserPermissionService userPermissionService;
-//
-//    /**
-//     * 查询用户组权限
-//     * @param userId    用户主键
-//     * @return
-//     */
-//    @ActionLog(actionName = "查询用户组所属权限")
-//    @RequestMapping(value = "/{userId}/permission", method = RequestMethod.GET)
-//    public Page<PermissionModel> getUserPermission(
-//            @PathVariable(value = "userId") String userId,
-//            UserPermissionQuery userPermissionQuery){
-//        userPermissionQuery.setUserId(userId);
-//        return userPermissionService.getUserPermissions(userPermissionQuery);
-//    }
-//
-//    /**
-//     * 批量新增用户权限
-//     * @param userId   用户主键
-//     * @param permissionIds     权限主键集
-//     * @return List<UserPermission>    用户权限对象集
-//     */
-//    @ActionLog(actionName = "批量新增用户权限")
-//    @RequestMapping(value = "/{userId}/permission", method = RequestMethod.POST)
-//    public void createGroupPermission(
-//            @PathVariable(value = "userId") String userId,
-//            @RequestParam(value = "permissionIds") String[] permissionIds){
-//        userPermissionService.createUserPermissions(userId, permissionIds);
-//    }
+    @Autowired
+    UserPermissionService userPermissionService;
+
+    /**
+     * 查询用户组权限
+     * @param userId    用户主键
+     * @return
+     */
+    @ActionLog(actionName = "查询用户组所属权限")
+    @RequestMapping(value = "/{userId}/permission", method = RequestMethod.GET)
+    public List<PermissionModel> getUserPermission(
+            @PathVariable(value = "userId") String userId,
+            UserPermissionQuery userPermissionQuery){
+        userPermissionQuery.setUserId(userId);
+        return userPermissionService.getUserPermissions(userPermissionQuery);
+    }
 
     /**
      * 查询用户组权限

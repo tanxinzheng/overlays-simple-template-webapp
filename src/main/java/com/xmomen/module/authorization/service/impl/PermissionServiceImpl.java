@@ -1,6 +1,7 @@
 package com.xmomen.module.authorization.service.impl;
 
 import com.xmomen.framework.mybatis.page.PageInterceptor;
+import com.xmomen.framework.utils.UUIDGenerator;
 import com.xmomen.module.authorization.model.Permission;
 import com.xmomen.module.authorization.mapper.PermissionMapper;
 import com.xmomen.module.authorization.model.PermissionModel;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -65,18 +65,14 @@ public class PermissionServiceImpl implements PermissionService {
     */
     @Override
     @Transactional
-    public List<PermissionModel> createPermissions(List<PermissionModel> permissionModels) {
-        List<PermissionModel> permissionModelList = null;
+    public List<PermissionModel> createPermissions(List<PermissionModel> permissionModels, String createdUserId) {
         for (PermissionModel permissionModel : permissionModels) {
-            permissionModel = createPermission(permissionModel);
-            if(permissionModel != null){
-                if(permissionModelList == null){
-                    permissionModelList = new ArrayList<>();
-                }
-                permissionModelList.add(permissionModel);
-            }
+            permissionModel.setId(UUIDGenerator.getInstance().getUUID());
+            permissionModel.setCreatedUserId(createdUserId);
+            permissionModel.setUpdatedUserId(createdUserId);
         }
-        return permissionModelList;
+        permissionMapper.insertByBatch(permissionModels);
+        return permissionModels;
     }
 
     /**

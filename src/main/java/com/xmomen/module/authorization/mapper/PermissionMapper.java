@@ -31,4 +31,6 @@ public interface PermissionMapper {
     int updateSelective(Permission record);
 
     int updateSelectiveByQuery(@Param("record") Permission record, @Param("query") PermissionQuery example);
+
+    void insertByBatch(@Param(value = "list") List<PermissionModel> permissionModels);
 }

@@ -208,4 +208,13 @@
         </where>
     </sql>
 
+    <insert id="insertByBatch" parameterType="java.util.List">
+        insert into xmo_permission (ID, PERMISSION_CODE, PERMISSION_NAME, DESCRIPTION, ACTIVE, CREATED_TIME, CREATED_USER_ID, UPDATED_TIME, UPDATED_USER_ID)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.permissionCode}, #{item.permissionName}, #{item.description}, #{item.active}, sysdate(), #{item.createdUserId}, sysdate(), #{item.updatedUserId})
+        </foreach>
+    </insert>
+
+
 </mapper>

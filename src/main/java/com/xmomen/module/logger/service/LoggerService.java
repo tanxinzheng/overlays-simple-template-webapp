@@ -1,7 +1,7 @@
 package com.xmomen.module.logger.service;
 
 import com.xmomen.module.logger.LogModel;
-import com.xmomen.module.logger.mapper.LoggerMapper;
+import com.xmomen.module.logger.mapper.ActionLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +15,10 @@ import java.util.Date;
 public class LoggerService {
 
     @Autowired
-    LoggerMapper loggerMapper;
+    ActionLogMapper actionLogMapper;
 
-    public void setLogInfo(String actionName, String userId, String clientId, String actionParams, String actionResult) {
-        LogModel logModel = new LogModel();
-        logModel.setActionName(actionName);
-        logModel.setUserId(userId);
-        logModel.setClientIp(clientId);
-        logModel.setActionDate(new Date());
-        logModel.setActionParams(actionParams);
-        logModel.setActionResult(actionResult);
-        loggerMapper.insertLog(logModel);
+    public void setLogInfo(LogModel logInfo) {
+        actionLogMapper.insertActionLog(logInfo);
     }
 
     public String getRemoteHost(HttpServletRequest request){

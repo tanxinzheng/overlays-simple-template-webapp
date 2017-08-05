@@ -9,6 +9,7 @@ import com.xmomen.module.authorization.model.UserGroupQuery;
 import com.xmomen.module.authorization.service.UserGroupService;
 import com.xmomen.framework.mybatis.page.Page;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -118,6 +119,9 @@ public class UserGroupServiceImpl implements UserGroupService {
     @Override
     @Transactional
     public void deleteUserGroup(String[] ids) {
+        if(ArrayUtils.isEmpty(ids)){
+            return;
+        }
         userGroupMapper.deletesByPrimaryKey(Arrays.asList(ids));
     }
 
@@ -206,5 +210,19 @@ public class UserGroupServiceImpl implements UserGroupService {
         PageInterceptor.startPage(userGroupQuery);
         userGroupMapper.selectUserGroup(userGroupQuery);
         return PageInterceptor.endPage();
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param userId
+     * @param groupIds
+     */
+    @Override
+    public void deleteUserGroups(String userId, String[] groupIds) {
+        UserGroupQuery userGroupQuery = new UserGroupQuery();
+        userGroupQuery.setUserId(userId);
+        userGroupQuery.setGroupIds(groupIds);
+        userGroupMapper.deleteByQuery(userGroupQuery);
     }
 }

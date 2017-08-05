@@ -1,19 +1,28 @@
 package com.xmomen.module.authorization.controller;
 
+import com.google.common.collect.Lists;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.xmomen.framework.mybatis.page.Page;
 import com.xmomen.framework.logger.ActionLog;
+import com.xmomen.framework.poi.ExcelUtils;
 import com.xmomen.framework.web.controller.BaseRestController;
 import com.xmomen.module.authorization.model.PermissionQuery;
 import com.xmomen.module.authorization.model.PermissionModel;
 import com.xmomen.module.authorization.service.PermissionService;
 
+import com.xmomen.module.system.model.DictionaryModel;
+import com.xmomen.module.system.model.DictionaryQuery;
+import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -117,6 +126,41 @@ public class PermissionController extends BaseRestController {
     @RequestMapping(method = RequestMethod.DELETE)
     public void deletePermissions(final PermissionQuery permissionQuery){
         permissionService.deletePermission(permissionQuery.getIds());
+    }
+
+    /**
+     * 下载Excel模板
+     * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
+     */
+    @RequestMapping(value="/template", method = RequestMethod.GET)
+    public ModelAndView downloadTemplate(ModelMap modelMap) {
+        List<PermissionModel> list = Lists.newArrayList();
+        return ExcelUtils.export(modelMap, PermissionModel.class, list, "权限_模板");
+    }
+
+    /**
+     * 导出Excel
+     * @param permissionQuery    查询参数对象
+     * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
+     */
+    @RequestMapping(value="/export", method = RequestMethod.GET)
+    public ModelAndView exportDictionaries(PermissionQuery permissionQuery,
+                                           ModelMap modelMap) {
+        List<PermissionModel> list = permissionService.getPermissionModelList(permissionQuery);
+        return ExcelUtils.export(modelMap, PermissionModel.class, list, "权限");
+    }
+
+    /**
+     * 导入Excel
+     * @param file
+     */
+    @RequestMapping(value="/import", method = RequestMethod.POST)
+    public void importDictionaries(@RequestParam("file") MultipartFile file) throws IOException {
+        List<PermissionModel> list = ExcelUtils.transform(file, PermissionModel.class);
+        if(CollectionUtils.isEmpty(list)){
+            return;
+        }
+        permissionService.createPermissions(list, getCurrentUserId());
     }
 
 

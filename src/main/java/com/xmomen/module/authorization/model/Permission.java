@@ -37,5 +37,10 @@ public @Data class Permission extends BaseEntity implements Serializable {
     /** 数据版本号 */
     private Integer dataVersion;
 
-
+    public void setPermissionCode(String permissionCode) {
+        if(permissionCode != null){
+            this.permissionCode = permissionCode.toUpperCase();
+        }
+        this.permissionCode = permissionCode;
+    }
 }

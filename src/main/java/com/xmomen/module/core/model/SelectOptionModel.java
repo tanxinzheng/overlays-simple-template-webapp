@@ -7,7 +7,7 @@ import lombok.Data;
  */
 @Data
 public class SelectOptionModel {
-    private String type;
+    private String typeCode;
     private String typeName;
     private String code;
     private String name;

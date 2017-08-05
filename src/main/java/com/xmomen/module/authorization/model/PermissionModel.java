@@ -3,6 +3,7 @@ package com.xmomen.module.authorization.model;
 import com.xmomen.framework.model.BaseModel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.xmomen.module.authorization.constant.PermissionAction;
 import com.xmomen.module.authorization.model.Permission;
 import lombok.Data;
 import org.hibernate.validator.constraints.*;
@@ -16,6 +17,7 @@ import java.lang.String;
 import java.lang.Integer;
 import java.util.Date;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author  tanxinzheng
@@ -44,32 +46,16 @@ public @Data class PermissionModel extends BaseModel implements Serializable {
     @Length(max = 200, message = "权限描述字符长度限制[0,200]")
     private String description;
     /** 激活 */
-    @Excel(name = "激活")
+    @Excel(name = "激活", replace = { "是_true", "否_false" })
     @NotNull(message = "激活为必填项")
     private Boolean active;
-    /** 创建人 */
-    @Excel(name = "创建人")
-    @NotBlank(message = "创建人为必填项")
-    @Length(max = 32, message = "创建人字符长度限制[0,32]")
-    private String createdUserId;
-    /** 创建时间 */
-    @Excel(name = "创建时间")
-    @NotNull(message = "创建时间为必填项")
-    private Date createdTime;
-    /** 更新人 */
-    @Excel(name = "更新人")
-    @NotBlank(message = "更新人为必填项")
-    @Length(max = 32, message = "更新人字符长度限制[0,32]")
-    private String updatedUserId;
-    /** 更新时间 */
-    @Excel(name = "更新时间")
-    @NotNull(message = "更新时间为必填项")
-    private Date updatedTime;
-    /** 数据版本号 */
-    @Excel(name = "数据版本号")
-    @NotNull(message = "数据版本号为必填项")
-    @Range(max = 999999999, min = -999999999, message = "数据版本号数值范围[999999999,-999999999]")
-    private Integer dataVersion;
+
+    public void setPermissionCode(String permissionCode) {
+        if(permissionCode != null){
+            this.permissionCode = permissionCode.toUpperCase();
+        }
+        this.permissionCode = permissionCode;
+    }
 
     /**
     * Get Permission Entity Object

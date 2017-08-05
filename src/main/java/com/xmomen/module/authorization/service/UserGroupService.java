@@ -111,4 +111,12 @@ public interface UserGroupService {
      * @return
      */
     public Page<GroupModel> getUserGroupsPage(UserGroupQuery userGroupQuery);
+
+
+    /**
+     * 批量删除
+     * @param userId
+     * @param groupIds
+     */
+    public void deleteUserGroups(String userId, String[] groupIds);
 }

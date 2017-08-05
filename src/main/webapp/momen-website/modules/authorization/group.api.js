@@ -8,13 +8,13 @@ define(function () {
         var resource = Resource("/group/:id", { id:"@id" }, {
             getGroupPermission:{
                 method:"GET",
-                url: "/group/:groupId/permission",
+                url: "/api/group/:groupId/permission",
                 isArray:false,
                 params:{groupId: "@groupId"}
             },
             createGroupPermission:{
                 method:"POST",
-                url: "/group/:groupId/permission",
+                url: "/api//group/:groupId/permission",
                 params:{groupId: "@groupId", permissionIds:"@permissionIds"},
                 isArray:true
             }

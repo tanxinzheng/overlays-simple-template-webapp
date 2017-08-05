@@ -7,6 +7,7 @@ import com.xmomen.module.core.service.SelectService;
 import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.service.DictionaryService;
+import io.jsonwebtoken.lang.Assert;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -28,8 +29,10 @@ public class DictionarySelectService implements SelectService {
     @Cacheable(cacheNames = "dictionariesCache")
     @Override
     public List<SelectOptionModel> selectOptionModels(SelectOptionQuery selectOptionQuery) {
+        Assert.notNull(selectOptionQuery);
+        Assert.notNull(selectOptionQuery.getTypeCode(), "typeCode不能为空");
         DictionaryQuery dictionaryQuery = new DictionaryQuery();
-        dictionaryQuery.setType(selectOptionQuery.getType());
+        dictionaryQuery.setType(selectOptionQuery.getTypeCode());
         dictionaryQuery.setParentId(selectOptionQuery.getParentId());
         List<DictionaryModel> dictionaryModels = dictionaryService.getDictionaryModelList(dictionaryQuery);
         if(CollectionUtils.isNotEmpty(dictionaryModels)){
@@ -38,7 +41,7 @@ public class DictionarySelectService implements SelectService {
                 SelectOptionModel selectOptionModel = new SelectOptionModel();
                 selectOptionModel.setCode(dictionaryModel.getDictionaryCode());
                 selectOptionModel.setName(dictionaryModel.getDictionaryName());
-                selectOptionModel.setType(dictionaryModel.getGroupCode());
+                selectOptionModel.setTypeCode(dictionaryModel.getGroupCode());
                 selectOptionModel.setTypeName(dictionaryModel.getGroupName());
                 selectOptionModel.setSort(dictionaryModel.getSort());
                 selectOptionModelList.add(selectOptionModel);

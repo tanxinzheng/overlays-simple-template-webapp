@@ -1,13 +1,8 @@
 package com.xmomen.module.core.controller;
 
 import com.xmomen.framework.exception.BusinessException;
-import com.xmomen.framework.utils.Base64Utils;
-import com.xmomen.module.system.model.DictionaryModel;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.shiro.util.CollectionUtils;
-import org.jeecgframework.poi.excel.ExcelImportUtil;
-import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,8 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.List;
 
 /**
  * Created by tanxinzheng on 16/10/16.
@@ -53,7 +48,7 @@ public class FileUploadDownloadController {
     @RequestMapping(value = "/download")
     public ResponseEntity download(@RequestParam("file") String filename,
                          HttpServletRequest request) throws IOException, BusinessException {
-        String realFilename = Base64Utils.decoder(filename);
+        String realFilename = URLDecoder.decode(filename, "UTF-8");
         String downloadsPath = request.getServletContext().getRealPath("/WEB-INF/downloads");
         File file = new File(downloadsPath, realFilename);
         if(!file.exists()) {
@@ -78,7 +73,7 @@ public class FileUploadDownloadController {
     @RequestMapping(value = "/download/temps")
     public ResponseEntity downloadTempFile(@RequestParam("file") String filename,
                                    HttpServletRequest request) throws IOException, BusinessException {
-        String realFilename = Base64Utils.decoder(filename);
+        String realFilename = URLDecoder.decode(filename, "UTF-8");
         String downloadsPath = request.getServletContext().getRealPath("/WEB-INF/temps");
         File file = new File(downloadsPath, realFilename);
         if(!file.exists()) {

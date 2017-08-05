@@ -137,6 +137,7 @@
                 /unauthorized = anon
                 /register/** = anon
                 /find_password = anon
+                /code = anon
                 /logout = logout
                 /login = authc
                 /momen-website/css/**  =  anon

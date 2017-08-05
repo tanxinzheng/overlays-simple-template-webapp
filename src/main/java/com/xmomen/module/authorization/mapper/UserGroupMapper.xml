@@ -152,4 +152,11 @@
         ORDER BY t.id
     </select>
 
+    <delete id="deleteByQuery" parameterType="com.xmomen.module.authorization.model.UserGroupQuery">
+        delete from xmo_user_group where user_id = #{userId} AND group_id IN
+            <foreach collection="groupIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </delete>
+
 </mapper>

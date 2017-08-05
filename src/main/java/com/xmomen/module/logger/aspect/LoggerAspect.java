@@ -1,8 +1,10 @@
 package com.xmomen.module.logger.aspect;
 
+import com.alibaba.fastjson.JSONObject;
+import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.service.AccountService;
-import com.xmomen.module.logger.Log;
+import com.xmomen.module.logger.LogModel;
 import com.xmomen.module.logger.service.LoggerService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Created by Jeng on 16/3/20.
@@ -38,7 +41,7 @@ public class LoggerAspect {
     /**
      * 日志逻辑切入点
      */
-    @Pointcut("@annotation(com.xmomen.module.logger.Log)")
+    @Pointcut("@annotation(com.xmomen.framework.logger.ActionLog)")
     public void getLogInfo() { }
 
     @Around(value = "getLogInfo()")
@@ -46,36 +49,41 @@ public class LoggerAspect {
         Object returnVal = null;
         String returnStr = null;
         String methodName = proceedingJoinPoint.getSignature().getName();
-        try {
-            final Object[] args = proceedingJoinPoint.getArgs();
-            final String arguments;
-            Object target = proceedingJoinPoint.getTarget();
-            Method method = getMethodByClassAndName(target.getClass(), methodName);    //得到拦截的方法
-            Log an = (Log)getAnnotationByMethod(method ,Log.class );
-            if(an != null){
-                methodName = an.actionName();
-            }
-            if (args == null || args.length == 0) {
-                arguments = "";
-            } else {
-                arguments = Arrays.deepToString(args);
-            }
-            String userId = getUserId();
-            returnVal = proceedingJoinPoint.proceed();
-            logger.debug("User action record info -> { UserId: {0} , ClientId: {1} , actionName: {2}, actionParameters: {3}, actionResult: {4} ");
-            if(loggerService != null){
-                if(returnVal != null){
-                    returnStr = returnVal.toString();
-                }
-                loggerService.setLogInfo(methodName, userId, getRemoteHost(request), arguments, returnStr);
-            }
-            if (logger.isDebugEnabled()) {
-                logger.debug("Entering method [{}] with arguments [{}]", methodName, arguments);
-            }
-            return returnVal;
-        } finally {
-            logger.debug("Leaving method [{}] with return value [{}].", methodName, returnStr);
+        final Object[] args = proceedingJoinPoint.getArgs();
+        final String arguments;
+        Object target = proceedingJoinPoint.getTarget();
+        Method method = getMethodByClassAndName(target.getClass(), methodName);    //得到拦截的方法
+        ActionLog an = (ActionLog)getAnnotationByMethod(method ,ActionLog.class );
+        if(an != null){
+            methodName = an.actionName();
         }
+        if (args == null || args.length == 0) {
+            arguments = "";
+        } else {
+            arguments = Arrays.deepToString(args);
+        }
+        String userId = getUserId();
+        returnVal = proceedingJoinPoint.proceed();
+        if(loggerService != null){
+            if(returnVal != null){
+                returnStr = returnVal.toString();
+            }
+            LogModel logModel = new LogModel();
+            logModel.setActionDate(new Date());
+            logModel.setTargetClass(target.getClass().getName());
+            logModel.setTargetMethod(method.getName());
+            logModel.setActionName(methodName);
+            logModel.setUserId(userId);
+            logModel.setClientIp(getRemoteHost(request));
+            logModel.setActionParams(arguments);
+            logModel.setActionResult(returnStr);
+            logger.debug("User action record info -> {0}", JSONObject.toJSONString(logModel));
+            loggerService.setLogInfo(logModel);
+        }
+        if (logger.isDebugEnabled()) {
+            logger.debug("Entering method [{}] with arguments [{}]", methodName, arguments);
+        }
+        return returnVal;
     }
 
 

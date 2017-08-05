@@ -1,9 +1,11 @@
 package com.xmomen.module.shiro.filter;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.web.rest.WebCommonUtils;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.service.AccountService;
+import com.xmomen.module.logger.service.LoggerService;
 import com.xmomen.module.shiro.token.JWTAuthenticationToken;
 import com.xmomen.module.authorization.model.User;
 import com.xmomen.module.authorization.service.UserService;
@@ -45,21 +47,17 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
 
     private String failureKeyAttribute = DEFAULT_ERROR_KEY_ATTRIBUTE_NAME;
 
-//    public static final String DEFAULT_USERNAME_PARAM = "username";
-//    public static final String DEFAULT_PASSWORD_PARAM = "password";
-//    public static final String DEFAULT_REMEMBER_ME_PARAM = "rememberMe";
-//
     private static final Logger log = LoggerFactory.getLogger(FormAuthenticationFilter.class);
 
-//    private String usernameParam = DEFAULT_USERNAME_PARAM;
-//    private String passwordParam = DEFAULT_PASSWORD_PARAM;
-//    private String rememberMeParam = DEFAULT_REMEMBER_ME_PARAM;
 
     @Autowired
     AccountService accountService;
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    LoggerService loggerService;
 
     private static Logger logger = LoggerFactory.getLogger(JWTOrFormAuthenticationFilter.class);
 
@@ -105,7 +103,7 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        if(WebCommonUtils.isJSON(request) && isLoginSubmission(request, response)){
+        if(WebCommonUtils.isJSON(request) && isLoginRequest(request, response) && isLoginSubmission(request, response)){
             // 是登录请求，且Ajax或json请求
             if (log.isTraceEnabled()) {
                 log.trace("Ajax Login submission detected.");
@@ -193,6 +191,7 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
      * @throws Exception
      */
     @Override
+    @ActionLog(actionName = "用户登录成功")
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject,
                                      ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = WebUtils.toHttp(request);
@@ -235,6 +234,7 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
      * @param response
      * @return
      */
+    @ActionLog(actionName = "用户登录失败")
     @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e,
                                      ServletRequest request, ServletResponse response) {
@@ -262,7 +262,7 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
             map.put("message", message);
             map.put("timestamp", new Date());
             HttpServletResponse httpServletResponse = WebUtils.toHttp(response);
-//            httpServletResponse.setContentType("text/html");
+            httpServletResponse.setContentType("text/html");
             httpServletResponse.setStatus(httpStatus.value());
             httpServletResponse.setCharacterEncoding("UTF-8");
             PrintWriter servletOutputStream = httpServletResponse.getWriter();

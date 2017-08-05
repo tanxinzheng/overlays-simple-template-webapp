@@ -193,6 +193,8 @@ public class GroupPermissionServiceImpl implements GroupPermissionService {
         return groupPermissionModelList.get(0);
     }
 
+
+
     /**
      * 查询用户组权限
      *
@@ -201,6 +203,8 @@ public class GroupPermissionServiceImpl implements GroupPermissionService {
      */
     @Override
     public Page<PermissionModel> getGroupPermissions(GroupPermissionQuery groupPermissionQuery) {
-        return null;
+        PageInterceptor.startPage(groupPermissionQuery);
+        groupPermissionMapper.selectGroupPermissions(groupPermissionQuery);
+        return PageInterceptor.endPage();
     }
 }

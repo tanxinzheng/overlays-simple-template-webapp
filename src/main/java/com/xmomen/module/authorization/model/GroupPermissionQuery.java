@@ -16,5 +16,9 @@ public @Data class GroupPermissionQuery extends BaseQuery implements Serializabl
     private String id;
     private String[] ids;
     private String[] excludeIds;
+    private String groupId;
+    private String[] permissionIds;
+    // true：已绑定的用户组，false：未绑定的用户组
+    private Boolean hasBindPermission;
 
 }

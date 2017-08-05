@@ -116,7 +116,7 @@ public class UserGroupController extends BaseRestController {
     //@RequiresPermissions(value = {PERMISSION_USERGROUP_DELETE})
     @RequestMapping(method = RequestMethod.DELETE)
     public void deleteUserGroups(UserGroupQuery userGroupQuery){
-        userGroupService.deleteUserGroup(userGroupQuery.getIds());
+        userGroupService.deleteUserGroups(userGroupQuery.getUserId(), userGroupQuery.getGroupIds());
     }
 
 

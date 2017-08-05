@@ -34,7 +34,7 @@ public interface PermissionService {
     * @param permissionModels     新增权限对象集合参数
     * @return List<PermissionModel>    权限领域对象集合
     */
-    List<PermissionModel> createPermissions(List<PermissionModel> permissionModels);
+    List<PermissionModel> createPermissions(List<PermissionModel> permissionModels, String createdUserId);
 
     /**
     * 更新权限

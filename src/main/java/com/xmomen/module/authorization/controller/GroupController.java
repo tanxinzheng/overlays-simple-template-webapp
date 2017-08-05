@@ -122,7 +122,7 @@ public class GroupController extends BaseRestController {
     @ActionLog(actionName = "批量删除用户组")
     //@RequiresPermissions(value = {PERMISSION_GROUP_DELETE})
     @RequestMapping(method = RequestMethod.DELETE)
-    public void deleteGroups(GroupQuery groupQuery){
+    public void deleteGroups(@RequestBody GroupQuery groupQuery){
         groupService.deleteGroup(groupQuery.getIds());
     }
 
