@@ -47,15 +47,15 @@ public class ValidationCodeController {
                                 @RequestParam(value = "receiver") String receiver){
         Assert.isTrue(type.equals(FIND_TYPE_EMAIL) ||
                 type.equals(FIND_TYPE_PHONE), "找回方式仅支持：1-邮箱找回，2-手机找回");
-        UserModel userModel = null;
+//        UserModel userModel = null;
         if(type.equals(FIND_TYPE_PHONE)){
             Assert.isTrue(PhoneValidator.getInstance().isValid(receiver), "请输入正确格式的手机号码");
-            userModel = userService.getOneUserModelByUsername(receiver);
-            Assert.notNull(userModel, "该手机号码未注册");
+//            userModel = userService.getOneUserModelByUsername(receiver);
+//            Assert.notNull(userModel, "该手机号码未注册");
         }else if(type.equals(FIND_TYPE_EMAIL)){
             Assert.isTrue(EmailValidator.getInstance().isValid(receiver), "请输入正确格式的邮箱");
-            userModel = userService.getOneUserModelByUsername(receiver);
-            Assert.notNull(userModel, "该邮箱未注册");
+//            userModel = userService.getOneUserModelByUsername(receiver);
+//            Assert.notNull(userModel, "该邮箱未注册");
         }
         Cache cache = cacheManager.getCache(VALIDATE_CODE_CACHE_NAME);
         String code = RandomStringUtils.randomNumeric(6);

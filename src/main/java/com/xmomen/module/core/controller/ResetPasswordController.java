@@ -6,7 +6,6 @@ import com.xmomen.framework.validator.PhoneValidator;
 import com.xmomen.module.authorization.model.User;
 import com.xmomen.module.authorization.model.UserModel;
 import com.xmomen.module.authorization.service.UserService;
-import com.xmomen.module.core.service.AccountService;
 import com.xmomen.module.shiro.PasswordHelper;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.slf4j.Logger;
@@ -76,6 +75,7 @@ public class ResetPasswordController {
         user.setPassword(newPassword);
         user.setId(userModel.getId());
         userService.updateUser(user);
+        cache.put(receiver, null);
     }
 
 

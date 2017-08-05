@@ -249,6 +249,8 @@ public class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
             buildJSONMessage(HttpStatus.BAD_REQUEST, "此用户名未注册", request, response);
         } else if (LockedAccountException.class.getSimpleName().equals(message)) {
             buildJSONMessage(HttpStatus.BAD_REQUEST, "此用户名被锁", request, response);
+        } else if (ExcessiveAttemptsException.class.getSimpleName().equals(message)) {
+            buildJSONMessage(HttpStatus.BAD_REQUEST, "重试次数过多，请稍后再试", request, response);
         } else {
             buildJSONMessage(HttpStatus.BAD_REQUEST, e.getMessage(), request, response);
         }

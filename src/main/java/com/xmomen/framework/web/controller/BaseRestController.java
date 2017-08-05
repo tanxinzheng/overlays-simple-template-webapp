@@ -23,7 +23,13 @@ public class BaseRestController {
      * @return
      */
     public String getCurrentUserId(){
-        return "ADMIN";
+        Subject subject = SecurityUtils.getSubject();
+        if(!subject.isAuthenticated()){
+            throw new AuthenticationException();
+        }
+        String username = subject.getPrincipal().toString();
+        AccountModel accountModel = accountService.getAccountModelByUsername(username);
+        return accountModel.getUserId();
     }
 
     /**
