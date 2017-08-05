@@ -40,11 +40,11 @@
   },
   "tables":[
     {
-      "domainObjectName":"permission",
+      "domainObjectName":"actionLog",
       "tableComment":"权限",
-      "tableName":"xmo_permission",
-      "modulePackage":"com.xmomen.module.authorization",
-      "restMapping":"/permission"
+      "tableName":"xmo_action_log",
+      "modulePackage":"com.xmomen.module.logger",
+      "restMapping":"/action_log"
     }
   ]
 }

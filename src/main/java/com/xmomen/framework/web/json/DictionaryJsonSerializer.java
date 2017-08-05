@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -12,6 +14,8 @@ import java.io.IOException;
  * Created by tanxinzheng on 16/10/20.
  */
 public class DictionaryJsonSerializer extends JsonSerializer<Object> {
+
+    private static Logger logger = LoggerFactory.getLogger(DictionaryJsonSerializer.class);
 
     /**
      * 字典翻译器接口
@@ -45,9 +49,17 @@ public class DictionaryJsonSerializer extends JsonSerializer<Object> {
             return;
         }
         jsonGenerator.writeObject(value);
-        String dictionaryLabel = dictionaryInterpreterService.translate(dictionaryInterpreter.type(), String.valueOf(value));
-        if(StringUtils.trimToNull(dictionaryInterpreter.fieldName()) != null){
-            jsonGenerator.writeStringField(dictionaryInterpreter.fieldName(), dictionaryLabel);
+        try {
+            String dictionaryLabel = dictionaryInterpreterService.translate(dictionaryInterpreter.type(), String.valueOf(value));
+            if(StringUtils.trimToNull(dictionaryInterpreter.fieldName()) != null){
+                jsonGenerator.writeStringField(dictionaryInterpreter.fieldName(), dictionaryLabel);
+            }else{
+                String currentName = jsonGenerator.getOutputContext().getCurrentName();
+                jsonGenerator.writeStringField(currentName + "Desc", dictionaryLabel);
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
         }
+
     }
 }

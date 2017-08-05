@@ -9,7 +9,16 @@
            overflowToDisk="false"
            diskPersistent="false"
            timeToIdleSeconds="0"
-           timeToLiveSeconds="300"
+           timeToLiveSeconds="3000"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="userIdDictionariesCache"
+           eternal="false"
+           maxElementsInMemory="100"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="3000"
            memoryStoreEvictionPolicy="LRU" />
 
     <!--  验证码  -->

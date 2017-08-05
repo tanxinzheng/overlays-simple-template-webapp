@@ -211,7 +211,7 @@ public class DictionaryServiceImpl implements DictionaryService {
      * @return DictionaryModel 数据字典领域对象
      */
     @Override
-    @Cacheable(cacheNames = "dictionariesCache", key = "#dictionaryQuery.type")
+    @Cacheable(cacheNames = "dictionariesCache")
     public DictionaryModel getOneDictionaryModel(DictionaryQuery dictionaryQuery) throws TooManyResultsException {
         List<DictionaryModel> dictionaryModelList = dictionaryMapper.selectModel(dictionaryQuery);
         if(CollectionUtils.isEmpty(dictionaryModelList)){

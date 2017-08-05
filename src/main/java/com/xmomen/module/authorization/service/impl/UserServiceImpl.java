@@ -10,6 +10,7 @@ import com.xmomen.framework.mybatis.page.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -191,6 +192,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel getOneUserModel(String id) {
         return userMapper.selectModelByPrimaryKey(id);
+    }
+
+    @Cacheable(cacheNames = "userIdDictionariesCache")
+    @Override
+    public User getOneUserCache(String id) {
+        return getOneUser(id);
     }
 
     /**

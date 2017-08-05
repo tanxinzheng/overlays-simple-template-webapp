@@ -11,6 +11,8 @@ import java.util.Date;
 @Data
 public class ActionLogQuery extends BaseQuery {
 
+    private String keyword;
+    private String username;
     private String userId;
     private Date startActionDate;
     private Date endActionDate;

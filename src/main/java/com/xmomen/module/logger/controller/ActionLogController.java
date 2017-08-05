@@ -1,8 +1,12 @@
 package com.xmomen.module.logger.controller;
 
+import com.xmomen.framework.mybatis.page.Page;
+import com.xmomen.module.logger.LogModel;
+import com.xmomen.module.logger.model.ActionLogQuery;
+import com.xmomen.module.logger.service.LoggerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -12,13 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/action_log")
 public class ActionLogController {
 
+    @Autowired
+    LoggerService loggerService;
+
     /**
-     * description
-     * @param   String
-     * @return  string
+     * 查询操作日志
+     * @param actionLogQuery
+     * @return
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String methodName(@RequestParam(value = "param") String param){
-        return null;
+    @RequestMapping(method = RequestMethod.GET)
+    public Page<LogModel> getActionLog(ActionLogQuery actionLogQuery){
+        return loggerService.getActionLogPage(actionLogQuery);
     }
 }

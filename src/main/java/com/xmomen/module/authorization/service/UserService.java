@@ -105,6 +105,13 @@ public interface UserService {
     public UserModel getOneUserModel(String id);
 
     /**
+     * 缓存查询
+     * @param id
+     * @return
+     */
+    public User getOneUserCache(String id);
+
+    /**
      * 根据查询参数查询单个对象（此方法只用于提供精确查询单个对象，若结果数超过1，则会报错）
      * @param userQuery 数据字典查询参数对象
      * @return UserModel 数据字典领域对象

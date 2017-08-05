@@ -1,7 +1,10 @@
 package com.xmomen.module.logger.service;
 
+import com.xmomen.framework.mybatis.page.Page;
+import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.module.logger.LogModel;
 import com.xmomen.module.logger.mapper.ActionLogMapper;
+import com.xmomen.module.logger.model.ActionLogQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +24,15 @@ public class LoggerService {
         actionLogMapper.insertActionLog(logInfo);
     }
 
-    public String getRemoteHost(HttpServletRequest request){
-        String ip = request.getHeader("x-forwarded-for");
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)){
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)){
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)){
-            ip = request.getRemoteAddr();
-        }
-        return ip.equals("0:0:0:0:0:0:0:1")?"127.0.0.1":ip;
+    /**
+     * 查询操作记录
+     * @param actionLogQuery
+     * @return
+     */
+    public Page<LogModel> getActionLogPage(ActionLogQuery actionLogQuery){
+        PageInterceptor.startPage(actionLogQuery);
+        actionLogMapper.getActionLogs(actionLogQuery);
+        return PageInterceptor.endPage();
     }
+
 }

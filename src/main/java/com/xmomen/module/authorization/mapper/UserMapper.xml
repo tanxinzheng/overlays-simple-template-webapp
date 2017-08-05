@@ -211,7 +211,7 @@
     <select id="selectModelByUsername"
             resultType="com.xmomen.module.authorization.model.UserModel"
             parameterType="java.lang.String">
-        SELECT * FROM xmo_user where (username = #{username} or email = #{username} or PHONE_NUMBER = #{username})
+        SELECT * FROM xmo_user where (UPPER(username) = UPPER(#{username}) or UPPER(email) = UPPER(#{username}) or UPPER(PHONE_NUMBER) = UPPER(#{username}))
     </select>
 
 </mapper>

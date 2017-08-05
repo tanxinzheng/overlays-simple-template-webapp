@@ -1,5 +1,7 @@
 package com.xmomen.framework.web.json;
 
+import com.xmomen.module.authorization.model.User;
+import com.xmomen.module.authorization.service.UserService;
 import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.service.DictionaryService;
@@ -13,6 +15,9 @@ public class DefaultDictionaryInterpreterService implements DictionaryInterprete
     @Autowired
     DictionaryService dictionaryService;
 
+    @Autowired
+    UserService userService;
+
     /**
      * 翻译
      *
@@ -22,6 +27,13 @@ public class DefaultDictionaryInterpreterService implements DictionaryInterprete
      */
     @Override
     public String translate(String dictionaryType, String dictionaryCode) {
+        if(dictionaryType.equals("USER_ID")){
+            User user = userService.getOneUserCache(dictionaryCode);
+            if(user == null){
+                return null;
+            }
+            return user.getNickname();
+        }
         DictionaryQuery dictionaryQuery = new DictionaryQuery();
         dictionaryQuery.setCode(dictionaryCode);
         dictionaryQuery.setType(dictionaryType);

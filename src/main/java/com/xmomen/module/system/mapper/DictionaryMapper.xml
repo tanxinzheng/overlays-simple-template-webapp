@@ -241,6 +241,12 @@
             <if test="id">
                 AND ID = #{id}
             </if>
+            <if test="type">
+                AND GROUP_CODE = #{type}
+            </if>
+            <if test="code">
+                AND DICTIONARY_CODE = #{code}
+            </if>
             <if test="ids">
                 AND ID IN
                 <foreach collection="ids" item="item" separator="," open="(" close=")">
