@@ -3,6 +3,7 @@ package com.xmomen.module.authorization.model;
 import com.xmomen.framework.model.BaseModel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.xmomen.framework.web.json.DictionaryInterpreter;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Data;
 import org.hibernate.validator.constraints.*;
@@ -55,6 +56,9 @@ public @Data class UserModel extends BaseModel implements Serializable {
     @Excel(name = "手机号码")
     @Length(max = 20, message = "手机号码字符长度限制[0,20]")
     private String phoneNumber;
+    /** 头像 */
+    @DictionaryInterpreter(type = "ATTACHMENT_KEY", fieldName = "avatarUrl")
+    private String avatar;
     /** 锁定 */
     @Excel(name = "锁定")
     private Boolean locked;

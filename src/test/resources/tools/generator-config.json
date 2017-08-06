@@ -7,7 +7,7 @@
   },
   "metadata":{
     "ignoreKeywordValidate":true,
-    "templateTypes":["GridJs", "GridHtml", "JsApi"],
+    "templateTypes":["Model", "MapperXml"],
     "overwriteTemplates":{
       "ControllerTest":"src/test/resources/templates/controllerTest.ftl",
       "Controller":"src/test/resources/templates/controller.ftl",
@@ -40,11 +40,11 @@
   },
   "tables":[
     {
-      "domainObjectName":"actionLog",
-      "tableComment":"权限",
-      "tableName":"xmo_action_log",
-      "modulePackage":"com.xmomen.module.logger",
-      "restMapping":"/action_log"
+      "domainObjectName":"attachment",
+      "tableComment":"附件",
+      "tableName":"xmo_attachment",
+      "modulePackage":"com.xmomen.module.attachment",
+      "restMapping":"/attachment"
     }
   ]
 }

@@ -19,13 +19,13 @@ public class FileStoreServiceTest {
 
     @Before
     public void setUp() throws Exception {
-//        if(fileOperation == null){
-//            fileOperation = new FileStoreServiceByOss();
-//            fileOperation.setAccessKeyId("LTAIQ9tAnQKgixOa");
-//            fileOperation.setAccessKeySecret("SvUzBFGETJ3k9DUY0krXEKLYEpOsFF");
-//            fileOperation.setBucketName("xmomen-test");
-//            fileOperation.setEndpoint("oss-cn-hangzhou.aliyuncs.com");
-//        }
+        if(fileOperation == null){
+            fileOperation = new FileStoreServiceByOss();
+            fileOperation.setAccessKeyId("LTAIQ9tAnQKgixOa");
+            fileOperation.setAccessKeySecret("SvUzBFGETJ3k9DUY0krXEKLYEpOsFF");
+            fileOperation.setBucketName("xmomen-test");
+            fileOperation.setEndpoint("oss-cn-hangzhou.aliyuncs.com");
+        }
     }
 
     @After
@@ -38,10 +38,10 @@ public class FileStoreServiceTest {
 
     @Test
     public void newFile() throws Exception {
-//        fileOperation.newFile("TEST/demo", new FileInputStream(
-//                new File("/Users/jeng/xmomen-repo/webapp/overlays-simple-template-webapp/src/main/webapp/momen-website/img/logo.png")));
-//        InputStream inputStream = fileOperation.getFile("TEST");
-//        FileUtils.copyInputStreamToFile(inputStream, new File("/Users/jeng/xmomen-repo/webapp/overlays-simple-template-webapp/src/test/resources/demo2.png"));
+        fileOperation.newFile("TEST/demo", new FileInputStream(
+                new File("/Users/jeng/xmomen-repo/webapp/overlays-simple-template-webapp/src/main/webapp/momen-website/img/logo.png")));
+        InputStream inputStream = fileOperation.getFile("TEST");
+        FileUtils.copyInputStreamToFile(inputStream, new File("/Users/jeng/xmomen-repo/webapp/overlays-simple-template-webapp/src/test/resources/demo2.png"));
     }
 
     @Test

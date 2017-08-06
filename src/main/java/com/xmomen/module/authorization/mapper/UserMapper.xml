@@ -27,6 +27,9 @@
                 <if test="phoneNumber != null" >
                     PHONE_NUMBER,
                 </if>
+                <if test="avatar != null" >
+                    AVATAR,
+                </if>
                 <if test="locked != null" >
                     LOCKED,
                 </if>
@@ -56,6 +59,9 @@
                 </if>
                 <if test="phoneNumber != null" >
                 #{phoneNumber, jdbcType=VARCHAR},
+                </if>
+                <if test="avatar != null" >
+                #{avatar, jdbcType=VARCHAR},
                 </if>
                 <if test="locked != null" >
                 #{locked, jdbcType=CHAR},
@@ -104,6 +110,9 @@
             <if test="phoneNumber != null" >
             PHONE_NUMBER = #{phoneNumber, jdbcType=VARCHAR},
             </if>
+            <if test="avatar != null" >
+            AVATAR = #{avatar, jdbcType=VARCHAR},
+            </if>
             <if test="locked != null" >
             LOCKED = #{locked, jdbcType=CHAR},
             </if>
@@ -140,6 +149,9 @@
             </if>
             <if test="record.phoneNumber != null" >
             PHONE_NUMBER = #{phoneNumber, jdbcType=VARCHAR},
+            </if>
+            <if test="avatar != null" >
+            AVATAR = #{avatar, jdbcType=VARCHAR},
             </if>
             <if test="record.locked != null" >
             LOCKED = #{locked, jdbcType=CHAR},

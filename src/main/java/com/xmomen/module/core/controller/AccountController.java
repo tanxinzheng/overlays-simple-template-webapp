@@ -2,6 +2,7 @@ package com.xmomen.module.core.controller;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
+import com.xmomen.framework.fss.FileStoreService;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.utils.UUIDGenerator;
 import com.xmomen.framework.validator.PhoneValidator;
@@ -19,11 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -137,5 +138,22 @@ public class AccountController extends BaseRestController {
         userService.updateUser(user);
         cache.put(receiver, null);
     }
+
+    /**
+     * 更换头像
+     * @param file
+     */
+    @RequestMapping(value = "/account/avatar", method = RequestMethod.POST)
+    @ApiOperation(value = "更换头像")
+    @ActionLog(actionName = "更换头像")
+    public void updateAvatar(@RequestPart(value = "file") MultipartFile file) throws IOException {
+        if(file.isEmpty()){
+            return;
+        }
+        String userId = getCurrentUserId();
+        userService.updateAvatar(userId, file);
+    }
+
+
 
 }

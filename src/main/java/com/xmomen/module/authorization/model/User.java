@@ -1,5 +1,6 @@
 package com.xmomen.module.authorization.model;
 
+import com.xmomen.framework.web.json.DictionaryInterpreter;
 import lombok.Data;
 import com.xmomen.framework.model.BaseEntity;
 
@@ -29,6 +30,9 @@ public @Data class User extends BaseEntity implements Serializable {
     private String email;
     /** 手机号码 */
     private String phoneNumber;
+    /** 头像 */
+    @DictionaryInterpreter(type = "ATTACHMENT_KEY", fieldName = "avatarUrl")
+    private String avatar;
     /** 锁定 */
     private Boolean locked;
     /** 注册时间 */

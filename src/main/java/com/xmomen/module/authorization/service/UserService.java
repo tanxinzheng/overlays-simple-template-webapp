@@ -5,7 +5,9 @@ import com.xmomen.module.authorization.model.UserQuery;
 import com.xmomen.module.authorization.model.UserModel;
 import com.xmomen.module.authorization.model.User;
 import org.apache.ibatis.exceptions.TooManyResultsException;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -117,4 +119,11 @@ public interface UserService {
      * @return UserModel 数据字典领域对象
      */
     public UserModel getOneUserModel(UserQuery userQuery) throws TooManyResultsException;
+
+    /**
+     * 更换用户头像
+     * @param userId
+     * @param multipartFile
+     */
+    public void updateAvatar(String userId, MultipartFile multipartFile);
 }

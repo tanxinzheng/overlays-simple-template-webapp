@@ -12,6 +12,8 @@ import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +22,8 @@ import java.util.List;
 <#include "header.ftl">
 @Service
 public class ${domainObjectClassName}ServiceImpl implements ${domainObjectClassName}Service {
+
+    private static Logger logger = LoggerFactory.getLogger(${domainObjectClassName}ServiceImpl.class);
 
     @Autowired
     ${domainObjectClassName}Mapper ${domainObjectName}Mapper;

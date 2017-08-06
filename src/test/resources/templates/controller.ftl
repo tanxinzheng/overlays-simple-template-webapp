@@ -7,7 +7,8 @@ import com.xmomen.framework.web.controller.BaseRestController;
 import ${modulePackage}.model.${domainObjectClassName}Query;
 import ${modulePackage}.model.${domainObjectClassName}Model;
 import ${modulePackage}.service.${domainObjectClassName}Service;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "${restMapping}")
 public class ${domainObjectClassName}Controller extends BaseRestController {
+
+    private static Logger logger = LoggerFactory.getLogger(${domainObjectClassName}Controller.class);
 
     public static final String PERMISSION_${domainObjectClassName?upper_case}_CREATE = "${domainObjectName?lower_case}:create";
     public static final String PERMISSION_${domainObjectClassName?upper_case}_DELETE = "${domainObjectName?lower_case}:delete";
