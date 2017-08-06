@@ -63,6 +63,7 @@ public class AccountService {
             accountModel.setCreatedTime(user.getCreatedTime());
             accountModel.setLastLoginTime(user.getLastLoginTime());
             accountModel.setUserId(user.getId());
+            accountModel.setAvatar(user.getAvatar());
             return accountModel;
         }
         return null;

@@ -45,6 +45,7 @@ public class BaseTestController {
     public static String TEST_DATA_STRING = "TEST";
     public static Boolean TEST_DATA_BOOLEAN = false;
     public static Integer TEST_DATA_INTEGER = 1;
+    public static Long TEST_DATA_LONG = 1l;
     public static BigDecimal TEST_DATA_BIG_DECIMAL = BigDecimal.valueOf(1999.99);
 
     public static String TEST_DATA_STRING_UPDATE = "TEST_UPDATED";

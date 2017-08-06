@@ -14,6 +14,7 @@ import com.xmomen.module.authorization.model.UserQuery;
 import com.xmomen.module.authorization.service.UserService;
 import com.xmomen.framework.mybatis.page.Page;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -256,7 +255,7 @@ public class UserServiceImpl implements UserService {
         Attachment attachment = new Attachment();
         attachment.setAttachmentGroup(AttachmentGroupEnmu.USER_AVATAR.name());
         attachment.setAttachmentKey(fileKey);
-        attachment.setAttachmentPath(fileKey);
+        attachment.setAttachmentPath(userId);
         attachment.setAttachmentSize(multipartFile.getSize());
         attachment.setUploadTime(new Date());
         attachment.setUploadUserId(userId);
@@ -264,10 +263,15 @@ public class UserServiceImpl implements UserService {
         attachment.setOriginName(multipartFile.getOriginalFilename());
         attachment.setIsPrivate(false);
         attachmentService.createAttachment(attachment);
-        User user = new User();
-        user.setId(userId);
-        user.setAvatar(fileKey);
-        updateUser(user);
+        User user = getOneUser(userId);
+        if(user != null && StringUtils.isNotBlank(user.getAvatar())){
+            // 删除旧头像
+            attachmentService.deleteAttachmentByKey(user.getAvatar());
+        }
+        User updateUser = new User();
+        updateUser.setId(userId);
+        updateUser.setAvatar(fileKey);
+        updateUser(updateUser);
         try {
             fileStoreService.newFile(filePath, multipartFile.getInputStream());
         } catch (Exception e) {

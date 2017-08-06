@@ -70,6 +70,12 @@ public interface AttachmentService {
     public void deleteAttachment(String id);
 
     /**
+     * 通过附件key删除附件
+     * @param attachmentKey
+     */
+    public void deleteAttachmentByKey(String attachmentKey);
+
+    /**
      * 查询附件领域分页对象（带参数条件）
      * @param attachmentQuery 查询参数
      * @return Page<AttachmentModel>   附件参数对象

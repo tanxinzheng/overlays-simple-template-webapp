@@ -1,5 +1,6 @@
 package com.xmomen.module.attachment.service.impl;
 
+import com.xmomen.framework.fss.FileStoreService;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.module.attachment.model.Attachment;
 import com.xmomen.module.attachment.mapper.AttachmentMapper;
@@ -14,6 +15,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +30,9 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     @Autowired
     AttachmentMapper attachmentMapper;
+
+    @Autowired
+    FileStoreService fileStoreService;
 
     /**
      * 新增附件
@@ -134,7 +139,25 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Override
     @Transactional
     public void deleteAttachment(String id) {
+        Attachment attachment = getOneAttachment(id);
+        if(attachment == null){
+            return;
+        }
+        String fileKey = attachment.getAttachmentPath() + File.pathSeparator + attachment.getAttachmentKey();
+        fileStoreService.deleteFile(fileKey);
         attachmentMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAttachmentByKey(String attachmentKey) {
+        AttachmentModel attachmentModel = getOneAttachmentModelCache(attachmentKey);
+        if(attachmentModel == null){
+            return;
+        }
+        String fileKey = attachmentModel.getAttachmentPath() + File.separator + attachmentModel.getAttachmentKey();
+        fileStoreService.deleteFile(fileKey);
+        attachmentMapper.deleteByPrimaryKey(attachmentModel.getId());
     }
 
     /**
@@ -207,7 +230,7 @@ public class AttachmentServiceImpl implements AttachmentService {
      * @param attachmentKey 文件Key
      * @return Attachment 附件实体对象
      */
-    @Cacheable
+    @Cacheable(cacheNames = "dictionariesCache")
     @Override
     public AttachmentModel getOneAttachmentModelCache(String attachmentKey) {
         AttachmentQuery attachmentQuery = new AttachmentQuery();

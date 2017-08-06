@@ -57,7 +57,6 @@ public @Data class UserModel extends BaseModel implements Serializable {
     @Length(max = 20, message = "手机号码字符长度限制[0,20]")
     private String phoneNumber;
     /** 头像 */
-    @DictionaryInterpreter(type = "ATTACHMENT_KEY", fieldName = "avatarUrl")
     private String avatar;
     /** 锁定 */
     @Excel(name = "锁定")

@@ -49,7 +49,7 @@
                 #{attachmentKey, jdbcType=VARCHAR},
                 </if>
                 <if test="attachmentSize != null" >
-                #{attachmentSize, jdbcType=INT},
+                #{attachmentSize, jdbcType=DECIMAL},
                 </if>
                 <if test="attachmentPath != null" >
                 #{attachmentPath, jdbcType=VARCHAR},
@@ -70,7 +70,7 @@
                 #{relationId, jdbcType=VARCHAR},
                 </if>
                 <if test="isPrivate != null" >
-                #{isPrivate, jdbcType=INT},
+                #{isPrivate, jdbcType=CHAR},
                 </if>
         </trim>
     </insert>
@@ -99,7 +99,7 @@
             ATTACHMENT_KEY = #{attachmentKey, jdbcType=VARCHAR},
             </if>
             <if test="attachmentSize != null" >
-            ATTACHMENT_SIZE = #{attachmentSize, jdbcType=INT},
+            ATTACHMENT_SIZE = #{attachmentSize, jdbcType=DECIMAL},
             </if>
             <if test="attachmentPath != null" >
             ATTACHMENT_PATH = #{attachmentPath, jdbcType=VARCHAR},
@@ -120,7 +120,7 @@
             RELATION_ID = #{relationId, jdbcType=VARCHAR},
             </if>
             <if test="isPrivate != null" >
-            IS_PRIVATE = #{isPrivate, jdbcType=INT},
+            IS_PRIVATE = #{isPrivate, jdbcType=CHAR},
             </if>
         </set>
         WHERE ID = #{id}
@@ -139,7 +139,7 @@
             ATTACHMENT_KEY = #{attachmentKey, jdbcType=VARCHAR},
             </if>
             <if test="record.attachmentSize != null" >
-            ATTACHMENT_SIZE = #{attachmentSize, jdbcType=INT},
+            ATTACHMENT_SIZE = #{attachmentSize, jdbcType=DECIMAL},
             </if>
             <if test="record.attachmentPath != null" >
             ATTACHMENT_PATH = #{attachmentPath, jdbcType=VARCHAR},
@@ -160,7 +160,7 @@
             RELATION_ID = #{relationId, jdbcType=VARCHAR},
             </if>
             <if test="record.isPrivate != null" >
-            IS_PRIVATE = #{isPrivate, jdbcType=INT},
+            IS_PRIVATE = #{isPrivate, jdbcType=CHAR},
             </if>
         </set>
         <if test="query != null" >

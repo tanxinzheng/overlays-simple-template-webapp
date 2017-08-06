@@ -9,12 +9,14 @@ import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.service.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 
 /**
  * Created by tanxinzheng on 16/10/20.
  */
+@Component
 public class DefaultDictionaryInterpreterService implements DictionaryInterpreterService {
 
     @Autowired
@@ -52,6 +54,7 @@ public class DefaultDictionaryInterpreterService implements DictionaryInterprete
             }
             String fileUrl = File.separator + File.separator +
                     bucketName + "." +
+                    endpoint + File.separator +
                     attachmentModel.getAttachmentPath() + File.separator +
                     attachmentModel.getAttachmentKey();
             return fileUrl;

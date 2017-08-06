@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xmomen.framework.exception.BusinessException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,8 +22,8 @@ import java.text.MessageFormat;
  */
 public class RestExceptionResolver extends SimpleMappingExceptionResolver {
 
-//    @Value("#{configProperties['spring.maxUploadSize']}")
-    private static Long maxUploadSize = 20971520l;
+    @Value("#{configProperties['spring.maxUploadSize']}")
+    private static Long maxUploadSize;
 
     @Override
     protected ModelAndView doResolveException(HttpServletRequest request,

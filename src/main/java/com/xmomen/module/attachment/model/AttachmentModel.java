@@ -11,14 +11,15 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 import org.jeecgframework.poi.excel.annotation.ExcelTarget;
 import org.springframework.beans.BeanUtils;
 
+import java.lang.Boolean;
 import java.lang.String;
-import java.lang.Integer;
+import java.lang.Short;
 import java.util.Date;
 import java.io.Serializable;
 
 /**
  * @author  tanxinzheng
- * @date    2017-8-6 15:56:07
+ * @date    2017-8-6 23:28:37
  * @version 1.0.0
  */
 @ExcelTarget(value = "AttachmentModel")
@@ -40,8 +41,7 @@ public @Data class AttachmentModel extends BaseModel implements Serializable {
     /** 附件大小 */
     @Excel(name = "附件大小")
     @NotNull(message = "附件大小为必填项")
-    @Range(max = 999999999, min = -999999999, message = "附件大小数值范围[999999999,-999999999]")
-    private Integer attachmentSize;
+    private Long attachmentSize;
     /** 附件URL */
     @Excel(name = "附件URL")
     @NotBlank(message = "附件URL为必填项")
@@ -73,8 +73,7 @@ public @Data class AttachmentModel extends BaseModel implements Serializable {
     /** 是否私有 */
     @Excel(name = "是否私有")
     @NotNull(message = "是否私有为必填项")
-    @Range(max = 999999999, min = -999999999, message = "是否私有数值范围[999999999,-999999999]")
-    private Integer isPrivate;
+    private Boolean isPrivate;
 
     /**
     * Get Attachment Entity Object

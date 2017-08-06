@@ -31,7 +31,6 @@ public @Data class User extends BaseEntity implements Serializable {
     /** 手机号码 */
     private String phoneNumber;
     /** 头像 */
-    @DictionaryInterpreter(type = "ATTACHMENT_KEY", fieldName = "avatarUrl")
     private String avatar;
     /** 锁定 */
     private Boolean locked;
