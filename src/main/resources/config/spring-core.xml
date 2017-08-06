@@ -21,6 +21,13 @@
 	<!-- 引入属性文件 -->
 	<context:property-placeholder location="classpath:application.properties"/>
 
+	<bean id="fileOperation" class="com.xmomen.framework.fss.adapters.FileStoreServiceByOss" >
+		<property name="accessKeyId" value="${oss.accessKeyId}" />
+		<property name="accessKeySecret" value="${oss.accessKeySecret}" />
+		<property name="bucketName" value="${oss.bucketName}"/>
+		<property name="endpoint" value="${oss.endpoint}"/>
+	</bean>
+
 	<import resource="classpath:config/spring-cache.xml" />
 	<import resource="classpath:config/spring-jdbc.xml" />
 	<import resource="classpath:config/spring-mybatis.xml" />
