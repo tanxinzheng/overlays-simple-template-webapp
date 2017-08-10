@@ -260,7 +260,7 @@ public class UserServiceImpl implements UserService {
         attachment.setUploadTime(new Date());
         attachment.setUploadUserId(userId);
         attachment.setAttachmentSuffix(multipartFile.getContentType());
-        attachment.setOriginName(multipartFile.getOriginalFilename());
+        attachment.setOriginName("用户头像");
         attachment.setIsPrivate(false);
         attachmentService.createAttachment(attachment);
         User user = getOneUser(userId);

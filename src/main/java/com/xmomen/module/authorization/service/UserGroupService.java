@@ -112,6 +112,13 @@ public interface UserGroupService {
      */
     public Page<GroupModel> getUserGroupsPage(UserGroupQuery userGroupQuery);
 
+    /**
+     * 查询用户组
+     * @param userGroupQuery
+     * @return
+     */
+    public List<GroupModel> getUserGroups(UserGroupQuery userGroupQuery);
+
 
     /**
      * 批量删除

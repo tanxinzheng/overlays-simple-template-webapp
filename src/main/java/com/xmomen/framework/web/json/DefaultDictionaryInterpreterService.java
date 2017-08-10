@@ -40,14 +40,14 @@ public class DefaultDictionaryInterpreterService implements DictionaryInterprete
      * @return
      */
     @Override
-    public String translate(String dictionaryType, String dictionaryCode) {
-        if(dictionaryType.equals("USER_ID")){
+    public String translate(DictionaryIndex dictionaryType, String dictionaryCode) {
+        if(dictionaryType.equals(DictionaryIndex.USER_ID)){
             User user = userService.getOneUserCache(dictionaryCode);
             if(user == null){
                 return null;
             }
             return user.getNickname();
-        }else if(dictionaryType.equals("ATTACHMENT_KEY")){
+        }else if(dictionaryType.equals(DictionaryIndex.ATTACHMENT_KEY)){
             AttachmentModel attachmentModel = attachmentService.getOneAttachmentModelCache(dictionaryCode);
             if(attachmentModel == null){
                 return null;
@@ -61,7 +61,7 @@ public class DefaultDictionaryInterpreterService implements DictionaryInterprete
         }
         DictionaryQuery dictionaryQuery = new DictionaryQuery();
         dictionaryQuery.setCode(dictionaryCode);
-        dictionaryQuery.setType(dictionaryType);
+        dictionaryQuery.setType(dictionaryType.name());
         DictionaryModel dictionaryModel = dictionaryService.getOneDictionaryModel(dictionaryQuery);
         if(dictionaryModel != null){
             return dictionaryModel.getDictionaryName();

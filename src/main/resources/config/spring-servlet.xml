@@ -48,9 +48,7 @@
 
 	<bean  class="com.xmomen.module.logger.aspect.LoggerAspect" />
 	<!-- ###########	数据字典翻译器  Start	###############	-->
-	<bean id="dictionaryAnnotationIntrospector" class="com.xmomen.framework.web.json.DictionaryAnnotationIntrospector">
-		<property name="dictionaryInterpreterService" ref="dictionaryInterpreterService" />
-	</bean>
+	<bean id="dictionaryAnnotationIntrospector" class="com.xmomen.framework.web.json.DictionaryAnnotationIntrospector"></bean>
 	<bean id="dictionaryInterpreterService" class="com.xmomen.framework.web.json.DefaultDictionaryInterpreterService" />
 	<!-- ###########	数据字典翻译器  End	###############	-->
 

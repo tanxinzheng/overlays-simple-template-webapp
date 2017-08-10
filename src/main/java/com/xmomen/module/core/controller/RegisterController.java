@@ -13,7 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -37,7 +39,7 @@ public class RegisterController {
      * @param model             领域对象
      * @return                  页面跳转地址
      */
-    @RequestMapping(value = "/register")
+    @RequestMapping(value = "/access/register")
     public String register(@ModelAttribute @Valid Register register,
                            BindingResult bindingResult,
                            HttpServletRequest request,
@@ -50,15 +52,9 @@ public class RegisterController {
             return "register";
         }
         if(!bindingResult.hasErrors()){
-            AccountModel accountModel = null;
             try {
-                accountModel = accountService.register(register);
-                if(accountModel != null){
-                    return "redirect:/register/message";
-                }
-                logger.error("调用注册接口返回空对象");
-                model.addAttribute("error", "注册失败，请联系客服");
-                return "register";
+                accountService.register(register);
+                return "redirect:/register/message";
             }catch (AccountException e){
                 logger.error(e.getMessage(), e);
                 model.addAttribute("error", e.getMessage());
@@ -72,6 +68,16 @@ public class RegisterController {
             model.addAttribute("error", bindingResult.getFieldError().getDefaultMessage());
             return "register";
         }
+    }
+
+    /**
+     * 用户注册
+     * @param register
+     * @return
+     */
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public void ajaxRegister(@RequestBody @Valid Register register) {
+        accountService.register(register);
     }
 
 }

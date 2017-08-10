@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
@@ -13,35 +16,21 @@ import java.io.IOException;
  * 字典序列化
  * Created by tanxinzheng on 16/10/20.
  */
+@Component
+@Scope("prototype")
 public class DictionaryJsonSerializer extends JsonSerializer<Object> {
 
     private static Logger logger = LoggerFactory.getLogger(DictionaryJsonSerializer.class);
 
-    /**
-     * 字典翻译器接口
-     */
-    private DictionaryInterpreterService dictionaryInterpreterService;
-
-    public DictionaryInterpreterService getDictionaryInterpreterService() {
-        return dictionaryInterpreterService;
-    }
-
-    public void setDictionaryInterpreterService(DictionaryInterpreterService dictionaryInterpreterService) {
-        this.dictionaryInterpreterService = dictionaryInterpreterService;
-    }
+    @Autowired
+    DictionaryInterpreterService dictionaryInterpreterService;
 
     /**
      * 字典翻译器
      */
     private DictionaryInterpreter dictionaryInterpreter;
 
-    public DictionaryInterpreter getDictionaryInterpreter() {
-        return dictionaryInterpreter;
-    }
-
-    public void setDictionaryInterpreter(DictionaryInterpreter dictionaryInterpreter) {
-        this.dictionaryInterpreter = dictionaryInterpreter;
-    }
+    private String fieldName;
 
     @Override
     public void serialize(Object value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
@@ -50,7 +39,7 @@ public class DictionaryJsonSerializer extends JsonSerializer<Object> {
         }
         jsonGenerator.writeObject(value);
         try {
-            String dictionaryLabel = dictionaryInterpreterService.translate(dictionaryInterpreter.type(), String.valueOf(value));
+            String dictionaryLabel = dictionaryInterpreterService.translate(dictionaryInterpreter.index(), String.valueOf(value));
             if(StringUtils.trimToNull(dictionaryInterpreter.fieldName()) != null){
                 jsonGenerator.writeStringField(dictionaryInterpreter.fieldName(), dictionaryLabel);
             }else{
@@ -61,5 +50,12 @@ public class DictionaryJsonSerializer extends JsonSerializer<Object> {
             logger.error(e.getMessage(), e);
         }
 
+    }
+
+
+
+    public DictionaryJsonSerializer(DictionaryInterpreter dictionaryInterpreter, String fieldName) {
+        this.dictionaryInterpreter = dictionaryInterpreter;
+        this.fieldName = fieldName;
     }
 }

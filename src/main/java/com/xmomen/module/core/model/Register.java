@@ -2,6 +2,7 @@ package com.xmomen.module.core.model;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
@@ -11,6 +12,11 @@ import java.io.Serializable;
  */
 public @Data
 class Register implements Serializable {
+
+    /**
+     * 注册类型：1-手机注册，2-邮箱注册
+     */
+    private String type;
 
     @NotBlank
     private String username;
@@ -22,5 +28,7 @@ class Register implements Serializable {
     private String phoneNumber;
     @NotBlank
     private String password;
+    @NotBlank
+    private String code;
 
 }

@@ -3,7 +3,7 @@ package com.xmomen.framework.web.json;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.xmomen.commons.DateUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -24,7 +24,7 @@ public class CustomDateDeserialize extends JsonDeserializer<Date> {
         try {
             String text = jsonParser.getText();
             if(text.matches(DATE_FORMAT_yyyyMMdd)){
-                date = DateUtils.parse(text);
+                date = DateFormatUtils.ISO_DATE_FORMAT.parse(text);
             }
         } catch (ParseException e) {
             e.printStackTrace();

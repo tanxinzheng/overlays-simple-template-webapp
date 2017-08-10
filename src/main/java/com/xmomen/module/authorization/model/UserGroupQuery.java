@@ -16,6 +16,7 @@ public @Data class UserGroupQuery extends BaseQuery implements Serializable {
     private String id;
     private String[] ids;
     private String[] excludeIds;
+    private String username;
     private String userId;
     private String[] groupIds;
     // true：已绑定的用户组，false：未绑定的用户组

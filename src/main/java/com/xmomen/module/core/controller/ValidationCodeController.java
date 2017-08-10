@@ -3,6 +3,7 @@ package com.xmomen.module.core.controller;
 import com.xmomen.framework.validator.PhoneValidator;
 import com.xmomen.module.authorization.model.UserModel;
 import com.xmomen.module.authorization.service.UserService;
+import com.xmomen.module.core.service.ValidationCodeService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.slf4j.Logger;
@@ -29,13 +30,8 @@ public class ValidationCodeController {
 
     private static Logger logger = LoggerFactory.getLogger(ValidationCodeController.class);
 
-    public static final String VALIDATE_CODE_CACHE_NAME = "validate_code_cache";
-
     @Autowired
-    CacheManager cacheManager;
-
-    @Autowired
-    UserService userService;
+    ValidationCodeService validationCodeService;
 
     /**
      * 发送验证码
@@ -47,19 +43,11 @@ public class ValidationCodeController {
                                 @RequestParam(value = "receiver") String receiver){
         Assert.isTrue(type.equals(FIND_TYPE_EMAIL) ||
                 type.equals(FIND_TYPE_PHONE), "找回方式仅支持：1-邮箱找回，2-手机找回");
-//        UserModel userModel = null;
         if(type.equals(FIND_TYPE_PHONE)){
             Assert.isTrue(PhoneValidator.getInstance().isValid(receiver), "请输入正确格式的手机号码");
-//            userModel = userService.getOneUserModelByUsername(receiver);
-//            Assert.notNull(userModel, "该手机号码未注册");
         }else if(type.equals(FIND_TYPE_EMAIL)){
             Assert.isTrue(EmailValidator.getInstance().isValid(receiver), "请输入正确格式的邮箱");
-//            userModel = userService.getOneUserModelByUsername(receiver);
-//            Assert.notNull(userModel, "该邮箱未注册");
         }
-        Cache cache = cacheManager.getCache(VALIDATE_CODE_CACHE_NAME);
-        String code = RandomStringUtils.randomNumeric(6);
-        logger.debug(MessageFormat.format("The validation code stored to cache , Cache Type: {0}, Cache Key: {1} ", type, code));
-        cache.put(receiver, code);
+        validationCodeService.sendCode(receiver);
     }
 }

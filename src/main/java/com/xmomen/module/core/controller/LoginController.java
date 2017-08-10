@@ -1,6 +1,5 @@
 package com.xmomen.module.core.controller;
 
-import com.xmomen.module.shiro.filter.JWTOrFormAuthenticationFilter;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;

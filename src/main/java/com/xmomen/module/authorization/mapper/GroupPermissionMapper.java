@@ -34,4 +34,7 @@ public interface GroupPermissionMapper {
     int updateSelectiveByQuery(@Param("record") GroupPermission record, @Param("query") GroupPermissionQuery example);
 
     List<PermissionModel> selectGroupPermissions(GroupPermissionQuery groupPermissionQuery);
+
+    int countGroupPermissions(@Param("groupIds") List<String> groupIds, @Param("permissionIds") List<String> permissionIds);
+
 }

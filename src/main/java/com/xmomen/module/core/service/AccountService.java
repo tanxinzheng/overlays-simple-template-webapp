@@ -1,26 +1,23 @@
 package com.xmomen.module.core.service;
 
-import com.xmomen.commons.StringUtilsExt;
-import com.xmomen.module.authorization.model.GroupModel;
-import com.xmomen.module.authorization.model.GroupQuery;
-import com.xmomen.module.authorization.model.PermissionModel;
-import com.xmomen.module.authorization.model.PermissionQuery;
-import com.xmomen.module.authorization.service.GroupService;
-import com.xmomen.module.authorization.service.PermissionService;
+import com.xmomen.framework.utils.UUIDGenerator;
+import com.xmomen.framework.validator.PhoneValidator;
+import com.xmomen.module.authorization.model.*;
+import com.xmomen.module.authorization.service.*;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.model.Register;
 import com.xmomen.module.shiro.PasswordHelper;
 import com.xmomen.module.shiro.realm.UserRealm;
-import com.xmomen.module.authorization.model.UserModel;
-import com.xmomen.module.authorization.service.UserService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.SimpleAccount;
 import org.apache.shiro.util.ByteSource;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -41,10 +38,13 @@ public class AccountService {
     UserService userService;
 
     @Autowired
-    GroupService groupService;
+    ValidationCodeService validationCodeService;
 
     @Autowired
-    PermissionService permissionService;
+    UserGroupService userGroupService;
+
+    @Autowired
+    UserPermissionService userPermissionService;
 
     /**
      * 查询帐号
@@ -74,16 +74,22 @@ public class AccountService {
      * @param register
      * @return
      */
-    public AccountModel register(Register register) throws AccountException {
-        SimpleAccount simpleAccount = getAccountByUsername(register.getUsername());
-        if(simpleAccount != null){
-            throw new AccountException("此用户名已被注册");
+    @Transactional
+    public void register(Register register) throws AccountException {
+        UserModel checkUser = userService.getOneUserModelByUsername(register.getUsername());
+        Assert.isNull(checkUser, "该用户名已被注册");
+        if(register.getType().equals("2") && StringUtils.isNotBlank(register.getEmail())){
+            validationCodeService.validateCode(register.getEmail(), register.getCode());
+            Assert.isTrue(EmailValidator.getInstance().isValid(register.getEmail()), "请输入正确格式的邮箱");
+            UserModel emailUser = userService.getOneUserModelByUsername(register.getEmail());
+            Assert.isNull(emailUser, "该邮箱已被注册");
+        }else if(register.getType().equals("1") && StringUtils.isNotBlank(register.getPhoneNumber())){
+            validationCodeService.validateCode(register.getPhoneNumber(), register.getCode());
+            Assert.isTrue(PhoneValidator.getInstance().isValid(register.getPhoneNumber()), "请输入正确格式的手机号码");
+            UserModel phoneUser = userService.getOneUserModelByUsername(register.getPhoneNumber());
+            Assert.isNull(phoneUser, "该手机号码已被注册");
         }
-        SimpleAccount emailAccount = getAccountByUsername(register.getEmail());
-        if(emailAccount != null){
-            throw new AccountException("此邮箱已被注册");
-        }
-        String salt = StringUtilsExt.getUUID(32);
+        String salt = UUIDGenerator.getInstance().getUUID();
         String encryptPassword = PasswordHelper.encryptPassword(register.getPassword(), salt);
         UserModel userCreate = new UserModel();
         userCreate.setEmail(register.getEmail());
@@ -97,11 +103,7 @@ public class AccountService {
         userCreate.setUsername(register.getUsername());
         userCreate.setSalt(salt);
         userCreate.setPassword(encryptPassword);
-        UserModel user = userService.createUser(userCreate);
-        AccountModel accountModel = new AccountModel();
-        BeanUtils.copyProperties(user, accountModel);
-        accountModel.setUserId(user.getId());
-        return accountModel;
+        userService.createUser(userCreate);
     }
 
     /**
@@ -135,24 +137,16 @@ public class AccountService {
         return null;
     }
 
-    public void resetPassword(String email){
-
-    }
-
-    public void validResetPassword(String email, String token, String mail){
-
-    }
-
     /**
      * 查询角色
+     * @param userId
      * @return
      */
-    public Set<String> findRoles(){
-        AccountModel accountModel = getSessionModel();
-        GroupQuery groupQuery = new GroupQuery();
-        groupQuery.setUserId(accountModel.getUserId());
-        groupQuery.setHasBindGroup(true);
-        List<GroupModel> groupList = groupService.getGroupModelList(groupQuery);
+    public Set<String> findRoles(String userId){
+        UserGroupQuery userGroupQuery = new UserGroupQuery();
+        userGroupQuery.setUserId(userId);
+        userGroupQuery.setHasBindGroup(true);
+        List<GroupModel> groupList = userGroupService.getUserGroups(userGroupQuery);
         Set<String> roles = new HashSet<>();
         for (GroupModel groupModel : groupList) {
             roles.add(groupModel.getGroupCode());
@@ -162,14 +156,14 @@ public class AccountService {
 
     /**
      * 查询权限
+     * @param userId
      * @return
      */
-    public Set<String> findPermissions(){
-        AccountModel accountModel = getSessionModel();
-        PermissionQuery permissionQuery = new PermissionQuery();
-        permissionQuery.setUserId(accountModel.getUserId());
-//        permissionQuery.setHasBindPermission(true);
-        List<PermissionModel> permissionModelList = permissionService.getPermissionModelList(permissionQuery);
+    public Set<String> findPermissions(String userId){
+        UserPermissionQuery userPermissionQuery = new UserPermissionQuery();
+        userPermissionQuery.setUserId(userId);
+//        userPermissionQuery.setHasBindPermission(true);
+        List<PermissionModel> permissionModelList = userPermissionService.getUserPermissions(userPermissionQuery);
         Set<String> permissions = new HashSet<>();
         for (PermissionModel permissionModel : permissionModelList) {
             permissions.add(permissionModel.getPermissionCode());

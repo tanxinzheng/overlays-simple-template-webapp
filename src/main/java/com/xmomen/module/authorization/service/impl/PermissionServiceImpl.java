@@ -1,7 +1,10 @@
 package com.xmomen.module.authorization.service.impl;
 
+import com.google.common.collect.Lists;
+import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.framework.utils.UUIDGenerator;
+import com.xmomen.module.authorization.mapper.GroupPermissionMapper;
 import com.xmomen.module.authorization.model.Permission;
 import com.xmomen.module.authorization.mapper.PermissionMapper;
 import com.xmomen.module.authorization.model.PermissionModel;
@@ -9,6 +12,7 @@ import com.xmomen.module.authorization.model.PermissionQuery;
 import com.xmomen.module.authorization.service.PermissionService;
 import com.xmomen.framework.mybatis.page.Page;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,9 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Autowired
     PermissionMapper permissionMapper;
+
+    @Autowired
+    GroupPermissionMapper groupPermissionMapper;
 
     /**
      * 新增权限
@@ -118,6 +125,10 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     @Transactional
     public void deletePermission(String[] ids) {
+        int count = groupPermissionMapper.countGroupPermissions(null, Arrays.asList(ids));
+        if(count > 0){
+            throw new BusinessException("所选择删除的权限已绑定用户组，请移除绑定关系后再删除");
+        }
         permissionMapper.deletesByPrimaryKey(Arrays.asList(ids));
     }
 
@@ -129,6 +140,15 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     @Transactional
     public void deletePermission(String id) {
+        if(StringUtils.isBlank(id)){
+            return;
+        }
+        List<String> ids = Lists.newArrayList();
+        ids.add(id);
+        int count = groupPermissionMapper.countGroupPermissions(null, ids);
+        if(count > 0){
+            throw new BusinessException("所选择删除的权限已绑定用户组，请移除绑定关系后再删除");
+        }
         permissionMapper.deleteByPrimaryKey(id);
     }
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+				http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<!-- ======================== 调度工厂 ======================== -->
+	<bean id="springJobSchedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="autoStartup" value="true"/>
+		<property name="applicationContextSchedulerContextKey" value="applicationContext" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="overwriteExistingJobs" value="true"/>
+		<property name="triggers">
+			<list>
+				<ref bean="simpleJobCronTriggerBean"/>
+			</list>
+		</property>
+	</bean>
+	<bean class="org.quartz.impl.StdSchedulerFactory">
+		<constructor-arg>
+			<value></value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="simpleJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="durability" value="true"/>
+		<property name="name" value="SIMPLE_JOB" />
+		<property name="description" value="定时任务测试2"/>
+		<property name="jobClass" value="com.xmomen.module.scheduler.job.SimpleJob" />
+	</bean>
+	<bean id="simpleJobCronTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="simpleJob"></property>
+		<property name="cronExpression" value="${jog.cron.simpleJob}"></property>
+	</bean>
+
+</beans>

@@ -8,7 +8,6 @@ import com.xmomen.module.authorization.model.UserGroupQuery;
 import com.xmomen.module.authorization.model.UserGroupModel;
 import com.xmomen.module.authorization.service.UserGroupService;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

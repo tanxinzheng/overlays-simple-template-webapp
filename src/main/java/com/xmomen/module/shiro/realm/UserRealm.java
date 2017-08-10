@@ -1,5 +1,6 @@
 package com.xmomen.module.shiro.realm;
 
+import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.service.AccountService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -32,8 +33,9 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String username = (String)principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        authorizationInfo.setRoles(accountService.findRoles());
-        authorizationInfo.setStringPermissions(accountService.findPermissions());
+        AccountModel accountModel = accountService.getSessionModel();
+        authorizationInfo.setRoles(accountService.findRoles(accountModel.getUserId()));
+        authorizationInfo.setStringPermissions(accountService.findPermissions(accountModel.getUserId()));
         return authorizationInfo;
     }
 

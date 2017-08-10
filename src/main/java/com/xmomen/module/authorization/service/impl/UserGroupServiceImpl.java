@@ -213,6 +213,17 @@ public class UserGroupServiceImpl implements UserGroupService {
     }
 
     /**
+     * 查询用户组
+     *
+     * @param userGroupQuery
+     * @return
+     */
+    @Override
+    public List<GroupModel> getUserGroups(UserGroupQuery userGroupQuery) {
+        return userGroupMapper.selectUserGroup(userGroupQuery);
+    }
+
+    /**
      * 批量删除
      *
      * @param userId

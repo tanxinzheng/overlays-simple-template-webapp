@@ -75,8 +75,8 @@ public class LoggerAspect {
             logModel.setActionName(methodName);
             logModel.setUserId(userId);
             logModel.setClientIp(getRemoteHost(request));
-            logModel.setActionParams(arguments);
-            logModel.setActionResult(returnStr);
+//            logModel.setActionParams(arguments);
+//            logModel.setActionResult(returnStr);
             logger.debug("User action record info -> {0}", JSONObject.toJSONString(logModel));
             loggerService.setLogInfo(logModel);
         }

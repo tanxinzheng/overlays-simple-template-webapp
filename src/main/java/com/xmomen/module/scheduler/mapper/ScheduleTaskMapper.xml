@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmomen.module.scheduler.mapper.ScheduleTaskMapper" >
+
+    <select id="selectModel"
+            resultType="com.xmomen.module.scheduler.model.ScheduleTaskModel"
+            parameterType="com.xmomen.module.scheduler.model.ScheduleTaskQuery">
+        select
+            j.job_name,
+            j.job_group,
+            j.description,
+            t.trigger_state,
+            t.`NEXT_FIRE_TIME`,
+            c.`CRON_EXPRESSION`
+        from `xmo_qrtz_job_details` j
+            left join `xmo_qrtz_triggers` t on t.job_name = j.job_name and t.job_group = j.job_group
+            left join `xmo_qrtz_cron_triggers` c on t.`TRIGGER_GROUP` = c.`TRIGGER_GROUP` and t.`TRIGGER_NAME` = c.`TRIGGER_NAME`
+        <where>
+            <if test="keyword">
+                AND (
+                  j.description LIKE CONCAT('%', #{keyword}, '%')
+                  OR j.job_name LIKE CONCAT('%', #{keyword}, '%')
+                  OR j.job_group LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+            <if test="jobName">
+                AND j.job_name = #{jobName}
+            </if>
+            <if test="jobGroup">
+                AND j.job_group = #{jobGroup}
+            </if>
+            <if test="triggerState">
+                AND t.trigger_state = #{triggerState}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -2,7 +2,6 @@ package com.xmomen.module.core.controller;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import com.xmomen.framework.fss.FileStoreService;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.utils.UUIDGenerator;
 import com.xmomen.framework.validator.PhoneValidator;
@@ -12,19 +11,17 @@ import com.xmomen.module.authorization.model.UserModel;
 import com.xmomen.module.authorization.service.UserService;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.service.AccountService;
+import com.xmomen.module.core.service.ValidationCodeService;
 import com.xmomen.module.shiro.PasswordHelper;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +29,6 @@ import java.util.Set;
 
 import static com.xmomen.module.core.controller.ResetPasswordController.FIND_TYPE_EMAIL;
 import static com.xmomen.module.core.controller.ResetPasswordController.FIND_TYPE_PHONE;
-import static com.xmomen.module.core.controller.ValidationCodeController.VALIDATE_CODE_CACHE_NAME;
 
 /**
  * Created by Jeng on 2016/1/5.
@@ -46,6 +42,9 @@ public class AccountController extends BaseRestController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ValidationCodeService validationCodeService;
 
     /**
      * 查询当前用户简要信息
@@ -72,8 +71,9 @@ public class AccountController extends BaseRestController {
     @ApiOperation(value = "查询当前用户权限")
     @ActionLog(actionName = "查询当前用户权限")
     public Map getAccountPermission(){
-        Set<String> roles = accountService.findRoles();
-        Set<String> permissions = accountService.findPermissions();
+        String userId = getCurrentUserId();
+        Set<String> roles = accountService.findRoles(userId);
+        Set<String> permissions = accountService.findPermissions(userId);
         Map rolesMap = new HashMap();
         rolesMap.put("roles", roles);
         rolesMap.put("permissions", permissions);
@@ -104,9 +104,6 @@ public class AccountController extends BaseRestController {
         userService.updateUser(user);
     }
 
-    @Autowired
-    CacheManager cacheManager;
-
     /**
      * 绑定手机，邮箱
      * @param type  1-手机，2-邮箱
@@ -119,9 +116,7 @@ public class AccountController extends BaseRestController {
                      @RequestParam(value = "receiver") String receiver,
                      @RequestParam(value = "code") String code){
         Assert.isTrue(type.equals(FIND_TYPE_EMAIL) || type.equals(FIND_TYPE_PHONE), "找回方式仅支持：1-邮箱找回，2-手机找回");
-        Cache cache = cacheManager.getCache(VALIDATE_CODE_CACHE_NAME);
-        String cacheCode = cache.get(receiver, String.class);
-        Assert.isTrue(cacheCode != null && cacheCode.equals(code), "请输入有效的验证码");
+        validationCodeService.validateCode(receiver, code);
         UserModel userModel;
         User user = new User();
         if(type.equals(FIND_TYPE_EMAIL)){
@@ -137,7 +132,7 @@ public class AccountController extends BaseRestController {
         }
         user.setId(getCurrentUserId());
         userService.updateUser(user);
-        cache.put(receiver, null);
+        validationCodeService.cleanCode(receiver);
     }
 
     /**

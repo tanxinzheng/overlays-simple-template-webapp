@@ -152,4 +152,26 @@
         ORDER BY t.id
     </select>
 
+    <select id="existGroupPermission"  >
+
+    </select>
+
+    <select id="countGroupPermissions" parameterType="java.util.HashMap" >
+        select count(1) from xmo_group_permission
+        <where>
+            <if test="permissionIds">
+                AND permission_id IN
+                <foreach collection="permissionIds" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="groupIds">
+                AND group_id IN
+                <foreach collection="groupIds" item="groupItem" separator="," open="(" close=")">
+                    #{groupItem}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
 </mapper>

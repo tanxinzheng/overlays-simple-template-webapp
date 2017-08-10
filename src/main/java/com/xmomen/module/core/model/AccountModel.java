@@ -1,5 +1,6 @@
 package com.xmomen.module.core.model;
 
+import com.xmomen.framework.web.json.DictionaryIndex;
 import com.xmomen.framework.web.json.DictionaryInterpreter;
 import lombok.Data;
 
@@ -20,7 +21,7 @@ public @Data class AccountModel implements Serializable {
     private Date createdTime;
     private Date lastLoginTime;
     private Boolean locked;
-    @DictionaryInterpreter(type = "ATTACHMENT_KEY", fieldName = "avatarUrl")
+    @DictionaryInterpreter(index = DictionaryIndex.ATTACHMENT_KEY, fieldName = "avatarUrl")
     private String avatar;
 
     private List<NavItem> navItems;

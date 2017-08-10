@@ -39,16 +39,16 @@
         <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
     </bean>
     <!-- 会话验证调度器 -->
-    <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">
-        <property name="sessionValidationInterval" value="1800000"/>
-        <property name="sessionManager" ref="sessionManager"/>
-    </bean>
+    <!--<bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">-->
+        <!--<property name="sessionValidationInterval" value="1800000"/>-->
+        <!--<property name="sessionManager" ref="sessionManager"/>-->
+    <!--</bean>-->
     <!-- 会话管理器 -->
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
         <property name="globalSessionTimeout" value="1800000"/>
         <property name="deleteInvalidSessions" value="true"/>
         <property name="sessionValidationSchedulerEnabled" value="true"/>
-        <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
+        <!--<property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>-->
         <property name="sessionDAO" ref="sessionDAO"/>
         <property name="sessionIdCookieEnabled" value="true"/>
         <property name="sessionIdCookie" ref="sessionIdCookie"/>
@@ -135,7 +135,7 @@
                 /api-docs/** = anon
                 /errors/** = anon
                 /unauthorized = anon
-                /register/** = anon
+                /register = anon
                 /find_password = anon
                 /code = anon
                 /logout = logout

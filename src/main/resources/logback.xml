@@ -59,6 +59,8 @@
     <logger name="org.apache" level="INFO"/>
     <logger name="net.sf.ehcache" level="INFO"/>
     <logger name="com.mangofactory.swagger" level="ERROR"/>
+    <!--  定时任务  -->
+    <logger name="com.mchange.v2.c3p0" level="ERROR"/>
 
     <root level="${LOG_LEVEL}">
 		<appender-ref ref="STDOUT" />

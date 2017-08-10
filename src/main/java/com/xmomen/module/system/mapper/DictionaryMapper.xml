@@ -230,7 +230,7 @@
             parameterType="com.xmomen.module.system.model.DictionaryQuery">
         SELECT * FROM xmo_dictionary
         <include refid="Update_By_Query_Where_Clause"/>
-        ORDER BY id
+        ORDER BY GROUP_CODE, SORT
     </select>
 
     <sql id="Update_By_Query_Where_Clause">

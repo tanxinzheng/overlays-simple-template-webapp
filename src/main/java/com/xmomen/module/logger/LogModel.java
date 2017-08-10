@@ -1,5 +1,6 @@
 package com.xmomen.module.logger;
 
+import com.xmomen.framework.web.json.DictionaryIndex;
 import com.xmomen.framework.web.json.DictionaryInterpreter;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ import java.util.Date;
 public @Data
 class LogModel implements Serializable{
 
-    @DictionaryInterpreter(fieldName = "username", type = "USER_ID")
+    @DictionaryInterpreter(fieldName = "username", index = DictionaryIndex.USER_ID)
     private String userId;
     private String actionName;
     private Date actionDate;
