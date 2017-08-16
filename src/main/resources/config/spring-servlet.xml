@@ -55,7 +55,16 @@
 	<bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" >
 		<!--	添加字典描述注解翻译器		-->
 		<property name="annotationIntrospector" ref="dictionaryAnnotationIntrospector" />
+		<property name="dateFormat" ref="dateFormat"/>
+		<property name="timeZone" value="GMT+8"/>
 	</bean>
+
+	<bean id="dateFormat" class="java.text.SimpleDateFormat">
+		<constructor-arg>
+			<value>yyyy-MM-dd HH:mm:ss</value>
+		</constructor-arg>
+	</bean>
+
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject" ref="jacksonObjectMapper" />
 		<property name="targetMethod" value="configure" />
@@ -94,9 +103,9 @@
 	</mvc:annotation-driven>
 
 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
-		<property name="formatters">
+		<property name="converters">
 			<set>
-				<bean class="org.springframework.format.datetime.DateFormatter"></bean>
+				<bean class="com.xmomen.framework.web.support.DateConverter"></bean>
 			</set>
 		</property>
 	</bean>
