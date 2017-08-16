@@ -1,6 +1,6 @@
 package com.xmomen.module.scheduler.service;
 
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import com.xmomen.module.scheduler.model.ScheduleTaskModel;
 import com.xmomen.module.scheduler.model.ScheduleTaskQuery;
 

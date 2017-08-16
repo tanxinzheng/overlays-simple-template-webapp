@@ -10,7 +10,7 @@ import com.xmomen.module.authorization.mapper.PermissionMapper;
 import com.xmomen.module.authorization.model.PermissionModel;
 import com.xmomen.module.authorization.model.PermissionQuery;
 import com.xmomen.module.authorization.service.PermissionService;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;

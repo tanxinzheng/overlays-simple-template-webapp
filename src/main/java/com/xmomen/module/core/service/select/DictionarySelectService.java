@@ -1,6 +1,6 @@
 package com.xmomen.module.core.service.select;
 
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import com.xmomen.module.core.model.SelectOptionModel;
 import com.xmomen.module.core.model.SelectOptionQuery;
 import com.xmomen.module.core.service.SelectService;

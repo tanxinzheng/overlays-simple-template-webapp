@@ -2,7 +2,7 @@ package com.xmomen.module.authorization.controller;
 
 import com.google.common.collect.Lists;
 import com.wordnik.swagger.annotations.ApiOperation;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.poi.ExcelUtils;
 import com.xmomen.framework.web.controller.BaseRestController;
@@ -52,11 +52,7 @@ public class PermissionController extends BaseRestController {
     //@RequiresPermissions(value = {PERMISSION_PERMISSION_VIEW})
     @RequestMapping(method = RequestMethod.GET)
     public Page<PermissionModel> getPermissionList(final PermissionQuery permissionQuery) {
-        if (permissionQuery.isPaging()) {
-            return permissionService.getPermissionModelPage(permissionQuery);
-        }
-        List<PermissionModel> permissionList = permissionService.getPermissionModelList(permissionQuery);
-        return new Page(permissionList);
+        return permissionService.getPermissionModelPage(permissionQuery);
     }
 
     /**

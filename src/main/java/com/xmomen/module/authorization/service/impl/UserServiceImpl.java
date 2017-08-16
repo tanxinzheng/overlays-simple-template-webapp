@@ -12,7 +12,7 @@ import com.xmomen.module.authorization.mapper.UserMapper;
 import com.xmomen.module.authorization.model.UserModel;
 import com.xmomen.module.authorization.model.UserQuery;
 import com.xmomen.module.authorization.service.UserService;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;

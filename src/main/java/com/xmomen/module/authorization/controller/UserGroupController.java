@@ -1,7 +1,7 @@
 package com.xmomen.module.authorization.controller;
 
 import com.wordnik.swagger.annotations.ApiOperation;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.web.controller.BaseRestController;
 import com.xmomen.module.authorization.model.UserGroupQuery;
@@ -42,11 +42,7 @@ public class UserGroupController extends BaseRestController {
     //@RequiresPermissions(value = {PERMISSION_USERGROUP_VIEW})
     @RequestMapping(method = RequestMethod.GET)
     public Page<UserGroupModel> getUserGroupList(UserGroupQuery userGroupQuery){
-        if(userGroupQuery.isPaging()){
-            return userGroupService.getUserGroupModelPage(userGroupQuery);
-        }
-        List<UserGroupModel> userGroupList = userGroupService.getUserGroupModelList(userGroupQuery);
-        return new Page(userGroupList);
+        return userGroupService.getUserGroupModelPage(userGroupQuery);
     }
 
     /**

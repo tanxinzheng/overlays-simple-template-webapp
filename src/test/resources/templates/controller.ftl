@@ -1,7 +1,7 @@
 package ${targetPackage};
 
 import com.wordnik.swagger.annotations.ApiOperation;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.web.controller.BaseRestController;
 import ${modulePackage}.model.${domainObjectClassName}Query;

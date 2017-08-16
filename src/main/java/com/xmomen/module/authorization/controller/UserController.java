@@ -1,7 +1,7 @@
 package com.xmomen.module.authorization.controller;
 
 import com.wordnik.swagger.annotations.ApiOperation;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.web.controller.BaseRestController;
 import com.xmomen.module.authorization.model.*;
@@ -47,11 +47,7 @@ public class UserController extends BaseRestController {
     //@RequiresPermissions(value = {PERMISSION_USER_VIEW})
     @RequestMapping(method = RequestMethod.GET)
     public Page<UserModel> getUserList(UserQuery userQuery){
-        if(userQuery.isPaging()){
-            return userService.getUserModelPage(userQuery);
-        }
-        List<UserModel> userList = userService.getUserModelList(userQuery);
-        return new Page(userList);
+        return userService.getUserModelPage(userQuery);
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.xmomen.module.scheduler.service.impl;
 
-import com.xmomen.framework.mybatis.page.Page;
-import com.xmomen.framework.mybatis.page.PageInterceptor;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xmomen.module.scheduler.mapper.ScheduleTaskMapper;
 import com.xmomen.module.scheduler.model.ScheduleTaskModel;
 import com.xmomen.module.scheduler.model.ScheduleTaskQuery;
@@ -25,8 +25,8 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
      */
     @Override
     public Page<ScheduleTaskModel> getScheduleTaskPages(ScheduleTaskQuery scheduleTaskQuery) {
-        PageInterceptor.startPage(scheduleTaskQuery);
+        Page<ScheduleTaskModel> page = PageHelper.startPage(scheduleTaskQuery);
         scheduleTaskMapper.selectModel(scheduleTaskQuery);
-        return PageInterceptor.endPage();
+        return page;
     }
 }

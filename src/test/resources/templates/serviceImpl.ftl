@@ -6,7 +6,7 @@ import ${modulePackage}.mapper.${domainObjectClassName}Mapper;
 import ${modulePackage}.model.${domainObjectClassName}Model;
 import ${modulePackage}.model.${domainObjectClassName}Query;
 import ${modulePackage}.service.${domainObjectClassName}Service;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;

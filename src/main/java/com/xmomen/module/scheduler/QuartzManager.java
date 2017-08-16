@@ -1,9 +1,9 @@
 package com.xmomen.module.scheduler;
 
 import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
@@ -23,8 +23,16 @@ public class QuartzManager {
     private static final String  JOB_GROUP_NAME = "DEFAULT";
     private static final String  TRIGGER_GROUP_NAME = "DEFAULT";
 
-    @Autowired
+    @Autowired(required = false)
     SchedulerFactoryBean schedulerFactoryBean;
+
+//    public SchedulerFactoryBean getSchedulerFactoryBean() {
+//        return schedulerFactoryBean;
+//    }
+//
+//    public void setSchedulerFactoryBean(SchedulerFactoryBean schedulerFactoryBean) {
+//        this.schedulerFactoryBean = schedulerFactoryBean;
+//    }
 
     /**
      * 添加定时任务
@@ -162,4 +170,42 @@ public class QuartzManager {
     public void triggerJob(String jobName){
         triggerJob(jobName, JOB_GROUP_NAME);
     }
+
+    /**
+     * 更新cronExpress
+     * @param jobName
+     * @param jobGroupName
+     * @param cronExpression
+     */
+    public void updateCronExpress(String jobName, String jobGroupName, String cronExpression){
+        try {
+            Scheduler scheduler = schedulerFactoryBean.getScheduler();
+            TriggerKey triggerKey = TriggerKey.triggerKey(jobName, jobGroupName);
+            //获取trigger，即在spring配置文件中定义的 bean id="myTrigger"
+            CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
+            //表达式调度构建器
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression);
+            //按新的cronExpression表达式重新构建trigger
+            trigger = trigger.getTriggerBuilder().withIdentity(triggerKey)
+                    .withSchedule(scheduleBuilder).build();
+            //按新的trigger重新设置job执行
+            scheduler.rescheduleJob(triggerKey, trigger);
+        } catch (SchedulerException e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 更新cronExpress
+     * @param jobName
+     * @param cronExpression
+     */
+    public void updateCronExpress(String jobName, String cronExpression){
+        updateCronExpress(jobName, JOB_GROUP_NAME, cronExpression);
+    }
+
+//    @Override
+//    public void afterPropertiesSet() throws Exception {
+//        Assert.notNull(schedulerFactoryBean, "schedulerFactoryBean must be not null");
+//    }
 }

@@ -1,7 +1,7 @@
 package com.xmomen.module.attachment.controller;
 
 import com.wordnik.swagger.annotations.ApiOperation;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.web.controller.BaseRestController;
 import com.xmomen.module.attachment.model.AttachmentQuery;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import org.apache.commons.lang3.StringUtils;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * @author  tanxinzheng
@@ -43,11 +42,7 @@ public class AttachmentController extends BaseRestController {
     @RequiresPermissions(value = {PERMISSION_ATTACHMENT_VIEW})
     @RequestMapping(method = RequestMethod.GET)
     public Page<AttachmentModel> getAttachmentList(AttachmentQuery attachmentQuery){
-        if(attachmentQuery.isPaging()){
-            return attachmentService.getAttachmentModelPage(attachmentQuery);
-        }
-        List<AttachmentModel> attachmentList = attachmentService.getAttachmentModelList(attachmentQuery);
-        return new Page(attachmentList);
+        return attachmentService.getAttachmentModelPage(attachmentQuery);
     }
 
     /**

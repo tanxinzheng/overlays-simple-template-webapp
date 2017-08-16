@@ -1,7 +1,7 @@
 package com.xmomen.module.authorization.controller;
 
 import com.wordnik.swagger.annotations.ApiOperation;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.web.controller.BaseRestController;
 import com.xmomen.module.authorization.model.*;
@@ -50,11 +50,7 @@ public class GroupController extends BaseRestController {
     //@RequiresPermissions(value = {PERMISSION_GROUP_VIEW})
     @RequestMapping(method = RequestMethod.GET)
     public Page<GroupModel> getGroupList(GroupQuery groupQuery){
-        if(groupQuery.isPaging()){
-            return groupService.getGroupModelPage(groupQuery);
-        }
-        List<GroupModel> groupList = groupService.getGroupModelList(groupQuery);
-        return new Page(groupList);
+        return groupService.getGroupModelPage(groupQuery);
     }
 
     /**

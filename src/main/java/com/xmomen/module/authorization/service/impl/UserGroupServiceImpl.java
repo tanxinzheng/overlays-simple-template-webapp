@@ -7,7 +7,7 @@ import com.xmomen.module.authorization.mapper.UserGroupMapper;
 import com.xmomen.module.authorization.model.UserGroupModel;
 import com.xmomen.module.authorization.model.UserGroupQuery;
 import com.xmomen.module.authorization.service.UserGroupService;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;

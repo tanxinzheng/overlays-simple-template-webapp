@@ -1,6 +1,6 @@
 package com.xmomen.module.system.service;
 
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.model.Dictionary;

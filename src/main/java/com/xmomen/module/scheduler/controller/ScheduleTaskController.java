@@ -2,7 +2,7 @@ package com.xmomen.module.scheduler.controller;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.xmomen.framework.logger.ActionLog;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import com.xmomen.module.scheduler.QuartzManager;
 import com.xmomen.module.scheduler.model.ScheduleTaskModel;
 import com.xmomen.module.scheduler.model.ScheduleTaskQuery;
@@ -33,7 +33,7 @@ public class ScheduleTaskController {
         return scheduleTaskService.getScheduleTaskPages(scheduleJobQuery);
     }
 
-    @Autowired
+    @Autowired(required = false)
     QuartzManager quartzManager;
 
     /**
@@ -60,6 +60,9 @@ public class ScheduleTaskController {
                 break;
             case 4://立即执行
                 quartzManager.triggerJob(jobName);
+                break;
+            case 5://更新时间
+                quartzManager.updateCronExpress(jobName, cronExpression);
                 break;
             case 9://删除
                 quartzManager.deleteJob(jobName);

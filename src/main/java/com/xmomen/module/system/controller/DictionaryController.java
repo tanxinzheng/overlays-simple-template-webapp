@@ -3,7 +3,7 @@ package com.xmomen.module.system.controller;
 import com.google.common.collect.Lists;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.xmomen.framework.exception.BusinessException;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.poi.ExcelUtils;
 import com.xmomen.framework.web.controller.BaseRestController;
@@ -57,11 +57,7 @@ public class DictionaryController extends BaseRestController {
     //@RequiresPermissions(value = {PERMISSION_DICTIONARY_VIEW})
     @RequestMapping(method = RequestMethod.GET)
     public Page<DictionaryModel> getDictionaryList(DictionaryQuery dictionaryQuery){
-        if(dictionaryQuery.isPaging()){
-            return dictionaryService.getDictionaryModelPage(dictionaryQuery);
-        }
-        List<DictionaryModel> dictionaryList = dictionaryService.getDictionaryModelList(dictionaryQuery);
-        return new Page(dictionaryList);
+        return dictionaryService.getDictionaryModelPage(dictionaryQuery);
     }
 
     /**

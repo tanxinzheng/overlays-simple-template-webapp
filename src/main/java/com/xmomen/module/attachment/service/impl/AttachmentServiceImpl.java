@@ -7,7 +7,7 @@ import com.xmomen.module.attachment.mapper.AttachmentMapper;
 import com.xmomen.module.attachment.model.AttachmentModel;
 import com.xmomen.module.attachment.model.AttachmentQuery;
 import com.xmomen.module.attachment.service.AttachmentService;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;

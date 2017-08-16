@@ -6,7 +6,7 @@ import com.xmomen.module.authorization.mapper.GroupMapper;
 import com.xmomen.module.authorization.model.GroupModel;
 import com.xmomen.module.authorization.model.GroupQuery;
 import com.xmomen.module.authorization.service.GroupService;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;

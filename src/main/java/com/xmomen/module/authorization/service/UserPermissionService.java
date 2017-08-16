@@ -1,6 +1,6 @@
 package com.xmomen.module.authorization.service;
 
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import com.xmomen.module.authorization.model.PermissionModel;
 import com.xmomen.module.authorization.model.UserPermissionQuery;
 

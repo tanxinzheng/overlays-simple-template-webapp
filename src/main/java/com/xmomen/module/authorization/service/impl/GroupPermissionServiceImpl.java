@@ -4,7 +4,7 @@ import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.module.authorization.model.*;
 import com.xmomen.module.authorization.mapper.GroupPermissionMapper;
 import com.xmomen.module.authorization.service.GroupPermissionService;
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;

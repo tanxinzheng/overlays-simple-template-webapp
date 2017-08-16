@@ -4,6 +4,10 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
 				http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
+	<!--<bean id="quartzManager" class="com.xmomen.module.scheduler.QuartzManager" >-->
+		<!--<property name="schedulerFactoryBean" ref="springJobSchedulerFactoryBean" />-->
+	<!--</bean>-->
+
 	<!-- ======================== 调度工厂 ======================== -->
 	<bean id="springJobSchedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="autoStartup" value="true"/>
@@ -15,11 +19,6 @@
 				<ref bean="simpleJobCronTriggerBean"/>
 			</list>
 		</property>
-	</bean>
-	<bean class="org.quartz.impl.StdSchedulerFactory">
-		<constructor-arg>
-			<value></value>
-		</constructor-arg>
 	</bean>
 
 	<bean id="simpleJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">

@@ -1,6 +1,6 @@
 package com.xmomen.module.core.web;
 
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
@@ -49,7 +49,7 @@ public class JSONResponseBodyAdvice implements ResponseBodyAdvice {
         if(body instanceof Page){
             Page page = (Page) body;
             Map map = new HashMap();
-            map.put("pageInfo", page.getPageInfo());
+            map.put("pageInfo", page.toPageInfo());
             map.put("data", page.getResult());
             return map;
         }

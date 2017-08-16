@@ -1,6 +1,6 @@
 package com.xmomen.module.logger.service;
 
-import com.xmomen.framework.mybatis.page.Page;
+import com.github.pagehelper.Page;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.module.logger.LogModel;
 import com.xmomen.module.logger.mapper.ActionLogMapper;

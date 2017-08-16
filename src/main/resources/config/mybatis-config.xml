@@ -23,7 +23,7 @@
 	</settings>
 
 	<plugins>
-		<plugin interceptor="com.xmomen.framework.mybatis.page.PageInterceptor">
+		<plugin interceptor="com.github.pagehelper.PageHelper">
 			<property name="dialect" value="mysql"/>
 		</plugin>
 	</plugins>
