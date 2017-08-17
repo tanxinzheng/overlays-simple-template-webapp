@@ -20,8 +20,6 @@ public class DateConverter implements Converter<String, Date> {
     @Override
     public Date convert(String source) {
         try {
-//            String dateTimePattern = DateFormatUtils.ISO_DATETIME_FORMAT.getPattern();
-//            String datePattern = DateFormatUtils.ISO_DATE_FORMAT.getPattern();
             if(DateValidator.getInstance().isValid(source, DateFormatUtils.ISO_DATE_FORMAT.getPattern())){
                 return DateFormatUtils.ISO_DATE_FORMAT.parse(source);
             }else if(DateValidator.getInstance().isValid(source, DateFormatUtils.ISO_DATETIME_FORMAT.getPattern())){
