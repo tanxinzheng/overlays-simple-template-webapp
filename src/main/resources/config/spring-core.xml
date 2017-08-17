@@ -17,9 +17,6 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
 	</context:component-scan>
 
-	<!-- 注册BeanFactory -->
-	<!--<bean id="springContextUtil" class="com.xmomen.framework.support.SpringContextUtil" primary="true" />-->
-
 	<!-- 引入属性文件 -->
 	<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 		<property name="locations">
@@ -45,8 +42,6 @@
 	<import resource="classpath:config/spring-jdbc.xml" />
 	<import resource="classpath:config/spring-mybatis.xml" />
 	<import resource="classpath:config/spring-shiro.xml" />
-	<!--<import resource="classpath:config/spring-shiro-stateless.xml" />-->
-	<import resource="classpath:deployerConfigContext.xml" />
 
 	<beans profile="quartz">
 		<import resource="classpath:config/spring-quartz.xml" />

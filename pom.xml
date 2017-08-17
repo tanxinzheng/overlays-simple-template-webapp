@@ -16,6 +16,7 @@
         <spring.version>4.2.6.RELEASE</spring.version>
         <skipjavadoc>true</skipjavadoc>
         <skipgpg>true</skipgpg>
+        <spring.boot.version>1.2.1.RELEASE</spring.boot.version>
     </properties>
 
 
@@ -121,16 +122,22 @@
 
     <dependencies>
 
-        <!--<dependency>-->
-            <!--<groupId>com.xmomen.framework</groupId>-->
-            <!--<artifactId>easy-mybatis</artifactId>-->
-            <!--<version>1.3.0-SNAPSHOT</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.xmomen</groupId>-->
-            <!--<artifactId>easy-commons</artifactId>-->
-            <!--<version>1.0.0-SNAPSHOT</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
