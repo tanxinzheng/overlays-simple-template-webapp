@@ -7,12 +7,13 @@ import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.CopyObjectResult;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
-import com.aliyun.oss.model.PutObjectResult;
 import com.xmomen.framework.fss.FileStoreService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
@@ -24,16 +25,18 @@ import java.util.regex.Pattern;
  * 注：图片等静态资源存储在公共读类的bucket，而私密性文件应存储在私有类的bucket
  * Created by Jeng on 15/6/24.
  */
+@Service
 public class FileStoreServiceByOss implements FileStoreService, InitializingBean {
 
     public Logger log = LoggerFactory.getLogger(FileStoreServiceByOss.class);
 
+    @Value(value = "${oss.accessKeyId}")
     private String accessKeyId;
-
+    @Value(value = "${oss.accessKeySecret}")
     private String accessKeySecret;
-
+    @Value(value = "${oss.endpoint}")
     private String endpoint;
-
+    @Value(value = "${oss.bucketName}")
     private String bucketName;
 
     public String getAccessKeyId() {

@@ -28,8 +28,12 @@ public class PageInterceptor {
      * @param baseQuery
      */
     public static void startPage(Object baseQuery) {
-        Page page = PageHelper.startPage(baseQuery);
-        localPage.set(page);
+        try {
+            Page page = PageHelper.startPage(baseQuery);
+            localPage.set(page);
+        } catch (RuntimeException e){
+            throw new IllegalArgumentException(e.getMessage(), e);
+        }
     }
 
 

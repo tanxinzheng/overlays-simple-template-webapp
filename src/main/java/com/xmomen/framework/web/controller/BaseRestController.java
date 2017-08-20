@@ -2,11 +2,10 @@ package com.xmomen.framework.web.controller;
 
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.service.AccountService;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.subject.Subject;
-import org.apache.shiro.subject.SubjectContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -23,9 +22,9 @@ public class BaseRestController {
      * @return
      */
     public String getCurrentUserId(){
-        Subject subject = SecurityUtils.getSubject();
+        Authentication subject = SecurityContextHolder.getContext().getAuthentication();
         if(!subject.isAuthenticated()){
-            throw new AuthenticationException();
+            throw new AccessDeniedException("权限不足");
         }
         String username = subject.getPrincipal().toString();
         AccountModel accountModel = accountService.getAccountModelByUsername(username);
@@ -37,9 +36,9 @@ public class BaseRestController {
      * @return
      */
     public AccountModel getCurrentAccount() {
-        Subject subject = SecurityUtils.getSubject();
+        Authentication subject = SecurityContextHolder.getContext().getAuthentication();
         if(!subject.isAuthenticated()){
-            throw new AuthenticationException();
+            throw new AccessDeniedException("权限不足");
         }
         String username = subject.getPrincipal().toString();
         return accountService.getAccountModelByUsername(username);

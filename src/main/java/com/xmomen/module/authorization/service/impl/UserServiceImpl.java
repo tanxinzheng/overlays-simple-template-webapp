@@ -14,7 +14,7 @@ import com.xmomen.module.authorization.model.UserQuery;
 import com.xmomen.module.authorization.service.UserService;
 import com.github.pagehelper.Page;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

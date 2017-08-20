@@ -1,7 +1,5 @@
 package com.xmomen.module.shiro;
 
-import org.apache.shiro.crypto.RandomNumberGenerator;
-import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
@@ -14,7 +12,6 @@ public class PasswordHelper {
 
     private static String algorithmName = "md5";
     private static int hashIterations = 3;
-
 
     public void setAlgorithmName(String algorithmName) {
         PasswordHelper.algorithmName = algorithmName;
@@ -30,6 +27,5 @@ public class PasswordHelper {
                 password,
                 ByteSource.Util.bytes(salt),
                 hashIterations).toHex();
-
     }
 }

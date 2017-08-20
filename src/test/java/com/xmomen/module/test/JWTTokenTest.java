@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.security.Key;
 import java.util.UUID;
@@ -33,9 +34,16 @@ public class JWTTokenTest {
     @Test
     public void test2() throws Exception{
         System.out.println(UUID.randomUUID().toString());
-
         System.out.println(RandomStringUtils.randomNumeric(32));
         System.out.println(RandomStringUtils.randomAlphabetic(32));
         System.out.println(RandomStringUtils.randomAscii(32));
+    }
+
+    @Test
+    public void test3() throws Exception{
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String password = bCryptPasswordEncoder.encode("111111");
+        System.out.println(password);
+//        bCryptPasswordEncoder.
     }
 }

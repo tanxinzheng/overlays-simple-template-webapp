@@ -22,7 +22,7 @@ import java.text.MessageFormat;
  */
 public class RestExceptionResolver extends SimpleMappingExceptionResolver {
 
-    @Value("#{configProperties['spring.maxUploadSize']}")
+    @Value("#{systemProperties['spring.maxUploadSize']}")
     private static Long maxUploadSize;
 
     @Override

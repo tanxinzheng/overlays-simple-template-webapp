@@ -11,6 +11,7 @@ import com.xmomen.module.authorization.service.GroupService;
 import com.xmomen.module.authorization.service.PermissionService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import org.apache.commons.lang3.StringUtils;

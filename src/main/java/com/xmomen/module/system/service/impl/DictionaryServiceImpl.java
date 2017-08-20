@@ -9,7 +9,7 @@ import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.service.DictionaryService;
 import com.github.pagehelper.Page;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;

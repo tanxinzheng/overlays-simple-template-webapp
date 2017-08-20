@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by jengt_000 on 2014/12/28.
  */
-public class BaseModel implements Serializable{
+public class BaseModel implements Serializable {
 
     /** 创建人 */
     @DictionaryInterpreter(fieldName = "createdUserName", index = DictionaryIndex.USER_ID)

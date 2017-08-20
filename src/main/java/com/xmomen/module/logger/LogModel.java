@@ -1,10 +1,8 @@
 package com.xmomen.module.logger;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xmomen.framework.web.json.DictionaryIndex;
 import com.xmomen.framework.web.json.DictionaryInterpreter;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;

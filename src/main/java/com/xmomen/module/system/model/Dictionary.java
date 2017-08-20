@@ -2,7 +2,6 @@ package com.xmomen.module.system.model;
 
 import lombok.Data;
 import com.xmomen.framework.model.BaseEntity;
-import org.apache.commons.lang.StringUtils;
 
 import java.lang.Boolean;
 import java.lang.String;

@@ -1,39 +1,30 @@
 package com.xmomen.module.test;
 
+import com.xmomen.module.ApplicationStart;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * Created by tanxinzheng on 17/6/9.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = ApplicationStart.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = {
-        "classpath:config/spring-core.xml",
-        "classpath:config/spring-servlet.xml"
-})
-@TransactionConfiguration(defaultRollback = true)
-@Transactional
 public class BaseTestController {
 
     public static int DEFAULT_PAGE_SIZE = 10;
@@ -59,7 +50,10 @@ public class BaseTestController {
     protected MockMvc mockMvc;
 
     public void setUp() throws Exception {
-        this.mockMvc = webAppContextSetup(this.wac).build();
+
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+
+//        this.mockMvc = webAppContextSetup(this.wac).build();
     }
 
     public HttpSession getLoginSession() throws Exception {

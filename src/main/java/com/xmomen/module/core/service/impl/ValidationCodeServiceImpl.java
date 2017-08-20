@@ -1,7 +1,6 @@
 package com.xmomen.module.core.service.impl;
 
 import com.xmomen.framework.exception.BusinessException;
-import com.xmomen.module.core.controller.ValidationCodeController;
 import com.xmomen.module.core.service.ValidationCodeService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;

@@ -27,9 +27,9 @@ public class DefaultDictionaryInterpreterService implements DictionaryInterprete
     @Autowired
     AttachmentService attachmentService;
 
-    @Value("#{configProperties['oss.endpoint']}")
+    @Value("${oss.endpoint}")
     private String endpoint;
-    @Value("#{configProperties['oss.bucketName']}")
+    @Value("${oss.bucketName}")
     private String bucketName;
 
     /**

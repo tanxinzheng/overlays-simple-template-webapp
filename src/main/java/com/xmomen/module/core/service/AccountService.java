@@ -7,8 +7,7 @@ import com.xmomen.module.authorization.service.*;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.model.Register;
 import com.xmomen.module.shiro.PasswordHelper;
-import com.xmomen.module.shiro.realm.UserRealm;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AccountException;
@@ -128,7 +127,8 @@ public class AccountService {
     public SimpleAccount getAccountByUsername(String username) {
         UserModel user = userService.getOneUserModelByUsername(username);
         if(user != null){
-            SimpleAccount account = new SimpleAccount(user.getUsername(), user.getPassword(), ByteSource.Util.bytes(user.getSalt()), UserRealm.class.getName());
+//            SimpleAccount account = new SimpleAccount(user.getUsername(), user.getPassword(), ByteSource.Util.bytes(user.getSalt()), UserRealm.class.getName());
+            SimpleAccount account = null;
             if(user.getLocked() != null){
                 account.setLocked(user.getLocked());
             }

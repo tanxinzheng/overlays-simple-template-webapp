@@ -3,7 +3,7 @@ package com.xmomen.framework.web.json;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +51,6 @@ public class DictionaryJsonSerializer extends JsonSerializer<Object> {
         }
 
     }
-
-
 
     public DictionaryJsonSerializer(DictionaryInterpreter dictionaryInterpreter, String fieldName) {
         this.dictionaryInterpreter = dictionaryInterpreter;

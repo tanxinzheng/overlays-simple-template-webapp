@@ -14,10 +14,7 @@ import com.xmomen.module.core.service.AccountService;
 import com.xmomen.module.core.service.ValidationCodeService;
 import com.xmomen.module.shiro.PasswordHelper;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,8 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.xmomen.module.core.controller.ResetPasswordController.FIND_TYPE_EMAIL;
-import static com.xmomen.module.core.controller.ResetPasswordController.FIND_TYPE_PHONE;
+import static com.xmomen.module.core.controller.AccessController.FIND_TYPE_EMAIL;
+import static com.xmomen.module.core.controller.AccessController.FIND_TYPE_PHONE;
 
 /**
  * Created by Jeng on 2016/1/5.
@@ -54,13 +51,7 @@ public class AccountController extends BaseRestController {
     @ApiOperation(value = "查询当前用户资料信息")
     @ActionLog(actionName = "查询当前用户资料信息")
     public AccountModel accountSetting(){
-        Subject subject = SecurityUtils.getSubject();
-        if(subject == null){
-            return null;
-        }
-        String username = subject.getPrincipal().toString();
-        AccountModel accountModel = accountService.getAccountModelByUsername(username);
-        return accountModel;
+        return getCurrentAccount();
     }
 
     /**

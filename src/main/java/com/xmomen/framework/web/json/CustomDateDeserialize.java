@@ -14,9 +14,7 @@ import java.util.Date;
  */
 public class CustomDateDeserialize extends JsonDeserializer<Date> {
 
-
     String DATE_FORMAT_yyyyMMdd = "^\\d{4}(-|\\/|.)\\d{1,2}\\1\\d{1,2}$";
-
 
     @Override
     public Date deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
