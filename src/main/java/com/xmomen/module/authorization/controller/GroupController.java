@@ -1,22 +1,21 @@
 package com.xmomen.module.authorization.controller;
 
-import com.wordnik.swagger.annotations.ApiOperation;
 import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.web.controller.BaseRestController;
-import com.xmomen.module.authorization.model.*;
+import com.xmomen.module.authorization.model.GroupModel;
+import com.xmomen.module.authorization.model.GroupPermissionQuery;
+import com.xmomen.module.authorization.model.GroupQuery;
+import com.xmomen.module.authorization.model.PermissionModel;
 import com.xmomen.module.authorization.service.GroupPermissionService;
 import com.xmomen.module.authorization.service.GroupService;
-
 import com.xmomen.module.authorization.service.PermissionService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import org.apache.commons.lang3.StringUtils;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * @author  tanxinzheng

@@ -4,17 +4,25 @@ import com.xmomen.module.security.*;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by tanxinzheng on 17/8/18.
@@ -45,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Bean
+    @Primary
     public JwtTokenService getJwtTokenService(){
         return new JwtTokenServiceImpl();
     }
@@ -66,7 +75,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return bean;
     }
 
-
     @Bean
     public JwtAuthenticationSuccessHandler getJwtAuthenticationSuccessHandler(){
         return new JwtAuthenticationSuccessHandler();
@@ -81,9 +89,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return jwtAuthenticationFilter;
     }
 
+    @Bean
+    public JwtAuthorizationFilter getJwtAuthorizationFilter(AuthenticationManager authenticationManager, JwtTokenService jwtTokenService){
+        return new JwtAuthorizationFilter(authenticationManager, jwtTokenService);
+    }
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .headers()
+                // 允许frame（支持iframe下载功能）
+                .frameOptions().sameOrigin()
+                .and()
                 // 由于使用的是JWT，我们这里不需要csrf
                 .csrf().disable()
                 .anonymous().disable()
@@ -92,17 +109,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                // 允许对于网站静态资源的无授权访问
                 // 对于获取token的rest api要允许匿名访问
-                .antMatchers("/",
+                .antMatchers(
                         "/access/**",
-                        "/favicon.ico").permitAll()
+                        "/swagger-ui.html",
+                        "/swagger-resources/**",
+                        "/v2/**",
+                        "/webjars/**",
+                        "/**/*.js",
+                        "/**/*.css",
+                        "/**/*.png",
+                        "/favicon.ico")
+                .permitAll()
                 .anyRequest().authenticated()
                 // 除上面外的所有请求全部需要鉴权认证
                 .and()
                 .addFilterAt(getJwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilter(new JwtAuthorizationFilter(authenticationManagerBean(), getJwtTokenService()))
+                .addFilterAt(getJwtAuthorizationFilter(authenticationManagerBean(), getJwtTokenService()), BasicAuthenticationFilter.class)
                 // 禁用缓存
+                .logout().addLogoutHandler(new JwtLogoutHandler(getJwtTokenService()))
+                .and()
                 .headers().cacheControl();
     }
 

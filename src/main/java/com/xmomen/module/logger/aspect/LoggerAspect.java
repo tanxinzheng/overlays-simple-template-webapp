@@ -112,7 +112,7 @@ public class LoggerAspect {
      * @return
      */
     public String getUserId(){
-        AccountModel accountModel = accountService.getSessionModel();
+        AccountModel accountModel = accountService.getCurrentAccount();
         return accountModel.getUserId();
     }
 

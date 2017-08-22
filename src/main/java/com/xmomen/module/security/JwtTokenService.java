@@ -39,4 +39,10 @@ public interface JwtTokenService {
      * @return
      */
     public boolean validToken(HttpServletRequest request) throws JwtException;
+
+    /**
+     * 删除token
+     * @param request
+     */
+    void removeToken(HttpServletRequest request);
 }

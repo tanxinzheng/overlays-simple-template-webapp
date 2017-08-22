@@ -3,16 +3,8 @@
 
     <diskStore path="java.io.tmpdir"/>
 
+    <!--   数据字典  -->
     <cache name="dictionariesCache"
-           eternal="false"
-           maxElementsInMemory="100"
-           overflowToDisk="false"
-           diskPersistent="false"
-           timeToIdleSeconds="0"
-           timeToLiveSeconds="3000"
-           memoryStoreEvictionPolicy="LRU" />
-
-    <cache name="userIdDictionariesCache"
            eternal="false"
            maxElementsInMemory="100"
            overflowToDisk="false"
@@ -27,6 +19,15 @@
            eternal="false"
            timeToIdleSeconds="3600"
            timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+
+    <!--    jwt token session  -->
+    <cache name="jwt-token-cache"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="3600"
            overflowToDisk="false"
            statistics="true">
     </cache>

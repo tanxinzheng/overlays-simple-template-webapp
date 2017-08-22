@@ -1,6 +1,6 @@
 package com.xmomen.module.core.controller;
 
-import com.wordnik.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiOperation;
 import com.xmomen.framework.utils.UUIDGenerator;
 import com.xmomen.framework.validator.PhoneValidator;
 import com.xmomen.module.authorization.model.User;

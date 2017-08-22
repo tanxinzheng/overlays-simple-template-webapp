@@ -1,6 +1,6 @@
 package com.xmomen.module.core.service.select;
 
-import com.github.pagehelper.Page;
+import com.xmomen.framework.web.json.DictionaryIndex;
 import com.xmomen.module.core.model.SelectOptionModel;
 import com.xmomen.module.core.model.SelectOptionQuery;
 import com.xmomen.module.core.service.SelectService;
@@ -25,8 +25,7 @@ public class DictionarySelectService implements SelectService {
     @Autowired
     DictionaryService dictionaryService;
 
-
-    @Cacheable(cacheNames = "dictionariesCache")
+    @Cacheable(cacheNames = DictionaryIndex.DICTIONARY_CACHE_NAME_KEY)
     @Override
     public List<SelectOptionModel> selectOptionModels(SelectOptionQuery selectOptionQuery) {
         Assert.notNull(selectOptionQuery);

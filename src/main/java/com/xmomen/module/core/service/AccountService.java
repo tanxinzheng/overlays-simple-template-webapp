@@ -3,17 +3,18 @@ package com.xmomen.module.core.service;
 import com.xmomen.framework.utils.UUIDGenerator;
 import com.xmomen.framework.validator.PhoneValidator;
 import com.xmomen.module.authorization.model.*;
-import com.xmomen.module.authorization.service.*;
+import com.xmomen.module.authorization.service.UserGroupService;
+import com.xmomen.module.authorization.service.UserPermissionService;
+import com.xmomen.module.authorization.service.UserService;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.model.Register;
 import com.xmomen.module.shiro.PasswordHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AccountException;
-import org.apache.shiro.authc.SimpleAccount;
-import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -109,30 +110,11 @@ public class AccountService {
      * 获取SessionModel
      * @return
      */
-    public AccountModel getSessionModel(){
-        AccountModel accountModel = (AccountModel) SecurityUtils.getSubject().getSession().getAttribute(sessionModelKey);
-        if(accountModel == null){
-            String username = (String) SecurityUtils.getSubject().getPrincipal();
-            accountModel = getAccountModelByUsername(username);
-            SecurityUtils.getSubject().getSession().setAttribute(sessionModelKey, accountModel);
-        }
-        return accountModel;
-    }
-
-    /**
-     * 查询帐号
-     * @param username
-     * @return
-     */
-    public SimpleAccount getAccountByUsername(String username) {
-        UserModel user = userService.getOneUserModelByUsername(username);
-        if(user != null){
-//            SimpleAccount account = new SimpleAccount(user.getUsername(), user.getPassword(), ByteSource.Util.bytes(user.getSalt()), UserRealm.class.getName());
-            SimpleAccount account = null;
-            if(user.getLocked() != null){
-                account.setLocked(user.getLocked());
-            }
-            return account;
+    public AccountModel getCurrentAccount(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.isAuthenticated()){
+            String username = (String) authentication.getPrincipal();
+            return getAccountModelByUsername(username);
         }
         return null;
     }

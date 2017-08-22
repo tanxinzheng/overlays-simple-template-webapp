@@ -35,6 +35,8 @@ public interface GroupPermissionMapper {
 
     List<PermissionModel> selectGroupPermissions(GroupPermissionQuery groupPermissionQuery);
 
-    int countGroupPermissions(@Param("groupIds") List<String> groupIds, @Param("permissionIds") List<String> permissionIds);
+    long countGroupPermissions(@Param("groupIds") List<String> groupIds, @Param("permissionIds") List<String> permissionIds);
+
+    int deleteGroupPermissions(@Param("groupId") String groupIds, @Param("permissionIds") List<String> permissionIds);
 
 }

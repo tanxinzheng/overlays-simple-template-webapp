@@ -1,21 +1,17 @@
 package com.xmomen.module.authorization.controller;
 
-import com.google.common.collect.Lists;
-import com.wordnik.swagger.annotations.ApiOperation;
 import com.github.pagehelper.Page;
+import com.google.common.collect.Lists;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.poi.ExcelUtils;
 import com.xmomen.framework.web.controller.BaseRestController;
-import com.xmomen.module.authorization.model.PermissionQuery;
 import com.xmomen.module.authorization.model.PermissionModel;
+import com.xmomen.module.authorization.model.PermissionQuery;
 import com.xmomen.module.authorization.service.PermissionService;
-
-import com.xmomen.module.system.model.DictionaryModel;
-import com.xmomen.module.system.model.DictionaryQuery;
+import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

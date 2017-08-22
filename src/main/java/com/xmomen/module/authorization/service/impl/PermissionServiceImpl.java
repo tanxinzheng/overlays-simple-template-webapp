@@ -77,6 +77,7 @@ public class PermissionServiceImpl implements PermissionService {
             permissionModel.setId(UUIDGenerator.getInstance().getUUID());
             permissionModel.setCreatedUserId(createdUserId);
             permissionModel.setUpdatedUserId(createdUserId);
+            permissionModel.setPermissionCode(permissionModel.getPermissionCode().toUpperCase());
         }
         permissionMapper.insertByBatch(permissionModels);
         return permissionModels;
@@ -125,7 +126,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     @Transactional
     public void deletePermission(String[] ids) {
-        int count = groupPermissionMapper.countGroupPermissions(null, Arrays.asList(ids));
+        long count = groupPermissionMapper.countGroupPermissions(null, Arrays.asList(ids));
         if(count > 0){
             throw new BusinessException("所选择删除的权限已绑定用户组，请移除绑定关系后再删除");
         }
@@ -145,7 +146,7 @@ public class PermissionServiceImpl implements PermissionService {
         }
         List<String> ids = Lists.newArrayList();
         ids.add(id);
-        int count = groupPermissionMapper.countGroupPermissions(null, ids);
+        long count = groupPermissionMapper.countGroupPermissions(null, ids);
         if(count > 0){
             throw new BusinessException("所选择删除的权限已绑定用户组，请移除绑定关系后再删除");
         }

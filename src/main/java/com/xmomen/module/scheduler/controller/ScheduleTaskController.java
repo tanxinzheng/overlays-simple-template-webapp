@@ -1,6 +1,6 @@
 package com.xmomen.module.scheduler.controller;
 
-import com.wordnik.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiOperation;
 import com.xmomen.framework.logger.ActionLog;
 import com.github.pagehelper.Page;
 import com.xmomen.module.scheduler.QuartzManager;

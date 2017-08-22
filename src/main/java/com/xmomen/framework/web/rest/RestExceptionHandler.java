@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -44,34 +45,30 @@ public class RestExceptionHandler {
         restError.setException(ex.getClass().getSimpleName());
         if(ex instanceof BindException){
             restError = handleBindException((BindException) ex);
-        }
-        if(ex instanceof IllegalArgumentException || ex instanceof BusinessException){
+        }else if(ex instanceof IllegalArgumentException || ex instanceof BusinessException){
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             restError.setStatus(HttpStatus.BAD_REQUEST.value());
-        }
-        if(ex instanceof UnauthenticatedException){
+        }else if(ex instanceof UnauthenticatedException ||
+                ex instanceof UnauthorizedException ||
+                ex instanceof AuthenticationCredentialsNotFoundException){
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             restError.setStatus(HttpStatus.UNAUTHORIZED.value());
             restError.setMessage("Requires authentication");
-        }
-        if(ex instanceof DuplicateKeyException){
+        }else if(ex instanceof DuplicateKeyException){
             response.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
             restError.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
             restError.setMessage("保存失败，存在重复关键字段");
-        }
-        if(ex instanceof MaxUploadSizeExceededException){
+        }else if(ex instanceof MaxUploadSizeExceededException){
             response.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
             restError.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
             restError.setMessage(MessageFormat.format("文件上传限制最大不能超过{0}M" , (maxUploadSize/1024)/1024));
-        }
-        if(ex instanceof UnauthorizedException){
+        }else if(ex instanceof AccessDeniedException){
             response.setStatus(HttpStatus.FORBIDDEN.value());
             restError.setStatus(HttpStatus.FORBIDDEN.value());
-            restError.setMessage("权限不足");
-        }
-        if(ex instanceof AccessDeniedException){
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            restError.setStatus(HttpStatus.UNAUTHORIZED.value());
+            restError.setMessage(ex.getMessage());
+        }else{
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            restError.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             restError.setMessage(ex.getMessage());
         }
         return restError;

@@ -8,4 +8,6 @@ public enum DictionaryIndex {
     TRIGGER_STATE,// 触发器状态
     ATTACHMENT_KEY  // 附件KEY -》 附件url
     ;
+
+    public static final String DICTIONARY_CACHE_NAME_KEY = "dictionariesCache";
 }

@@ -130,6 +130,18 @@ public class GroupPermissionServiceImpl implements GroupPermissionService {
     }
 
     /**
+     * 删除组权限关系
+     *
+     * @param groupId
+     * @param permissionIds
+     */
+    @Override
+    public void deleteGroupPermissions(String groupId, String... permissionIds) {
+        groupPermissionMapper.deleteGroupPermissions(groupId, Arrays.asList(permissionIds));
+    }
+
+
+    /**
      * 查询组权限领域分页对象（带参数条件）
      *
      * @param groupPermissionQuery 查询参数
@@ -192,7 +204,6 @@ public class GroupPermissionServiceImpl implements GroupPermissionService {
         }
         return groupPermissionModelList.get(0);
     }
-
 
 
     /**

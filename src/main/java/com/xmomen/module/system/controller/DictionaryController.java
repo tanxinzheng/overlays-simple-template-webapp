@@ -1,31 +1,26 @@
 package com.xmomen.module.system.controller;
 
-import com.google.common.collect.Lists;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.xmomen.framework.exception.BusinessException;
 import com.github.pagehelper.Page;
+import com.google.common.collect.Lists;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.poi.ExcelUtils;
 import com.xmomen.framework.web.controller.BaseRestController;
-import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.model.DictionaryModel;
+import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.service.DictionaryService;
-
+import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.util.CollectionUtils;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
-import org.jeecgframework.poi.excel.entity.ExportParams;
-import org.jeecgframework.poi.excel.entity.ImportParams;
-import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -38,6 +33,8 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/dictionary")
 public class DictionaryController extends BaseRestController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelImportUtil.class);
 
     public static final String PERMISSION_DICTIONARY_CREATE = "dictionary:create";
     public static final String PERMISSION_DICTIONARY_DELETE = "dictionary:delete";
@@ -135,26 +132,26 @@ public class DictionaryController extends BaseRestController {
 
     /**
      * 下载Excel模板
-     * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
      */
     @ActionLog(actionName = "下载数据字典导入模板")
     @RequestMapping(value="/template", method = RequestMethod.GET)
-    public ModelAndView downloadTemplate(ModelMap modelMap) {
+    public void downloadTemplate(HttpServletRequest request,
+                                         HttpServletResponse response) {
         List<DictionaryModel> dictionaryModelList = Lists.newArrayList();
-        return ExcelUtils.export(modelMap, DictionaryModel.class, dictionaryModelList, "数据字典_模板");
+        ExcelUtils.export(request, response, DictionaryModel.class, dictionaryModelList, "数据字典_模板");
     }
 
     /**
      * 导出Excel
      * @param dictionaryQuery    查询参数对象
-     * @return ModelAndView JEECG_EXCEL_VIEW Excel报表视图
      */
     @ActionLog(actionName = "导出数据字典")
     @RequestMapping(value="/export", method = RequestMethod.GET)
-    public ModelAndView exportDictionaries(DictionaryQuery dictionaryQuery,
-                                           ModelMap modelMap) {
+    public void exportDictionaries(DictionaryQuery dictionaryQuery,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) {
         List<DictionaryModel> dictionaryModelList = dictionaryService.getDictionaryModelList(dictionaryQuery);
-        return ExcelUtils.export(modelMap, DictionaryModel.class, dictionaryModelList, "数据字典");
+        ExcelUtils.export(request, response, DictionaryModel.class, dictionaryModelList, "数据字典");
     }
 
     /**

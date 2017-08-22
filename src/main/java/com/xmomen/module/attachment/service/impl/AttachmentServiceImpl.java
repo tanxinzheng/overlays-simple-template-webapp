@@ -1,13 +1,14 @@
 package com.xmomen.module.attachment.service.impl;
 
+import com.github.pagehelper.Page;
 import com.xmomen.framework.fss.FileStoreService;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
-import com.xmomen.module.attachment.model.Attachment;
+import com.xmomen.framework.web.json.DictionaryIndex;
 import com.xmomen.module.attachment.mapper.AttachmentMapper;
+import com.xmomen.module.attachment.model.Attachment;
 import com.xmomen.module.attachment.model.AttachmentModel;
 import com.xmomen.module.attachment.model.AttachmentQuery;
 import com.xmomen.module.attachment.service.AttachmentService;
-import com.github.pagehelper.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -230,7 +231,7 @@ public class AttachmentServiceImpl implements AttachmentService {
      * @param attachmentKey 文件Key
      * @return Attachment 附件实体对象
      */
-    @Cacheable(cacheNames = "dictionariesCache")
+    @Cacheable(cacheNames = DictionaryIndex.DICTIONARY_CACHE_NAME_KEY)
     @Override
     public AttachmentModel getOneAttachmentModelCache(String attachmentKey) {
         AttachmentQuery attachmentQuery = new AttachmentQuery();

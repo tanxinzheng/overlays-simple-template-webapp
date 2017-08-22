@@ -1,20 +1,18 @@
 package com.xmomen.module.authorization.controller;
 
-import com.wordnik.swagger.annotations.ApiOperation;
 import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.web.controller.BaseRestController;
-import com.xmomen.module.authorization.model.GroupPermissionQuery;
 import com.xmomen.module.authorization.model.GroupPermissionModel;
+import com.xmomen.module.authorization.model.GroupPermissionQuery;
 import com.xmomen.module.authorization.service.GroupPermissionService;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import org.apache.commons.lang3.StringUtils;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * @author  tanxinzheng
@@ -112,7 +110,9 @@ public class GroupPermissionController extends BaseRestController {
     //@RequiresPermissions(value = {PERMISSION_GROUPPERMISSION_DELETE})
     @RequestMapping(method = RequestMethod.DELETE)
     public void deleteGroupPermissions(GroupPermissionQuery groupPermissionQuery){
-        groupPermissionService.deleteGroupPermission(groupPermissionQuery.getIds());
+        Assert.notNull(groupPermissionQuery.getGroupId(), "groupId must be not null");
+        Assert.notEmpty(groupPermissionQuery.getPermissionIds(), "permissionIds must be not empty");
+        groupPermissionService.deleteGroupPermissions(groupPermissionQuery.getGroupId(), groupPermissionQuery.getPermissionIds());
     }
 
 

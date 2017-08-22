@@ -1,18 +1,18 @@
 package com.xmomen.module.attachment.controller;
 
-import com.wordnik.swagger.annotations.ApiOperation;
 import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.web.controller.BaseRestController;
-import com.xmomen.module.attachment.model.AttachmentQuery;
 import com.xmomen.module.attachment.model.AttachmentModel;
+import com.xmomen.module.attachment.model.AttachmentQuery;
 import com.xmomen.module.attachment.service.AttachmentService;
-
+import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import org.apache.commons.lang3.StringUtils;
 import javax.validation.Valid;
 
 /**
@@ -27,7 +27,7 @@ public class AttachmentController extends BaseRestController {
     public static final String PERMISSION_ATTACHMENT_CREATE = "attachment:create";
     public static final String PERMISSION_ATTACHMENT_DELETE = "attachment:delete";
     public static final String PERMISSION_ATTACHMENT_UPDATE = "attachment:update";
-    public static final String PERMISSION_ATTACHMENT_VIEW   = "attachment:view";
+    public static final String PERMISSION_ATTACHMENT_VIEW   = "ATTACHMENT:VIEW";
 
     @Autowired
     AttachmentService attachmentService;
@@ -39,7 +39,7 @@ public class AttachmentController extends BaseRestController {
      */
     @ApiOperation(value = "查询附件列表")
     @ActionLog(actionName = "查询附件列表")
-    @RequiresPermissions(value = {PERMISSION_ATTACHMENT_VIEW})
+    @PreAuthorize(value = "hasAnyAuthority('ATTACHMENT:VIEW')")
     @RequestMapping(method = RequestMethod.GET)
     public Page<AttachmentModel> getAttachmentList(AttachmentQuery attachmentQuery){
         return attachmentService.getAttachmentModelPage(attachmentQuery);

@@ -152,11 +152,7 @@
         ORDER BY t.id
     </select>
 
-    <select id="existGroupPermission"  >
-
-    </select>
-
-    <select id="countGroupPermissions" parameterType="java.util.HashMap" >
+    <select id="countGroupPermissions" parameterType="java.util.HashMap" resultType="java.lang.Long">
         select count(1) from xmo_group_permission
         <where>
             <if test="permissionIds">
@@ -174,4 +170,16 @@
         </where>
     </select>
 
+    <delete id="deleteGroupPermissions" parameterType="java.util.HashMap" >
+        delete from xmo_group_permission
+        <where>
+            group_id = #{groupId}
+            <if test="permissionIds">
+                AND permission_id IN
+                <foreach collection="permissionIds" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </delete>
 </mapper>

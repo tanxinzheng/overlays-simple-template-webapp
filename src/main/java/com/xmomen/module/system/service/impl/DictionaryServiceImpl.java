@@ -1,13 +1,14 @@
 package com.xmomen.module.system.service.impl;
 
+import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
-import com.xmomen.module.system.model.Dictionary;
+import com.xmomen.framework.web.json.DictionaryIndex;
 import com.xmomen.module.system.mapper.DictionaryMapper;
+import com.xmomen.module.system.model.Dictionary;
 import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.service.DictionaryService;
-import com.github.pagehelper.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +19,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author  tanxinzheng
@@ -171,7 +175,7 @@ public class DictionaryServiceImpl implements DictionaryService {
      * @return List<DictionaryModel> 数据字典领域集合对象
      */
     @Override
-    @Cacheable(cacheNames = "dictionariesCache")
+//    @Cacheable(cacheNames = "dictionariesCache")
     public List<DictionaryModel> getDictionaryModelList(DictionaryQuery dictionaryQuery) {
         return dictionaryMapper.selectModel(dictionaryQuery);
     }
@@ -211,7 +215,7 @@ public class DictionaryServiceImpl implements DictionaryService {
      * @return DictionaryModel 数据字典领域对象
      */
     @Override
-    @Cacheable(cacheNames = "dictionariesCache")
+    @Cacheable(cacheNames = DictionaryIndex.DICTIONARY_CACHE_NAME_KEY)
     public DictionaryModel getOneDictionaryModel(DictionaryQuery dictionaryQuery) throws TooManyResultsException {
         List<DictionaryModel> dictionaryModelList = dictionaryMapper.selectModel(dictionaryQuery);
         if(CollectionUtils.isEmpty(dictionaryModelList)){

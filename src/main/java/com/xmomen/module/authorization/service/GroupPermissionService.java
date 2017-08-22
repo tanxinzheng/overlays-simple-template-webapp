@@ -72,6 +72,13 @@ public interface GroupPermissionService {
     public void deleteGroupPermission(String id);
 
     /**
+     * 删除组权限关系
+     * @param groupId
+     * @param permissionIds
+     */
+    public void deleteGroupPermissions(String groupId, String[] permissionIds);
+
+    /**
      * 查询组权限领域分页对象（带参数条件）
      * @param groupPermissionQuery 查询参数
      * @return Page<GroupPermissionModel>   组权限参数对象

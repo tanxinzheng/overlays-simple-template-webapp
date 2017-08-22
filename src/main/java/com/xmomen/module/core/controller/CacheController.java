@@ -1,6 +1,6 @@
 package com.xmomen.module.core.controller;
 
-import com.wordnik.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiOperation;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.module.core.model.SelectOptionModel;
 import com.xmomen.module.core.model.SelectOptionQuery;

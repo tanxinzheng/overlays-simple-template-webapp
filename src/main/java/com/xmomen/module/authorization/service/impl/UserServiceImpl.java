@@ -1,18 +1,19 @@
 package com.xmomen.module.authorization.service.impl;
 
+import com.github.pagehelper.Page;
 import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.fss.FileStoreService;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.framework.utils.UUIDGenerator;
+import com.xmomen.framework.web.json.DictionaryIndex;
 import com.xmomen.module.attachment.model.Attachment;
 import com.xmomen.module.attachment.service.AttachmentService;
+import com.xmomen.module.authorization.mapper.UserMapper;
 import com.xmomen.module.authorization.model.AttachmentGroupEnmu;
 import com.xmomen.module.authorization.model.User;
-import com.xmomen.module.authorization.mapper.UserMapper;
 import com.xmomen.module.authorization.model.UserModel;
 import com.xmomen.module.authorization.model.UserQuery;
 import com.xmomen.module.authorization.service.UserService;
-import com.github.pagehelper.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.exceptions.TooManyResultsException;
@@ -211,7 +212,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectModelByPrimaryKey(id);
     }
 
-    @Cacheable(cacheNames = "userIdDictionariesCache")
+    @Cacheable(cacheNames = DictionaryIndex.DICTIONARY_CACHE_NAME_KEY)
     @Override
     public User getOneUserCache(String id) {
         return getOneUser(id);

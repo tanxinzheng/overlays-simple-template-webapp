@@ -4,13 +4,15 @@ import com.xmomen.module.authorization.model.UserModel;
 import com.xmomen.module.authorization.service.UserService;
 import com.xmomen.module.core.service.AccountService;
 import com.xmomen.module.shiro.PasswordHelper;
-import io.jsonwebtoken.lang.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.stream.Collectors;
 
 /**
  * Created by tanxinzheng on 17/8/19.
@@ -32,15 +34,17 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         if(userModel == null){
             throw new BadCredentialsException("用户名或密码错误");
         }
-        if(userModel.getLocked()){
+        if(userModel.getLocked() != null && userModel.getLocked()){
             throw new BadCredentialsException("该帐号已被锁，请联系平台管理员");
         }
         if(!PasswordHelper.encryptPassword(password, userModel.getSalt()).equals(userModel.getPassword())){
             throw new BadCredentialsException("用户名或密码错误");
         }
-        return new UsernamePasswordAuthenticationToken(username,
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username,
                 userModel.getPassword(),
-                Collections.arrayToList(accountService.findRoles(username).toArray()));
+                accountService.findRoles(userModel.getId()).stream().map(s -> new SimpleGrantedAuthority(s)).collect(Collectors.toList()));
+        usernamePasswordAuthenticationToken.setDetails(userModel);
+        return usernamePasswordAuthenticationToken;
     }
 
     @Override
