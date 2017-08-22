@@ -13,6 +13,7 @@ import com.xmomen.module.authorization.service.PermissionService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,11 +26,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/group")
 public class GroupController extends BaseRestController {
-
-    public static final String PERMISSION_GROUP_CREATE = "group:create";
-    public static final String PERMISSION_GROUP_DELETE = "group:delete";
-    public static final String PERMISSION_GROUP_UPDATE = "group:update";
-    public static final String PERMISSION_GROUP_VIEW   = "group:view";
 
     @Autowired
     GroupService groupService;
@@ -47,7 +43,7 @@ public class GroupController extends BaseRestController {
      */
     @ApiOperation(value = "查询用户组列表")
     @ActionLog(actionName = "查询用户组列表")
-    //@RequiresPermissions(value = {PERMISSION_GROUP_VIEW})
+    @PreAuthorize(value = "hasAnyAuthority('GROUP:VIEW')")
     @RequestMapping(method = RequestMethod.GET)
     public Page<GroupModel> getGroupList(GroupQuery groupQuery){
         return groupService.getGroupModelPage(groupQuery);
@@ -60,7 +56,7 @@ public class GroupController extends BaseRestController {
      */
     @ApiOperation(value = "查询用户组")
     @ActionLog(actionName = "查询用户组")
-    //@RequiresPermissions(value = {PERMISSION_GROUP_VIEW})
+    @PreAuthorize(value = "hasAnyAuthority('GROUP:VIEW')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public GroupModel getGroupById(@PathVariable(value = "id") String id){
         return groupService.getOneGroupModel(id);
@@ -73,7 +69,7 @@ public class GroupController extends BaseRestController {
      */
     @ApiOperation(value = "新增用户组")
     @ActionLog(actionName = "新增用户组")
-    //@RequiresPermissions(value = {PERMISSION_GROUP_CREATE})
+    @PreAuthorize(value = "hasAnyAuthority('GROUP:CREATE')")
     @RequestMapping(method = RequestMethod.POST)
     public GroupModel createGroup(@RequestBody @Valid GroupModel groupModel) {
         return groupService.createGroup(groupModel);
@@ -87,7 +83,7 @@ public class GroupController extends BaseRestController {
      */
     @ApiOperation(value = "更新用户组")
     @ActionLog(actionName = "更新用户组")
-    //@RequiresPermissions(value = {PERMISSION_GROUP_UPDATE})
+    @PreAuthorize(value = "hasAnyAuthority('GROUP:UPDATE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public GroupModel updateGroup(@PathVariable(value = "id") String id,
                            @RequestBody @Valid GroupModel groupModel){
@@ -104,7 +100,7 @@ public class GroupController extends BaseRestController {
      */
     @ApiOperation(value = "删除单个用户组")
     @ActionLog(actionName = "删除单个用户组")
-    //@RequiresPermissions(value = {PERMISSION_GROUP_DELETE})
+    @PreAuthorize(value = "hasAnyAuthority('GROUP:DELETE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteGroup(@PathVariable(value = "id") String id){
         groupService.deleteGroup(id);
@@ -116,7 +112,7 @@ public class GroupController extends BaseRestController {
      */
     @ApiOperation(value = "批量删除用户组")
     @ActionLog(actionName = "批量删除用户组")
-    //@RequiresPermissions(value = {PERMISSION_GROUP_DELETE})
+    @PreAuthorize(value = "hasAnyAuthority('GROUP:DELETE')")
     @RequestMapping(method = RequestMethod.DELETE)
     public void deleteGroups(@RequestBody GroupQuery groupQuery){
         groupService.deleteGroup(groupQuery.getIds());

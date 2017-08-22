@@ -8,7 +8,6 @@ import com.xmomen.module.attachment.model.AttachmentQuery;
 import com.xmomen.module.attachment.service.AttachmentService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +22,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/attachment")
 public class AttachmentController extends BaseRestController {
-
-    public static final String PERMISSION_ATTACHMENT_CREATE = "attachment:create";
-    public static final String PERMISSION_ATTACHMENT_DELETE = "attachment:delete";
-    public static final String PERMISSION_ATTACHMENT_UPDATE = "attachment:update";
-    public static final String PERMISSION_ATTACHMENT_VIEW   = "ATTACHMENT:VIEW";
 
     @Autowired
     AttachmentService attachmentService;
@@ -52,7 +46,7 @@ public class AttachmentController extends BaseRestController {
      */
     @ApiOperation(value = "查询附件")
     @ActionLog(actionName = "查询附件")
-    @RequiresPermissions(value = {PERMISSION_ATTACHMENT_VIEW})
+    @PreAuthorize("hasAuthority('ATTACHMENT:VIEW')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public AttachmentModel getAttachmentById(@PathVariable(value = "id") String id){
         return attachmentService.getOneAttachmentModel(id);
@@ -65,7 +59,7 @@ public class AttachmentController extends BaseRestController {
      */
     @ApiOperation(value = "新增附件")
     @ActionLog(actionName = "新增附件")
-    @RequiresPermissions(value = {PERMISSION_ATTACHMENT_CREATE})
+    @PreAuthorize("hasAuthority('PERMISSION:CREATE')")
     @RequestMapping(method = RequestMethod.POST)
     public AttachmentModel createAttachment(@RequestBody @Valid AttachmentModel attachmentModel) {
         return attachmentService.createAttachment(attachmentModel);
@@ -79,7 +73,7 @@ public class AttachmentController extends BaseRestController {
      */
     @ApiOperation(value = "更新附件")
     @ActionLog(actionName = "更新附件")
-    @RequiresPermissions(value = {PERMISSION_ATTACHMENT_UPDATE})
+    @PreAuthorize("hasAuthority('PERMISSION:UPDATE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public AttachmentModel updateAttachment(@PathVariable(value = "id") String id,
                            @RequestBody @Valid AttachmentModel attachmentModel){
@@ -96,7 +90,7 @@ public class AttachmentController extends BaseRestController {
      */
     @ApiOperation(value = "删除单个附件")
     @ActionLog(actionName = "删除单个附件")
-    @RequiresPermissions(value = {PERMISSION_ATTACHMENT_DELETE})
+    @PreAuthorize("hasAuthority('PERMISSION:DELETE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteAttachment(@PathVariable(value = "id") String id){
         attachmentService.deleteAttachment(id);
@@ -108,7 +102,7 @@ public class AttachmentController extends BaseRestController {
      */
     @ApiOperation(value = "批量删除附件")
     @ActionLog(actionName = "批量删除附件")
-    @RequiresPermissions(value = {PERMISSION_ATTACHMENT_DELETE})
+    @PreAuthorize("hasAuthority('PERMISSION:DELETE')")
     @RequestMapping(method = RequestMethod.DELETE)
     public void deleteAttachments(AttachmentQuery attachmentQuery){
         attachmentService.deleteAttachment(attachmentQuery.getIds());

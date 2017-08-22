@@ -15,6 +15,7 @@ import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,11 +37,6 @@ public class DictionaryController extends BaseRestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelImportUtil.class);
 
-    public static final String PERMISSION_DICTIONARY_CREATE = "dictionary:create";
-    public static final String PERMISSION_DICTIONARY_DELETE = "dictionary:delete";
-    public static final String PERMISSION_DICTIONARY_UPDATE = "dictionary:update";
-    public static final String PERMISSION_DICTIONARY_VIEW   = "dictionary:view";
-
     @Autowired
     DictionaryService dictionaryService;
 
@@ -51,7 +47,7 @@ public class DictionaryController extends BaseRestController {
      */
     @ApiOperation(value = "查询数据字典列表")
     @ActionLog(actionName = "查询数据字典列表")
-    //@RequiresPermissions(value = {PERMISSION_DICTIONARY_VIEW})
+    @PreAuthorize("hasAuthority('DICTIONARY:VIEW')")
     @RequestMapping(method = RequestMethod.GET)
     public Page<DictionaryModel> getDictionaryList(DictionaryQuery dictionaryQuery){
         return dictionaryService.getDictionaryModelPage(dictionaryQuery);
@@ -64,7 +60,7 @@ public class DictionaryController extends BaseRestController {
      */
     @ApiOperation(value = "查询数据字典")
     @ActionLog(actionName = "查询数据字典")
-    //@RequiresPermissions(value = {PERMISSION_DICTIONARY_VIEW})
+    @PreAuthorize("hasAuthority('DICTIONARY:VIEW')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public DictionaryModel getDictionaryById(@PathVariable(value = "id") String id){
         return dictionaryService.getOneDictionaryModel(id);
@@ -77,7 +73,7 @@ public class DictionaryController extends BaseRestController {
      */
     @ApiOperation(value = "新增数据字典")
     @ActionLog(actionName = "新增数据字典")
-    //@RequiresPermissions(value = {PERMISSION_DICTIONARY_CREATE})
+    @PreAuthorize("hasAuthority('DICTIONARY:CREATE')")
     @RequestMapping(method = RequestMethod.POST)
     public DictionaryModel createDictionary(@RequestBody @Valid DictionaryModel dictionaryModel) {
         dictionaryModel.setCreatedUserId(getCurrentUserId());
@@ -93,7 +89,7 @@ public class DictionaryController extends BaseRestController {
      */
     @ApiOperation(value = "更新数据字典")
     @ActionLog(actionName = "更新数据字典")
-    //@RequiresPermissions(value = {PERMISSION_DICTIONARY_UPDATE})
+    @PreAuthorize("hasAuthority('DICTIONARY:UPDATE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public DictionaryModel updateDictionary(@PathVariable(value = "id") String id,
                            @RequestBody @Valid DictionaryModel dictionaryModel){
@@ -112,7 +108,7 @@ public class DictionaryController extends BaseRestController {
      */
     @ApiOperation(value = "删除单个数据字典")
     @ActionLog(actionName = "删除单个数据字典")
-    //@RequiresPermissions(value = {PERMISSION_DICTIONARY_DELETE})
+    @PreAuthorize("hasAuthority('DICTIONARY:DELETE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteDictionary(@PathVariable(value = "id") String id){
         dictionaryService.deleteDictionary(id);
@@ -124,7 +120,7 @@ public class DictionaryController extends BaseRestController {
      */
     @ApiOperation(value = "批量删除数据字典")
     @ActionLog(actionName = "批量删除数据字典")
-    //@RequiresPermissions(value = {PERMISSION_DICTIONARY_DELETE})
+    @PreAuthorize("hasAuthority('DICTIONARY:DELETE')")
     @RequestMapping(method = RequestMethod.DELETE)
     public void deleteDictionaries(DictionaryQuery dictionaryQuery){
         dictionaryService.deleteDictionary(dictionaryQuery.getIds());
@@ -136,7 +132,7 @@ public class DictionaryController extends BaseRestController {
     @ActionLog(actionName = "下载数据字典导入模板")
     @RequestMapping(value="/template", method = RequestMethod.GET)
     public void downloadTemplate(HttpServletRequest request,
-                                         HttpServletResponse response) {
+                                 HttpServletResponse response) {
         List<DictionaryModel> dictionaryModelList = Lists.newArrayList();
         ExcelUtils.export(request, response, DictionaryModel.class, dictionaryModelList, "数据字典_模板");
     }
@@ -146,6 +142,7 @@ public class DictionaryController extends BaseRestController {
      * @param dictionaryQuery    查询参数对象
      */
     @ActionLog(actionName = "导出数据字典")
+    @PreAuthorize("hasAuthority('DICTIONARY:VIEW')")
     @RequestMapping(value="/export", method = RequestMethod.GET)
     public void exportDictionaries(DictionaryQuery dictionaryQuery,
                                            HttpServletRequest request,
@@ -159,6 +156,7 @@ public class DictionaryController extends BaseRestController {
      * @param file
      */
     @ActionLog(actionName = "导入数据字典")
+    @PreAuthorize("hasAuthority('DICTIONARY:CREATE')")
     @RequestMapping(value="/import", method = RequestMethod.POST)
     public void importDictionaries(@RequestParam("file") MultipartFile file) throws IOException {
         List<DictionaryModel> list = ExcelUtils.transform(file, DictionaryModel.class);

@@ -1,19 +1,18 @@
 package com.xmomen.module.authorization.controller;
 
-import io.swagger.annotations.ApiOperation;
 import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.web.controller.BaseRestController;
-import com.xmomen.module.authorization.model.UserGroupQuery;
 import com.xmomen.module.authorization.model.UserGroupModel;
+import com.xmomen.module.authorization.model.UserGroupQuery;
 import com.xmomen.module.authorization.service.UserGroupService;
-
+import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import org.apache.commons.lang3.StringUtils;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * @author  tanxinzheng
@@ -23,11 +22,6 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/user/group")
 public class UserGroupController extends BaseRestController {
-
-    public static final String PERMISSION_USERGROUP_CREATE = "usergroup:create";
-    public static final String PERMISSION_USERGROUP_DELETE = "usergroup:delete";
-    public static final String PERMISSION_USERGROUP_UPDATE = "usergroup:update";
-    public static final String PERMISSION_USERGROUP_VIEW   = "usergroup:view";
 
     @Autowired
     UserGroupService userGroupService;
@@ -39,7 +33,7 @@ public class UserGroupController extends BaseRestController {
      */
     @ApiOperation(value = "查询用户组关联列表")
     @ActionLog(actionName = "查询用户组关联列表")
-    //@RequiresPermissions(value = {PERMISSION_USERGROUP_VIEW})
+    @PreAuthorize(value = "hasAnyAuthority('USERGROUP:VIEW')")
     @RequestMapping(method = RequestMethod.GET)
     public Page<UserGroupModel> getUserGroupList(UserGroupQuery userGroupQuery){
         return userGroupService.getUserGroupModelPage(userGroupQuery);
@@ -52,7 +46,7 @@ public class UserGroupController extends BaseRestController {
      */
     @ApiOperation(value = "查询用户组关联")
     @ActionLog(actionName = "查询用户组关联")
-    //@RequiresPermissions(value = {PERMISSION_USERGROUP_VIEW})
+    @PreAuthorize(value = "hasAnyAuthority('USERGROUP:VIEW')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public UserGroupModel getUserGroupById(@PathVariable(value = "id") String id){
         return userGroupService.getOneUserGroupModel(id);
@@ -65,7 +59,7 @@ public class UserGroupController extends BaseRestController {
      */
     @ApiOperation(value = "新增用户组关联")
     @ActionLog(actionName = "新增用户组关联")
-    //@RequiresPermissions(value = {PERMISSION_USERGROUP_CREATE})
+    @PreAuthorize(value = "hasAnyAuthority('USERGROUP:CREATE')")
     @RequestMapping(method = RequestMethod.POST)
     public UserGroupModel createUserGroup(@RequestBody @Valid UserGroupModel userGroupModel) {
         return userGroupService.createUserGroup(userGroupModel);
@@ -79,7 +73,7 @@ public class UserGroupController extends BaseRestController {
      */
     @ApiOperation(value = "更新用户组关联")
     @ActionLog(actionName = "更新用户组关联")
-    //@RequiresPermissions(value = {PERMISSION_USERGROUP_UPDATE})
+    @PreAuthorize(value = "hasAnyAuthority('USERGROUP:UPDATE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public UserGroupModel updateUserGroup(@PathVariable(value = "id") String id,
                            @RequestBody @Valid UserGroupModel userGroupModel){
@@ -96,7 +90,7 @@ public class UserGroupController extends BaseRestController {
      */
     @ApiOperation(value = "删除单个用户组关联")
     @ActionLog(actionName = "删除单个用户组关联")
-    //@RequiresPermissions(value = {PERMISSION_USERGROUP_DELETE})
+    @PreAuthorize(value = "hasAnyAuthority('USERGROUP:DELETE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteUserGroup(@PathVariable(value = "id") String id){
         userGroupService.deleteUserGroup(id);
@@ -108,7 +102,7 @@ public class UserGroupController extends BaseRestController {
      */
     @ApiOperation(value = "批量删除用户组关联")
     @ActionLog(actionName = "批量删除用户组关联")
-    //@RequiresPermissions(value = {PERMISSION_USERGROUP_DELETE})
+    @PreAuthorize(value = "hasAnyAuthority('USERGROUP:DELETE')")
     @RequestMapping(method = RequestMethod.DELETE)
     public void deleteUserGroups(UserGroupQuery userGroupQuery){
         userGroupService.deleteUserGroups(userGroupQuery.getUserId(), userGroupQuery.getGroupIds());

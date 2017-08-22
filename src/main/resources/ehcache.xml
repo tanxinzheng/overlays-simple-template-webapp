@@ -25,10 +25,12 @@
 
     <!--    jwt token session  -->
     <cache name="jwt-token-cache"
+           maxEntriesLocalHeap="0"
            eternal="false"
            timeToIdleSeconds="3600"
            timeToLiveSeconds="3600"
-           overflowToDisk="false"
+           overflowToDisk="true"
+           diskPersistent="true"
            statistics="true">
     </cache>
 

@@ -9,6 +9,7 @@ import com.xmomen.module.authorization.service.GroupPermissionService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,11 +24,6 @@ import javax.validation.Valid;
 @RequestMapping(value = "/group/permission")
 public class GroupPermissionController extends BaseRestController {
 
-    public static final String PERMISSION_GROUPPERMISSION_CREATE = "grouppermission:create";
-    public static final String PERMISSION_GROUPPERMISSION_DELETE = "grouppermission:delete";
-    public static final String PERMISSION_GROUPPERMISSION_UPDATE = "grouppermission:update";
-    public static final String PERMISSION_GROUPPERMISSION_VIEW   = "grouppermission:view";
-
     @Autowired
     GroupPermissionService groupPermissionService;
 
@@ -38,7 +34,7 @@ public class GroupPermissionController extends BaseRestController {
      */
     @ApiOperation(value = "查询组权限列表")
     @ActionLog(actionName = "查询组权限列表")
-    //@RequiresPermissions(value = {PERMISSION_GROUPPERMISSION_VIEW})
+    @PreAuthorize(value = "hasAnyAuthority('GROUPPERMISSION:VIEW')")
     @RequestMapping(method = RequestMethod.GET)
     public Page<GroupPermissionModel> getGroupPermissionList(GroupPermissionQuery groupPermissionQuery){
         return groupPermissionService.getGroupPermissionModelPage(groupPermissionQuery);
@@ -51,7 +47,7 @@ public class GroupPermissionController extends BaseRestController {
      */
     @ApiOperation(value = "查询组权限")
     @ActionLog(actionName = "查询组权限")
-    //@RequiresPermissions(value = {PERMISSION_GROUPPERMISSION_VIEW})
+    @PreAuthorize(value = "hasAnyAuthority('GROUPPERMISSION:VIEW')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public GroupPermissionModel getGroupPermissionById(@PathVariable(value = "id") String id){
         return groupPermissionService.getOneGroupPermissionModel(id);
@@ -64,7 +60,7 @@ public class GroupPermissionController extends BaseRestController {
      */
     @ApiOperation(value = "新增组权限")
     @ActionLog(actionName = "新增组权限")
-    //@RequiresPermissions(value = {PERMISSION_GROUPPERMISSION_CREATE})
+    @PreAuthorize(value = "hasAnyAuthority('GROUPPERMISSION:CREATE')")
     @RequestMapping(method = RequestMethod.POST)
     public GroupPermissionModel createGroupPermission(@RequestBody @Valid GroupPermissionModel groupPermissionModel) {
         return groupPermissionService.createGroupPermission(groupPermissionModel);
@@ -78,7 +74,7 @@ public class GroupPermissionController extends BaseRestController {
      */
     @ApiOperation(value = "更新组权限")
     @ActionLog(actionName = "更新组权限")
-    //@RequiresPermissions(value = {PERMISSION_GROUPPERMISSION_UPDATE})
+    @PreAuthorize(value = "hasAnyAuthority('GROUPPERMISSION:UPDATE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public GroupPermissionModel updateGroupPermission(@PathVariable(value = "id") String id,
                            @RequestBody @Valid GroupPermissionModel groupPermissionModel){
@@ -95,7 +91,7 @@ public class GroupPermissionController extends BaseRestController {
      */
     @ApiOperation(value = "删除单个组权限")
     @ActionLog(actionName = "删除单个组权限")
-    //@RequiresPermissions(value = {PERMISSION_GROUPPERMISSION_DELETE})
+    @PreAuthorize(value = "hasAnyAuthority('GROUPPERMISSION:DELETE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteGroupPermission(@PathVariable(value = "id") String id){
         groupPermissionService.deleteGroupPermission(id);
@@ -107,7 +103,7 @@ public class GroupPermissionController extends BaseRestController {
      */
     @ApiOperation(value = "批量删除组权限")
     @ActionLog(actionName = "批量删除组权限")
-    //@RequiresPermissions(value = {PERMISSION_GROUPPERMISSION_DELETE})
+    @PreAuthorize(value = "hasAnyAuthority('GROUPPERMISSION:DELETE')")
     @RequestMapping(method = RequestMethod.DELETE)
     public void deleteGroupPermissions(GroupPermissionQuery groupPermissionQuery){
         Assert.notNull(groupPermissionQuery.getGroupId(), "groupId must be not null");
