@@ -39,10 +39,10 @@ public class BaseTestController {
     public static Long TEST_DATA_LONG = 1l;
     public static BigDecimal TEST_DATA_BIG_DECIMAL = BigDecimal.valueOf(1999.99);
 
-    public static String TEST_DATA_STRING:UPDATE = "TEST:UPDATED";
-    public static Boolean TEST_DATA_BOOLEAN:UPDATE = true;
-    public static Integer TEST_DATA_INTEGER:UPDATE = 2;
-    public static BigDecimal TEST_DATA_BIG_DECIMAL:UPDATE = BigDecimal.valueOf(2111.88);
+    public static String TEST_DATA_STRING_UPDATE = "TEST_UPDATED";
+    public static Boolean TEST_DATA_BOOLEA_UPDATE = true;
+    public static Integer TEST_DATA_INTEGER_UPDATE = 2;
+    public static BigDecimal TEST_DATA_BIG_DECIMAL_UPDATE = BigDecimal.valueOf(2111.88);
 
     @Autowired
     protected WebApplicationContext wac;

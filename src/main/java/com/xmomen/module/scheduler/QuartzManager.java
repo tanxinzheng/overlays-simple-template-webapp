@@ -3,7 +3,6 @@ package com.xmomen.module.scheduler;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
@@ -25,14 +24,6 @@ public class QuartzManager {
 
     @Autowired(required = false)
     SchedulerFactoryBean schedulerFactoryBean;
-
-//    public SchedulerFactoryBean getSchedulerFactoryBean() {
-//        return schedulerFactoryBean;
-//    }
-//
-//    public void setSchedulerFactoryBean(SchedulerFactoryBean schedulerFactoryBean) {
-//        this.schedulerFactoryBean = schedulerFactoryBean;
-//    }
 
     /**
      * 添加定时任务

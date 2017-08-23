@@ -32,8 +32,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 
     @Value("${jwt.secret}")
     private String secret;
-    @Value("${jwt.expire-time}")
-    private Long expireTime;
     @Autowired
     AccountService accountService;
     @Autowired
@@ -79,7 +77,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         data.put("roles", roles.stream().map(s -> s.toString()).collect(Collectors.toList()));
         String token = Jwts.builder()
                 .setClaims(claims)
-//                .setExpiration(new Date(new Date().getTime() + expireTime))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
         Cache cache = cacheManager.getCache(JWT_TOKEN_SESSION_KEY);
