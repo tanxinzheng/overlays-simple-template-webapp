@@ -32,7 +32,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                                     FilterChain chain) throws IOException, ServletException {
         String token = jwtTokenService.getToken(req);
         if (token == null) {
-            SecurityContextHolder.getContext().setAuthentication(null);
+//            SecurityContextHolder.getContext().setAuthentication(null);
             chain.doFilter(req, res);
             return;
         }

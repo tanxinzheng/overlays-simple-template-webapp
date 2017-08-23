@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -31,6 +32,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Autowired
     private UserService userService;
 
+    @Autowired
+    RememberMeServices rememberMeServices;
+
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
@@ -38,7 +42,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
         jwtTokenService.setToken(request, response, (String) authResult.getPrincipal());
-//        rememberMeServices.loginSuccess(request, response, auth);
+        rememberMeServices.loginSuccess(request, response, authResult);
         // Fire event
         if (this.eventPublisher != null) {
             eventPublisher.publishEvent(new InteractiveAuthenticationSuccessEvent(

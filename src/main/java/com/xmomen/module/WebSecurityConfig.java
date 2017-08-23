@@ -1,28 +1,26 @@
 package com.xmomen.module;
 
 import com.xmomen.module.security.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by tanxinzheng on 17/8/18.
@@ -36,6 +34,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public JwtAuthenticationProvider getJwtAuthenticationProvider(){
         return new JwtAuthenticationProvider();
     }
+
+    @Autowired
+    Environment environment;
 
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
@@ -90,8 +91,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtAuthorizationFilter getJwtAuthorizationFilter(AuthenticationManager authenticationManager, JwtTokenService jwtTokenService){
-        return new JwtAuthorizationFilter(authenticationManager, jwtTokenService);
+    public JwtAuthorizationFilter getJwtAuthorizationFilter(JwtTokenService jwtTokenService) throws Exception {
+        return new JwtAuthorizationFilter(authenticationManagerBean(), jwtTokenService);
+    }
+
+    @Bean
+    public RememberMeServices getRememberMeService(){
+        TokenBasedRememberMeServices tokenBasedRememberMeServices = new TokenBasedRememberMeServices(environment.getProperty("security.remember-me.key"), getUserDetailService());
+        tokenBasedRememberMeServices.setParameter("rememberMe");
+        return tokenBasedRememberMeServices;
     }
 
     @Override
@@ -103,7 +111,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // 由于使用的是JWT，我们这里不需要csrf
                 .csrf().disable()
-                .anonymous().disable()
+//                .anonymous().disable()
                 // 基于token，所以不需要session
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
@@ -125,7 +133,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 除上面外的所有请求全部需要鉴权认证
                 .and()
                 .addFilterAt(getJwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAt(getJwtAuthorizationFilter(authenticationManagerBean(), getJwtTokenService()), BasicAuthenticationFilter.class)
+                .addFilterAt(getJwtAuthorizationFilter(getJwtTokenService()), BasicAuthenticationFilter.class)
+                .rememberMe()
+                .rememberMeServices(getRememberMeService())
+                .and()
                 // 禁用缓存
                 .logout().addLogoutHandler(new JwtLogoutHandler(getJwtTokenService()))
                 .and()

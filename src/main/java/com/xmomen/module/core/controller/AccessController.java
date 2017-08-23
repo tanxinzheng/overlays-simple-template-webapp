@@ -94,6 +94,7 @@ public class AccessController {
      * @param receiver  手机号码或邮箱
      */
     @RequestMapping(value = "/code", method = RequestMethod.POST)
+    @ResponseBody
     public void setValidateCode(@RequestParam(value = "type") Integer type,
                                 @RequestParam(value = "receiver") String receiver){
         Assert.isTrue(type.equals(FIND_TYPE_EMAIL) ||

@@ -14,17 +14,20 @@ import org.jeecgframework.poi.excel.view.JeecgTemplateExcelView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.MultipartAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ConversionServiceFactoryBean;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.MultipartFilter;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -37,7 +40,7 @@ import java.util.Set;
  * Created by tanxinzheng on 17/6/24.
  */
 @ComponentScan(value = "com.**,org.jeecgframework.poi.excel.view")
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude={MultipartAutoConfiguration.class})
 @EnableCaching
 public class ApplicationStart extends WebMvcConfigurerAdapter {
 
@@ -112,7 +115,7 @@ public class ApplicationStart extends WebMvcConfigurerAdapter {
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer
                 .defaultContentType(MediaType.APPLICATION_JSON_UTF8)
-                .parameterName("type")
+                .parameterName("format")
                 .favorParameter(true)
                 .ignoreUnknownPathExtensions(false)
                 .ignoreAcceptHeader(false)
@@ -122,6 +125,7 @@ public class ApplicationStart extends WebMvcConfigurerAdapter {
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
 //        registry.jsp("/WEB-INF/views/", ".jsp");
+        registry.enableContentNegotiation(false, new MappingJackson2JsonView());
         registry.enableContentNegotiation(
                 new MappingJackson2JsonView()
 //                new XlsxView(),
@@ -129,16 +133,18 @@ public class ApplicationStart extends WebMvcConfigurerAdapter {
          );
     }
 
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setMaxUploadSizePerFile(Long.valueOf(env.getProperty("spring.servlet.multipart.max-file-size")));
+        return resolver;
+    }
+
     @Bean
-    public CommonsMultipartResolver getCommonsMultipartResolver() {
-        CommonsMultipartResolver factory = new CommonsMultipartResolver();
-        // 设置文件大小限制 ,超出设置页面会抛出异常信息，
-        // 这样在文件上传的地方就需要进行异常信息的处理了;
-//        factory.setMaxFileSize("256KB"); // KB,MB
-        /// 设置总上传数据总大小
-        factory.setMaxUploadSize(Long.valueOf(env.getProperty("spring.servlet.multipart.max-file-size")));
-        // Sets the directory location where files will be stored.
-        // factory.setLocation("路径地址");
-        return factory;
+    @Order(0)
+    public MultipartFilter multipartFilter() {
+        MultipartFilter multipartFilter = new MultipartFilter();
+        multipartFilter.setMultipartResolverBeanName("multipartResolver");
+        return multipartFilter;
     }
 }
