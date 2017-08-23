@@ -1,6 +1,6 @@
 package ${targetPackage};
 
-import com.wordnik.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiOperation;
 import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.web.controller.BaseRestController;
@@ -9,7 +9,7 @@ import ${modulePackage}.model.${domainObjectClassName}Model;
 import ${modulePackage}.service.${domainObjectClassName}Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,14 +39,10 @@ public class ${domainObjectClassName}Controller extends BaseRestController {
      */
     @ApiOperation(value = "查询${tableComment}列表")
     @ActionLog(actionName = "查询${tableComment}列表")
-    @RequiresPermissions(value = {PERMISSION_${domainObjectClassName?upper_case}_VIEW})
+    @PreAuthorize("hasAuthority('${domainObjectClassName?upper_case}:VIEW')")
     @RequestMapping(method = RequestMethod.GET)
     public Page<${domainObjectClassName}Model> get${domainObjectClassName}List(${domainObjectClassName}Query ${domainObjectName}Query){
-        if(${domainObjectName}Query.isPaging()){
-            return ${domainObjectName}Service.get${domainObjectClassName}ModelPage(${domainObjectName}Query);
-        }
-        List<${domainObjectClassName}Model> ${domainObjectName}List = ${domainObjectName}Service.get${domainObjectClassName}ModelList(${domainObjectName}Query);
-        return new Page(${domainObjectName}List);
+        return get${domainObjectClassName}ModelPage(${domainObjectName}Query);
     }
 
     /**
@@ -56,7 +52,7 @@ public class ${domainObjectClassName}Controller extends BaseRestController {
      */
     @ApiOperation(value = "查询${tableComment}")
     @ActionLog(actionName = "查询${tableComment}")
-    @RequiresPermissions(value = {PERMISSION_${domainObjectClassName?upper_case}_VIEW})
+    @PreAuthorize("hasAuthority('${domainObjectClassName?upper_case}:VIEW')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ${domainObjectClassName}Model get${domainObjectClassName}ById(@PathVariable(value = "id") String id){
         return ${domainObjectName}Service.getOne${domainObjectClassName}Model(id);
@@ -69,7 +65,7 @@ public class ${domainObjectClassName}Controller extends BaseRestController {
      */
     @ApiOperation(value = "新增${tableComment}")
     @ActionLog(actionName = "新增${tableComment}")
-    @RequiresPermissions(value = {PERMISSION_${domainObjectClassName?upper_case}_CREATE})
+    @PreAuthorize("hasAuthority('${domainObjectClassName?upper_case}:CREATE')")
     @RequestMapping(method = RequestMethod.POST)
     public ${domainObjectClassName}Model create${domainObjectClassName}(@RequestBody @Valid ${domainObjectClassName}Model ${domainObjectName}Model) {
         return ${domainObjectName}Service.create${domainObjectClassName}(${domainObjectName}Model);
@@ -83,7 +79,7 @@ public class ${domainObjectClassName}Controller extends BaseRestController {
      */
     @ApiOperation(value = "更新${tableComment}")
     @ActionLog(actionName = "更新${tableComment}")
-    @RequiresPermissions(value = {PERMISSION_${domainObjectClassName?upper_case}_UPDATE})
+    @PreAuthorize("hasAuthority('${domainObjectClassName?upper_case}:UPDATE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ${domainObjectClassName}Model update${domainObjectClassName}(@PathVariable(value = "id") String id,
                            @RequestBody @Valid ${domainObjectClassName}Model ${domainObjectName}Model){
@@ -100,7 +96,7 @@ public class ${domainObjectClassName}Controller extends BaseRestController {
      */
     @ApiOperation(value = "删除单个${tableComment}")
     @ActionLog(actionName = "删除单个${tableComment}")
-    @RequiresPermissions(value = {PERMISSION_${domainObjectClassName?upper_case}_DELETE})
+    @PreAuthorize("hasAuthority('${domainObjectClassName?upper_case}:DELETE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void delete${domainObjectClassName}(@PathVariable(value = "id") String id){
         ${domainObjectName}Service.delete${domainObjectClassName}(id);
@@ -112,7 +108,7 @@ public class ${domainObjectClassName}Controller extends BaseRestController {
      */
     @ApiOperation(value = "批量删除${tableComment}")
     @ActionLog(actionName = "批量删除${tableComment}")
-    @RequiresPermissions(value = {PERMISSION_${domainObjectClassName?upper_case}_DELETE})
+    @PreAuthorize("hasAuthority('${domainObjectClassName?upper_case}:DELETE')")
     @RequestMapping(method = RequestMethod.DELETE)
     public void delete${domainObjectClassName}s(${domainObjectClassName}Query ${domainObjectName}Query){
         ${domainObjectName}Service.delete${domainObjectClassName}(${domainObjectName}Query.getIds());
