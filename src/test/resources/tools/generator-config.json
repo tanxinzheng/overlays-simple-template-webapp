@@ -7,9 +7,7 @@
   },
   "metadata":{
     "ignoreKeywordValidate":true,
-    "templateTypes":["GridJs", "JsApi", "GridHtml"],
     "overwriteTemplates":{
-      "ControllerTest":"src/test/resources/templates/controllerTest.ftl",
       "Controller":"src/test/resources/templates/controller.ftl",
       "Model":"src/test/resources/templates/model.ftl",
       "Service":"src/test/resources/templates/service.ftl",
@@ -22,29 +20,53 @@
         "fileExt":".api.js",
         "templateFileName":"src/test/resources/templates/jsApi.ftl",
         "targetPackage":"",
-        "targetProject":"src/main/webapp"
+        "targetProject":"src/main/webapp",
+        "webTemplate":true
       },
       "GridJs":{
         "fileExt":".js",
         "templateFileName":"src/test/resources/templates/gridJs.ftl",
         "targetPackage":"",
-        "targetProject":"src/main/webapp"
+        "targetProject":"src/main/webapp",
+        "webTemplate":true
       },
       "GridHtml":{
         "fileExt":".html",
         "templateFileName":"src/test/resources/templates/gridHtml.ftl",
         "targetPackage":"",
-        "targetProject":"src/main/webapp"
+        "targetProject":"src/main/webapp",
+        "webTemplate":true
       }
     }
   },
   "tables":[
     {
-      "domainObjectName":"attachment",
-      "tableComment":"附件",
-      "tableName":"xmo_attachment",
-      "modulePackage":"com.xmomen.module.attachment",
-      "restMapping":"/attachment"
+      "domainObjectName":"notificationTemplate",
+      "tableComment":"通知模板",
+      "tableName":"xmo_notification_template",
+      "modulePackage":"com.xmomen.module.notification",
+      "restMapping":"/notification_template"
+    },
+    {
+      "domainObjectName":"notification",
+      "tableComment":"通知",
+      "tableName":"xmo_notification",
+      "modulePackage":"com.xmomen.module.notification",
+      "restMapping":"/notification"
+    },
+    {
+      "domainObjectName":"notificationSend",
+      "tableComment":"通知发送人",
+      "tableName":"xmo_notification_send",
+      "modulePackage":"com.xmomen.module.notification",
+      "restMapping":"/notification_send"
+    },
+    {
+      "domainObjectName":"notificationReceive",
+      "tableComment":"通知接收人",
+      "tableName":"xmo_notification_receive",
+      "modulePackage":"com.xmomen.module.notification",
+      "restMapping":"/notification_receive"
     }
   ]
 }

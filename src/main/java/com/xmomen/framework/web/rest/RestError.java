@@ -1,6 +1,7 @@
 package com.xmomen.framework.web.rest;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -20,6 +21,12 @@ public class RestError {
     private String exception;
 
     public RestError() {
+    }
+
+    public RestError(String message) {
+        this.timestamp = new Date();
+        this.message = message;
+        this.status = HttpStatus.OK.value();
     }
 
     public RestError(Exception ex) {

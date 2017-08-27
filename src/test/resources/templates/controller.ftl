@@ -24,11 +24,6 @@ public class ${domainObjectClassName}Controller extends BaseRestController {
 
     private static Logger logger = LoggerFactory.getLogger(${domainObjectClassName}Controller.class);
 
-    public static final String PERMISSION_${domainObjectClassName?upper_case}_CREATE = "${domainObjectName?lower_case}:create";
-    public static final String PERMISSION_${domainObjectClassName?upper_case}_DELETE = "${domainObjectName?lower_case}:delete";
-    public static final String PERMISSION_${domainObjectClassName?upper_case}_UPDATE = "${domainObjectName?lower_case}:update";
-    public static final String PERMISSION_${domainObjectClassName?upper_case}_VIEW   = "${domainObjectName?lower_case}:view";
-
     @Autowired
     ${domainObjectClassName}Service ${domainObjectName}Service;
 
@@ -42,7 +37,7 @@ public class ${domainObjectClassName}Controller extends BaseRestController {
     @PreAuthorize("hasAuthority('${domainObjectClassName?upper_case}:VIEW')")
     @RequestMapping(method = RequestMethod.GET)
     public Page<${domainObjectClassName}Model> get${domainObjectClassName}List(${domainObjectClassName}Query ${domainObjectName}Query){
-        return get${domainObjectClassName}ModelPage(${domainObjectName}Query);
+        return ${domainObjectName}Service.get${domainObjectClassName}ModelPage(${domainObjectName}Query);
     }
 
     /**

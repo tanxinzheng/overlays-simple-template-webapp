@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.xmomen.framework.web.json.CustomDateDeserialize;
 import com.xmomen.framework.web.json.DictionaryAnnotationIntrospector;
 import com.xmomen.framework.web.support.DateConverter;
 import com.xmomen.module.logger.aspect.LoggerAspect;
@@ -13,6 +14,7 @@ import org.jeecgframework.poi.excel.view.JeecgTemplateExcelView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.MultipartAutoConfiguration;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,12 +24,14 @@ import org.springframework.core.env.Environment;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+
+import javax.servlet.MultipartConfigElement;
+import java.util.Date;
 
 /**
  * Created by tanxinzheng on 17/8/23.
@@ -57,6 +61,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         builder.serializationInclusion(JsonInclude.Include.NON_EMPTY);
         builder.timeZone("GMT+8");
         builder.simpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        builder.deserializerByType(Date.class, new CustomDateDeserialize());
         builder.featuresToDisable(
                 SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS,
                 DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES
@@ -119,10 +124,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-        resolver.setMaxUploadSizePerFile(Long.valueOf(env.getProperty("spring.servlet.multipart.max-file-size")));
-        return resolver;
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        factory.setMaxFileSize("128KB");
+        factory.setMaxRequestSize("128KB");
+        return factory.createMultipartConfig();
     }
 
 }

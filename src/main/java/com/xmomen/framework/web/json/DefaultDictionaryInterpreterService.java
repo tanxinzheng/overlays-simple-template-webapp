@@ -4,6 +4,9 @@ import com.xmomen.module.attachment.model.AttachmentModel;
 import com.xmomen.module.attachment.service.AttachmentService;
 import com.xmomen.module.authorization.model.User;
 import com.xmomen.module.authorization.service.UserService;
+import com.xmomen.module.notification.model.NotificationTemplateModel;
+import com.xmomen.module.notification.model.NotificationTemplateQuery;
+import com.xmomen.module.notification.service.NotificationTemplateService;
 import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.service.DictionaryService;
@@ -32,6 +35,9 @@ public class DefaultDictionaryInterpreterService implements DictionaryInterprete
     @Value("${oss.bucketName}")
     private String bucketName;
 
+    @Autowired
+    NotificationTemplateService notificationTemplateService;
+
     /**
      * 翻译
      *
@@ -58,6 +64,14 @@ public class DefaultDictionaryInterpreterService implements DictionaryInterprete
                     attachmentModel.getAttachmentPath() + File.separator +
                     attachmentModel.getAttachmentKey();
             return fileUrl;
+        }else if(dictionaryType.equals(DictionaryIndex.NOTIFICATION_TEMPLATE)){
+            NotificationTemplateQuery notificationTemplateQuery = new NotificationTemplateQuery();
+            notificationTemplateQuery.setTemplateCode(dictionaryCode);
+            NotificationTemplateModel notificationTemplateModel = notificationTemplateService.getOneNotificationTemplateModel(notificationTemplateQuery);
+            if(notificationTemplateModel == null){
+                return null;
+            }
+            return notificationTemplateModel.getTemplateName();
         }
         DictionaryQuery dictionaryQuery = new DictionaryQuery();
         dictionaryQuery.setCode(dictionaryCode);

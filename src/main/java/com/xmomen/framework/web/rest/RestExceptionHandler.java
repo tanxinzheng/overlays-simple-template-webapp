@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,8 +45,15 @@ public class RestExceptionHandler {
         restError.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         restError.setException(ex.getClass().getSimpleName());
         if(ex instanceof BindException){
-            restError = handleBindException((BindException) ex);
-        }else if(ex instanceof IllegalArgumentException || ex instanceof BusinessException){
+            BindException bindException = (BindException) ex;
+            restError = handleBindException(bindException.getBindingResult(), bindException);
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+        }else if(ex instanceof MethodArgumentNotValidException){
+            MethodArgumentNotValidException methodArgumentNotValidException = (MethodArgumentNotValidException) ex;
+            restError = handleBindException(methodArgumentNotValidException.getBindingResult(), methodArgumentNotValidException);
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+        }else if(ex instanceof IllegalArgumentException ||
+                ex instanceof BusinessException){
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             restError.setStatus(HttpStatus.BAD_REQUEST.value());
         }else if(ex instanceof UnauthenticatedException ||
@@ -74,8 +82,7 @@ public class RestExceptionHandler {
         return restError;
     }
 
-    protected RestError handleBindException(BindException ex) {
-        BindingResult bindingResult = ex.getBindingResult();
+    protected RestError handleBindException(BindingResult bindingResult, Exception ex) {
         RestError restError = new RestError(ex);
         restError.setStatus(HttpStatus.BAD_REQUEST.value());
         restError.setMessage("非法请求参数，校验请求参数不合法");

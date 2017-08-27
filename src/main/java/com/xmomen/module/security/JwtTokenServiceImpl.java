@@ -68,7 +68,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         AccountModel accountModel = accountService.getAccountModelByUsername(username);
         Set<String> permissions = accountService.findPermissions(accountModel.getUserId());
         Set<String> roles = accountService.findRoles(accountModel.getUserId());
-        System.out.println(new Date());
         Claims claims = Jwts.claims().setSubject(username);
         Map<String, Object> data = Maps.newHashMap();
         data.put("username", username);

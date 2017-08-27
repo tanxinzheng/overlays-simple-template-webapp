@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmomen.module.notification.mapper.NotificationSendMapper" >
+
+    <insert id="insertSelective" parameterType="com.xmomen.module.notification.model.NotificationSend" useGeneratedKeys="true" keyProperty="id" keyColumn="ID" >
+        <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+            SELECT replace(UUID(),'-','')
+        </selectKey>
+        insert into xmo_notification_send
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+        ID,
+                <if test="notificationId != null" >
+                    NOTIFICATION_ID,
+                </if>
+                <if test="sender != null" >
+                    SENDER,
+                </if>
+                <if test="sendTime != null" >
+                    SEND_TIME,
+                </if>
+                <if test="dataState != null" >
+                    DATA_STATE,
+                </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{id, jdbcType=VARCHAR},
+                <if test="notificationId != null" >
+                #{notificationId, jdbcType=VARCHAR},
+                </if>
+                <if test="sender != null" >
+                #{sender, jdbcType=VARCHAR},
+                </if>
+                <if test="sendTime != null" >
+                #{sendTime, jdbcType=TIMESTAMP},
+                </if>
+                <if test="dataState != null" >
+                #{dataState, jdbcType=VARCHAR},
+                </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from xmo_notification_send where ID = #{id}
+    </delete>
+
+    <delete id="deletesByPrimaryKey" parameterType="java.util.ArrayList" >
+        delete from xmo_notification_send where ID IN
+        <foreach collection="ids" item="item" separator="," open="(" close=")">
+        #{item}
+        </foreach>
+    </delete>
+
+    <update id="updateSelective" parameterType="com.xmomen.module.notification.model.NotificationSend" >
+        update xmo_notification_send
+        <set>
+            <if test="id != null" >
+            ID = #{id, jdbcType=VARCHAR},
+            </if>
+            <if test="notificationId != null" >
+            NOTIFICATION_ID = #{notificationId, jdbcType=VARCHAR},
+            </if>
+            <if test="sender != null" >
+            SENDER = #{sender, jdbcType=VARCHAR},
+            </if>
+            <if test="sendTime != null" >
+            SEND_TIME = #{sendTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="dataState != null" >
+            DATA_STATE = #{dataState, jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <update id="updateSelectiveByQuery" parameterType="map" >
+        update xmo_notification_send
+        <set >
+            <if test="record.id != null" >
+            ID = #{id, jdbcType=VARCHAR},
+            </if>
+            <if test="record.notificationId != null" >
+            NOTIFICATION_ID = #{notificationId, jdbcType=VARCHAR},
+            </if>
+            <if test="record.sender != null" >
+            SENDER = #{sender, jdbcType=VARCHAR},
+            </if>
+            <if test="record.sendTime != null" >
+            SEND_TIME = #{sendTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.dataState != null" >
+            DATA_STATE = #{dataState, jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="query != null" >
+            <include refid="Update_By_Query_Where_Clause"/>
+        </if>
+    </update>
+
+    <!--    查询消息    -->
+    <select id="select"
+            resultType="com.xmomen.module.notification.model.NotificationSend"
+            parameterType="com.xmomen.module.notification.model.NotificationSendQuery">
+        SELECT * FROM xmo_notification_send
+        <include refid="Update_By_Query_Where_Clause"/>
+        ORDER BY ID
+    </select>
+
+    <select id="selectByPrimaryKey"
+            resultType="com.xmomen.module.notification.model.NotificationSend"
+            parameterType="java.lang.String">
+        SELECT * FROM xmo_notification_send WHERE ID = #{id}
+    </select>
+
+    <select id="selectModelByPrimaryKey"
+            resultType="com.xmomen.module.notification.model.NotificationSendModel"
+            parameterType="java.lang.String">
+        SELECT * FROM xmo_notification_send WHERE ID = #{id}
+    </select>
+
+    <select id="selectModel"
+            resultType="com.xmomen.module.notification.model.NotificationSendModel"
+            parameterType="com.xmomen.module.notification.model.NotificationSendQuery">
+        SELECT * FROM xmo_notification_send
+        <include refid="Update_By_Query_Where_Clause"/>
+        ORDER BY id
+    </select>
+
+    <sql id="Update_By_Query_Where_Clause">
+        <where>
+            <if test="keyword">
+                AND ID LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="id">
+                AND ID = #{id}
+            </if>
+            <if test="ids">
+                AND ID IN
+                <foreach collection="ids" item="item" separator="," open="(" close=")">
+                #{item}
+                </foreach>
+            </if>
+            <if test="excludeIds">
+                AND ID NOT IN
+                <foreach collection="excludeIds" item="item" separator="," open="(" close=")">
+                #{item}
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+</mapper>

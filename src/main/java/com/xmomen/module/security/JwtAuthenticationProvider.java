@@ -42,7 +42,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         }
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username,
                 userModel.getPassword(),
-                accountService.findRoles(userModel.getId()).stream().map(s -> new SimpleGrantedAuthority(s)).collect(Collectors.toList()));
+                accountService.findPermissions(userModel.getId()).stream().map(s -> new SimpleGrantedAuthority(s)).collect(Collectors.toList()));
         usernamePasswordAuthenticationToken.setDetails(userModel);
         return usernamePasswordAuthenticationToken;
     }

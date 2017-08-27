@@ -1,7 +1,6 @@
 package com.xmomen.module.core.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.utils.UUIDGenerator;
 import com.xmomen.framework.validator.PhoneValidator;
@@ -12,7 +11,15 @@ import com.xmomen.module.authorization.service.UserService;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.service.AccountService;
 import com.xmomen.module.core.service.ValidationCodeService;
+import com.xmomen.module.notification.model.NotificationDataState;
+import com.xmomen.module.notification.model.NotificationModel;
+import com.xmomen.module.notification.model.NotificationQuery;
+import com.xmomen.module.notification.model.NotificationStateCount;
+import com.xmomen.module.notification.service.NotificationReceiveService;
+import com.xmomen.module.notification.service.NotificationService;
 import com.xmomen.module.shiro.PasswordHelper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -21,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,6 +40,7 @@ import static com.xmomen.module.core.controller.AccessController.FIND_TYPE_PHONE
  */
 @RestController
 @Api(value = "当前用户相关信息", description = "当前用户简要信息，权限等相关接口")
+@RequestMapping(value = "/account")
 public class AccountController extends BaseRestController {
 
     @Autowired
@@ -42,12 +51,18 @@ public class AccountController extends BaseRestController {
 
     @Autowired
     ValidationCodeService validationCodeService;
+    
+    @Autowired
+    NotificationService notificationService;
+
+    @Autowired
+    NotificationReceiveService notificationReceiveService;
 
     /**
      * 查询当前用户简要信息
      * @return
      */
-    @RequestMapping(value = "/account", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "查询当前用户资料信息")
     @ActionLog(actionName = "查询当前用户资料信息")
     public AccountModel accountSetting(){
@@ -55,10 +70,52 @@ public class AccountController extends BaseRestController {
     }
 
     /**
+     * 查询当前用户通知
+     * @return
+     */
+    @RequestMapping(value = "/notification", method = RequestMethod.GET)
+    @ApiOperation(value = "查询当前用户资料信息")
+    @ActionLog(actionName = "查询当前用户资料信息")
+    public Page<NotificationModel> getNotificationPage(NotificationQuery notificationQuery){
+        if(notificationQuery == null){
+            notificationQuery = new NotificationQuery();
+        }
+        notificationQuery.setUserId(getCurrentUserId());
+        notificationQuery.setDataState(NotificationDataState.UNREAD.name());
+        return notificationReceiveService.selectNotification(notificationQuery);
+    }
+
+    /**
+     * 查询当前用户通知
+     * @return
+     */
+    @RequestMapping(value = "/notification/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "查询当前用户资料信息")
+    @ActionLog(actionName = "查询当前用户资料信息")
+    public NotificationModel getNotification(@PathVariable(value = "id") String id){
+        return notificationReceiveService.selectOneNotificationModel(id);
+    }
+
+    /**
+     * 查询当前用户通知
+     * @return
+     */
+    @RequestMapping(value = "/notification/count", method = RequestMethod.GET)
+    @ApiOperation(value = "查询当前用户资料信息")
+    @ActionLog(actionName = "查询当前用户资料信息")
+    public List<NotificationStateCount> notificationCount(NotificationQuery notificationQuery){
+        if(notificationQuery == null){
+            notificationQuery = new NotificationQuery();
+        }
+        notificationQuery.setUserId(getCurrentUserId());
+        return notificationService.countNotificationState(notificationQuery);
+    }
+
+    /**
      * 当前用户权限
      * @return
      */
-    @RequestMapping(value = "/account/permissions", method = RequestMethod.GET)
+    @RequestMapping(value = "/permissions", method = RequestMethod.GET)
     @ApiOperation(value = "查询当前用户权限")
     @ActionLog(actionName = "查询当前用户权限")
     public Map getAccountPermission(){
@@ -76,7 +133,7 @@ public class AccountController extends BaseRestController {
      * @param oldPassword
      * @param password
      */
-    @RequestMapping(value = "/account/password", method = RequestMethod.PUT)
+    @RequestMapping(value = "/password", method = RequestMethod.PUT)
     @ApiOperation(value = "当前用户修改密码")
     @ActionLog(actionName = "当前用户修改密码")
     public void updatePassword(@RequestParam(value = "oldPassword") String oldPassword,
@@ -100,7 +157,7 @@ public class AccountController extends BaseRestController {
      * @param type  1-手机，2-邮箱
      * @param receiver
      */
-    @RequestMapping(value = "/account/bind", method = RequestMethod.PUT)
+    @RequestMapping(value = "/bind", method = RequestMethod.PUT)
     @ApiOperation(value = "绑定手机、邮箱")
     @ActionLog(actionName = "绑定手机、邮箱")
     public void bind(@RequestParam(value = "type") Integer type,
@@ -130,7 +187,7 @@ public class AccountController extends BaseRestController {
      * 更换头像
      * @param file
      */
-    @RequestMapping(value = "/account/avatar", method = RequestMethod.POST)
+    @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     @ApiOperation(value = "更换头像")
     @ActionLog(actionName = "更换头像")
     public void updateAvatar(@RequestPart(value = "file") MultipartFile file) throws IOException {

@@ -13,8 +13,6 @@ import java.util.List;
 public class PageInterceptor {
     private static final ThreadLocal<Page> localPage = new ThreadLocal<Page>();
 
-    private static final List<ResultMapping> EMPTY_RESULTMAPPING = new ArrayList<ResultMapping>(0);
-
     public static Page get() {
         return localPage.get();
     }
@@ -35,7 +33,6 @@ public class PageInterceptor {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
     }
-
 
     public static Page endPage() {
         Page page = localPage.get();

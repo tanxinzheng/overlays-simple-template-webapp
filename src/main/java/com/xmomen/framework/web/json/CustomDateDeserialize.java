@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.commons.validator.routines.DateValidator;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -14,15 +16,19 @@ import java.util.Date;
  */
 public class CustomDateDeserialize extends JsonDeserializer<Date> {
 
-    String DATE_FORMAT_yyyyMMdd = "^\\d{4}(-|\\/|.)\\d{1,2}\\1\\d{1,2}$";
+    public static final FastDateFormat ISO_DATE_MINUTE_ZONE_FORMAT = FastDateFormat.getInstance("yyyy-MM-dd HH:mm");
 
     @Override
     public Date deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         Date date = null;
         try {
-            String text = jsonParser.getText();
-            if(text.matches(DATE_FORMAT_yyyyMMdd)){
-                date = DateFormatUtils.ISO_DATE_FORMAT.parse(text);
+            String source = jsonParser.getText();
+            if(DateValidator.getInstance().isValid(source, DateFormatUtils.ISO_DATE_FORMAT.getPattern())){
+                return DateFormatUtils.ISO_DATE_FORMAT.parse(source);
+            }else if(DateValidator.getInstance().isValid(source, DateFormatUtils.ISO_DATETIME_FORMAT.getPattern())){
+                return DateFormatUtils.ISO_DATETIME_FORMAT.parse(source);
+            }else if(DateValidator.getInstance().isValid(source, ISO_DATE_MINUTE_ZONE_FORMAT.getPattern())){
+                return ISO_DATE_MINUTE_ZONE_FORMAT.parse(source);
             }
         } catch (ParseException e) {
             e.printStackTrace();
