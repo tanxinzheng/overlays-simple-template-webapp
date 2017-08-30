@@ -88,7 +88,7 @@ public class DictionaryController extends BaseRestController {
      * @return  DictionaryModel   数据字典领域对象
      */
     @ApiOperation(value = "更新数据字典")
-    @ActionLog(actionName = "更新数据字典")
+    @ActionLog(actionName = "更新数据字典，字典编号：${DictionaryModel.dictionaryCode}")
     @PreAuthorize("hasAuthority('DICTIONARY:UPDATE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public DictionaryModel updateDictionary(@PathVariable(value = "id") String id,

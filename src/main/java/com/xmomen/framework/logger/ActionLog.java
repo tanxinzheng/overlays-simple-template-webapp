@@ -11,5 +11,7 @@ import java.lang.annotation.*;
 public @interface ActionLog {
 
     /** 要执行的具体操作比如：【添加商品】 **/
-    public String actionName() default "";
+    String actionName();
+
+    String remark() default "";
 }
