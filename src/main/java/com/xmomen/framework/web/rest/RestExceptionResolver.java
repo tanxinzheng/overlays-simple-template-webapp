@@ -2,12 +2,11 @@ package com.xmomen.framework.web.rest;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xmomen.framework.exception.BusinessException;
-import org.apache.shiro.authz.UnauthenticatedException;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
@@ -45,11 +44,6 @@ public class RestExceptionResolver extends SimpleMappingExceptionResolver {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             restError.setStatus(HttpStatus.BAD_REQUEST.value());
         }
-        if(ex instanceof UnauthenticatedException){
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            restError.setStatus(HttpStatus.UNAUTHORIZED.value());
-            restError.setMessage("Requires authentication");
-        }
         if(ex instanceof DuplicateKeyException){
             response.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
             restError.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
@@ -60,7 +54,7 @@ public class RestExceptionResolver extends SimpleMappingExceptionResolver {
             restError.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
             restError.setMessage(MessageFormat.format("文件上传限制最大不能超过{0}M" , (maxUploadSize/1024)/1024));
         }
-        if(ex instanceof UnauthorizedException){
+        if(ex instanceof AuthenticationCredentialsNotFoundException){
             response.setStatus(HttpStatus.FORBIDDEN.value());
             restError.setStatus(HttpStatus.FORBIDDEN.value());
             restError.setMessage("权限不足");

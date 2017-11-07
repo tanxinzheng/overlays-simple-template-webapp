@@ -4,6 +4,7 @@ import com.xmomen.framework.fss.adapters.FileStoreServiceByOss;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import java.io.InputStream;
 /**
  * Created by tanxinzheng on 17/8/6.
  */
+@Ignore
 public class FileStoreServiceTest {
 
     private FileStoreServiceByOss fileOperation;

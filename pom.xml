@@ -16,12 +16,14 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <docker.image.prefix>xmomen</docker.image.prefix>
         <!--<spring.version>4.1.4.RELEASE</spring.version>-->
         <!--<spring.boot.version>1.5.4.RELEASE</spring.boot.version>-->
         <!--<spring.hateaos.version>0.16.0.RELEASE</spring.hateaos.version>-->
         <start-class>com.xmomen.module.ApplicationStart</start-class>
     </properties>
     <build>
+        <finalName>app-${version}</finalName>
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -54,20 +56,28 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!--<version>${spring.boot.version}</version>-->
-                <!--<executions>-->
-                <!--<execution>-->
-                <!--<goals>-->
-                <!--<goal>repackage</goal>-->
-                <!--</goals>-->
-                <!--</execution>-->
-                <!--</executions>-->
             </plugin>
-            <!--<plugin>-->
-            <!--<groupId>org.apache.maven.plugins</groupId>-->
-            <!--<artifactId>maven-jar-plugin</artifactId>-->
-            <!--<version>2.4</version>-->
-            <!--</plugin>-->
+            <!-- tag::plugin[] -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.13</version>
+                <configuration>
+                    <!-- 注意imageName一定要是符合正则[a-z0-9-_.]的，否则构建不会成功 -->
+                    <!-- 详见：https://github.com/spotify/docker-maven-plugin    Invalid repository name ... only [a-z0-9-_.] are allowed-->
+                    <imageName>xmomen-app</imageName>
+                    <baseImage>java</baseImage>
+                    <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+            <!-- end::plugin[] -->
             <!--    代码覆盖率    -->
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -95,6 +105,16 @@
                 <version>3.0.4</version>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.2</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                    <forkMode>once</forkMode>
+                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>com.xmomen.generator</groupId>
                 <artifactId>xmomen-generator-maven-plugin</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
@@ -108,9 +128,9 @@
     <repositories>
         <repository>
             <id>sonatype-nexus-snapshots</id>
-            <name>Nexus Snapshots Repository</name>
+            <name>OSS Sonatype Repository</name>
             <layout>default</layout>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <url>https://oss.sonatype.org/content/repositories/public</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
@@ -124,9 +144,9 @@
     <pluginRepositories>
         <pluginRepository>
             <id>sonatype-nexus-snapshots</id>
-            <name>Nexus Snapshots Repository</name>
+            <name>Nexus Sonatype Repository</name>
             <layout>default</layout>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <url>https://oss.sonatype.org/content/repositories/public</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
@@ -441,12 +461,6 @@
             <version>4.3.9.RELEASE</version>
             <scope>test</scope>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot</artifactId>-->
-            <!--<version>1.5.4.RELEASE</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
     </dependencies>
 
 </project>

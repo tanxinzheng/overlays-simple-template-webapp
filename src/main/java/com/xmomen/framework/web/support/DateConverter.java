@@ -1,5 +1,6 @@
 package com.xmomen.framework.web.support;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.commons.validator.routines.DateValidator;
@@ -10,7 +11,6 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 
 import java.text.MessageFormat;
-import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -29,12 +29,19 @@ public class DateConverter implements Converter<String, Date> {
 
     @Override
     public Date convert(String source) {
+        if(StringUtils.trimToNull(source) == null){
+            return null;
+        }
         try {
             for (FastDateFormat datePattern : datePatterns) {
                 if(DateValidator.getInstance().isValid(source, datePattern.getPattern())){
                     return datePattern.parse(source);
                 }
             }
+            long datetime = Long.valueOf(source);
+            return new Date(datetime);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             StringBuffer stringBuffer = new StringBuffer();
             for (int i = 0; i < datePatterns.length; i++) {
                 FastDateFormat datePattern = datePatterns[i];
@@ -44,10 +51,7 @@ public class DateConverter implements Converter<String, Date> {
                 }
             }
             throw new ConversionFailedException(TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Date.class), source,
-                    new IllegalArgumentException(MessageFormat.format("Only support date format [{0}].", stringBuffer)));
-        } catch (ParseException e) {
-            logger.error(e.getMessage(), e);
+                    new IllegalArgumentException(MessageFormat.format("Only support date format [{0}, timestamp].", stringBuffer)));
         }
-        return null;
     }
 }

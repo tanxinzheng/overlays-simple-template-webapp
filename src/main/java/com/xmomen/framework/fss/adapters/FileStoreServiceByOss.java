@@ -81,7 +81,7 @@ public class FileStoreServiceByOss implements FileStoreService, InitializingBean
         Assert.hasText(bucketName, "accessKeyId must be not null or empty");
         try {
             log.debug("accessKeyId initializing.........");
-            createOSSClientConnection();
+//            createOSSClientConnection();
         } catch (OSSException ex) {
             log.error("OSSClient initial failed - " + ex.getMessage(), ex);
         }

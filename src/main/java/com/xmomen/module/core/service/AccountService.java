@@ -11,8 +11,8 @@ import com.xmomen.module.core.model.Register;
 import com.xmomen.module.shiro.PasswordHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.apache.shiro.authc.AccountException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -75,7 +75,7 @@ public class AccountService {
      * @return
      */
     @Transactional
-    public void register(Register register) throws AccountException {
+    public void register(Register register) {
         UserModel checkUser = userService.getOneUserModelByUsername(register.getUsername());
         Assert.isNull(checkUser, "该用户名已被注册");
         if(register.getType().equals("2") && StringUtils.isNotBlank(register.getEmail())){
@@ -112,11 +112,11 @@ public class AccountService {
      */
     public AccountModel getCurrentAccount(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication.isAuthenticated()){
-            String username = (String) authentication.getPrincipal();
-            return getAccountModelByUsername(username);
+        if(!authentication.isAuthenticated()){
+            throw new BadCredentialsException("authentication is null");
         }
-        return null;
+        String username = (String) authentication.getPrincipal();
+        return getAccountModelByUsername(username);
     }
 
     /**

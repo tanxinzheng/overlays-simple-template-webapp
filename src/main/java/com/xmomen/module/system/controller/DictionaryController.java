@@ -9,8 +9,8 @@ import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.service.DictionaryService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.util.CollectionUtils;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class DictionaryController extends BaseRestController {
      * @return  Page<DictionaryModel> 数据字典领域分页对象
      */
     @ApiOperation(value = "查询数据字典列表")
-    @ActionLog(actionName = "查询数据字典列表")
+//    @ActionLog(actionName = "查询数据字典列表")
     @PreAuthorize("hasAuthority('DICTIONARY:VIEW')")
     @RequestMapping(method = RequestMethod.GET)
     public Page<DictionaryModel> getDictionaryList(DictionaryQuery dictionaryQuery){

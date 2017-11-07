@@ -4,8 +4,6 @@ import com.xmomen.framework.exception.BusinessException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.shiro.authz.UnauthenticatedException;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
@@ -56,9 +54,7 @@ public class RestExceptionHandler {
                 ex instanceof BusinessException){
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             restError.setStatus(HttpStatus.BAD_REQUEST.value());
-        }else if(ex instanceof UnauthenticatedException ||
-                ex instanceof UnauthorizedException ||
-                ex instanceof AuthenticationCredentialsNotFoundException){
+        }else if(ex instanceof AuthenticationCredentialsNotFoundException){
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             restError.setStatus(HttpStatus.UNAUTHORIZED.value());
             restError.setMessage("Requires authentication");
