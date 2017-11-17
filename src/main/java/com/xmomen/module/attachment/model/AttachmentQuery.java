@@ -14,6 +14,7 @@ public @Data class AttachmentQuery extends BaseQuery implements Serializable {
 
     private String keyword;
     private String attachmentKey;
+    private String[] attachmentKeys;
     private String id;
     private String[] ids;
     private String[] excludeIds;

@@ -1,6 +1,5 @@
 package com.xmomen.framework.web.json;
 
-import com.xmomen.module.attachment.model.AttachmentModel;
 import com.xmomen.module.attachment.service.AttachmentService;
 import com.xmomen.module.authorization.model.User;
 import com.xmomen.module.authorization.service.UserService;
@@ -12,9 +11,11 @@ import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.service.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by tanxinzheng on 16/10/20.
@@ -34,6 +35,8 @@ public class DefaultDictionaryInterpreterService implements DictionaryInterprete
     private String endpoint;
     @Value("${oss.bucketName}")
     private String bucketName;
+    @Autowired
+    HttpServletRequest request;
 
     @Autowired
     NotificationTemplateService notificationTemplateService;
@@ -54,15 +57,10 @@ public class DefaultDictionaryInterpreterService implements DictionaryInterprete
             }
             return user.getNickname();
         }else if(dictionaryType.equals(DictionaryIndex.ATTACHMENT_KEY)){
-            AttachmentModel attachmentModel = attachmentService.getOneAttachmentModelCache(dictionaryCode);
-            if(attachmentModel == null){
-                return null;
-            }
-            String fileUrl = File.separator + File.separator +
-                    bucketName + "." +
-                    endpoint + File.separator +
-                    attachmentModel.getAttachmentPath() + File.separator +
-                    attachmentModel.getAttachmentKey();
+            Authentication subject = SecurityContextHolder.getContext().getAuthentication();
+            String token = (String) subject.getCredentials();
+            String contextPath = request.getScheme() +"://" + request.getServerName()  + ":" +request.getServerPort() +request.getContextPath();
+            String fileUrl = contextPath + "/file/download?fileKey=" + dictionaryCode + "&token=" + token;
             return fileUrl;
         }else if(dictionaryType.equals(DictionaryIndex.NOTIFICATION_TEMPLATE)){
             NotificationTemplateQuery notificationTemplateQuery = new NotificationTemplateQuery();

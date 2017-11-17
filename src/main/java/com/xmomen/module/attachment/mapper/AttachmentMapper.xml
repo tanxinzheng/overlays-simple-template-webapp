@@ -208,6 +208,12 @@
             <if test="attachmentKey">
                 AND ATTACHMENT_KEY = #{attachmentKey}
             </if>
+            <if test="attachmentKeys">
+                AND ATTACHMENT_KEY IN
+                <foreach collection="attachmentKey" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
             <if test="ids">
                 AND ID IN
                 <foreach collection="ids" item="item" separator="," open="(" close=")">
