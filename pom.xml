@@ -141,6 +141,7 @@
             </releases>
         </repository>
     </repositories>
+
     <pluginRepositories>
         <pluginRepository>
             <id>sonatype-nexus-snapshots</id>
@@ -157,6 +158,7 @@
             </releases>
         </pluginRepository>
     </pluginRepositories>
+
 
     <dependencies>
 
