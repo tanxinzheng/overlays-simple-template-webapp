@@ -145,8 +145,8 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.4.2</version>
                 <configuration>
-                    <!--<username>xxxusername</username>-->
-                    <!--<password>xxxxpasswrod</password>-->
+                    <username>admin</username>
+                    <password>admin123</password>
                     <tagBase>${project.artifactId}-${project.version}</tagBase>
                     <goals>-f pom.xml deploy</goals>
                 </configuration>
