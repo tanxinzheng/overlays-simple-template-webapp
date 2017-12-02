@@ -22,5 +22,5 @@ public @interface DictionaryInterpreter {
      * 字段名称
      * @return
      */
-    String fieldName();
+    String fieldName() default "";
 }

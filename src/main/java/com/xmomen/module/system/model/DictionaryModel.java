@@ -1,21 +1,20 @@
 package com.xmomen.module.system.model;
 
-import com.xmomen.framework.model.BaseModel;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.xmomen.module.system.model.Dictionary;
+import com.xmomen.framework.model.BaseModel;
+import com.xmomen.framework.web.json.DictionaryIndex;
+import com.xmomen.framework.web.json.DictionaryInterpreter;
 import lombok.Data;
-import org.hibernate.validator.constraints.*;
-import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 import org.jeecgframework.poi.excel.annotation.Excel;
 import org.jeecgframework.poi.excel.annotation.ExcelTarget;
 import org.springframework.beans.BeanUtils;
 
-import java.lang.Boolean;
-import java.lang.String;
-import java.lang.Integer;
-import java.util.Date;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author  tanxinzheng
@@ -68,6 +67,7 @@ public @Data class DictionaryModel extends BaseModel implements Serializable {
     /** 创建人 */
 //    @Excel(name = "创建人")
     @Length(max = 32, message = "创建人字符长度限制[0,32]")
+    @DictionaryInterpreter(index = DictionaryIndex.USER_ID)
     private String createdUserId;
     /** 创建时间 */
 //    @Excel(name = "创建时间")
@@ -75,6 +75,7 @@ public @Data class DictionaryModel extends BaseModel implements Serializable {
     /** 更新人 */
 //    @Excel(name = "更新人")
     @Length(max = 32, message = "更新人字符长度限制[0,32]")
+    @DictionaryInterpreter(index = DictionaryIndex.USER_ID)
     private String updatedUserId;
     /** 更新时间 */
 //    @Excel(name = "更新时间")

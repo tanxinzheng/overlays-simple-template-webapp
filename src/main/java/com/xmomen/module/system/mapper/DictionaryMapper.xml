@@ -236,7 +236,10 @@
     <sql id="Update_By_Query_Where_Clause">
         <where>
             <if test="keyword">
-                AND ID LIKE CONCAT('%', #{keyword}, '%')
+                AND (
+                DICTIONARY_CODE LIKE CONCAT('%', #{keyword}, '%')
+                OR DICTIONARY_NAME LIKE CONCAT('%', #{keyword}, '%')
+                )
             </if>
             <if test="id">
                 AND ID = #{id}
