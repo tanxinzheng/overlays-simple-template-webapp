@@ -28,7 +28,6 @@
         <connection>scm:git:https://github.com/tanxinzheng/overlays-simple-template-webapp.git</connection>
         <developerConnection>scm:git:https://github.com/tanxinzheng/overlays-simple-template-webapp.git</developerConnection>
         <url>https://github.com/tanxinzheng/overlays-simple-template-webapp/tree/master</url>
-        <tag>${project.artifactId}-${project.version}</tag>
     </scm>
 
     <properties>
