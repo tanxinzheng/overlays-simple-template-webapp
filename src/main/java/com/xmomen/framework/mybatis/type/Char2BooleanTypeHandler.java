@@ -13,8 +13,8 @@ import java.sql.SQLException;
  */
 public class Char2BooleanTypeHandler implements TypeHandler<Boolean> {
 
-    private static String CHAR_TRUE = "Y";
-    private static String CHAR_FALSE = "N";
+    private static final String CHAR_TRUE = "Y";
+    private static final String CHAR_FALSE = "N";
 
     /**
      * 用于定义在Mybatis设置参数时该如何把Java类型的参数转换为对应的数据库类型
@@ -26,9 +26,9 @@ public class Char2BooleanTypeHandler implements TypeHandler<Boolean> {
      */
     public void setParameter(PreparedStatement preparedStatement, int i, Boolean b, JdbcType jdbcType) throws SQLException {
         if(b.equals(Boolean.TRUE)){
-            preparedStatement.setString(i,"Y");
+            preparedStatement.setString(i, CHAR_TRUE);
         }else{
-            preparedStatement.setString(i,"N");
+            preparedStatement.setString(i, CHAR_FALSE);
         }
     }
 
@@ -66,9 +66,8 @@ public class Char2BooleanTypeHandler implements TypeHandler<Boolean> {
     }
 
     private Boolean tranferType(String s){
-        if("Y".equalsIgnoreCase(s))
-        {
-            return Boolean.TRUE ;
+        if(CHAR_TRUE.equalsIgnoreCase(s)){
+            return Boolean.TRUE;
         }else{
             return Boolean.FALSE;
         }

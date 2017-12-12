@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BaseRestController {
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     /**
      * 获取当前用户ID

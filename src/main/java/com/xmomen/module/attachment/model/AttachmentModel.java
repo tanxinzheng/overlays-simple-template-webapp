@@ -5,7 +5,6 @@ import com.xmomen.framework.model.BaseModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xmomen.framework.web.json.DictionaryIndex;
 import com.xmomen.framework.web.json.DictionaryInterpreter;
-import com.xmomen.module.attachment.model.Attachment;
 import lombok.Data;
 import org.hibernate.validator.constraints.*;
 import javax.validation.constraints.*;
@@ -13,9 +12,6 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 import org.jeecgframework.poi.excel.annotation.ExcelTarget;
 import org.springframework.beans.BeanUtils;
 
-import java.lang.Boolean;
-import java.lang.String;
-import java.lang.Short;
 import java.util.Date;
 import java.io.Serializable;
 

@@ -100,7 +100,7 @@ public interface NotificationReceiveService {
      * @param notificationReceiveQuery 通知接收人查询参数对象
      * @return NotificationReceiveModel 通知接收人领域对象
      */
-    public NotificationReceiveModel getOneNotificationReceiveModel(NotificationReceiveQuery notificationReceiveQuery) throws TooManyResultsException;
+    public NotificationReceiveModel getOneNotificationReceiveModel(NotificationReceiveQuery notificationReceiveQuery);
 
     /**
      * 查询接收人通知

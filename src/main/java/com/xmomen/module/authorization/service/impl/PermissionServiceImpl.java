@@ -206,13 +206,13 @@ public class PermissionServiceImpl implements PermissionService {
      * @return PermissionModel 权限领域对象
      */
     @Override
-    public PermissionModel getOnePermissionModel(PermissionQuery permissionQuery) throws TooManyResultsException {
+    public PermissionModel getOnePermissionModel(PermissionQuery permissionQuery) {
         List<PermissionModel> permissionModelList = permissionMapper.selectModel(permissionQuery);
         if(CollectionUtils.isEmpty(permissionModelList)){
             return null;
         }
         if(permissionModelList.size() > 1){
-            throw new TooManyResultsException();
+            throw new BusinessException();
         }
         return permissionModelList.get(0);
     }

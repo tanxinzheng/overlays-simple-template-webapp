@@ -5,8 +5,6 @@ import com.xmomen.framework.web.json.DictionaryInterpreter;
 import lombok.Data;
 import com.xmomen.framework.model.BaseEntity;
 
-import java.lang.String;
-import java.lang.Integer;
 import java.util.Date;
 import java.io.Serializable;
 

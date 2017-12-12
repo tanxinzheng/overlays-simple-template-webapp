@@ -114,7 +114,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-//        registry.jsp("/WEB-INF/views/", ".jsp");
         registry.enableContentNegotiation(false, new MappingJackson2JsonView());
         registry.enableContentNegotiation(
                 new MappingJackson2JsonView()

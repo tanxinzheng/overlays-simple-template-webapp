@@ -1,10 +1,13 @@
 package com.xmomen.framework.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
  * Created by tanxinzheng on 17/6/6.
  */
+@Data
 public class BaseQuery implements Serializable {
 
     private Integer pageSize;
@@ -17,7 +20,6 @@ public class BaseQuery implements Serializable {
 
     public void setSorts(String[] sorts) {
         this.sorts = sorts;
-
         if(sorts != null && sorts.length > 0){
             String order = sorts[0];
             if(order.startsWith("-")){
@@ -27,33 +29,6 @@ public class BaseQuery implements Serializable {
             }
         }
 
-    }
-
-    /**
-     * 是否包含分页参数
-     * @return
-     */
-    public boolean isPaging(){
-        if(pageSize != null && pageNum != null){
-            return true;
-        }
-        return false;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public Integer getPageNum() {
-        return pageNum;
-    }
-
-    public void setPageNum(Integer pageNum) {
-        this.pageNum = pageNum;
     }
 
 }

@@ -1,17 +1,19 @@
 package com.xmomen.module.authorization.service.impl;
 
-import com.xmomen.framework.mybatis.page.PageInterceptor;
-import com.xmomen.module.authorization.model.*;
-import com.xmomen.module.authorization.mapper.GroupPermissionMapper;
-import com.xmomen.module.authorization.service.GroupPermissionService;
 import com.github.pagehelper.Page;
+import com.xmomen.framework.exception.BusinessException;
+import com.xmomen.framework.mybatis.page.PageInterceptor;
+import com.xmomen.module.authorization.mapper.GroupPermissionMapper;
+import com.xmomen.module.authorization.model.GroupPermission;
+import com.xmomen.module.authorization.model.GroupPermissionModel;
+import com.xmomen.module.authorization.model.GroupPermissionQuery;
+import com.xmomen.module.authorization.model.PermissionModel;
+import com.xmomen.module.authorization.service.GroupPermissionService;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -194,13 +196,13 @@ public class GroupPermissionServiceImpl implements GroupPermissionService {
      * @return GroupPermissionModel 组权限领域对象
      */
     @Override
-    public GroupPermissionModel getOneGroupPermissionModel(GroupPermissionQuery groupPermissionQuery) throws TooManyResultsException {
+    public GroupPermissionModel getOneGroupPermissionModel(GroupPermissionQuery groupPermissionQuery) {
         List<GroupPermissionModel> groupPermissionModelList = groupPermissionMapper.selectModel(groupPermissionQuery);
         if(CollectionUtils.isEmpty(groupPermissionModelList)){
             return null;
         }
         if(groupPermissionModelList.size() > 1){
-            throw new TooManyResultsException();
+            throw new BusinessException();
         }
         return groupPermissionModelList.get(0);
     }

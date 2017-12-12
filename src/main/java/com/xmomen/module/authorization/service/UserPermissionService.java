@@ -1,6 +1,5 @@
 package com.xmomen.module.authorization.service;
 
-import com.github.pagehelper.Page;
 import com.xmomen.module.authorization.model.PermissionModel;
 import com.xmomen.module.authorization.model.UserPermissionQuery;
 

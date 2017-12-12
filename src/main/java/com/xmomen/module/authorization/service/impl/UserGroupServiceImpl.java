@@ -1,21 +1,20 @@
 package com.xmomen.module.authorization.service.impl;
 
+import com.github.pagehelper.Page;
+import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
+import com.xmomen.module.authorization.mapper.UserGroupMapper;
 import com.xmomen.module.authorization.model.GroupModel;
 import com.xmomen.module.authorization.model.UserGroup;
-import com.xmomen.module.authorization.mapper.UserGroupMapper;
 import com.xmomen.module.authorization.model.UserGroupModel;
 import com.xmomen.module.authorization.model.UserGroupQuery;
 import com.xmomen.module.authorization.service.UserGroupService;
-import com.github.pagehelper.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -189,13 +188,13 @@ public class UserGroupServiceImpl implements UserGroupService {
      * @return UserGroupModel 用户组关联领域对象
      */
     @Override
-    public UserGroupModel getOneUserGroupModel(UserGroupQuery userGroupQuery) throws TooManyResultsException {
+    public UserGroupModel getOneUserGroupModel(UserGroupQuery userGroupQuery) {
         List<UserGroupModel> userGroupModelList = userGroupMapper.selectModel(userGroupQuery);
         if(CollectionUtils.isEmpty(userGroupModelList)){
             return null;
         }
         if(userGroupModelList.size() > 1){
-            throw new TooManyResultsException();
+            throw new BusinessException();
         }
         return userGroupModelList.get(0);
     }

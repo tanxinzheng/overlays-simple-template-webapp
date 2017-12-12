@@ -4,9 +4,7 @@ import com.xmomen.framework.web.json.DictionaryIndex;
 import com.xmomen.framework.web.json.DictionaryInterpreter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by jengt_000 on 2014/12/28.

@@ -1,6 +1,5 @@
 package com.xmomen.module.core.controller;
 
-import io.swagger.annotations.ApiOperation;
 import com.xmomen.framework.utils.UUIDGenerator;
 import com.xmomen.framework.validator.PhoneValidator;
 import com.xmomen.module.authorization.model.User;
@@ -10,9 +9,9 @@ import com.xmomen.module.core.model.Register;
 import com.xmomen.module.core.service.AccountService;
 import com.xmomen.module.core.service.ValidationCodeService;
 import com.xmomen.module.shiro.PasswordHelper;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +23,8 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping(value = "/access")
+@Slf4j
 public class AccessController {
-
-    private static Logger logger = LoggerFactory.getLogger(AccessController.class);
 
     @Autowired
     AccountService accountService;
@@ -76,6 +74,8 @@ public class AccessController {
             Assert.isTrue(PhoneValidator.getInstance().isValid(receiver), "请输入正确格式的手机号码");
             userModel = userService.getOneUserModelByUsername(receiver);
             Assert.notNull(userModel, "该手机号码未注册");
+        }else {
+            Assert.notNull(userModel, "仅支持邮箱，手机号码方式找回密码");
         }
         String newSalt = UUIDGenerator.getInstance().getUUID();
         String newPassword = PasswordHelper.encryptPassword(password, newSalt);

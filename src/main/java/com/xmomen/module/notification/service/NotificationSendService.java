@@ -102,5 +102,5 @@ public interface NotificationSendService {
      * @param notificationSendQuery 通知发送人查询参数对象
      * @return NotificationSendModel 通知发送人领域对象
      */
-    public NotificationSendModel getOneNotificationSendModel(NotificationSendQuery notificationSendQuery) throws TooManyResultsException;
+    public NotificationSendModel getOneNotificationSendModel(NotificationSendQuery notificationSendQuery);
 }

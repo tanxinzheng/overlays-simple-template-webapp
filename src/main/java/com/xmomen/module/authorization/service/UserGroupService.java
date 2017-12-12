@@ -103,7 +103,7 @@ public interface UserGroupService {
      * @param userGroupQuery 用户组关联查询参数对象
      * @return UserGroupModel 用户组关联领域对象
      */
-    public UserGroupModel getOneUserGroupModel(UserGroupQuery userGroupQuery) throws TooManyResultsException;
+    public UserGroupModel getOneUserGroupModel(UserGroupQuery userGroupQuery);
 
     /**
      * 查询用户组

@@ -102,5 +102,5 @@ public interface PermissionService {
      * @param permissionQuery 权限查询参数对象
      * @return PermissionModel 权限领域对象
      */
-    public PermissionModel getOnePermissionModel(PermissionQuery permissionQuery) throws TooManyResultsException;
+    public PermissionModel getOnePermissionModel(PermissionQuery permissionQuery);
 }

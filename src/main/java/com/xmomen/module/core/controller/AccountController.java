@@ -26,7 +26,6 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +43,7 @@ import static com.xmomen.module.core.controller.AccessController.FIND_TYPE_PHONE
 public class AccountController extends BaseRestController {
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     @Autowired
     UserService userService;
@@ -190,7 +189,7 @@ public class AccountController extends BaseRestController {
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     @ApiOperation(value = "更换头像")
     @ActionLog(actionName = "更换头像")
-    public void updateAvatar(@RequestPart(value = "file") MultipartFile file) throws IOException {
+    public void updateAvatar(@RequestPart(value = "file") MultipartFile file) {
         if(file.isEmpty()){
             return;
         }

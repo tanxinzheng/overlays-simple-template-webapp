@@ -1,6 +1,7 @@
 package com.xmomen.module.notification.service.impl;
 
 import com.github.pagehelper.Page;
+import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.module.notification.mapper.NotificationSendMapper;
 import com.xmomen.module.notification.model.*;
@@ -9,7 +10,6 @@ import com.xmomen.module.notification.service.NotificationSendService;
 import com.xmomen.module.notification.service.NotificationService;
 import com.xmomen.module.notification.service.NotificationTemplateService;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -221,13 +221,13 @@ public class NotificationSendServiceImpl implements NotificationSendService {
      * @return NotificationSendModel 通知发送人领域对象
      */
     @Override
-    public NotificationSendModel getOneNotificationSendModel(NotificationSendQuery notificationSendQuery) throws TooManyResultsException {
+    public NotificationSendModel getOneNotificationSendModel(NotificationSendQuery notificationSendQuery) {
         List<NotificationSendModel> notificationSendModelList = notificationSendMapper.selectModel(notificationSendQuery);
         if(CollectionUtils.isEmpty(notificationSendModelList)){
             return null;
         }
         if(notificationSendModelList.size() > 1){
-            throw new TooManyResultsException();
+            throw new BusinessException();
         }
         return notificationSendModelList.get(0);
     }

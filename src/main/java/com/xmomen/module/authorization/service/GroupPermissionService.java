@@ -111,7 +111,7 @@ public interface GroupPermissionService {
      * @param groupPermissionQuery 组权限查询参数对象
      * @return GroupPermissionModel 组权限领域对象
      */
-    public GroupPermissionModel getOneGroupPermissionModel(GroupPermissionQuery groupPermissionQuery) throws TooManyResultsException;
+    public GroupPermissionModel getOneGroupPermissionModel(GroupPermissionQuery groupPermissionQuery);
 
     /**
      * 查询用户组权限

@@ -33,10 +33,10 @@ public class UUIDGenerator implements Serializable {
             return str.substring(0, length);
         }
         while (str.length() < length){
-            StringBuffer stringBuffer = new StringBuffer(str);
-            stringBuffer.append(getUUID());
-            if(stringBuffer.length() >= length){
-                str = stringBuffer.substring(0, length);
+            StringBuilder stringBuilder = new StringBuilder(str);
+            stringBuilder.append(getUUID());
+            if(stringBuilder.length() >= length){
+                str = stringBuilder.substring(0, length);
             }
         }
         return str;

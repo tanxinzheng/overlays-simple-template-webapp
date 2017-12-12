@@ -109,5 +109,5 @@ public interface NotificationService {
      * @param notificationQuery 通知查询参数对象
      * @return NotificationModel 通知领域对象
      */
-    public NotificationModel getOneNotificationModel(NotificationQuery notificationQuery) throws TooManyResultsException;
+    public NotificationModel getOneNotificationModel(NotificationQuery notificationQuery);
 }

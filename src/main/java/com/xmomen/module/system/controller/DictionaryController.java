@@ -9,11 +9,9 @@ import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.service.DictionaryService;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jeecgframework.poi.excel.ExcelImportUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -23,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -33,9 +30,8 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/dictionary")
+@Slf4j
 public class DictionaryController extends BaseRestController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelImportUtil.class);
 
     @Autowired
     DictionaryService dictionaryService;
@@ -158,7 +154,7 @@ public class DictionaryController extends BaseRestController {
     @ActionLog(actionName = "导入数据字典")
     @PreAuthorize("hasAuthority('DICTIONARY:CREATE')")
     @RequestMapping(value="/import", method = RequestMethod.POST)
-    public void importDictionaries(@RequestParam("file") MultipartFile file) throws IOException {
+    public void importDictionaries(@RequestParam("file") MultipartFile file) {
         List<DictionaryModel> list = ExcelUtils.transform(file, DictionaryModel.class);
         if(CollectionUtils.isEmpty(list)){
             return;

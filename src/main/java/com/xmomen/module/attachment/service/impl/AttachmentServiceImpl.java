@@ -1,6 +1,7 @@
 package com.xmomen.module.attachment.service.impl;
 
 import com.github.pagehelper.Page;
+import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.fss.FileStoreService;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.framework.web.json.DictionaryIndex;
@@ -10,7 +11,6 @@ import com.xmomen.module.attachment.model.AttachmentModel;
 import com.xmomen.module.attachment.model.AttachmentQuery;
 import com.xmomen.module.attachment.service.AttachmentService;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -214,13 +214,13 @@ public class AttachmentServiceImpl implements AttachmentService {
      * @return AttachmentModel 附件领域对象
      */
     @Override
-    public AttachmentModel getOneAttachmentModel(AttachmentQuery attachmentQuery) throws TooManyResultsException {
+    public AttachmentModel getOneAttachmentModel(AttachmentQuery attachmentQuery) {
         List<AttachmentModel> attachmentModelList = attachmentMapper.selectModel(attachmentQuery);
         if(CollectionUtils.isEmpty(attachmentModelList)){
             return null;
         }
         if(attachmentModelList.size() > 1){
-            throw new TooManyResultsException();
+            throw new BusinessException("查询异常，查询唯一性资源时匹配到多个资源");
         }
         return attachmentModelList.get(0);
     }

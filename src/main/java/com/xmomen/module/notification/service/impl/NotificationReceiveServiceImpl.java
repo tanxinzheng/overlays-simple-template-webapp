@@ -1,12 +1,12 @@
 package com.xmomen.module.notification.service.impl;
 
 import com.github.pagehelper.Page;
+import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.module.notification.mapper.NotificationReceiveMapper;
 import com.xmomen.module.notification.model.*;
 import com.xmomen.module.notification.service.NotificationReceiveService;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -192,13 +192,13 @@ public class NotificationReceiveServiceImpl implements NotificationReceiveServic
      * @return NotificationReceiveModel 通知接收人领域对象
      */
     @Override
-    public NotificationReceiveModel getOneNotificationReceiveModel(NotificationReceiveQuery notificationReceiveQuery) throws TooManyResultsException {
+    public NotificationReceiveModel getOneNotificationReceiveModel(NotificationReceiveQuery notificationReceiveQuery) {
         List<NotificationReceiveModel> notificationReceiveModelList = notificationReceiveMapper.selectModel(notificationReceiveQuery);
         if(CollectionUtils.isEmpty(notificationReceiveModelList)){
             return null;
         }
         if(notificationReceiveModelList.size() > 1){
-            throw new TooManyResultsException();
+            throw new BusinessException();
         }
         return notificationReceiveModelList.get(0);
     }

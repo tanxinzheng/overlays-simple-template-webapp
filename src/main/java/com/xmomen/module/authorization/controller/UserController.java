@@ -101,14 +101,14 @@ public class UserController extends BaseRestController {
 
     /**
      *  删除数据字典
-     * @param userQuery    查询参数对象
+     * @param ids    查询参数对象
      */
     @ApiOperation(value = "批量删除数据字典")
     @ActionLog(actionName = "批量删除数据字典")
     @PreAuthorize(value = "hasAnyAuthority('USER:DELETE')")
     @RequestMapping(method = RequestMethod.DELETE)
-    public void deleteUsers(UserQuery userQuery){
-        userService.deleteUser(userQuery.getIds());
+    public void deleteUsers(@RequestParam(value = "ids[]") String[] ids){
+        userService.deleteUser(ids);
     }
 
     @Autowired

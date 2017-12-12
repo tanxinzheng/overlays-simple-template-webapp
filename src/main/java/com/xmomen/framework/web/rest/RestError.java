@@ -1,6 +1,7 @@
 package com.xmomen.framework.web.rest;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * Created by Jeng on 15/11/29.
  */
+@Data
 public class RestError {
 
     private Date timestamp;
@@ -40,54 +42,6 @@ public class RestError {
         this.path = request.getRequestURI();
         this.message = ex.getMessage();
         this.exception = ex.getClass().getName();
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getException() {
-        return exception;
-    }
-
-    public void setException(String exception) {
-        this.exception = exception;
-    }
-
-    public List<FieldError> getErrors() {
-        return errors;
-    }
-
-    public void setErrors(List<FieldError> errors) {
-        this.errors = errors;
     }
 
 }

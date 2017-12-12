@@ -102,5 +102,5 @@ public interface NotificationTemplateService {
      * @param notificationTemplateQuery 通知模板查询参数对象
      * @return NotificationTemplateModel 通知模板领域对象
      */
-    public NotificationTemplateModel getOneNotificationTemplateModel(NotificationTemplateQuery notificationTemplateQuery) throws TooManyResultsException;
+    public NotificationTemplateModel getOneNotificationTemplateModel(NotificationTemplateQuery notificationTemplateQuery);
 }

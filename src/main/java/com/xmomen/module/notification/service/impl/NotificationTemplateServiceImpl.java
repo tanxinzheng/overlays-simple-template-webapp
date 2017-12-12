@@ -1,19 +1,19 @@
 package com.xmomen.module.notification.service.impl;
 
+import com.github.pagehelper.Page;
+import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
-import com.xmomen.module.notification.model.NotificationTemplate;
 import com.xmomen.module.notification.mapper.NotificationTemplateMapper;
+import com.xmomen.module.notification.model.NotificationTemplate;
 import com.xmomen.module.notification.model.NotificationTemplateModel;
 import com.xmomen.module.notification.model.NotificationTemplateQuery;
 import com.xmomen.module.notification.service.NotificationTemplateService;
-import com.github.pagehelper.Page;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.ibatis.exceptions.TooManyResultsException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -193,13 +193,13 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
      * @return NotificationTemplateModel 通知模板领域对象
      */
     @Override
-    public NotificationTemplateModel getOneNotificationTemplateModel(NotificationTemplateQuery notificationTemplateQuery) throws TooManyResultsException {
+    public NotificationTemplateModel getOneNotificationTemplateModel(NotificationTemplateQuery notificationTemplateQuery) {
         List<NotificationTemplateModel> notificationTemplateModelList = notificationTemplateMapper.selectModel(notificationTemplateQuery);
         if(CollectionUtils.isEmpty(notificationTemplateModelList)){
             return null;
         }
         if(notificationTemplateModelList.size() > 1){
-            throw new TooManyResultsException();
+            throw new BusinessException();
         }
         return notificationTemplateModelList.get(0);
     }

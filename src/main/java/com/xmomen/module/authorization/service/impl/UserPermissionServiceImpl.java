@@ -4,6 +4,7 @@ import com.xmomen.module.authorization.mapper.UserPermissionMapper;
 import com.xmomen.module.authorization.model.PermissionModel;
 import com.xmomen.module.authorization.model.UserPermissionQuery;
 import com.xmomen.module.authorization.service.UserPermissionService;
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class UserPermissionServiceImpl implements UserPermissionService {
     @Override
     public List<PermissionModel> getUserPermissions(UserPermissionQuery userPermissionQuery) {
         if(userPermissionQuery == null){
-            return null;
+            return Lists.newArrayList();
         }
         return userPermissionMapper.getUserPermissions(userPermissionQuery);
     }

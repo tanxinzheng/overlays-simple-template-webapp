@@ -2,6 +2,7 @@ package com.xmomen.module.system.service.impl;
 
 import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
+import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.framework.web.json.DictionaryIndex;
 import com.xmomen.module.system.mapper.DictionaryMapper;
@@ -12,7 +13,6 @@ import com.xmomen.module.system.service.DictionaryService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -216,13 +216,13 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     @Cacheable(cacheNames = DictionaryIndex.DICTIONARY_CACHE_NAME_KEY)
-    public DictionaryModel getOneDictionaryModel(DictionaryQuery dictionaryQuery) throws TooManyResultsException {
+    public DictionaryModel getOneDictionaryModel(DictionaryQuery dictionaryQuery) {
         List<DictionaryModel> dictionaryModelList = dictionaryMapper.selectModel(dictionaryQuery);
         if(CollectionUtils.isEmpty(dictionaryModelList)){
             return null;
         }
         if(dictionaryModelList.size() > 1){
-            throw new TooManyResultsException();
+            throw new BusinessException();
         }
         return dictionaryModelList.get(0);
     }

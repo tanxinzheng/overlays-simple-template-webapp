@@ -2,7 +2,6 @@ package com.xmomen.module.logger.mapper;
 
 import com.xmomen.module.logger.LogModel;
 import com.xmomen.module.logger.model.ActionLogQuery;
-import org.apache.ibatis.annotations.Insert;
 
 import java.util.List;
 

@@ -102,5 +102,5 @@ public interface DictionaryService {
      * @param dictionaryQuery 数据字典查询参数对象
      * @return DictionaryModel 数据字典领域对象
      */
-    public DictionaryModel getOneDictionaryModel(DictionaryQuery dictionaryQuery) throws TooManyResultsException;
+    public DictionaryModel getOneDictionaryModel(DictionaryQuery dictionaryQuery);
 }

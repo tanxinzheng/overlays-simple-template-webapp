@@ -225,13 +225,13 @@ public class UserServiceImpl implements UserService {
      * @return UserModel 数据字典领域对象
      */
     @Override
-    public UserModel getOneUserModel(UserQuery userQuery) throws TooManyResultsException {
+    public UserModel getOneUserModel(UserQuery userQuery) {
         List<UserModel> userModelList = userMapper.selectModel(userQuery);
         if(CollectionUtils.isEmpty(userModelList)){
             return null;
         }
         if(userModelList.size() > 1){
-            throw new TooManyResultsException();
+            throw new BusinessException();
         }
         return userModelList.get(0);
     }

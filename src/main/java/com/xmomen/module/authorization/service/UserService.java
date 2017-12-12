@@ -7,7 +7,6 @@ import com.xmomen.module.authorization.model.User;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -118,7 +117,7 @@ public interface UserService {
      * @param userQuery 数据字典查询参数对象
      * @return UserModel 数据字典领域对象
      */
-    public UserModel getOneUserModel(UserQuery userQuery) throws TooManyResultsException;
+    public UserModel getOneUserModel(UserQuery userQuery);
 
     /**
      * 更换用户头像

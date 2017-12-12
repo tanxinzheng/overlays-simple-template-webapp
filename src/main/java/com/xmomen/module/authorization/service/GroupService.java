@@ -109,5 +109,5 @@ public interface GroupService {
      * @param groupQuery 用户组查询参数对象
      * @return GroupModel 用户组领域对象
      */
-    public GroupModel getOneGroupModel(GroupQuery groupQuery) throws TooManyResultsException;
+    public GroupModel getOneGroupModel(GroupQuery groupQuery);
 }

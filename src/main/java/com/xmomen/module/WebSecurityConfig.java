@@ -137,8 +137,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                 .rememberMeServices(getRememberMeService())
                 .and()
+                .exceptionHandling().authenticationEntryPoint(new RestAuthenticationEntryPoint())
+                .and()
                 // 禁用缓存
-                .logout().addLogoutHandler(new JwtLogoutHandler(getJwtTokenService()))
+                .logout()
+                .logoutSuccessHandler(new JwtLogoutSuccessHandler())
+                .addLogoutHandler(new JwtLogoutHandler(getJwtTokenService()))
                 .and()
                 .headers().cacheControl();
     }

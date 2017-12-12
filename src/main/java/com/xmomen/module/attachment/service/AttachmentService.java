@@ -1,10 +1,9 @@
 package com.xmomen.module.attachment.service;
 
 import com.github.pagehelper.Page;
-import com.xmomen.module.attachment.model.AttachmentQuery;
-import com.xmomen.module.attachment.model.AttachmentModel;
 import com.xmomen.module.attachment.model.Attachment;
-import org.apache.ibatis.exceptions.TooManyResultsException;
+import com.xmomen.module.attachment.model.AttachmentModel;
+import com.xmomen.module.attachment.model.AttachmentQuery;
 
 import java.util.List;
 
@@ -108,7 +107,7 @@ public interface AttachmentService {
      * @param attachmentQuery 附件查询参数对象
      * @return AttachmentModel 附件领域对象
      */
-    public AttachmentModel getOneAttachmentModel(AttachmentQuery attachmentQuery) throws TooManyResultsException;
+    public AttachmentModel getOneAttachmentModel(AttachmentQuery attachmentQuery);
 
     /**
      * 缓存查询附件实体对象

@@ -30,10 +30,6 @@ import java.util.Set;
 @Service
 public class AccountService {
 
-    private static final String defaultSessionModelKey = "account_model_session";
-
-    private String sessionModelKey = defaultSessionModelKey;
-
     @Autowired
     UserService userService;
 
@@ -144,7 +140,6 @@ public class AccountService {
     public Set<String> findPermissions(String userId){
         UserPermissionQuery userPermissionQuery = new UserPermissionQuery();
         userPermissionQuery.setUserId(userId);
-//        userPermissionQuery.setHasBindPermission(true);
         List<PermissionModel> permissionModelList = userPermissionService.getUserPermissions(userPermissionQuery);
         Set<String> permissions = new HashSet<>();
         for (PermissionModel permissionModel : permissionModelList) {
@@ -153,11 +148,4 @@ public class AccountService {
         return permissions;
     }
 
-    public String getSessionModelKey() {
-        return sessionModelKey;
-    }
-
-    public void setSessionModelKey(String sessionModelKey) {
-        this.sessionModelKey = sessionModelKey;
-    }
 }
