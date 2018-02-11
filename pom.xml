@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.4.RELEASE</version>
+        <version>1.5.5.RELEASE</version>
     </parent>
     <groupId>com.xmomen</groupId>
     <artifactId>overlays-simple-template-webapp</artifactId>
@@ -37,27 +37,15 @@
         <!--<spring.version>4.1.4.RELEASE</spring.version>-->
         <!--<spring.boot.version>1.5.4.RELEASE</spring.boot.version>-->
         <!--<spring.hateaos.version>0.16.0.RELEASE</spring.hateaos.version>-->
-        <start-class>com.xmomen.module.ApplicationStart</start-class>
+        <!--<start-class>com.xmomen.module.ApplicationStart</start-class>-->
     </properties>
     <build>
-
         <!--<finalName>app-${version}</finalName>-->
         <resources>
             <resource>
                 <directory>src/main/java</directory>
                 <excludes>
                     <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.xml</include>
-                </includes>
-                <excludes>
-                    <exclude>deploy/**</exclude>
                 </excludes>
             </resource>
         </resources>
@@ -132,14 +120,6 @@
                     <argLine>-Dfile.encoding=UTF-8</argLine>
                 </configuration>
             </plugin>
-            <!--<plugin>-->
-                <!--<groupId>com.xmomen.generator</groupId>-->
-                <!--<artifactId>xmomen-generator-maven-plugin</artifactId>-->
-                <!--<version>1.0.0</version>-->
-                <!--<configuration>-->
-                    <!--<configurationFile>src/test/resources/tools/generator-config.json</configurationFile>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
@@ -281,6 +261,12 @@
             <version>2.6.1</version>
         </dependency>
 
+        <!--    站内信    -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
@@ -391,22 +377,6 @@
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
             <version>5.0.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-core</artifactId>
-            <version>1.2.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-web</artifactId>
-            <version>1.2.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring</artifactId>
-            <version>1.2.2</version>
         </dependency>
 
         <dependency>

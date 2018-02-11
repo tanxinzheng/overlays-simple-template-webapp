@@ -4,6 +4,8 @@ import com.google.common.collect.Maps;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.service.AccountService;
 import io.jsonwebtoken.*;
+import org.apache.commons.lang3.ArrayUtils;
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
@@ -15,6 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
@@ -29,6 +32,8 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     public static final String HEADER_AUTHORIZATION_NAME = "Authorization";
 
     public static final String JWT_TOKEN_SESSION_KEY = "jwt-token-cache";
+
+    public static final String JWT_TOKEN_COOKIE_KEY = "jwt-token";
 
     @Value("${jwt.secret}")
     private String secret;
@@ -47,10 +52,17 @@ public class JwtTokenServiceImpl implements JwtTokenService {
      */
     @Override
     public String getToken(HttpServletRequest request) {
-        HttpServletRequest httpRequest = (HttpServletRequest)request;
+        HttpServletRequest httpRequest = request;
         String token = httpRequest.getHeader(HEADER_AUTHORIZATION_NAME);
         if(token == null){
             token = request.getParameter("token");
+        }
+        if(token == null && ArrayUtils.isNotEmpty(request.getCookies())){
+            for (Cookie cookie : request.getCookies()) {
+                if(JWT_TOKEN_COOKIE_KEY.equalsIgnoreCase(cookie.getName())){
+                    token = cookie.getValue();
+                }
+            }
         }
         return token;
     }
@@ -72,8 +84,8 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         Map<String, Object> data = Maps.newHashMap();
         data.put("username", username);
         data.put("account", accountModel);
-        data.put("permissions", permissions.stream().map(s -> s.toString()).collect(Collectors.toList()));
-        data.put("roles", roles.stream().map(s -> s.toString()).collect(Collectors.toList()));
+        data.put("permissions", permissions.stream().map(String::toString).collect(Collectors.toList()));
+        data.put("roles", roles.stream().map(String::toString).collect(Collectors.toList()));
         String token = Jwts.builder()
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, secret)
@@ -82,6 +94,9 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         cache.put(token, data);
         ehCacheCacheManager.getCacheManager().getCache(JWT_TOKEN_SESSION_KEY).flush();
         response.addHeader(HEADER_AUTHORIZATION_NAME, token);
+        Cookie cookie = new Cookie(JwtTokenServiceImpl.JWT_TOKEN_COOKIE_KEY, token);
+        cookie.setSecure(Boolean.TRUE);
+        response.addCookie(cookie);
     }
 
     /**
@@ -91,13 +106,12 @@ public class JwtTokenServiceImpl implements JwtTokenService {
      * @return
      */
     @Override
-    public boolean validToken(HttpServletRequest request) throws JwtException {
+    public boolean validToken(HttpServletRequest request) {
         try {
             String token = getToken(request);
             if(token == null){
                 return false;
             }
-            Jws<Claims> jwt = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             Cache cache = cacheManager.getCache(JWT_TOKEN_SESSION_KEY);
             HashMap data = cache.get(token, HashMap.class);
             if(data == null){
@@ -119,20 +133,26 @@ public class JwtTokenServiceImpl implements JwtTokenService {
      * @param request
      */
     @Override
-    public void removeToken(HttpServletRequest request) {
+    public void removeToken(HttpServletRequest request, HttpServletResponse response) {
         String token = getToken(request);
         Cache cache = cacheManager.getCache(JWT_TOKEN_SESSION_KEY);
+        Arrays.stream(request.getCookies()).forEach(cookie -> {
+            if(JWT_TOKEN_COOKIE_KEY.equalsIgnoreCase(cookie.getName())){
+                cookie.setValue(null);
+                cookie.setMaxAge(0);
+            }
+            response.addCookie(cookie);
+        });
         cache.evict(token);
     }
 
     @Override
     public Authentication getAuthentication(HttpServletRequest request) {
         String token = getToken(request);
-        Jws<Claims> jwt = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
         Cache cache = cacheManager.getCache(JWT_TOKEN_SESSION_KEY);
         Cache.ValueWrapper valueWrapper = cache.get(token);
         Map data = (Map) valueWrapper.get();
-        List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
+        List<SimpleGrantedAuthority> authorities = Lists.newArrayList();
         List<String> permissions = (List<String>) data.get("permissions");
         if(!CollectionUtils.isEmpty(permissions)){
             for (String permission : permissions) {
@@ -140,8 +160,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
             }
         }
         JwtUser jwtUser = new JwtUser((String) data.get("username"), token, authorities);
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+        return new UsernamePasswordAuthenticationToken(
                 jwtUser.getUsername(), token, authorities);
-        return usernamePasswordAuthenticationToken;
     }
 }

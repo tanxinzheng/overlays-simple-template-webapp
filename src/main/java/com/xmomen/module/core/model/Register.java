@@ -2,7 +2,6 @@ package com.xmomen.module.core.model;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
@@ -18,17 +17,17 @@ class Register implements Serializable {
      */
     private String type;
 
-    @NotBlank
+    @NotBlank(message = "用户名为必填项")
     private String username;
-    @Email
+    @Email(message = "请输入正确格式的邮箱账号")
     private String email;
 
     private String nickname;
 
     private String phoneNumber;
-    @NotBlank
+    @NotBlank(message = "密码为必填项")
     private String password;
-    @NotBlank
+    @NotBlank(message = "验证码为必填项")
     private String code;
 
 }

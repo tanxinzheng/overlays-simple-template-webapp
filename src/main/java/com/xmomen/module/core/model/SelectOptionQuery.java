@@ -12,4 +12,5 @@ public class SelectOptionQuery extends BaseQuery {
     @NotBlank
     private String typeCode;
     private String parentId;
+    private String keyword;
 }

@@ -8,6 +8,7 @@ import com.xmomen.module.authorization.service.UserPermissionService;
 import com.xmomen.module.authorization.service.UserService;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.model.Register;
+import com.xmomen.module.core.model.UserGroupEnum;
 import com.xmomen.module.shiro.PasswordHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -99,7 +100,9 @@ public class AccountService {
         userCreate.setUsername(register.getUsername());
         userCreate.setSalt(salt);
         userCreate.setPassword(encryptPassword);
-        userService.createUser(userCreate);
+        UserModel userModel = userService.createUser(userCreate);
+        // 新增用户，默认添加XMO_USER用户组
+        userGroupService.createUserGroupByCode(userModel.getId(), UserGroupEnum.XMO_USER.name());
     }
 
     /**

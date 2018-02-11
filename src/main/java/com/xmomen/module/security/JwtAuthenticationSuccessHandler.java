@@ -16,6 +16,9 @@ import java.util.Map;
  * Created by tanxinzheng on 17/8/20.
  */
 public class JwtAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+
+
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String token = response.getHeader(JwtTokenServiceImpl.HEADER_AUTHORIZATION_NAME);
@@ -27,4 +30,5 @@ public class JwtAuthenticationSuccessHandler implements AuthenticationSuccessHan
         mapper.writeValue(out, data);
         out.flush();
     }
+
 }

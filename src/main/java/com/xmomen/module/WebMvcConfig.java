@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.xmomen.framework.web.handler.LogbackMDCInterceptor;
 import com.xmomen.framework.web.json.CustomDateDeserialize;
 import com.xmomen.framework.web.json.DictionaryAnnotationIntrospector;
 import com.xmomen.framework.web.support.DateConverter;
@@ -25,6 +26,7 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
@@ -120,6 +122,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 //                new XlsxView(),
 //                new XlsxStreamingView()
         );
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LogbackMDCInterceptor()).addPathPatterns("/**");
     }
 
     @Bean

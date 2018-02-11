@@ -5,7 +5,6 @@ import com.xmomen.module.authorization.model.GroupModel;
 import com.xmomen.module.authorization.model.UserGroupQuery;
 import com.xmomen.module.authorization.model.UserGroupModel;
 import com.xmomen.module.authorization.model.UserGroup;
-import org.apache.ibatis.exceptions.TooManyResultsException;
 
 import java.util.List;
 
@@ -36,6 +35,13 @@ public interface UserGroupService {
      * @param groupIds
      */
     public void createUserGroups(String userId, String... groupIds);
+
+    /**
+     * 绑定用户组
+     * @param userId
+     * @param groupCode
+     */
+    public void createUserGroupByCode(String userId, String... groupCode);
 
     /**
     * 更新用户组关联

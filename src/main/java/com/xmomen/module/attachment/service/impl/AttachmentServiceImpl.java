@@ -5,6 +5,7 @@ import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.fss.FileStoreService;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.framework.web.json.DictionaryIndex;
+import com.xmomen.framework.web.json.DictionaryInterpreterService;
 import com.xmomen.module.attachment.mapper.AttachmentMapper;
 import com.xmomen.module.attachment.model.Attachment;
 import com.xmomen.module.attachment.model.AttachmentModel;
@@ -13,10 +14,14 @@ import com.xmomen.module.attachment.service.AttachmentService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +32,7 @@ import java.util.List;
  * @version 1.0.0
  */
 @Service
-public class AttachmentServiceImpl implements AttachmentService {
+public class AttachmentServiceImpl implements AttachmentService, DictionaryInterpreterService {
 
     @Autowired
     AttachmentMapper attachmentMapper;
@@ -237,5 +242,33 @@ public class AttachmentServiceImpl implements AttachmentService {
         AttachmentQuery attachmentQuery = new AttachmentQuery();
         attachmentQuery.setAttachmentKey(attachmentKey);
         return getOneAttachmentModel(attachmentQuery);
+    }
+
+    @Autowired
+    HttpServletRequest request;
+
+    /**
+     * 翻译
+     *
+     * @param dictionaryType 字典类型
+     * @param dictionaryCode 字典代码
+     * @return
+     */
+    @Override
+    public String translateDictionary(DictionaryIndex dictionaryType, String dictionaryCode) {
+        Authentication subject = SecurityContextHolder.getContext().getAuthentication();
+        String contextPath = request.getScheme() +"://" + request.getServerName()  + ":" +request.getServerPort() +request.getContextPath();
+        String fileUrl = MessageFormat.format( "{0}/file/download?fileKey={1}", contextPath, dictionaryCode);
+        return fileUrl;
+    }
+
+    /**
+     * 字典索引
+     *
+     * @return
+     */
+    @Override
+    public DictionaryIndex getDictionaryIndex() {
+        return DictionaryIndex.ATTACHMENT_KEY;
     }
 }

@@ -159,4 +159,11 @@
             </foreach>
     </delete>
 
+    <insert id="insertByGroupCode">
+        insert into xmo_user_group (id, user_id, group_id) select replace(UUID(),'-',''), #{userId},  t.id from xmo_group t where t.GROUP_CODE in
+        <foreach collection="groupCodes" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </insert>
+
 </mapper>

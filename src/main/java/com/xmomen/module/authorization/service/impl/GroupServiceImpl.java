@@ -8,7 +8,13 @@ import com.xmomen.module.authorization.model.Group;
 import com.xmomen.module.authorization.model.GroupModel;
 import com.xmomen.module.authorization.model.GroupQuery;
 import com.xmomen.module.authorization.service.GroupService;
+import com.xmomen.module.core.model.SelectIndex;
+import com.xmomen.module.core.model.SelectOptionModel;
+import com.xmomen.module.core.model.SelectOptionQuery;
+import com.xmomen.module.core.service.SelectService;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +29,7 @@ import java.util.List;
  * @version 1.0.0
  */
 @Service
-public class GroupServiceImpl implements GroupService {
+public class GroupServiceImpl implements GroupService, SelectService {
 
     @Autowired
     GroupMapper groupMapper;
@@ -53,6 +59,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public Group createGroup(Group group) {
+        group.setGroupCode(group.getGroupCode().toUpperCase());
         groupMapper.insertSelective(group);
         return group;
     }
@@ -122,6 +129,9 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public void deleteGroup(String[] ids) {
+        if(ArrayUtils.isEmpty(ids)){
+            return;
+        }
         groupMapper.deletesByPrimaryKey(Arrays.asList(ids));
     }
 
@@ -209,5 +219,42 @@ public class GroupServiceImpl implements GroupService {
             throw new BusinessException();
         }
         return groupModelList.get(0);
+    }
+
+    /**
+     * 查询option数据
+     *
+     * @param selectOptionQuery
+     * @return
+     */
+    @Override
+    public List<SelectOptionModel> selectOptionModels(SelectOptionQuery selectOptionQuery) {
+        GroupQuery groupQuery = new GroupQuery();
+        groupQuery.setActive(Boolean.TRUE);
+        groupQuery.setKeyword(selectOptionQuery.getKeyword());
+        List<GroupModel> groupModelList = groupMapper.selectModel(groupQuery);
+        if(CollectionUtils.isEmpty(groupModelList)){
+            return Lists.newArrayList();
+        }
+        List<SelectOptionModel> selectOptionModelList = Lists.newArrayList();
+        int i = 0;
+        for (GroupModel groupModel : groupModelList) {
+            SelectOptionModel selectOptionModel = new SelectOptionModel();
+            selectOptionModel.setCode(groupModel.getGroupCode());
+            selectOptionModel.setName(groupModel.getGroupName());
+            selectOptionModel.setSort(i++);
+            selectOptionModelList.add(selectOptionModel);
+        }
+        return selectOptionModelList;
+    }
+
+    /**
+     * 获取select index
+     *
+     * @return
+     */
+    @Override
+    public SelectIndex getSelectIndex() {
+        return SelectIndex.GROUP;
     }
 }

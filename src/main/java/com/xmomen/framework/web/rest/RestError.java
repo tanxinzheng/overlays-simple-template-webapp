@@ -1,5 +1,6 @@
 package com.xmomen.framework.web.rest;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,43 @@ public class RestError {
         this.path = request.getRequestURI();
         this.message = ex.getMessage();
         this.exception = ex.getClass().getName();
+    }
+
+    public static RestError build(String message, Exception ex, HttpServletRequest request) {
+        RestError restError = new RestError();
+        restError.setTimestamp(new Date());
+        if(message != null){
+            restError.setMessage(message);
+        }
+        if(request != null){
+            restError.setPath(request.getRequestURI());
+        }
+        if(ex != null){
+            restError.setException(ex.getClass().getName());
+        }
+        return restError;
+    }
+
+    public static RestError build(Exception ex, HttpServletRequest request) {
+        if(ex == null){
+            return build("request error", null, request);
+        }
+        return build(ex.getMessage(), ex, request);
+    }
+
+    public static RestError build(Exception ex) {
+        if(ex == null){
+            return build("request error");
+        }
+        return build(ex.getMessage(), ex, null);
+    }
+
+    public static RestError build(String message) {
+        return build(message, null, null);
+    }
+
+    public String toJSONString(){
+        return JSONObject.toJSONString(this);
     }
 
 }

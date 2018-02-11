@@ -11,7 +11,7 @@
     <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">   
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %X{ip} %logger{50} - %msg%n</pattern>      
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %X{userId} [%thread] %-5level %X{ip} %logger{50} - %msg%n</pattern>
         </layout>   
     </appender>
     
@@ -21,7 +21,7 @@
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>   
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %X{ip} %logger{50} - %msg%n</pattern>      
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %X{userId} [%thread] %-5level %X{ip} %logger{50} - %msg%n</pattern>
        </layout> 
    	   <!--  File Max Size -->
        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
@@ -42,7 +42,7 @@
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>   
         <layout class="ch.qos.logback.classic.PatternLayout">  
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %X{ip} %logger{50} - %msg%n</pattern>   
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %X{userId} [%thread] %-5level %X{ip} %logger{50} - %msg%n</pattern>
        </layout> 
        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
          <MaxFileSize>10MB</MaxFileSize>

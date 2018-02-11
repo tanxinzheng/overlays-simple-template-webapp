@@ -5,11 +5,16 @@ import com.google.common.collect.Lists;
 import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.framework.web.json.DictionaryIndex;
+import com.xmomen.module.core.model.SelectIndex;
+import com.xmomen.module.core.model.SelectOptionModel;
+import com.xmomen.module.core.model.SelectOptionQuery;
+import com.xmomen.module.core.service.SelectService;
 import com.xmomen.module.system.mapper.DictionaryMapper;
 import com.xmomen.module.system.model.Dictionary;
 import com.xmomen.module.system.model.DictionaryModel;
 import com.xmomen.module.system.model.DictionaryQuery;
 import com.xmomen.module.system.service.DictionaryService;
+import io.jsonwebtoken.lang.Assert;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,10 +24,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author  tanxinzheng
@@ -30,7 +32,7 @@ import java.util.UUID;
  * @version 1.0.0
  */
 @Service
-public class DictionaryServiceImpl implements DictionaryService {
+public class DictionaryServiceImpl implements DictionaryService, SelectService {
 
     @Autowired
     DictionaryMapper dictionaryMapper;
@@ -225,5 +227,41 @@ public class DictionaryServiceImpl implements DictionaryService {
             throw new BusinessException();
         }
         return dictionaryModelList.get(0);
+    }
+
+    @Cacheable(cacheNames = DictionaryIndex.DICTIONARY_CACHE_NAME_KEY)
+    @Override
+    public List<SelectOptionModel> selectOptionModels(SelectOptionQuery selectOptionQuery) {
+        Assert.notNull(selectOptionQuery);
+        Assert.notNull(selectOptionQuery.getTypeCode(), "typeCode不能为空");
+        List<SelectOptionModel> selectOptionModelList = new ArrayList<>();
+        DictionaryQuery dictionaryQuery = new DictionaryQuery();
+        dictionaryQuery.setType(selectOptionQuery.getTypeCode());
+        dictionaryQuery.setParentId(selectOptionQuery.getParentId());
+        List<DictionaryModel> dictionaryModels = getDictionaryModelList(dictionaryQuery);
+        if(CollectionUtils.isEmpty(dictionaryModels)){
+            return Lists.newArrayList();
+        }
+        for (DictionaryModel dictionaryModel : dictionaryModels) {
+            SelectOptionModel selectOptionModel = new SelectOptionModel(
+                    dictionaryModel.getGroupCode(),
+                    dictionaryModel.getGroupName(),
+                    dictionaryModel.getDictionaryCode(),
+                    dictionaryModel.getDictionaryName(),
+                    dictionaryModel.getSort()
+            );
+            selectOptionModelList.add(selectOptionModel);
+        }
+        return selectOptionModelList;
+    }
+
+    /**
+     * 获取select index
+     *
+     * @return
+     */
+    @Override
+    public SelectIndex getSelectIndex() {
+        return SelectIndex.DICTIONARY;
     }
 }

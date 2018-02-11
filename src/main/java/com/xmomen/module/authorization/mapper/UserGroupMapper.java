@@ -33,4 +33,6 @@ public interface UserGroupMapper {
     List<GroupModel> selectUserGroup(UserGroupQuery userGroupQuery);
 
     void deleteByQuery(UserGroupQuery userGroupQuery);
+
+    int insertByGroupCode(@Param(value = "userId") String userId, @Param(value = "groupCodes") String[] groupCodes);
 }

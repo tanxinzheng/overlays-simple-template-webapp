@@ -64,7 +64,6 @@ public class AccessController {
                                   @RequestParam(value = "password") String password,
                                   @RequestParam(value = "code") String code) {
         Assert.isTrue(type.equals(FIND_TYPE_EMAIL) || type.equals(FIND_TYPE_PHONE), "找回方式仅支持：1-邮箱找回，2-手机找回");
-        Assert.isTrue(validationCodeService.validateCode(receiver, code), "请输入有效的验证码");
         UserModel userModel = null;
         if(type.equals(FIND_TYPE_EMAIL)){
             Assert.isTrue(EmailValidator.getInstance().isValid(receiver), "请输入正确格式的邮箱");
@@ -77,6 +76,7 @@ public class AccessController {
         }else {
             Assert.notNull(userModel, "仅支持邮箱，手机号码方式找回密码");
         }
+        Assert.isTrue(validationCodeService.validateCode(receiver, code), "请输入有效的验证码");
         String newSalt = UUIDGenerator.getInstance().getUUID();
         String newPassword = PasswordHelper.encryptPassword(password, newSalt);
         User user = new User();

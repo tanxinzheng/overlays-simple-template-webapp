@@ -1,31 +1,35 @@
 package com.xmomen.module.shiro;
 
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.util.ByteSource;
+import java.security.MessageDigest;
 
 /**
- * <p>User: Zhang Kaitao
- * <p>Date: 14-1-28
- * <p>Version: 1.0
+ * MD5
  */
 public class PasswordHelper {
 
-    private static String algorithmName = "md5";
-    private static int hashIterations = 3;
-
-    public void setAlgorithmName(String algorithmName) {
-        PasswordHelper.algorithmName = algorithmName;
-    }
-
-    public void setHashIterations(int hashIterations) {
-        PasswordHelper.hashIterations = hashIterations;
-    }
-
     public static String encryptPassword(String password, String salt) {
-        return new SimpleHash(
-                algorithmName,
-                password,
-                ByteSource.Util.bytes(salt),
-                hashIterations).toHex();
+        password = password + salt;
+        MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        char[] charArray = password.toCharArray();
+        byte[] byteArray = new byte[charArray.length];
+
+        for (int i = 0; i < charArray.length; i++)
+            byteArray[i] = (byte) charArray[i];
+        byte[] md5Bytes = md5.digest(byteArray);
+        StringBuffer hexValue = new StringBuffer();
+        for (int i = 0; i < md5Bytes.length; i++) {
+            int val = ((int) md5Bytes[i]) & 0xff;
+            if (val < 16) {
+                hexValue.append("0");
+            }
+
+            hexValue.append(Integer.toHexString(val));
+        }
+        return hexValue.toString();
     }
 }

@@ -3,12 +3,19 @@ package com.xmomen.module.notification.service.impl;
 import com.github.pagehelper.Page;
 import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
+import com.xmomen.framework.web.json.DictionaryIndex;
+import com.xmomen.framework.web.json.DictionaryInterpreterService;
+import com.xmomen.module.core.model.SelectIndex;
+import com.xmomen.module.core.model.SelectOptionModel;
+import com.xmomen.module.core.model.SelectOptionQuery;
+import com.xmomen.module.core.service.SelectService;
 import com.xmomen.module.notification.mapper.NotificationTemplateMapper;
 import com.xmomen.module.notification.model.NotificationTemplate;
 import com.xmomen.module.notification.model.NotificationTemplateModel;
 import com.xmomen.module.notification.model.NotificationTemplateQuery;
 import com.xmomen.module.notification.service.NotificationTemplateService;
 import org.apache.commons.collections.CollectionUtils;
+import org.assertj.core.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +32,7 @@ import java.util.List;
  * @version 1.0.0
  */
 @Service
-public class NotificationTemplateServiceImpl implements NotificationTemplateService {
-
-    private static Logger logger = LoggerFactory.getLogger(NotificationTemplateServiceImpl.class);
+public class NotificationTemplateServiceImpl implements NotificationTemplateService, DictionaryInterpreterService, SelectService {
 
     @Autowired
     NotificationTemplateMapper notificationTemplateMapper;
@@ -202,5 +207,72 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
             throw new BusinessException();
         }
         return notificationTemplateModelList.get(0);
+    }
+
+    /**
+     * 翻译
+     *
+     * @param dictionaryType 字典类型
+     * @param dictionaryCode 字典代码
+     * @return
+     */
+    @Override
+    public String translateDictionary(DictionaryIndex dictionaryType, String dictionaryCode) {
+        NotificationTemplateQuery notificationTemplateQuery = new NotificationTemplateQuery();
+        notificationTemplateQuery.setTemplateCode(dictionaryCode);
+        NotificationTemplateModel notificationTemplateModel = getOneNotificationTemplateModel(notificationTemplateQuery);
+        if(notificationTemplateModel == null){
+            return null;
+        }
+        return notificationTemplateModel.getTemplateName();
+    }
+
+    /**
+     * 字典索引
+     *
+     * @return
+     */
+    @Override
+    public DictionaryIndex getDictionaryIndex() {
+        return DictionaryIndex.NOTIFICATION_TEMPLATE;
+    }
+
+    /**
+     * 查询option数据
+     *
+     * @param selectOptionQuery
+     * @return
+     */
+    @Override
+    public List<SelectOptionModel> selectOptionModels(SelectOptionQuery selectOptionQuery) {
+        NotificationTemplateQuery notificationTemplateQuery = new NotificationTemplateQuery();
+        notificationTemplateQuery.setActive(Boolean.TRUE);
+        List<NotificationTemplateModel> notificationTemplateModelList = getNotificationTemplateModelList(notificationTemplateQuery);
+        if(CollectionUtils.isEmpty(notificationTemplateModelList)){
+            return Lists.newArrayList();
+        }
+        List<SelectOptionModel> selectOptionModelList = Lists.newArrayList();
+        int i = 0;
+        for (NotificationTemplateModel notificationTemplateModel : notificationTemplateModelList) {
+            SelectOptionModel selectOptionModel = new SelectOptionModel(
+                    SelectIndex.NOTIFICATION_TEMPLATE.name(),
+                    "通知模板",
+                    notificationTemplateModel.getTemplateCode(),
+                    notificationTemplateModel.getTemplateName(),
+                    i++
+            );
+            selectOptionModelList.add(selectOptionModel);
+        }
+        return selectOptionModelList;
+    }
+
+    /**
+     * 获取select index
+     *
+     * @return
+     */
+    @Override
+    public SelectIndex getSelectIndex() {
+        return SelectIndex.NOTIFICATION_TEMPLATE;
     }
 }

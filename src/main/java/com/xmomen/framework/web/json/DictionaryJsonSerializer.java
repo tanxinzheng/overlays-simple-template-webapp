@@ -3,6 +3,7 @@ package com.xmomen.framework.web.json;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 字典序列化
@@ -22,8 +25,14 @@ public class DictionaryJsonSerializer extends JsonSerializer<Object> {
 
     private static Logger logger = LoggerFactory.getLogger(DictionaryJsonSerializer.class);
 
+    Map<DictionaryIndex, DictionaryInterpreterService> dictionaryInterpreterServiceMap = Maps.newConcurrentMap();
+
     @Autowired
-    DictionaryInterpreterService dictionaryInterpreterService;
+    public void register(List<DictionaryInterpreterService> serviceList){
+        for (DictionaryInterpreterService dictionaryInterpreterService : serviceList) {
+            dictionaryInterpreterServiceMap.put(dictionaryInterpreterService.getDictionaryIndex(), dictionaryInterpreterService);
+        }
+    }
 
     /**
      * 字典翻译器
@@ -39,7 +48,11 @@ public class DictionaryJsonSerializer extends JsonSerializer<Object> {
         }
         jsonGenerator.writeObject(value);
         try {
-            String dictionaryLabel = dictionaryInterpreterService.translate(dictionaryInterpreter.index(), String.valueOf(value));
+            DictionaryInterpreterService dictionaryInterpreterService = dictionaryInterpreterServiceMap.get(dictionaryInterpreter.index());
+            if(dictionaryInterpreterService == null){
+                return;
+            }
+            String dictionaryLabel = dictionaryInterpreterService.translateDictionary(dictionaryInterpreter.index(), String.valueOf(value));
             if(StringUtils.trimToNull(dictionaryInterpreter.fieldName()) != null){
                 jsonGenerator.writeStringField(dictionaryInterpreter.fieldName(), dictionaryLabel);
             }else{

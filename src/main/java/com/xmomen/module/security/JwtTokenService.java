@@ -1,6 +1,5 @@
 package com.xmomen.module.security;
 
-import io.jsonwebtoken.JwtException;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,11 +37,12 @@ public interface JwtTokenService {
      * @param request
      * @return
      */
-    public boolean validToken(HttpServletRequest request) throws JwtException;
+    public boolean validToken(HttpServletRequest request);
 
     /**
      * 删除token
      * @param request
+     * @param response
      */
-    void removeToken(HttpServletRequest request);
+    void removeToken(HttpServletRequest request, HttpServletResponse response);
 }

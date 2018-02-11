@@ -1,5 +1,6 @@
 package com.xmomen.module.security;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xmomen.framework.web.rest.RestError;
 import org.springframework.http.HttpStatus;
@@ -33,11 +34,13 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
      */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        RestError restError = new RestError(authException);
+        RestError restError = new RestError(authException, request);
         restError.setStatus(HttpStatus.UNAUTHORIZED.value());
+
         OutputStream out = response.getOutputStream();
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(out, restError);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.writeValue(out, RestError.build(authException, request).toJSONString());
         out.flush();
     }
 }

@@ -1,5 +1,6 @@
 package com.xmomen.module.core.service;
 
+import com.xmomen.module.core.model.SelectIndex;
 import com.xmomen.module.core.model.SelectOptionModel;
 import com.xmomen.module.core.model.SelectOptionQuery;
 
@@ -16,4 +17,12 @@ public interface SelectService {
      * @return
      */
     public List<SelectOptionModel> selectOptionModels(SelectOptionQuery selectOptionQuery);
+
+    /**
+     * 获取select index
+     * @return
+     */
+    public SelectIndex getSelectIndex();
+
+
 }

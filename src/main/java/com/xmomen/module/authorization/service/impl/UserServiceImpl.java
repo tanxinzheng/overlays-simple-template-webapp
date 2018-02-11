@@ -6,6 +6,7 @@ import com.xmomen.framework.fss.FileStoreService;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.framework.utils.UUIDGenerator;
 import com.xmomen.framework.web.json.DictionaryIndex;
+import com.xmomen.framework.web.json.DictionaryInterpreterService;
 import com.xmomen.module.attachment.model.Attachment;
 import com.xmomen.module.attachment.service.AttachmentService;
 import com.xmomen.module.authorization.mapper.UserMapper;
@@ -14,9 +15,13 @@ import com.xmomen.module.authorization.model.User;
 import com.xmomen.module.authorization.model.UserModel;
 import com.xmomen.module.authorization.model.UserQuery;
 import com.xmomen.module.authorization.service.UserService;
+import com.xmomen.module.core.model.SelectIndex;
+import com.xmomen.module.core.model.SelectOptionModel;
+import com.xmomen.module.core.model.SelectOptionQuery;
+import com.xmomen.module.core.service.SelectService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.exceptions.TooManyResultsException;
+import org.assertj.core.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +42,7 @@ import java.util.List;
  * @version 1.0.0
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, DictionaryInterpreterService, SelectService {
 
     private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -279,5 +284,69 @@ public class UserServiceImpl implements UserService {
             logger.error(e.getMessage(), e);
             throw new BusinessException("图片上传失败，错误原因：" + e.getMessage());
         }
+    }
+
+    /**
+     * 翻译
+     *
+     * @param dictionaryType 字典类型
+     * @param dictionaryCode 字典代码
+     * @return
+     */
+    @Override
+    public String translateDictionary(DictionaryIndex dictionaryType, String dictionaryCode) {
+        User user = getOneUserCache(dictionaryCode);
+        if(user == null){
+            return null;
+        }
+        return user.getNickname();
+    }
+
+    /**
+     * 字典索引
+     *
+     * @return
+     */
+    @Override
+    public DictionaryIndex getDictionaryIndex() {
+        return DictionaryIndex.USER_ID;
+    }
+
+    /**
+     * 查询option数据
+     *
+     * @param selectOptionQuery
+     * @return
+     */
+    @Override
+    public List<SelectOptionModel> selectOptionModels(SelectOptionQuery selectOptionQuery) {
+        UserQuery userQuery = new UserQuery();
+        List<UserModel> userModelList = getUserModelList(userQuery);
+        if(CollectionUtils.isEmpty(userModelList)){
+            return Lists.newArrayList();
+        }
+        int i = 0;
+        List<SelectOptionModel> selectOptionModelList = Lists.newArrayList();
+        for (UserModel userModel : userModelList) {
+            SelectOptionModel selectOptionModel = new SelectOptionModel(
+                    DictionaryIndex.USER_ID.name(),
+                    "用户",
+                    userModel.getId(),
+                    userModel.getNickname(),
+                    i++
+            );
+            selectOptionModelList.add(selectOptionModel);
+        }
+        return selectOptionModelList;
+    }
+
+    /**
+     * 获取select index
+     *
+     * @return
+     */
+    @Override
+    public SelectIndex getSelectIndex() {
+        return SelectIndex.USER;
     }
 }

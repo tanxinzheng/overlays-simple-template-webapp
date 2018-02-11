@@ -14,7 +14,6 @@ import java.util.Set;
 /**
  * Created by tanxinzheng on 17/8/18.
  */
-//@Service
 public class JwtUserDetailService implements UserDetailsService {
 
     @Autowired

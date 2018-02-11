@@ -4,6 +4,7 @@ package com.xmomen.framework.web.json;
  * Created by tanxinzheng on 17/8/7.
  */
 public enum DictionaryIndex {
+    DICTIONARY,
     USER_ID,//用户ID -》 用户姓名
     GROUP_ID,//用户组
     TRIGGER_STATE,// 触发器状态

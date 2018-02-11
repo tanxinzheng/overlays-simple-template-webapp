@@ -75,6 +75,11 @@ public class UserGroupServiceImpl implements UserGroupService {
         }
     }
 
+    @Override
+    public void createUserGroupByCode(String userId, String... groupCode) {
+        userGroupMapper.insertByGroupCode(userId, groupCode);
+    }
+
     /**
     * 更新用户组关联
     *
