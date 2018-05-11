@@ -32,7 +32,6 @@ public class AttachmentController extends BaseRestController {
      * @return  Page<AttachmentModel> 附件领域分页对象
      */
     @ApiOperation(value = "查询附件列表")
-    @ActionLog(actionName = "查询附件列表")
     @PreAuthorize(value = "hasAnyAuthority('ATTACHMENT:VIEW')")
     @RequestMapping(method = RequestMethod.GET)
     public Page<AttachmentModel> getAttachmentList(AttachmentQuery attachmentQuery){
@@ -45,7 +44,6 @@ public class AttachmentController extends BaseRestController {
      * @return  AttachmentModel   附件领域对象
      */
     @ApiOperation(value = "查询附件")
-    @ActionLog(actionName = "查询附件")
     @PreAuthorize("hasAuthority('ATTACHMENT:VIEW')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public AttachmentModel getAttachmentById(@PathVariable(value = "id") String id){

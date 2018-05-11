@@ -16,8 +16,6 @@ import com.xmomen.module.notification.model.NotificationTemplateQuery;
 import com.xmomen.module.notification.service.NotificationTemplateService;
 import org.apache.commons.collections.CollectionUtils;
 import org.assertj.core.util.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -217,7 +215,7 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
      * @return
      */
     @Override
-    public String translateDictionary(DictionaryIndex dictionaryType, String dictionaryCode) {
+    public Object translateDictionary(DictionaryIndex dictionaryType, String dictionaryCode) {
         NotificationTemplateQuery notificationTemplateQuery = new NotificationTemplateQuery();
         notificationTemplateQuery.setTemplateCode(dictionaryCode);
         NotificationTemplateModel notificationTemplateModel = getOneNotificationTemplateModel(notificationTemplateQuery);

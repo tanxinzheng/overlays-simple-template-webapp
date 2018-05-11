@@ -15,4 +15,10 @@ public interface ScheduleTaskService {
      * @return
      */
     Page<ScheduleTaskModel> getScheduleTaskPages(ScheduleTaskQuery scheduleJobQuery);
+
+    /**
+     * 修改定时任务
+     * @param scheduleTaskModel
+     */
+    void updateScheduleTask(ScheduleTaskModel scheduleTaskModel);
 }

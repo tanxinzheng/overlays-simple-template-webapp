@@ -110,4 +110,5 @@ public interface GroupService {
      * @return GroupModel 用户组领域对象
      */
     public GroupModel getOneGroupModel(GroupQuery groupQuery);
+
 }

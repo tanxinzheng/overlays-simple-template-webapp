@@ -1,10 +1,7 @@
 package com.xmomen.module.authorization.service;
 
 import com.github.pagehelper.Page;
-import com.xmomen.module.authorization.model.GroupModel;
-import com.xmomen.module.authorization.model.UserGroupQuery;
-import com.xmomen.module.authorization.model.UserGroupModel;
-import com.xmomen.module.authorization.model.UserGroup;
+import com.xmomen.module.authorization.model.*;
 
 import java.util.List;
 
@@ -35,6 +32,13 @@ public interface UserGroupService {
      * @param groupIds
      */
     public void createUserGroups(String userId, String... groupIds);
+
+    /**
+     * 绑定用户至用户组
+     * @param groupId
+     * @param userIds
+     */
+    public void bindUsers2Group(String groupId, String... userIds);
 
     /**
      * 绑定用户组
@@ -132,4 +136,11 @@ public interface UserGroupService {
      * @param groupIds
      */
     public void deleteUserGroups(String userId, String[] groupIds);
+
+    /**
+     * 查询未绑定用户组用户
+     * @param groupId
+     * @return
+     */
+    public List<UserModel> getUnbindUsers(String groupId);
 }

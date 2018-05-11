@@ -111,7 +111,7 @@ public class AccountService {
      */
     public AccountModel getCurrentAccount(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(!authentication.isAuthenticated()){
+        if(authentication == null || !authentication.isAuthenticated()){
             throw new BadCredentialsException("authentication is null");
         }
         String username = (String) authentication.getPrincipal();

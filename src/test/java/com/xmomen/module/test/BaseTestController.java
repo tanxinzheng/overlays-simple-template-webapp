@@ -23,8 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by tanxinzheng on 17/6/9.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = ApplicationStart.class)
-@WebAppConfiguration
+@SpringBootTest(classes = ApplicationStart.class,
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@WebAppConfiguration
 public class BaseTestController {
 
     public static int DEFAULT_PAGE_SIZE = 10;

@@ -1,13 +1,17 @@
 package com.xmomen.module.shiro;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.security.MessageDigest;
 
 /**
  * MD5
  */
+@Slf4j
 public class PasswordHelper {
 
     public static String encryptPassword(String password, String salt) {
+        log.debug("encrypt password: {}, salt: {}", password, salt);
         password = password + salt;
         MessageDigest md5 = null;
         try {

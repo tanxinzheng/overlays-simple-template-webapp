@@ -255,10 +255,11 @@ public class AttachmentServiceImpl implements AttachmentService, DictionaryInter
      * @return
      */
     @Override
-    public String translateDictionary(DictionaryIndex dictionaryType, String dictionaryCode) {
+    public Object translateDictionary(DictionaryIndex dictionaryType, String dictionaryCode) {
         Authentication subject = SecurityContextHolder.getContext().getAuthentication();
+        String token = (String) subject.getCredentials();
         String contextPath = request.getScheme() +"://" + request.getServerName()  + ":" +request.getServerPort() +request.getContextPath();
-        String fileUrl = MessageFormat.format( "{0}/file/download?fileKey={1}", contextPath, dictionaryCode);
+        String fileUrl = MessageFormat.format( "{0}/file/download?fileKey={1}&token={2}", contextPath, dictionaryCode, token);
         return fileUrl;
     }
 

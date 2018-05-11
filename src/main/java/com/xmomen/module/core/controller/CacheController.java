@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -46,9 +47,8 @@ public class CacheController {
      * @return  List<SelectOptionModel> 数据字典领域分页对象
      */
     @ApiOperation(value = "查询数据字典列表")
-    @ActionLog(actionName = "查询数据字典列表")
     @RequestMapping(value = "/cache", method = RequestMethod.GET)
-    public List<SelectOptionModel> getDictionaryList(SelectOptionQuery selectOptionQuery){
+    public List<SelectOptionModel> getDictionaryList(@Valid SelectOptionQuery selectOptionQuery){
         String selectIndex = selectOptionQuery.getTypeCode();
         SelectIndex selectIndexKey = null;
         try{

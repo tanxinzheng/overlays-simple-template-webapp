@@ -3,6 +3,8 @@ package com.xmomen.module.authorization.model;
 import com.xmomen.framework.model.BaseModel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.xmomen.framework.web.json.DictionaryIndex;
+import com.xmomen.framework.web.json.DictionaryInterpreter;
 import com.xmomen.module.authorization.model.UserGroup;
 import lombok.Data;
 import org.hibernate.validator.constraints.*;
@@ -30,11 +32,17 @@ public @Data class UserGroupModel extends BaseModel implements Serializable {
     @NotBlank(message = "用户表ID为必填项")
     @Length(max = 32, message = "用户表ID字符长度限制[0,32]")
     private String userId;
+    @DictionaryInterpreter(index = DictionaryIndex.ATTACHMENT_KEY, fieldName = "avatarUrl")
+    private String avatar;
+    private String username;
+    private String nickname;
     /** 组表ID */
     @Excel(name = "组表ID")
     @NotBlank(message = "组表ID为必填项")
     @Length(max = 32, message = "组表ID字符长度限制[0,32]")
     private String groupId;
+
+    private String groupName;
 
     /**
     * Get UserGroup Entity Object

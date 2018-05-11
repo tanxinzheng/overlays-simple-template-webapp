@@ -7,13 +7,19 @@
             parameterType="com.xmomen.module.scheduler.model.ScheduleTaskQuery">
         select
             j.job_name,
+            j.job_class_name,
             j.job_group,
             j.description,
+            t.trigger_group,
+            t.trigger_name,
             t.trigger_state,
-            t.`NEXT_FIRE_TIME`,
+            case when t.`START_TIME` > 0 then FROM_UNIXTIME(t.`START_TIME`/1000,'%Y-%m-%d %h:%i:%s') else '-' end as START_TIME,
+            case when t.`END_TIME` > 0 then FROM_UNIXTIME(t.`END_TIME`/1000,'%Y-%m-%d %h:%i:%s') else '-' end as END_TIME,
+            case when t.`NEXT_FIRE_TIME` > 0 then FROM_UNIXTIME(t.`NEXT_FIRE_TIME`/1000,'%Y-%m-%d %h:%i:%s') else '-' end as NEXT_FIRE_TIME,
+            case when t.`PREV_FIRE_TIME` > 0 then FROM_UNIXTIME(t.`PREV_FIRE_TIME`/1000,'%Y-%m-%d %h:%i:%s') else '-' end as PREV_FIRE_TIME,
             c.`CRON_EXPRESSION`
-        from `xmo_qrtz_job_details` j
-            left join `xmo_qrtz_triggers` t on t.job_name = j.job_name and t.job_group = j.job_group
+        from `xmo_qrtz_triggers` t
+            left join `xmo_qrtz_job_details` j on t.job_name = j.job_name and t.job_group = j.job_group
             left join `xmo_qrtz_cron_triggers` c on t.`TRIGGER_GROUP` = c.`TRIGGER_GROUP` and t.`TRIGGER_NAME` = c.`TRIGGER_NAME`
         <where>
             <if test="keyword">
@@ -34,5 +40,9 @@
             </if>
         </where>
     </select>
+
+    <update id="updateCronExpression" parameterType="com.xmomen.module.scheduler.model.ScheduleTaskModel">
+        update xmo_qrtz_cron_triggers set cron_expression = #{cronExpression} where trigger_name = #{triggerName} and trigger_group = #{triggerGroup}
+    </update>
 
 </mapper>

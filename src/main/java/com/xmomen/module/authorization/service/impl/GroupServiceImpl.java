@@ -4,9 +4,8 @@ import com.github.pagehelper.Page;
 import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.module.authorization.mapper.GroupMapper;
-import com.xmomen.module.authorization.model.Group;
-import com.xmomen.module.authorization.model.GroupModel;
-import com.xmomen.module.authorization.model.GroupQuery;
+import com.xmomen.module.authorization.mapper.UserGroupMapper;
+import com.xmomen.module.authorization.model.*;
 import com.xmomen.module.authorization.service.GroupService;
 import com.xmomen.module.core.model.SelectIndex;
 import com.xmomen.module.core.model.SelectOptionModel;
@@ -31,8 +30,12 @@ import java.util.List;
 @Service
 public class GroupServiceImpl implements GroupService, SelectService {
 
+    private static final String SYSTEM_GROUP_TYPE_NAME = "SYSTEM_GROUP";
+
     @Autowired
     GroupMapper groupMapper;
+    @Autowired
+    UserGroupMapper userGroupMapper;
 
     /**
      * 新增用户组
@@ -132,6 +135,13 @@ public class GroupServiceImpl implements GroupService, SelectService {
         if(ArrayUtils.isEmpty(ids)){
             return;
         }
+        GroupQuery groupQuery = new GroupQuery();
+        groupQuery.setIds(ids);
+        groupQuery.setGroupType(SYSTEM_GROUP_TYPE_NAME);
+        List<Group> list = groupMapper.select(groupQuery);
+        if(CollectionUtils.isNotEmpty(list)){
+            throw new BusinessException("禁止删除系统用户组");
+        }
         groupMapper.deletesByPrimaryKey(Arrays.asList(ids));
     }
 
@@ -143,6 +153,19 @@ public class GroupServiceImpl implements GroupService, SelectService {
     @Override
     @Transactional
     public void deleteGroup(String id) {
+        UserGroupQuery userGroupQuery = new UserGroupQuery();
+        userGroupQuery.setGroupId(id);
+        List<UserGroup> list = userGroupMapper.select(userGroupQuery);
+        if(CollectionUtils.isNotEmpty(list)){
+            throw new BusinessException("该用户组下已绑定用户，请移除用户后重新操作。");
+        }
+        GroupQuery groupQuery = new GroupQuery();
+        groupQuery.setGroupType(SYSTEM_GROUP_TYPE_NAME);
+        groupQuery.setId(id);
+        List<Group> groups = groupMapper.select(groupQuery);
+        if(CollectionUtils.isNotEmpty(groups)){
+            throw new BusinessException("该用户组为系统用户组，无法删除。");
+        }
         groupMapper.deleteByPrimaryKey(id);
     }
 

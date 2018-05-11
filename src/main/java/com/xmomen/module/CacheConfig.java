@@ -14,6 +14,8 @@ import org.springframework.core.io.ClassPathResource;
 @EnableCaching
 public class CacheConfig {
 
+    public static final String FAILURE_LOGIN_MAX_NUMBER_KEY = "failure_login_max_number";
+
     @Bean
     public EhCacheManagerFactoryBean getEhCacheManagerFactoryBean(){
         EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();

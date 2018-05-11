@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.security.access.method.P;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -80,16 +81,12 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         AccountModel accountModel = accountService.getAccountModelByUsername(username);
         Set<String> permissions = accountService.findPermissions(accountModel.getUserId());
         Set<String> roles = accountService.findRoles(accountModel.getUserId());
-        Claims claims = Jwts.claims().setSubject(username);
         Map<String, Object> data = Maps.newHashMap();
         data.put("username", username);
         data.put("account", accountModel);
         data.put("permissions", permissions.stream().map(String::toString).collect(Collectors.toList()));
         data.put("roles", roles.stream().map(String::toString).collect(Collectors.toList()));
-        String token = Jwts.builder()
-                .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();
+        String token = createToken(username, secret);
         Cache cache = cacheManager.getCache(JWT_TOKEN_SESSION_KEY);
         cache.put(token, data);
         ehCacheCacheManager.getCacheManager().getCache(JWT_TOKEN_SESSION_KEY).flush();
@@ -97,6 +94,15 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         Cookie cookie = new Cookie(JwtTokenServiceImpl.JWT_TOKEN_COOKIE_KEY, token);
         cookie.setSecure(Boolean.TRUE);
         response.addCookie(cookie);
+    }
+
+    public String createToken(String username, String secret){
+        Claims claims = Jwts.claims().setSubject(username);
+        String token = Jwts.builder()
+                .setClaims(claims)
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+        return token;
     }
 
     /**
@@ -151,7 +157,13 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         String token = getToken(request);
         Cache cache = cacheManager.getCache(JWT_TOKEN_SESSION_KEY);
         Cache.ValueWrapper valueWrapper = cache.get(token);
+        if(valueWrapper == null) {
+            return null;
+        }
         Map data = (Map) valueWrapper.get();
+        if(data == null){
+            return null;
+        }
         List<SimpleGrantedAuthority> authorities = Lists.newArrayList();
         List<String> permissions = (List<String>) data.get("permissions");
         if(!CollectionUtils.isEmpty(permissions)){

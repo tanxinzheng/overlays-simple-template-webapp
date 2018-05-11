@@ -24,7 +24,7 @@ public class DefaultDictionaryInterpreterService implements DictionaryInterprete
      * @return
      */
     @Override
-    public String translateDictionary(DictionaryIndex dictionaryType, String dictionaryCode) {
+    public Object translateDictionary(DictionaryIndex dictionaryType, String dictionaryCode) {
         DictionaryQuery dictionaryQuery = new DictionaryQuery();
         dictionaryQuery.setCode(dictionaryCode);
         dictionaryQuery.setType(dictionaryType.name());

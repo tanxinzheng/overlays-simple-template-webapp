@@ -16,6 +16,8 @@ public @Data class Group extends BaseEntity implements Serializable {
 
     /** 主键 */
     private String id;
+    /** 用户组类型 */
+    private String groupType;
     /** 用户组代码 */
     private String groupCode;
     /** 用户组名称 */

@@ -19,6 +19,7 @@ import com.xmomen.module.core.model.SelectIndex;
 import com.xmomen.module.core.model.SelectOptionModel;
 import com.xmomen.module.core.model.SelectOptionQuery;
 import com.xmomen.module.core.service.SelectService;
+import com.xmomen.module.shiro.PasswordHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Lists;
@@ -61,6 +62,11 @@ public class UserServiceImpl implements UserService, DictionaryInterpreterServic
     @Override
     @Transactional
     public UserModel createUser(UserModel userModel) {
+        String password = UUIDGenerator.getInstance().getUUID(6);
+        String salt = UUIDGenerator.getInstance().getUUID(32);
+        String realPassword = PasswordHelper.encryptPassword(password, salt);
+        userModel.setPassword(realPassword);
+        userModel.setSalt(salt);
         User user = createUser(userModel.getEntity());
         if(user != null){
             return getOneUserModel(user.getId());
@@ -294,12 +300,12 @@ public class UserServiceImpl implements UserService, DictionaryInterpreterServic
      * @return
      */
     @Override
-    public String translateDictionary(DictionaryIndex dictionaryType, String dictionaryCode) {
-        User user = getOneUserCache(dictionaryCode);
+    public Object translateDictionary(DictionaryIndex dictionaryType, String dictionaryCode) {
+        UserModel user = getOneUserModel(dictionaryCode);
         if(user == null){
             return null;
         }
-        return user.getNickname();
+        return user;
     }
 
     /**
@@ -349,4 +355,5 @@ public class UserServiceImpl implements UserService, DictionaryInterpreterServic
     public SelectIndex getSelectIndex() {
         return SelectIndex.USER;
     }
+
 }

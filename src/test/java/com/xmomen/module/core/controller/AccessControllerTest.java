@@ -9,17 +9,20 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Created by tanxinzheng on 17/6/27.
+ * Created by tanxinzheng on 18/2/11.
  */
-public class CacheControllerTest extends BaseTestController {
+public class AccessControllerTest extends BaseTestController {
+
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -30,9 +33,19 @@ public class CacheControllerTest extends BaseTestController {
     }
 
     @Test
-    public void getDictionaryList() throws Exception {
-        // 列表查询
-        ResultActions actions = mockMvc.perform(get("/select/cache")
+    public void ajaxRegister() throws Exception {
+    }
+
+    @Test
+    public void findPassword() throws Exception {
+    }
+
+    @Test
+    public void setValidateCode() throws Exception {
+        // 验证码
+        ResultActions actions = mockMvc.perform(post("/access/code")
+                .param("type", "1")
+                .param("receiver", "15000084483")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())

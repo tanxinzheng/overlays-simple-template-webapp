@@ -18,6 +18,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -146,6 +147,9 @@ public class LoggerAspect {
      */
     public String getUserId(){
         AccountModel accountModel = accountService.getCurrentAccount();
+        if(accountModel == null){
+            return null;
+        }
         return accountModel.getUserId();
     }
 

@@ -40,7 +40,6 @@ public class PermissionController extends BaseRestController {
      * @return  Page<PermissionModel> 权限领域分页对象
      */
     @ApiOperation(value = "查询权限列表")
-    @ActionLog(actionName = "查询权限列表")
     @PreAuthorize(value = "hasAnyAuthority('PERMISSION:VIEW')")
     @RequestMapping(method = RequestMethod.GET)
     public Page<PermissionModel> getPermissionList(final PermissionQuery permissionQuery) {
@@ -53,7 +52,6 @@ public class PermissionController extends BaseRestController {
      * @return  PermissionModel   权限领域对象
      */
     @ApiOperation(value = "查询权限")
-    @ActionLog(actionName = "查询权限")
     @PreAuthorize(value = "hasAnyAuthority('PERMISSION:VIEW')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public PermissionModel getPermissionById(@PathVariable(value = "id") String id) {
@@ -130,6 +128,9 @@ public class PermissionController extends BaseRestController {
      * 导出Excel
      * @param permissionQuery    查询参数对象
      */
+    @ApiOperation(value = "导出权限")
+    @ActionLog(actionName = "导出权限")
+    @PreAuthorize(value = "hasAnyAuthority('PERMISSION:VIEW')")
     @RequestMapping(value="/export", method = RequestMethod.GET)
     public void exportDictionaries(HttpServletRequest request,
                                            HttpServletResponse response,
@@ -142,6 +143,9 @@ public class PermissionController extends BaseRestController {
      * 导入Excel
      * @param file
      */
+    @ApiOperation(value = "批量导入权限")
+    @ActionLog(actionName = "批量导入权限")
+    @PreAuthorize(value = "hasAnyAuthority('PERMISSION:CREATE')")
     @RequestMapping(value="/import", method = RequestMethod.POST)
     public void importDictionaries(@RequestParam("file") MultipartFile file) throws IOException {
         List<PermissionModel> list = ExcelUtils.transform(file, PermissionModel.class);

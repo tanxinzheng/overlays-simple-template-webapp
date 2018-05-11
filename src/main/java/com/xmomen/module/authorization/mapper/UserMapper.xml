@@ -205,6 +205,11 @@
             <if test="id">
                 AND ID = #{id}
             </if>
+            <if test="notInGroupId">
+                AND ID not in (
+                  select user_id from xmo_user_group where group_id = #{notInGroupId}
+                )
+            </if>
             <if test="ids">
                 AND ID IN
                 <foreach collection="ids" item="item" separator="," open="(" close=")">

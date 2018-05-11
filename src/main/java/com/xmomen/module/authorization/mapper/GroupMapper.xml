@@ -9,23 +9,29 @@
         insert into xmo_group
         <trim prefix="(" suffix=")" suffixOverrides="," >
         ID,
-                <if test="groupCode != null" >
-                    GROUP_CODE,
-                </if>
-                <if test="groupName != null" >
-                    GROUP_NAME,
-                </if>
-                <if test="description != null" >
-                    DESCRIPTION,
-                </if>
-                <if test="active != null" >
-                    ACTIVE,
-                </if>
+            <if test="groupType != null" >
+                GROUP_TYPE,
+            </if>
+            <if test="groupCode != null" >
+                GROUP_CODE,
+            </if>
+            <if test="groupName != null" >
+                GROUP_NAME,
+            </if>
+            <if test="description != null" >
+                DESCRIPTION,
+            </if>
+            <if test="active != null" >
+                ACTIVE,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
         #{id, jdbcType=VARCHAR},
+                <if test="groupType != null" >
+                    #{groupType, jdbcType=VARCHAR},
+                </if>
                 <if test="groupCode != null" >
-                #{groupCode, jdbcType=VARCHAR},
+                    #{groupCode, jdbcType=VARCHAR},
                 </if>
                 <if test="groupName != null" >
                 #{groupName, jdbcType=VARCHAR},
@@ -56,6 +62,9 @@
             <if test="id != null" >
             ID = #{id, jdbcType=VARCHAR},
             </if>
+            <if test="groupType != null" >
+            GROUP_TYPE = #{groupType, jdbcType=VARCHAR},
+            </if>
             <if test="groupCode != null" >
             GROUP_CODE = #{groupCode, jdbcType=VARCHAR},
             </if>
@@ -77,6 +86,9 @@
         <set >
             <if test="record.id != null" >
             ID = #{id, jdbcType=VARCHAR},
+            </if>
+            <if test="record.groupType != null" >
+                GROUP_TYPE = #{groupType, jdbcType=VARCHAR},
             </if>
             <if test="record.groupCode != null" >
             GROUP_CODE = #{groupCode, jdbcType=VARCHAR},
@@ -133,6 +145,9 @@
                   OR GROUP_NAME LIKE CONCAT('%', #{keyword}, '%')
                   OR DESCRIPTION LIKE CONCAT('%', #{keyword}, '%')
                 )
+            </if>
+            <if test="groupType != null">
+                AND GROUP_TYPE = #{groupType}
             </if>
             <if test="id">
                 AND ID = #{id}

@@ -33,7 +33,6 @@ public class GroupPermissionController extends BaseRestController {
      * @return  Page<GroupPermissionModel> 组权限领域分页对象
      */
     @ApiOperation(value = "查询组权限列表")
-    @ActionLog(actionName = "查询组权限列表")
     @PreAuthorize(value = "hasAnyAuthority('GROUPPERMISSION:VIEW')")
     @RequestMapping(method = RequestMethod.GET)
     public Page<GroupPermissionModel> getGroupPermissionList(GroupPermissionQuery groupPermissionQuery){
@@ -46,7 +45,6 @@ public class GroupPermissionController extends BaseRestController {
      * @return  GroupPermissionModel   组权限领域对象
      */
     @ApiOperation(value = "查询组权限")
-    @ActionLog(actionName = "查询组权限")
     @PreAuthorize(value = "hasAnyAuthority('GROUPPERMISSION:VIEW')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public GroupPermissionModel getGroupPermissionById(@PathVariable(value = "id") String id){

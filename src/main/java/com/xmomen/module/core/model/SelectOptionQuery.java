@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 @Data
 public class SelectOptionQuery extends BaseQuery {
-    @NotBlank
+    @NotBlank(message = "typeCode为必填项")
     private String typeCode;
     private String parentId;
     private String keyword;

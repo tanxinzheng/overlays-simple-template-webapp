@@ -3,6 +3,7 @@ package com.xmomen.module.logger;
 import com.xmomen.framework.web.json.DictionaryIndex;
 import com.xmomen.framework.web.json.DictionaryInterpreter;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,6 +17,7 @@ class LogModel implements Serializable{
     @DictionaryInterpreter(fieldName = "username", index = DictionaryIndex.USER_ID)
     private String userId;
     private String actionName;
+    @DateTimeFormat
     private Date actionDate;
     private String clientIp;
     private String targetClass;

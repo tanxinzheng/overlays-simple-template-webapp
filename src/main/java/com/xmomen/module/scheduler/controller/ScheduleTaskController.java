@@ -10,6 +10,8 @@ import com.xmomen.module.scheduler.service.ScheduleTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * Created by tanxinzheng on 17/8/9.
  */
@@ -31,6 +33,18 @@ public class ScheduleTaskController {
     @RequestMapping(method = RequestMethod.GET)
     public Page<ScheduleTaskModel> getScheduleTaskList(ScheduleTaskQuery scheduleJobQuery) {
         return scheduleTaskService.getScheduleTaskPages(scheduleJobQuery);
+    }
+
+    /**
+     * 查询调度任务
+     * @param scheduleJobQuery
+     * @return
+     */
+    @ApiOperation(value = "修改定时任务")
+    @ActionLog(actionName = "修改定时任务")
+    @RequestMapping(method = RequestMethod.PUT)
+    public void updateScheduleTask(@Valid ScheduleTaskModel scheduleTaskModel) {
+        scheduleTaskService.updateScheduleTask(scheduleTaskModel);
     }
 
     @Autowired(required = false)

@@ -4,11 +4,13 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -21,9 +23,8 @@ import java.util.Map;
  */
 @Component
 @Scope("prototype")
+@Slf4j
 public class DictionaryJsonSerializer extends JsonSerializer<Object> {
-
-    private static Logger logger = LoggerFactory.getLogger(DictionaryJsonSerializer.class);
 
     Map<DictionaryIndex, DictionaryInterpreterService> dictionaryInterpreterServiceMap = Maps.newConcurrentMap();
 
@@ -52,15 +53,24 @@ public class DictionaryJsonSerializer extends JsonSerializer<Object> {
             if(dictionaryInterpreterService == null){
                 return;
             }
-            String dictionaryLabel = dictionaryInterpreterService.translateDictionary(dictionaryInterpreter.index(), String.valueOf(value));
-            if(StringUtils.trimToNull(dictionaryInterpreter.fieldName()) != null){
-                jsonGenerator.writeStringField(dictionaryInterpreter.fieldName(), dictionaryLabel);
-            }else{
-                String currentName = jsonGenerator.getOutputContext().getCurrentName();
-                jsonGenerator.writeStringField(currentName + "Desc", dictionaryLabel);
+            Object dictionaryLabel = dictionaryInterpreterService.translateDictionary(dictionaryInterpreter.index(), String.valueOf(value));
+            if(dictionaryInterpreter.index().getJsonType().equals(DictionaryIndex.JsonType.STRING)){
+                if(StringUtils.trimToNull(dictionaryInterpreter.fieldName()) != null){
+                    jsonGenerator.writeStringField(dictionaryInterpreter.fieldName(), (String)dictionaryLabel);
+                }else{
+                    String currentName = jsonGenerator.getOutputContext().getCurrentName();
+                    jsonGenerator.writeStringField(currentName + "Desc", (String)dictionaryLabel);
+                }
+            }else if(dictionaryInterpreter.index().getJsonType().equals(DictionaryIndex.JsonType.OBJECT)) {
+                if(StringUtils.trimToNull(dictionaryInterpreter.fieldName()) != null){
+                    jsonGenerator.writeObjectField(dictionaryInterpreter.fieldName(), dictionaryLabel);
+                }else{
+                    String currentName = jsonGenerator.getOutputContext().getCurrentName();
+                    jsonGenerator.writeObjectField(currentName + "Desc", dictionaryLabel);
+                }
             }
         }catch (Exception e){
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
     }

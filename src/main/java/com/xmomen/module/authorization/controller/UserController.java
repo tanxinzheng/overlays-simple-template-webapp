@@ -2,12 +2,14 @@ package com.xmomen.module.authorization.controller;
 
 import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
+import com.xmomen.framework.utils.UUIDGenerator;
 import com.xmomen.framework.web.controller.BaseRestController;
 import com.xmomen.module.authorization.model.*;
 import com.xmomen.module.authorization.service.PermissionService;
 import com.xmomen.module.authorization.service.UserGroupService;
 import com.xmomen.module.authorization.service.UserPermissionService;
 import com.xmomen.module.authorization.service.UserService;
+import com.xmomen.module.shiro.PasswordHelper;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +32,11 @@ public class UserController extends BaseRestController {
     UserService userService;
 
     /**
-     * 数据字典列表
-     * @param   userQuery    数据字典查询参数对象
-     * @return  Page<UserModel> 数据字典领域分页对象
+     * 用户列表
+     * @param   userQuery    用户查询参数对象
+     * @return  Page<UserModel> 用户领域分页对象
      */
-    @ApiOperation(value = "查询数据字典列表")
-    @ActionLog(actionName = "查询数据字典列表")
+    @ApiOperation(value = "查询用户列表")
     @PreAuthorize(value = "hasAnyAuthority('USER:VIEW')")
     @RequestMapping(method = RequestMethod.GET)
     public Page<UserModel> getUserList(UserQuery userQuery){
@@ -43,12 +44,11 @@ public class UserController extends BaseRestController {
     }
 
     /**
-     * 查询单个数据字典
+     * 查询单个用户
      * @param   id  主键
-     * @return  UserModel   数据字典领域对象
+     * @return  UserModel   用户领域对象
      */
-    @ApiOperation(value = "查询数据字典")
-    @ActionLog(actionName = "查询数据字典")
+    @ApiOperation(value = "查询用户")
     @PreAuthorize(value = "hasAnyAuthority('USER:VIEW')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public UserModel getUserById(@PathVariable(value = "id") String id){
@@ -56,12 +56,12 @@ public class UserController extends BaseRestController {
     }
 
     /**
-     * 新增数据字典
+     * 新增用户
      * @param   userModel  新增对象参数
-     * @return  UserModel   数据字典领域对象
+     * @return  UserModel   用户领域对象
      */
-    @ApiOperation(value = "新增数据字典")
-    @ActionLog(actionName = "新增数据字典")
+    @ApiOperation(value = "新增用户")
+    @ActionLog(actionName = "新增用户")
     @PreAuthorize(value = "hasAnyAuthority('USER:CREATE')")
     @RequestMapping(method = RequestMethod.POST)
     public UserModel createUser(@RequestBody @Valid UserModel userModel) {
@@ -69,13 +69,13 @@ public class UserController extends BaseRestController {
     }
 
     /**
-     * 更新数据字典
+     * 更新用户
      * @param id    主键
      * @param userModel  更新对象参数
-     * @return  UserModel   数据字典领域对象
+     * @return  UserModel   用户领域对象
      */
-    @ApiOperation(value = "更新数据字典")
-    @ActionLog(actionName = "更新数据字典")
+    @ApiOperation(value = "更新用户")
+    @ActionLog(actionName = "更新用户")
     @PreAuthorize(value = "hasAnyAuthority('USER:UPDATE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public UserModel updateUser(@PathVariable(value = "id") String id,
@@ -88,11 +88,11 @@ public class UserController extends BaseRestController {
     }
 
     /**
-     *  删除数据字典
+     *  删除用户
      * @param id    主键
      */
-    @ApiOperation(value = "删除单个数据字典")
-    @ActionLog(actionName = "删除单个数据字典")
+    @ApiOperation(value = "删除单个用户")
+    @ActionLog(actionName = "删除单个用户")
     @PreAuthorize(value = "hasAnyAuthority('USER:DELETE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteUser(@PathVariable(value = "id") String id){
@@ -100,11 +100,11 @@ public class UserController extends BaseRestController {
     }
 
     /**
-     *  删除数据字典
+     *  删除用户
      * @param ids    查询参数对象
      */
-    @ApiOperation(value = "批量删除数据字典")
-    @ActionLog(actionName = "批量删除数据字典")
+    @ApiOperation(value = "批量删除用户")
+    @ActionLog(actionName = "批量删除用户")
     @PreAuthorize(value = "hasAnyAuthority('USER:DELETE')")
     @RequestMapping(method = RequestMethod.DELETE)
     public void deleteUsers(@RequestParam(value = "ids[]") String[] ids){

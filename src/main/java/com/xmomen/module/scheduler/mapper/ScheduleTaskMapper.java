@@ -14,4 +14,6 @@ public interface ScheduleTaskMapper {
 
 
     List<ScheduleTaskModel> selectModel(ScheduleTaskQuery scheduleJobQuery);
+
+    void updateCronExpression(ScheduleTaskModel scheduleTaskModel);
 }

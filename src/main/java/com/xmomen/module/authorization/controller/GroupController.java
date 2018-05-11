@@ -3,13 +3,11 @@ package com.xmomen.module.authorization.controller;
 import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
 import com.xmomen.framework.web.controller.BaseRestController;
-import com.xmomen.module.authorization.model.GroupModel;
-import com.xmomen.module.authorization.model.GroupPermissionQuery;
-import com.xmomen.module.authorization.model.GroupQuery;
-import com.xmomen.module.authorization.model.PermissionModel;
+import com.xmomen.module.authorization.model.*;
 import com.xmomen.module.authorization.service.GroupPermissionService;
 import com.xmomen.module.authorization.service.GroupService;
 import com.xmomen.module.authorization.service.PermissionService;
+import com.xmomen.module.authorization.service.UserGroupService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author  tanxinzheng
@@ -36,13 +35,15 @@ public class GroupController extends BaseRestController {
     @Autowired
     PermissionService permissionService;
 
+    @Autowired
+    UserGroupService userGroupService;
+
     /**
      * 用户组列表
      * @param   groupQuery    用户组查询参数对象
      * @return  Page<GroupModel> 用户组领域分页对象
      */
     @ApiOperation(value = "查询用户组列表")
-    @ActionLog(actionName = "查询用户组列表")
     @PreAuthorize(value = "hasAnyAuthority('GROUP:VIEW')")
     @RequestMapping(method = RequestMethod.GET)
     public Page<GroupModel> getGroupList(GroupQuery groupQuery){
@@ -55,7 +56,6 @@ public class GroupController extends BaseRestController {
      * @return  GroupModel   用户组领域对象
      */
     @ApiOperation(value = "查询用户组")
-    @ActionLog(actionName = "查询用户组")
     @PreAuthorize(value = "hasAnyAuthority('GROUP:VIEW')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public GroupModel getGroupById(@PathVariable(value = "id") String id){
@@ -140,10 +140,46 @@ public class GroupController extends BaseRestController {
      * @return
      */
     @ApiOperation(value = "查询用户组所属权限")
-    @ActionLog(actionName = "查询用户组所属权限")
     @RequestMapping(value = "/{groupId}/permission", method = RequestMethod.GET)
     public Page<PermissionModel> findPermissionByGroup(@PathVariable(value = "groupId") String groupId,
                                                        GroupPermissionQuery groupPermissionQuery){
         return groupPermissionService.getGroupPermissions(groupPermissionQuery);
+    }
+
+    /**
+     * 查询用户组所属权限
+     * @param groupId
+     * @param userGroupQuery
+     * @return
+     */
+    @ApiOperation(value = "查询用户组所属权限")
+    @RequestMapping(value = "/{groupId}/user", method = RequestMethod.GET)
+    public List<UserGroupModel> findUserByGroup(@PathVariable(value = "groupId") String groupId,
+                                                      UserGroupQuery userGroupQuery){
+        userGroupQuery.setGroupId(groupId);
+        return userGroupService.getUserGroupModelList(userGroupQuery);
+    }
+
+    /**
+     * 查询用户组所属权限
+     * @param groupId
+     * @param userIds
+     * @return
+     */
+    @ApiOperation(value = "查询用户组所属权限")
+    @RequestMapping(value = "/{groupId}/user", method = RequestMethod.POST)
+    public void bindUser2Group(@PathVariable(value = "groupId") String groupId,
+                               @RequestBody String[] userIds){
+        userGroupService.bindUsers2Group(groupId, userIds);
+    }
+
+    /**
+     * 查询用户组未绑定用户
+     * @param groupId
+     * @return
+     */
+    @RequestMapping(value = "/{groupId}/user/unbind", method = RequestMethod.GET)
+    public List<UserModel> findPermissionByGroup(@PathVariable(value = "groupId") String groupId){
+        return userGroupService.getUnbindUsers(groupId);
     }
 }

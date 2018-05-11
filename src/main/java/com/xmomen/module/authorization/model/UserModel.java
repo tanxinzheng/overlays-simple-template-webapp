@@ -3,6 +3,7 @@ package com.xmomen.module.authorization.model;
 import com.xmomen.framework.model.BaseModel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.xmomen.framework.web.json.DictionaryIndex;
 import com.xmomen.framework.web.json.DictionaryInterpreter;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Data;
@@ -45,7 +46,7 @@ public @Data class UserModel extends BaseModel implements Serializable {
     /** 密码 */
     @JsonIgnore
     @Excel(name = "密码")
-    @NotBlank(message = "密码为必填项")
+//    @NotBlank(message = "密码为必填项")
     @Length(max = 50, message = "密码字符长度限制[0,50]")
     private String password;
     /** 邮箱 */
@@ -57,6 +58,7 @@ public @Data class UserModel extends BaseModel implements Serializable {
     @Length(max = 20, message = "手机号码字符长度限制[0,20]")
     private String phoneNumber;
     /** 头像 */
+    @DictionaryInterpreter(index = DictionaryIndex.ATTACHMENT_KEY, fieldName = "avatarUrl")
     private String avatar;
     /** 锁定 */
     @Excel(name = "锁定")

@@ -32,7 +32,6 @@ public class UserGroupController extends BaseRestController {
      * @return  Page<UserGroupModel> 用户组关联领域分页对象
      */
     @ApiOperation(value = "查询用户组关联列表")
-    @ActionLog(actionName = "查询用户组关联列表")
     @PreAuthorize(value = "hasAnyAuthority('USERGROUP:VIEW')")
     @RequestMapping(method = RequestMethod.GET)
     public Page<UserGroupModel> getUserGroupList(UserGroupQuery userGroupQuery){
@@ -45,7 +44,6 @@ public class UserGroupController extends BaseRestController {
      * @return  UserGroupModel   用户组关联领域对象
      */
     @ApiOperation(value = "查询用户组关联")
-    @ActionLog(actionName = "查询用户组关联")
     @PreAuthorize(value = "hasAnyAuthority('USERGROUP:VIEW')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public UserGroupModel getUserGroupById(@PathVariable(value = "id") String id){

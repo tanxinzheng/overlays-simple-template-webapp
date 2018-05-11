@@ -29,4 +29,9 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
         scheduleTaskMapper.selectModel(scheduleTaskQuery);
         return page;
     }
+
+    @Override
+    public void updateScheduleTask(ScheduleTaskModel scheduleTaskModel) {
+
+    }
 }

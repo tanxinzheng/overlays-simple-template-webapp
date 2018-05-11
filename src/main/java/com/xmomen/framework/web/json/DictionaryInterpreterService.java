@@ -11,7 +11,7 @@ public interface DictionaryInterpreterService {
      * @param dictionaryCode    字典代码
      * @return
      */
-    String translateDictionary(DictionaryIndex dictionaryType, String dictionaryCode);
+    Object translateDictionary(DictionaryIndex dictionaryType, String dictionaryCode);
 
     /**
      * 字典索引

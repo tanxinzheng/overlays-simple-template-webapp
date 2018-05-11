@@ -96,9 +96,37 @@
     <select id="selectModel"
             resultType="com.xmomen.module.authorization.model.UserGroupModel"
             parameterType="com.xmomen.module.authorization.model.UserGroupQuery">
-        SELECT * FROM xmo_user_group
-        <include refid="Update_By_Query_Where_Clause"/>
-        ORDER BY id
+        SELECT
+            u.username username,
+            u.nickname nickname,
+            u.avatar avatar,
+            ug.user_id,
+            g.group_name group_name,
+            ug.group_id,
+            ug.id
+          FROM xmo_user_group ug, xmo_user u, xmo_group g
+        <where>
+            ug.group_id = g.id and u.id = ug.user_id
+            <if test="groupId">
+                AND ug.GROUP_ID = #{groupId}
+            </if>
+            <if test="userId">
+                AND ug.USER_ID = #{userId}
+            </if>
+            <if test="ids">
+                AND ug.ID IN
+                <foreach collection="ids" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="excludeIds">
+                AND ug.ID NOT IN
+                <foreach collection="excludeIds" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY ug.id
     </select>
 
     <sql id="Update_By_Query_Where_Clause">
@@ -108,6 +136,12 @@
             </if>
             <if test="id">
                 AND ID = #{id}
+            </if>
+            <if test="groupId">
+                AND GROUP_ID = #{groupId}
+            </if>
+            <if test="userId">
+                AND USER_ID = #{userId}
             </if>
             <if test="ids">
                 AND ID IN

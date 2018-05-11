@@ -4,10 +4,8 @@ import com.github.pagehelper.Page;
 import com.xmomen.framework.exception.BusinessException;
 import com.xmomen.framework.mybatis.page.PageInterceptor;
 import com.xmomen.module.authorization.mapper.UserGroupMapper;
-import com.xmomen.module.authorization.model.GroupModel;
-import com.xmomen.module.authorization.model.UserGroup;
-import com.xmomen.module.authorization.model.UserGroupModel;
-import com.xmomen.module.authorization.model.UserGroupQuery;
+import com.xmomen.module.authorization.mapper.UserMapper;
+import com.xmomen.module.authorization.model.*;
 import com.xmomen.module.authorization.service.UserGroupService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -28,6 +26,9 @@ public class UserGroupServiceImpl implements UserGroupService {
 
     @Autowired
     UserGroupMapper userGroupMapper;
+
+    @Autowired
+    UserMapper userMapper;
 
     /**
      * 新增用户组关联
@@ -68,6 +69,16 @@ public class UserGroupServiceImpl implements UserGroupService {
     @Transactional
     public void createUserGroups(String userId, String... groupIds) {
         for (String groupId : groupIds) {
+            UserGroup userGroup = new UserGroup();
+            userGroup.setUserId(userId);
+            userGroup.setGroupId(groupId);
+            createUserGroup(userGroup);
+        }
+    }
+
+    @Override
+    public void bindUsers2Group(String groupId, String... userIds) {
+        for (String userId : userIds) {
             UserGroup userGroup = new UserGroup();
             userGroup.setUserId(userId);
             userGroup.setGroupId(groupId);
@@ -239,5 +250,12 @@ public class UserGroupServiceImpl implements UserGroupService {
         userGroupQuery.setUserId(userId);
         userGroupQuery.setGroupIds(groupIds);
         userGroupMapper.deleteByQuery(userGroupQuery);
+    }
+
+    @Override
+    public List<UserModel> getUnbindUsers(String groupId) {
+        UserQuery userQuery = new UserQuery();
+        userQuery.setNotInGroupId(groupId);
+        return userMapper.selectModel(userQuery);
     }
 }

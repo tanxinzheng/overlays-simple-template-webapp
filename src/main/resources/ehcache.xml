@@ -34,4 +34,12 @@
            statistics="true">
     </cache>
 
+    <cache name="failure_login_max_number"
+           maxEntriesLocalHeap="0"
+           eternal="false"
+           timeToIdleSeconds="900"
+           timeToLiveSeconds="900"
+           statistics="true">
+    </cache>
+
 </ehcache>

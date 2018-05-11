@@ -16,5 +16,6 @@ public @Data class UserQuery extends BaseQuery implements Serializable {
     private String id;
     private String[] ids;
     private String[] excludeIds;
+    private String notInGroupId;
 
 }
