@@ -1,4 +1,4 @@
-package com.xmomen.module.shiro;
+package com.xmomen.framework.utils;
 
 import lombok.extern.slf4j.Slf4j;
 

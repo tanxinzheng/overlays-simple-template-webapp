@@ -9,7 +9,7 @@ import com.xmomen.module.authorization.service.UserService;
 import com.xmomen.module.core.model.AccountModel;
 import com.xmomen.module.core.model.Register;
 import com.xmomen.module.core.model.UserGroupEnum;
-import com.xmomen.module.shiro.PasswordHelper;
+import com.xmomen.framework.utils.PasswordHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;

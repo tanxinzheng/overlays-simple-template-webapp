@@ -17,7 +17,7 @@ import com.xmomen.module.notification.model.NotificationQuery;
 import com.xmomen.module.notification.model.NotificationStateCount;
 import com.xmomen.module.notification.service.NotificationReceiveService;
 import com.xmomen.module.notification.service.NotificationService;
-import com.xmomen.module.shiro.PasswordHelper;
+import com.xmomen.framework.utils.PasswordHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.validator.routines.EmailValidator;

@@ -4,7 +4,7 @@ import com.xmomen.module.CacheConfig;
 import com.xmomen.module.authorization.model.UserModel;
 import com.xmomen.module.authorization.service.UserService;
 import com.xmomen.module.core.service.AccountService;
-import com.xmomen.module.shiro.PasswordHelper;
+import com.xmomen.framework.utils.PasswordHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.security.authentication.AuthenticationProvider;

@@ -8,7 +8,7 @@
         <property name="cacheManagerConfigFile" value="classpath:ehcache/ehcache-shiro.xml"/>
     </bean>
 
-    <bean id="passwordHelper" class="com.xmomen.module.shiro.PasswordHelper" />
+    <bean id="passwordHelper" class="com.xmomen.framework.utils.PasswordHelper" />
 
     <!-- 凭证匹配器 -->
     <bean id="credentialsMatcher" class="com.xmomen.module.shiro.credentials.RetryLimitHashedCredentialsMatcher">

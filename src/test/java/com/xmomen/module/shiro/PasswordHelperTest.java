@@ -1,9 +1,8 @@
 package com.xmomen.module.shiro;
 
+import com.xmomen.framework.utils.PasswordHelper;
 import io.jsonwebtoken.lang.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by tanxinzheng on 18/2/9.

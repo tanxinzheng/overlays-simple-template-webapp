@@ -19,7 +19,7 @@ import com.xmomen.module.core.model.SelectIndex;
 import com.xmomen.module.core.model.SelectOptionModel;
 import com.xmomen.module.core.model.SelectOptionQuery;
 import com.xmomen.module.core.service.SelectService;
-import com.xmomen.module.shiro.PasswordHelper;
+import com.xmomen.framework.utils.PasswordHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Lists;

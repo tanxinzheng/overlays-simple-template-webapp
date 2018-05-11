@@ -2,14 +2,12 @@ package com.xmomen.module.authorization.controller;
 
 import com.github.pagehelper.Page;
 import com.xmomen.framework.logger.ActionLog;
-import com.xmomen.framework.utils.UUIDGenerator;
 import com.xmomen.framework.web.controller.BaseRestController;
 import com.xmomen.module.authorization.model.*;
 import com.xmomen.module.authorization.service.PermissionService;
 import com.xmomen.module.authorization.service.UserGroupService;
 import com.xmomen.module.authorization.service.UserPermissionService;
 import com.xmomen.module.authorization.service.UserService;
-import com.xmomen.module.shiro.PasswordHelper;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

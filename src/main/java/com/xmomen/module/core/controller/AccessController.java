@@ -8,7 +8,7 @@ import com.xmomen.module.authorization.service.UserService;
 import com.xmomen.module.core.model.Register;
 import com.xmomen.module.core.service.AccountService;
 import com.xmomen.module.core.service.ValidationCodeService;
-import com.xmomen.module.shiro.PasswordHelper;
+import com.xmomen.framework.utils.PasswordHelper;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.EmailValidator;
