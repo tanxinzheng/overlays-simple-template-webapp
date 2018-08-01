@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmomen.module.attachment.mapper.AttachmentMapper" >
+
+    <insert id="insertSelective" parameterType="com.xmomen.module.attachment.model.Attachment" useGeneratedKeys="true" keyProperty="id" keyColumn="ID" >
+        <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+            SELECT replace(UUID(),'-','')
+        </selectKey>
+        insert into xmo_attachment
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+        ID,
+                <if test="attachmentGroup != null" >
+                    ATTACHMENT_GROUP,
+                </if>
+                <if test="attachmentKey != null" >
+                    ATTACHMENT_KEY,
+                </if>
+                <if test="attachmentSize != null" >
+                    ATTACHMENT_SIZE,
+                </if>
+                <if test="attachmentPath != null" >
+                    ATTACHMENT_PATH,
+                </if>
+                <if test="attachmentSuffix != null" >
+                    ATTACHMENT_SUFFIX,
+                </if>
+                <if test="originName != null" >
+                    ORIGIN_NAME,
+                </if>
+                <if test="uploadTime != null" >
+                    UPLOAD_TIME,
+                </if>
+                <if test="uploadUserId != null" >
+                    UPLOAD_USER_ID,
+                </if>
+                <if test="relationId != null" >
+                    RELATION_ID,
+                </if>
+                <if test="isPrivate != null" >
+                    IS_PRIVATE,
+                </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{id, jdbcType=VARCHAR},
+                <if test="attachmentGroup != null" >
+                #{attachmentGroup, jdbcType=VARCHAR},
+                </if>
+                <if test="attachmentKey != null" >
+                #{attachmentKey, jdbcType=VARCHAR},
+                </if>
+                <if test="attachmentSize != null" >
+                #{attachmentSize, jdbcType=DECIMAL},
+                </if>
+                <if test="attachmentPath != null" >
+                #{attachmentPath, jdbcType=VARCHAR},
+                </if>
+                <if test="attachmentSuffix != null" >
+                #{attachmentSuffix, jdbcType=VARCHAR},
+                </if>
+                <if test="originName != null" >
+                #{originName, jdbcType=VARCHAR},
+                </if>
+                <if test="uploadTime != null" >
+                #{uploadTime, jdbcType=TIMESTAMP},
+                </if>
+                <if test="uploadUserId != null" >
+                #{uploadUserId, jdbcType=VARCHAR},
+                </if>
+                <if test="relationId != null" >
+                #{relationId, jdbcType=VARCHAR},
+                </if>
+                <if test="isPrivate != null" >
+                #{isPrivate, jdbcType=CHAR},
+                </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from xmo_attachment where ID = #{id}
+    </delete>
+
+    <delete id="deletesByPrimaryKey" parameterType="java.util.ArrayList" >
+        delete from xmo_attachment where ID IN
+        <foreach collection="ids" item="item" separator="," open="(" close=")">
+        #{item}
+        </foreach>
+    </delete>
+
+    <update id="updateSelective" parameterType="com.xmomen.module.attachment.model.Attachment" >
+        update xmo_attachment
+        <set>
+            <if test="id != null" >
+            ID = #{id, jdbcType=VARCHAR},
+            </if>
+            <if test="attachmentGroup != null" >
+            ATTACHMENT_GROUP = #{attachmentGroup, jdbcType=VARCHAR},
+            </if>
+            <if test="attachmentKey != null" >
+            ATTACHMENT_KEY = #{attachmentKey, jdbcType=VARCHAR},
+            </if>
+            <if test="attachmentSize != null" >
+            ATTACHMENT_SIZE = #{attachmentSize, jdbcType=DECIMAL},
+            </if>
+            <if test="attachmentPath != null" >
+            ATTACHMENT_PATH = #{attachmentPath, jdbcType=VARCHAR},
+            </if>
+            <if test="attachmentSuffix != null" >
+            ATTACHMENT_SUFFIX = #{attachmentSuffix, jdbcType=VARCHAR},
+            </if>
+            <if test="originName != null" >
+            ORIGIN_NAME = #{originName, jdbcType=VARCHAR},
+            </if>
+            <if test="uploadTime != null" >
+            UPLOAD_TIME = #{uploadTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="uploadUserId != null" >
+            UPLOAD_USER_ID = #{uploadUserId, jdbcType=VARCHAR},
+            </if>
+            <if test="relationId != null" >
+            RELATION_ID = #{relationId, jdbcType=VARCHAR},
+            </if>
+            <if test="isPrivate != null" >
+            IS_PRIVATE = #{isPrivate, jdbcType=CHAR},
+            </if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <update id="updateSelectiveByQuery" parameterType="map" >
+        update xmo_attachment
+        <set >
+            <if test="record.id != null" >
+            ID = #{id, jdbcType=VARCHAR},
+            </if>
+            <if test="record.attachmentGroup != null" >
+            ATTACHMENT_GROUP = #{attachmentGroup, jdbcType=VARCHAR},
+            </if>
+            <if test="record.attachmentKey != null" >
+            ATTACHMENT_KEY = #{attachmentKey, jdbcType=VARCHAR},
+            </if>
+            <if test="record.attachmentSize != null" >
+            ATTACHMENT_SIZE = #{attachmentSize, jdbcType=DECIMAL},
+            </if>
+            <if test="record.attachmentPath != null" >
+            ATTACHMENT_PATH = #{attachmentPath, jdbcType=VARCHAR},
+            </if>
+            <if test="record.attachmentSuffix != null" >
+            ATTACHMENT_SUFFIX = #{attachmentSuffix, jdbcType=VARCHAR},
+            </if>
+            <if test="record.originName != null" >
+            ORIGIN_NAME = #{originName, jdbcType=VARCHAR},
+            </if>
+            <if test="record.uploadTime != null" >
+            UPLOAD_TIME = #{uploadTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.uploadUserId != null" >
+            UPLOAD_USER_ID = #{uploadUserId, jdbcType=VARCHAR},
+            </if>
+            <if test="record.relationId != null" >
+            RELATION_ID = #{relationId, jdbcType=VARCHAR},
+            </if>
+            <if test="record.isPrivate != null" >
+            IS_PRIVATE = #{isPrivate, jdbcType=CHAR},
+            </if>
+        </set>
+        <if test="query != null" >
+            <include refid="Update_By_Query_Where_Clause"/>
+        </if>
+    </update>
+
+    <!--    查询消息    -->
+    <select id="select"
+            resultType="com.xmomen.module.attachment.model.Attachment"
+            parameterType="com.xmomen.module.attachment.model.AttachmentQuery">
+        SELECT * FROM xmo_attachment
+        <include refid="Update_By_Query_Where_Clause"/>
+        ORDER BY ID
+    </select>
+
+    <select id="selectByPrimaryKey"
+            resultType="com.xmomen.module.attachment.model.Attachment"
+            parameterType="java.lang.String">
+        SELECT * FROM xmo_attachment WHERE ID = #{id}
+    </select>
+
+    <select id="selectModelByPrimaryKey"
+            resultType="com.xmomen.module.attachment.model.AttachmentModel"
+            parameterType="java.lang.String">
+        SELECT * FROM xmo_attachment WHERE ID = #{id}
+    </select>
+
+    <select id="selectModel"
+            resultType="com.xmomen.module.attachment.model.AttachmentModel"
+            parameterType="com.xmomen.module.attachment.model.AttachmentQuery">
+        SELECT * FROM xmo_attachment
+        <include refid="Update_By_Query_Where_Clause"/>
+        ORDER BY id
+    </select>
+
+    <sql id="Update_By_Query_Where_Clause">
+        <where>
+            <if test="keyword">
+                AND ID LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="id">
+                AND ID = #{id}
+            </if>
+            <if test="attachmentKey">
+                AND ATTACHMENT_KEY = #{attachmentKey}
+            </if>
+            <if test="attachmentKeys">
+                AND ATTACHMENT_KEY IN
+                <foreach collection="attachmentKeys" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="ids">
+                AND ID IN
+                <foreach collection="ids" item="item" separator="," open="(" close=")">
+                #{item}
+                </foreach>
+            </if>
+            <if test="excludeIds">
+                AND ID NOT IN
+                <foreach collection="excludeIds" item="item" separator="," open="(" close=")">
+                #{item}
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+</mapper>

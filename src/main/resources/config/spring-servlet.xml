@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<context:annotation-config />
+
+	<!-- 扫描所有的controller 但是不扫描service-->
+	<context:component-scan base-package="com.**">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+	<!-- 引入属性文件 -->
+	<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath*:config/application.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="properties" ref="configProperties"></property>
+	</bean>
+
+	<context:component-scan base-package="org.jeecgframework.poi.excel.view"></context:component-scan>
+
+
+	<bean id="jeecgTemplateExcelView" class="org.jeecgframework.poi.excel.view.JeecgTemplateExcelView" />
+	<bean id="jeecgSingleExcelView" class="org.jeecgframework.poi.excel.view.JeecgSingleExcelView" />
+	<bean id="jeecgMapExcelView" class="org.jeecgframework.poi.excel.view.JeecgMapExcelView" />
+
+	<aop:aspectj-autoproxy />
+
+	<!--	swagger config	-->
+	<bean id="springSwaggerConfig" class="com.mangofactory.swagger.configuration.SpringSwaggerConfig" />
+	<bean id="documentationConfig" class="com.xmomen.module.core.web.ApplicationSwaggerConfig" />
+
+	<bean  class="com.xmomen.module.logger.aspect.LoggerAspect" />
+	<!-- ###########	数据字典翻译器  Start	###############	-->
+	<bean id="dictionaryAnnotationIntrospector" class="com.xmomen.framework.web.json.DictionaryAnnotationIntrospector"></bean>
+	<bean id="dictionaryInterpreterService" class="com.xmomen.framework.web.json.DefaultDictionaryInterpreterService" />
+	<!-- ###########	数据字典翻译器  End	###############	-->
+
+	<bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" >
+		<!--	添加字典描述注解翻译器		-->
+		<property name="annotationIntrospector" ref="dictionaryAnnotationIntrospector" />
+		<property name="dateFormat" ref="dateFormat"/>
+		<property name="timeZone" value="GMT+8"/>
+	</bean>
+
+	<bean id="dateFormat" class="java.text.SimpleDateFormat">
+		<constructor-arg>
+			<value>yyyy-MM-dd HH:mm:ss</value>
+		</constructor-arg>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="jacksonObjectMapper" />
+		<property name="targetMethod" value="configure" />
+		<property name="arguments">
+			<list>
+				<value type="com.fasterxml.jackson.databind.SerializationFeature">WRITE_NULL_MAP_VALUES</value>
+				<value>false</value>
+			</list>
+		</property>
+	</bean>
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="jacksonObjectMapper" />
+		<property name="targetMethod" value="configure" />
+		<property name="arguments">
+			<list>
+				<value type="com.fasterxml.jackson.databind.DeserializationFeature">FAIL_ON_UNKNOWN_PROPERTIES</value>
+				<value>false</value>
+			</list>
+		</property>
+	</bean>
+
+	<mvc:resources mapping="/momen-website/**" location="/momen-website/"/>
+	<mvc:resources mapping="/doc/api/**" location="/doc/swagger-ui/dist/"/>
+
+	<!-- 以下 validator  ConversionService 在使用 mvc:annotation-driven 会 自动注册-->
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
+	</bean>
+
+	<mvc:annotation-driven validator="validator" conversion-service="conversionService">
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				 <property name="objectMapper" ref="jacksonObjectMapper"></property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<bean class="com.xmomen.framework.web.support.DateConverter"></bean>
+			</set>
+		</property>
+	</bean>
+
+	<!-- ###########	信息国际化相关配置  Start	###############	-->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="messages/messages" />
+		<property name="useCodeAsDefaultMessage" value="true"/>
+		<property name="defaultEncoding" value="UTF-8"/>
+	</bean>
+	<!-- 获取本地 -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="zh_CN"/>
+	</bean>
+	<!--国际化资源切换（根据请求参数中的locale参数自动切换）-->
+	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<ref bean="localeChangeInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<!-- ###########	信息国际化相关配置  End	###############	-->
+
+	<bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/WEB-INF/views/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+
+	<bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="0" />
+	</bean>
+
+	<!-- Spring MVC 内容协商配置 -->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="contentNegotiationManager">
+            <bean class="org.springframework.web.accept.ContentNegotiationManager">
+                <constructor-arg>
+                    <bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
+                        <constructor-arg>
+                            <map>
+                                <entry key="json" value="application/json"/>
+                            </map>
+                        </constructor-arg>
+                    </bean>
+                </constructor-arg>
+            </bean>
+        </property>
+		<property name="defaultViews">
+			<list>
+				<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+			</list>
+		</property>
+    </bean>
+
+	<!-- 异常统一处理 -->
+	<bean id="restExceptionHandler" class="com.xmomen.framework.web.rest.RestExceptionHandler"/>
+
+	<bean id="restExceptionResolver" class="com.xmomen.framework.web.rest.RestExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.apache.shiro.authz.UnauthorizedException">errors/403</prop>
+				<prop key="java.lang.Exception">errors/error</prop>
+			</props>
+		</property>
+		<property name="statusCodes">
+			<props>
+				<prop key="errors/error">500</prop>
+				<prop key="errors/404">404</prop>
+				<prop key="errors/403">403</prop>
+			</props>
+		</property>
+		<!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->
+		<property name="defaultErrorView" value="errors/500"></property>
+		<!-- 默认HTTP状态码 -->
+		<property name="defaultStatusCode" value="500"></property>
+	</bean>
+	<!-- 全局异常配置 end -->
+
+	<!--	文件上传配置		-->
+	<bean id="multipartResolver"
+		  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="${spring.servlet.multipart.max-file-size}"/>
+	</bean>
+
+</beans>

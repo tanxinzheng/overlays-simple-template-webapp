@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmomen.module.scheduler.mapper.ScheduleTaskMapper" >
+
+    <select id="selectModel"
+            resultType="com.xmomen.module.scheduler.model.ScheduleTaskModel"
+            parameterType="com.xmomen.module.scheduler.model.ScheduleTaskQuery">
+        select
+            j.job_name,
+            j.job_class_name,
+            j.job_group,
+            j.description,
+            t.trigger_group,
+            t.trigger_name,
+            t.trigger_state,
+            case when t.`START_TIME` > 0 then FROM_UNIXTIME(t.`START_TIME`/1000,'%Y-%m-%d %h:%i:%s') else '-' end as START_TIME,
+            case when t.`END_TIME` > 0 then FROM_UNIXTIME(t.`END_TIME`/1000,'%Y-%m-%d %h:%i:%s') else '-' end as END_TIME,
+            case when t.`NEXT_FIRE_TIME` > 0 then FROM_UNIXTIME(t.`NEXT_FIRE_TIME`/1000,'%Y-%m-%d %h:%i:%s') else '-' end as NEXT_FIRE_TIME,
+            case when t.`PREV_FIRE_TIME` > 0 then FROM_UNIXTIME(t.`PREV_FIRE_TIME`/1000,'%Y-%m-%d %h:%i:%s') else '-' end as PREV_FIRE_TIME,
+            c.`CRON_EXPRESSION`
+        from `xmo_qrtz_triggers` t
+            left join `xmo_qrtz_job_details` j on t.job_name = j.job_name and t.job_group = j.job_group
+            left join `xmo_qrtz_cron_triggers` c on t.`TRIGGER_GROUP` = c.`TRIGGER_GROUP` and t.`TRIGGER_NAME` = c.`TRIGGER_NAME`
+        <where>
+            <if test="keyword">
+                AND (
+                  j.description LIKE CONCAT('%', #{keyword}, '%')
+                  OR j.job_name LIKE CONCAT('%', #{keyword}, '%')
+                  OR j.job_group LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+            <if test="jobName">
+                AND j.job_name = #{jobName}
+            </if>
+            <if test="jobGroup">
+                AND j.job_group = #{jobGroup}
+            </if>
+            <if test="triggerState">
+                AND t.trigger_state = #{triggerState}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateCronExpression" parameterType="com.xmomen.module.scheduler.model.ScheduleTaskModel">
+        update xmo_qrtz_cron_triggers set cron_expression = #{cronExpression} where trigger_name = #{triggerName} and trigger_group = #{triggerGroup}
+    </update>
+
+</mapper>
